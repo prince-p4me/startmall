@@ -12,8 +12,9 @@ import {
 
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { archiveOutline, archiveSharp, bookmarkOutline, heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
+import { archiveOutline, archiveSharp, bookmarkOutline, heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp, rocketOutline, peopleOutline, mailUnread } from 'ionicons/icons';
 import './Menu.css';
+import News from './News';
 
 interface AppPage {
   url: string;
@@ -26,52 +27,65 @@ const appPages: AppPage[] = [
   {
     title: 'Inbox',
     url: '/page/Inbox',
-    iosIcon: mailOutline,
-    mdIcon: mailSharp
-  },
+    iosIcon: mailUnread,
+    mdIcon: mailUnread
+  } ,
   {
-    title: 'Outbox',
-    url: '/page/Outbox',
-    iosIcon: paperPlaneOutline,
-    mdIcon: paperPlaneSharp
-  },
+    title: 'Slashiee Go',
+    url: '/page/Inbox',
+    iosIcon: rocketOutline,
+    mdIcon: rocketOutline
+  } ,
   {
-    title: 'Favorites',
-    url: '/page/Favorites',
-    iosIcon: heartOutline,
-    mdIcon: heartSharp
-  },
-  {
-    title: 'Archived',
-    url: '/page/Archived',
-    iosIcon: archiveOutline,
-    mdIcon: archiveSharp
-  },
-  {
-    title: 'Trash',
-    url: '/page/Trash',
-    iosIcon: trashOutline,
-    mdIcon: trashSharp
-  },
-  {
-    title: 'Spam',
-    url: '/page/Spam',
-    iosIcon: warningOutline,
-    mdIcon: warningSharp
-  }
+    title: 'Slashiee OneOne',
+    url: '/page/Inbox',
+    iosIcon: peopleOutline,
+    mdIcon: peopleOutline
+  } ,
+  // {
+  //   title: 'Outbox',
+  //   url: '/page/Outbox',
+  //   iosIcon: paperPlaneOutline,
+  //   mdIcon: paperPlaneSharp
+  // },
+  // {
+  //   title: 'Favorites',
+  //   url: '/page/Favorites',
+  //   iosIcon: heartOutline,
+  //   mdIcon: heartSharp
+  // },
+  // {
+  //   title: 'Archived',
+  //   url: '/page/Archived',
+  //   iosIcon: archiveOutline,
+  //   mdIcon: archiveSharp
+  // },
+  // {
+  //   title: 'Trash',
+  //   url: '/page/Trash',
+  //   iosIcon: trashOutline,
+  //   mdIcon: trashSharp
+  // },
+  // {
+  //   title: 'Spam',
+  //   url: '/page/Spam',
+  //   iosIcon: warningOutline,
+  //   mdIcon: warningSharp
+  // }
+
 ];
 
-const labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
+const labels = ['#11321', '#21322', '#43211'];
 
 const Menu: React.FC = () => {
   const location = useLocation();
 
   return (
-    <IonMenu contentId="main" type="overlay">
+    <IonMenu contentId="main" type="overlay" side="end">
       <IonContent>
         <IonList id="inbox-list">
-          <IonListHeader>Inbox</IonListHeader>
-          <IonNote>hi@ionicframework.com</IonNote>
+          <IonListHeader>Gary </IonListHeader>
+          <IonNote>gary@gmail.com</IonNote>
           {appPages.map((appPage, index) => {
             return (
               <IonMenuToggle key={index} autoHide={false}>
@@ -85,7 +99,7 @@ const Menu: React.FC = () => {
         </IonList>
 
         <IonList id="labels-list">
-          <IonListHeader>Labels</IonListHeader>
+          <IonListHeader>Previous Orders</IonListHeader>
           {labels.map((label, index) => (
             <IonItem lines="none" key={index}>
               <IonIcon slot="start" icon={bookmarkOutline} />
