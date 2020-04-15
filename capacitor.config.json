@@ -1,0 +1,8 @@
+{
+  "appId": "com.startmall.app",
+  "appName": "startmall-app",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "build",
+  "cordova": {}
+}
