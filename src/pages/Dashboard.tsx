@@ -6,10 +6,7 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
-  IonIcon,
-  IonCard,
-  IonItem
-} from "@ionic/react";
+  IonIcon} from "@ionic/react";
 import { pauseCircleOutline } from "ionicons/icons";
 import React from "react";
 import { useParams } from "react-router";

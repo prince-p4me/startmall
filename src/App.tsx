@@ -1,6 +1,5 @@
 import Menu from "./components/Menu";
 import Page from "./pages/Page";
-import Dashboard from "./pages/Dashboard";
 import React from "react";
 import { IonApp, IonRouterOutlet, IonSplitPane } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";

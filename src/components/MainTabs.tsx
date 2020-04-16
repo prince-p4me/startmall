@@ -6,25 +6,12 @@ import {
   IonIcon,
   IonLabel,
   IonBadge,
-  IonRouterOutlet,
-  IonToolbar,
-  IonPage,
-  IonHeader,
-  IonButtons,
-  IonMenuButton,
-  IonTitle
-} from "@ionic/react";
+  IonRouterOutlet} from "@ionic/react";
 import {
-  calendar,
-  personCircle,
-  map,
   informationCircle,
   happy,
-  cartOutline,
   cartSharp,
-  rocketSharp,
-  pauseCircleOutline
-} from "ionicons/icons";
+  rocketSharp} from "ionicons/icons";
 import { Redirect, Route } from "react-router-dom";
 import Dashboard from "../pages/Dashboard";
 import Market from "../containers/Market";
@@ -33,7 +20,7 @@ interface ContainerProps {
   name: string;
 }
 
-const MainTabs: React.FC<ContainerProps> = ({ name }) => {
+const MainTabs: React.FC<ContainerProps> = () => {
   return (
 
       

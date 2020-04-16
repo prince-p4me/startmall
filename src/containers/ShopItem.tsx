@@ -7,22 +7,16 @@ import {
   IonCardContent,
   IonButton,
   IonIcon,
-  IonItem,
-  IonItemGroup,
   IonFooter
 } from "@ionic/react";
 import {
-  star,
   add,
-  bookmarkOutline,
   heart,
-  heartCircleOutline,
   heartOutline
 } from "ionicons/icons";
-import state, { CartItem, CartState } from "../reducers/Cart";
-import { connect, useDispatch } from "react-redux";
+import state, { CartItem } from "../reducers/Cart";
+import { useDispatch } from "react-redux";
 import { addCartAction } from "../reducers/CartAction";
-import Cart from "./Cart";
 
 interface ItemObj {
   market: string;
@@ -39,8 +33,8 @@ const ShopItem: React.FC<ContainerProps> = ({ item }) => {
   const [favorites, setFavorites] = useState(heartOutline);
   const dispatch = useDispatch();
 
-  function addFavorites(item: ItemObj) {
-    if (favorites == heartOutline) {
+  function addFavorites() {
+    if (favorites === heartOutline) {
       setFavorites(heart);
     } else {
       setFavorites(heartOutline);
@@ -66,7 +60,6 @@ const ShopItem: React.FC<ContainerProps> = ({ item }) => {
 
   return (
     <IonCard>
-      <img src="" />
       <IonCardHeader>
         <IonCardSubtitle>{item.market}</IonCardSubtitle>
         <IonCardTitle>{item.itemName}</IonCardTitle>
@@ -91,7 +84,7 @@ const ShopItem: React.FC<ContainerProps> = ({ item }) => {
             color="secondary"
             fill="clear"
             size="small"
-            onClick={() => addFavorites(item)}
+            onClick={() => addFavorites()}
           >
             <IonIcon slot="end" icon={favorites} />
           </IonButton>

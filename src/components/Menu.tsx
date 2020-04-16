@@ -12,9 +12,8 @@ import {
 
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { archiveOutline, archiveSharp, bookmarkOutline, heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp, rocketOutline, peopleOutline, mailUnread } from 'ionicons/icons';
+import { bookmarkOutline, rocketOutline, peopleOutline, mailUnread } from 'ionicons/icons';
 import './Menu.css';
-import News from './News';
 
 interface AppPage {
   url: string;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from 'react'
 import {
   IonModal,
   IonButton,
@@ -7,14 +7,12 @@ import {
   IonToolbar,
   IonButtons,
   IonIcon,
-  IonList,
-  IonItem,
   IonLabel,
   IonFooter
 } from "@ionic/react";
 import { CartState } from "../reducers/Cart";
 import { connect } from "react-redux";
-import { closeOutline, removeOutline, trashOutline } from "ionicons/icons";
+import { closeOutline } from "ionicons/icons";
 import ItemList from "../components/ItemList";
 
 
@@ -24,7 +22,6 @@ interface CartProps {
 }
 
 const Cart: React.FC<CartProps> = ({ modal, closehandler }) => {
-  const [showModal, setShowModal] = useState(modal);
 
   function mapStateToProps(state: CartState) {
     const { cartItemList } = state;

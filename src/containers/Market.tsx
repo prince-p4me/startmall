@@ -7,19 +7,13 @@ import {
   IonTitle,
   IonToolbar,
   IonIcon,
-  IonCard,
-  IonItem,
   IonGrid,
   IonRow,
   IonCol,
   IonBadge,
-  IonLabel,
-  IonButton,
-  IonModal
-} from "@ionic/react";
-import { pauseCircleOutline, basket, closeOutline } from "ionicons/icons";
+  IonButton} from "@ionic/react";
+import { pauseCircleOutline, basket } from "ionicons/icons";
 import React, { useState } from "react";
-import { useParams } from "react-router";
 import "./Market.css";
 import ShopItem from "./ShopItem";
 import Cart from "./Cart";
@@ -73,7 +67,6 @@ const Items: ItemObj[] = [
 ];
 
 const Market: React.FC = () => {
-  const { name } = useParams<{ name: string }>();
   const [showModal, setShowModal] = useState(false);
 
   const CartBadge: React.FC<CartState> = ({ cartItemList }) => {
@@ -109,10 +102,10 @@ const Market: React.FC = () => {
           </IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
+      <IonContent fullscreen>
         <IonGrid>
           <IonRow>
-            {Items.map((obj, index) => {
+            {Items.map((obj) => {
               return (
                 <IonCol>
                   <ShopItem item={obj} />

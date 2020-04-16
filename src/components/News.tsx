@@ -1,6 +1,5 @@
 import { IonList, IonItem, IonLabel, IonText } from "@ionic/react";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router";
 import { getFeedListing } from "../services/loadfeed";
 
 interface IFeed {
@@ -12,13 +11,13 @@ interface IFeed {
 function FeedPage(url: string) {
   const [initialized, setInitialized] = useState(false);
   const [listings, setListings] = useState([]);
-  const [data, setData] = useState({});
+  // const [data, setData] = useState({});
 
   const getListing = async (url: any) => {
     try {
       const response = await getFeedListing(url);
       setListings(response.data.items);
-      setData(response.data.feed);
+      // setData(response.data.feed);
     } catch (ex) {
       console.log(ex);
     }
@@ -29,7 +28,7 @@ function FeedPage(url: string) {
       getListing(url);
       setInitialized(true);
     }
-  });
+  }, [url, initialized]);
 
   return (
     <div>
@@ -53,10 +52,10 @@ function FeedPage(url: string) {
 }
 
 const News: React.FC = () => {
-  const { name } = useParams<{ name: string }>();
+  // const { name } = useParams<{ name: string }>();
 
-  const feedList = FeedPage("https://www.smh.com.au/rss/feed.xml");
-  const feedList_hk = FeedPage("https://hk.news.yahoo.com/rss/hong-kong");
+  // const feedList = FeedPage("https://www.smh.com.au/rss/feed.xml");
+  // const feedList_hk = FeedPage("https://hk.news.yahoo.com/rss/hong-kong");
   const feedList_sbs = FeedPage("https://feeds.sbs.com.au/sbs-cantonese");
 
   return <IonList>{feedList_sbs}</IonList>;
