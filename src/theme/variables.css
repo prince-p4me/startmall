@@ -95,6 +95,10 @@ ion-card-content {
   height: 90px;
 }
 
+.toolbar-ios {
+  padding-top: env(safe-area-inset-top);
+}
+
 .currency {
   text-align: left;
   font-weight: bold;

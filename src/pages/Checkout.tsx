@@ -4,7 +4,10 @@ import {
   IonSlides,
   IonSlide,
   IonButton,
-  IonHeader
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonIcon
 } from "@ionic/react";
 import React, { useRef } from "react";
 import { CartState } from "../reducers/Cart";
@@ -13,6 +16,7 @@ import ItemList from "../components/ItemList";
 import Address from "../components/Address";
 import Payment from "../components/Payment";
 import { useHistory } from "react-router-dom";
+import { closeOutline } from "ionicons/icons";
 
 interface CheckoutProps {
   completeHandler: any;
@@ -33,19 +37,33 @@ const Checkout: React.FC<CheckoutProps> = () => {
     speed: 400
   };
 
-  const handleComplete = async() => {
-    history.push('/tabs/dashboard');
+  const handleComplete = async () => {
+    history.push("/tabs/dashboard");
     // setHide(true);
     // if (thisEl != null) {
     //   thisEl.current.remove();
     // }
     console.log("Did I go back?");
     // completeHandler();
+  };
+
+  const closehandler = async() => {
+    history.goBack();
   }
 
   return (
     <IonPage id="checkout">
-    <IonHeader></IonHeader>
+      <IonToolbar>
+        <IonButtons slot="end">
+          <IonButton onClick={closehandler}>
+            <IonIcon
+              size="large"
+              slot="icon-only"
+              icon={closeOutline}
+            ></IonIcon>
+          </IonButton>
+        </IonButtons>
+      </IonToolbar>
       <IonContent>
         <IonSlides ref={slideRef} pager={true} options={slideOpts}>
           <IonSlide>
