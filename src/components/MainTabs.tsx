@@ -17,7 +17,6 @@ import {
 import { Redirect, Route } from "react-router-dom";
 import Dashboard from "../pages/Dashboard";
 import Market from "../containers/Market";
-import Checkout from "../pages/Checkout";
 
 interface ContainerProps {
   name: string;

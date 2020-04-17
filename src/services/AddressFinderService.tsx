@@ -1,4 +1,3 @@
-import React from "react"
 
 const addressFinderAPI = "https://api.addressfinder.io/api/au/address/autocomplete?key=M8BRGTA3QE6WLD9NFHKX&secret=M8BRGTA3QE6WLD9NFHKX&q=1%20Martin%20Street&format=json&gnaf=1";
 

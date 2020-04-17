@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { IonItem, IonText, IonInput, IonLabel, IonContent, IonList, IonItemDivider } from "@ionic/react";
+import { IonItem, IonInput, IonLabel, IonList, IonItemDivider } from "@ionic/react";
 import fetchAddressFinder from "../services/AddressFinderService";
-import CheckoutForm from "./CheckoutForm";
 
 interface AddressProps {
   id: string;
 }
 
 const Address: React.FC<AddressProps> = () => {
-  const [address1, setAddress1] = useState("");
-  const [address2, setAddress2] = useState("");
-  const [suburb, setSuburb] = useState("");
-  const [state, setState] = useState("");
-  const [postcode, setPostcode] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
+  const [address1] = useState("");
+  const [address2] = useState("");
+  const [suburb] = useState("");
+  const [state] = useState("");
+  const [postcode] = useState("");
+  const [phone] = useState("");
+  const [email] = useState("");
   
   useEffect(() => {
     var possibleAddresses = fetchAddressFinder(address1);

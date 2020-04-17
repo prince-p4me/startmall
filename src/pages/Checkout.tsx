@@ -4,29 +4,22 @@ import {
   IonSlides,
   IonSlide,
   IonButton,
-  IonHeader,
-  IonFooter,
-  IonItem
-} from "@ionic/react";
-import React, { useState, useRef } from "react";
-import { useParams, Router } from "react-router";
+  IonHeader} from "@ionic/react";
+import React, {  useRef } from "react";
 import { CartState } from "../reducers/Cart";
 import { connect } from "react-redux";
 import ItemList from "../components/ItemList";
 import Address from "../components/Address";
 import Payment from "../components/Payment";
 import { useHistory } from "react-router-dom";
-import { thisExpression } from "@babel/types";
-import ReactDOM from "react-dom";
 
 interface CheckoutProps {
   completeHandler: any;
 }
 
-const Checkout: React.FC<CheckoutProps> = ({ completeHandler }) => {
+const Checkout: React.FC<CheckoutProps> = () => {
   let history = useHistory();
   let thisEl = useRef();
-  const [hide, setHide] = useState(false);
   function mapStateToProps(state: CartState) {
     const { cartItemList } = state;
     return { cartItemList };
