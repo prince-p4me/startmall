@@ -26,14 +26,10 @@ const MainTabs: React.FC<ContainerProps> = () => {
   return (
     <IonTabs>
       <IonRouterOutlet>
-        <Redirect exact path="/tabs" to="/tabs/dashboard" />
-        <Route
-          path="/tabs/dashboard"
-          render={() => <Dashboard />}
-          exact={true}
-        />
+        <Route path="/tabs/dashboard" component={Dashboard} exact={true} />
         <Route path="/tabs/market" component={Market} exact={true} />
-      </IonRouterOutlet>
+        <Redirect exact path="/tabs" to="/tabs/dashboard" />
+       </IonRouterOutlet>
       <IonTabBar slot="bottom">
         <IonTabButton tab="today" href="/tabs/dashboard">
           <IonIcon icon={happy} />

@@ -4,8 +4,9 @@ import {
   IonSlides,
   IonSlide,
   IonButton,
-  IonHeader} from "@ionic/react";
-import React, {  useRef } from "react";
+  IonHeader
+} from "@ionic/react";
+import React, { useRef } from "react";
 import { CartState } from "../reducers/Cart";
 import { connect } from "react-redux";
 import ItemList from "../components/ItemList";
@@ -19,7 +20,7 @@ interface CheckoutProps {
 
 const Checkout: React.FC<CheckoutProps> = () => {
   let history = useHistory();
-  let thisEl = useRef();
+  let slideRef = useRef<HTMLIonSlidesElement>(null);
   function mapStateToProps(state: CartState) {
     const { cartItemList } = state;
     return { cartItemList };
@@ -32,11 +33,9 @@ const Checkout: React.FC<CheckoutProps> = () => {
     speed: 400
   };
 
-  function handleComplete() {
-    history.push("/tabs/market");
+  const handleComplete = async() => {
+    history.push('/tabs/dashboard');
     // setHide(true);
-    
-    console.log(thisEl.current);
     // if (thisEl != null) {
     //   thisEl.current.remove();
     // }
@@ -45,9 +44,10 @@ const Checkout: React.FC<CheckoutProps> = () => {
   }
 
   return (
-    <IonPage id="checkout" >
+    <IonPage id="checkout">
+    <IonHeader></IonHeader>
       <IonContent>
-        <IonSlides pager={true} options={slideOpts}>
+        <IonSlides ref={slideRef} pager={true} options={slideOpts}>
           <IonSlide>
             <IonContent>
               <IonHeader>
@@ -74,8 +74,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
                 fill="outline"
                 onClick={handleComplete}
               >
-                {" "}
-                Complete{" "}
+                Complete
               </IonButton>
               <CartItemList />
             </IonContent>
