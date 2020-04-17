@@ -50,7 +50,7 @@ interface MarketItemsProps {
 }
 
 const MarketItems: React.FC<MarketItemsProps> = () => {
-  const { categoryName } = useParams<{ categoryName: string }>();
+  // const { categoryName } = useParams<{ categoryName: string }>();
   const [showModal, setShowModal] = useState(false);
   const Items: ItemObj[] = [];
   const CartBadge: React.FC<CartState> = ({ cartItemList }) => {
@@ -68,7 +68,7 @@ const MarketItems: React.FC<MarketItemsProps> = () => {
     return { cartItemList };
   }
   const CartCounter = connect(mapStateToProps)(CartBadge);
-  var index = 0;
+  // var index = 0;
   // const jsonData = JSON.parse(data.toString());
 
   // var index = 0;

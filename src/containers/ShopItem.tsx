@@ -3,7 +3,6 @@ import {
   IonCard,
   IonCardHeader,
   IonCardSubtitle,
-  IonCardTitle,
   IonCardContent,
   IonButton,
   IonIcon,
@@ -58,9 +57,8 @@ const ShopItem: React.FC<ContainerProps> = ({ item }) => {
     <IonCard>
       <IonCardHeader>
         <IonCardSubtitle>{item.market}</IonCardSubtitle>
-        <IonCardTitle>{item.itemName}</IonCardTitle>
       </IonCardHeader>
-
+      <IonCardContent>{item.itemName}</IonCardContent>
       <IonFooter>
         <IonItem>
           <div className="currency">
@@ -68,7 +66,7 @@ const ShopItem: React.FC<ContainerProps> = ({ item }) => {
             <br />
           </div>
         </IonItem>
-        <IonItem lines="none" >
+        <IonItem lines="none">
           <IonButton
             color="tertiary"
             fill="clear"
