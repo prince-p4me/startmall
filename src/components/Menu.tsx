@@ -7,13 +7,18 @@ import {
   IonListHeader,
   IonMenu,
   IonMenuToggle,
-  IonNote,
-} from '@ionic/react';
+  IonNote
+} from "@ionic/react";
 
-import React from 'react';
-import { useLocation } from 'react-router-dom';
-import { bookmarkOutline, rocketOutline, peopleOutline, mailUnread } from 'ionicons/icons';
-import './Menu.css';
+import React from "react";
+import { useLocation } from "react-router-dom";
+import {
+  bookmarkOutline,
+  rocketOutline,
+  peopleOutline,
+  mailUnread
+} from "ionicons/icons";
+import "./Menu.css";
 
 interface AppPage {
   url: string;
@@ -24,23 +29,35 @@ interface AppPage {
 
 const appPages: AppPage[] = [
   {
-    title: 'Inbox',
-    url: '/page/Inbox',
+    title: "Inbox",
+    url: "/page/Inbox",
     iosIcon: mailUnread,
     mdIcon: mailUnread
-  } ,
+  },
   {
-    title: 'Slashiee Go',
-    url: '/page/Inbox',
+    title: "My Profile",
+    url: "/page/MyProfile",
     iosIcon: rocketOutline,
     mdIcon: rocketOutline
-  } ,
+  },
   {
-    title: 'Slashiee OneOne',
-    url: '/page/Inbox',
+    title: "Check Out",
+    url: "/page/checkout",
+    iosIcon: rocketOutline,
+    mdIcon: rocketOutline
+  },
+  {
+    title: "Slashiee Go",
+    url: "/tabs/market",
+    iosIcon: rocketOutline,
+    mdIcon: rocketOutline
+  },
+  {
+    title: "Slashiee OneOne",
+    url: "/page/Inbox",
     iosIcon: peopleOutline,
     mdIcon: peopleOutline
-  } ,
+  }
   // {
   //   title: 'Outbox',
   //   url: '/page/Outbox',
@@ -71,10 +88,9 @@ const appPages: AppPage[] = [
   //   iosIcon: warningOutline,
   //   mdIcon: warningSharp
   // }
-
 ];
 
-const labels = ['#11321', '#21322', '#43211'];
+const labels = ["#11321", "#21322", "#43211"];
 
 const Menu: React.FC = () => {
   const location = useLocation();
@@ -88,7 +104,15 @@ const Menu: React.FC = () => {
           {appPages.map((appPage, index) => {
             return (
               <IonMenuToggle key={index} autoHide={false}>
-                <IonItem className={location.pathname === appPage.url ? 'selected' : ''} routerLink={appPage.url} routerDirection="none" lines="none" detail={false}>
+                <IonItem
+                  className={
+                    location.pathname === appPage.url ? "selected" : ""
+                  }
+                  routerLink={appPage.url}
+                  routerDirection="none"
+                  lines="none"
+                  detail={false}
+                >
                   <IonIcon slot="start" icon={appPage.iosIcon} />
                   <IonLabel>{appPage.title}</IonLabel>
                 </IonItem>

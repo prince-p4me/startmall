@@ -31,7 +31,7 @@ const Items: ItemObj[] = [
   {
     market: "Jason's Market",
     itemName: "Wagu beef",
-    itemDesc: "* 200g\n* A Grade Meat",
+    itemDesc: "* 200g\n* A Grade Meat* 200g\n* A Grade Meat* 200g\n* A Grade Meat* 200g\n* A Grade Meat* 200g\n* A Grade Meat* 200g\n* A Grade Meat* 200g\n* A Grade Meat* 200g\n* A Grade Meat* 200g\n* A Grade Meat* 200g\n* A Grade Meat* 200g\n* A Grade Meat* 200g\n* A Grade Meat* 200g\n* A Grade Meat* 200g\n* A Grade Meat* 200g\n* A Grade Meat* 200g\n* A Grade Meat* 200g\n* A Grade Meat* 200g\n* A Grade Meat* 200g\n* A Grade Meat* 200g\n* A Grade Meat* 200g\n* A Grade Meat* 200g\n* A Grade Meat* 200g\n* A Grade Meat* 200g\n* A Grade Meat* 200g\n* A Grade Meat* 200g\n* A Grade Meat* 200g\n* A Grade Meat* 200g\n* A Grade Meat* 200g\n* A Grade Meat* 200g\n* A Grade Meat* 200g\n* A Grade Meat* 200g\n* A Grade Meat* 200g\n* A Grade Meat* 200g\n* A Grade Meat* 200g\n* A Grade Meat* 200g\n* A Grade Meat* 200g\n* A Grade Meat",
     itemCost: 20.5
   },
   {
@@ -57,6 +57,66 @@ const Items: ItemObj[] = [
     itemName: "Wagu beef",
     itemDesc: "* 500g\n* A Grade Meat",
     itemCost: 40.5
+  },
+  {
+    market: "Jason's Market",
+    itemName: "Wagu beef",
+    itemDesc: "* 100g\n* A Grade Meat",
+    itemCost: 8.88
+  },
+  {
+    market: "Jason's Market",
+    itemName: "Wagu beef",
+    itemDesc: "* 100g\n* A Grade Meat",
+    itemCost: 8.88
+  },
+  {
+    market: "Jason's Market",
+    itemName: "Wagu beef",
+    itemDesc: "* 100g\n* A Grade Meat",
+    itemCost: 8.88
+  },
+  {
+    market: "Jason's Market",
+    itemName: "Wagu beef",
+    itemDesc: "* 100g\n* A Grade Meat",
+    itemCost: 8.88
+  },
+  {
+    market: "Jason's Market",
+    itemName: "Wagu beef",
+    itemDesc: "* 100g\n* A Grade Meat",
+    itemCost: 8.88
+  },
+  {
+    market: "Jason's Market",
+    itemName: "Wagu beef",
+    itemDesc: "* 100g\n* A Grade Meat",
+    itemCost: 8.88
+  },
+  {
+    market: "Jason's Market",
+    itemName: "Wagu beef",
+    itemDesc: "* 100g\n* A Grade Meat",
+    itemCost: 8.88
+  },
+  {
+    market: "Jason's Market",
+    itemName: "Wagu beef",
+    itemDesc: "* 100g\n* A Grade Meat",
+    itemCost: 8.88
+  },
+  {
+    market: "Jason's Market",
+    itemName: "Wagu beef",
+    itemDesc: "* 100g\n* A Grade Meat",
+    itemCost: 8.88
+  },
+  {
+    market: "Jason's Market",
+    itemName: "Wagu beef",
+    itemDesc: "* 100g\n* A Grade Meat",
+    itemCost: 8.88
   },
   {
     market: "Jason's Market",

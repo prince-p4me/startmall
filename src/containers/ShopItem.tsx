@@ -7,13 +7,10 @@ import {
   IonCardContent,
   IonButton,
   IonIcon,
-  IonFooter
+  IonFooter,
+  IonItem
 } from "@ionic/react";
-import {
-  add,
-  heart,
-  heartOutline
-} from "ionicons/icons";
+import { add, heart, heartOutline } from "ionicons/icons";
 import state, { CartItem } from "../reducers/Cart";
 import { useDispatch } from "react-redux";
 import { addCartAction } from "../reducers/CartAction";
@@ -57,7 +54,6 @@ const ShopItem: React.FC<ContainerProps> = ({ item }) => {
     //setFavorites(heart);
   }
 
-
   return (
     <IonCard>
       <IonCardHeader>
@@ -65,13 +61,15 @@ const ShopItem: React.FC<ContainerProps> = ({ item }) => {
         <IonCardTitle>{item.itemName}</IonCardTitle>
       </IonCardHeader>
 
-      <IonCardContent class="ws">
-        {item.itemDesc}
-        <IonFooter>
+      <IonCardContent class="ws">{item.itemDesc}</IonCardContent>
+      <IonFooter>
+        <IonItem>
           <div className="currency">
             $ {item.itemCost}
             <br />
           </div>
+        </IonItem>
+        <IonItem lines="none" >
           <IonButton
             color="tertiary"
             fill="clear"
@@ -88,8 +86,8 @@ const ShopItem: React.FC<ContainerProps> = ({ item }) => {
           >
             <IonIcon slot="end" icon={favorites} />
           </IonButton>
-        </IonFooter>
-      </IonCardContent>
+        </IonItem>
+      </IonFooter>
     </IonCard>
   );
 };

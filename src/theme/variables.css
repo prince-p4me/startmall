@@ -13,7 +13,7 @@ http://ionicframework.com/docs/theming/ */
 
   --ion-color-secondary: #7095a5;
   --ion-color-secondary-rgb: 112,149,165;
-  --ion-color-secondary-contrast: #000000;
+  --ion-color-secondary-contrast: #ffffff;
   --ion-color-secondary-contrast-rgb: 0,0,0;
   --ion-color-secondary-shade: #638391;
   --ion-color-secondary-tint: #7ea0ae;
@@ -74,10 +74,14 @@ http://ionicframework.com/docs/theming/ */
 
 }
 
+ion-slides {
+  height:100%;
+}
+
 ion-card {
-  height: 280px;
+  min-height: 280px;
   margin: 6px 1px 6px 1px;
-  min-width: 110px;
+  min-width: 150px;
 }
 
 ion-col {
@@ -88,7 +92,7 @@ ion-card-header {
   height: 150px;
 }
 ion-card-content {
-  height: 100px;
+  height: 90px;
 }
 
 .currency {
