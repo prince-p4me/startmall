@@ -61,11 +61,10 @@ const ShopItem: React.FC<ContainerProps> = ({ item }) => {
         <IonCardTitle>{item.itemName}</IonCardTitle>
       </IonCardHeader>
 
-      <IonCardContent class="ws">{item.itemDesc}</IonCardContent>
       <IonFooter>
         <IonItem>
           <div className="currency">
-            $ {item.itemCost}
+            $ {item.itemCost} {item.itemDesc}
             <br />
           </div>
         </IonItem>

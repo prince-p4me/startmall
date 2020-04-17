@@ -36,6 +36,7 @@ const App: React.FC = () => {
             <Route path="/page/checkout" component={Checkout} exact={true} />
             <Route path="/tabs" component={MainTabs} exact />
             <Route path="/tabs/:name" component={MainTabs} exact />
+            <Route path="/tabs/:name/:item" component={MainTabs} exact />
             <Route path="/page/:name" component={Page} exact />
             <Redirect from="/" to="/tabs" exact />
           </IonRouterOutlet>

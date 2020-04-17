@@ -79,7 +79,7 @@ ion-slides {
 }
 
 ion-card {
-  min-height: 280px;
+  /* min-height: 280; */
   margin: 6px 1px 6px 1px;
   min-width: 150px;
 }
@@ -94,7 +94,9 @@ ion-card-header {
 ion-card-content {
   height: 90px;
 }
-
+.category {
+  height: 157px;
+}
 .toolbar-ios {
   padding-top: env(safe-area-inset-top);
 }
