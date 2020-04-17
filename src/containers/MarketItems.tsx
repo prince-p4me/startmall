@@ -21,7 +21,6 @@ import Cart from "./Cart";
 import { connect } from "react-redux";
 import { CartState } from "../reducers/Cart";
 import data from "../data/hmarketitems.json";
-import { useParams } from "react-router";
 
 interface ItemObj {
   market: string;
