@@ -13,19 +13,10 @@ import { add, heart, heartOutline } from "ionicons/icons";
 import state, { CartItem } from "../reducers/Cart";
 import { useDispatch } from "react-redux";
 import { addCartAction } from "../reducers/CartAction";
+import { ItemObj } from "../model/DomainModels";
+import { ShopItemProps } from "../model/ComponentProps";
 
-interface ItemObj {
-  market: string;
-  itemName: string;
-  itemDesc: string;
-  itemCost: number;
-}
-
-interface ContainerProps {
-  item: ItemObj;
-}
-
-const ShopItem: React.FC<ContainerProps> = ({ item }) => {
+const ShopItem: React.FC<ShopItemProps> = ({ item }) => {
   const [favorites, setFavorites] = useState(heartOutline);
   const dispatch = useDispatch();
 

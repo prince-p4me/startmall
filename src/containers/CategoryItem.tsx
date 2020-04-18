@@ -6,30 +6,12 @@ import {
   IonCardTitle,
   IonImg
 } from "@ionic/react";
-import { useHistory } from "react-router";
+import { CategoryProps } from "../model/ComponentProps";
 
-interface CategoryObj {
-  id: number;
-  market: string;
-  categoryName: string;
-  imageUrl: string;
-}
-
-interface ContainerProps {
-  category: CategoryObj;
-}
-
-const CategoryItem: React.FC<ContainerProps> = ({ category }) => {
-  // const [] = useState(heartOutline);
-  var history = useHistory();
-
-  function categoryHandler() {
-    console.log("redirecting to Item list");
-    history.push("/tabs/ItemsList/" + category.categoryName);
-  }
+const CategoryItem: React.FC<CategoryProps> = ({ category }) => {
 
   return (
-    <IonCard onClick={categoryHandler} class="category">
+    <IonCard routerLink={ "/tabs/ItemsList/" + category.categoryName} class="category">
       <IonCardHeader>
         <IonCardSubtitle>{category.market}</IonCardSubtitle>
         <IonCardTitle>{category.categoryName}</IonCardTitle>

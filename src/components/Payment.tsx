@@ -1,7 +1,6 @@
 import React from "react";
 import { IonItem, IonItemDivider, IonList, IonCheckbox } from "@ionic/react";
-
-interface PaymentProps {}
+import { PaymentProps } from "../model/ComponentProps";
 
 const Payment: React.FC<PaymentProps> = () => {
   return (

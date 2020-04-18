@@ -4,7 +4,6 @@ import {
   IonHeader,
   IonMenuButton,
   IonPage,
-  IonTitle,
   IonToolbar,
   IonIcon,
   IonGrid,
@@ -13,7 +12,7 @@ import {
   IonBadge,
   IonButton
 } from "@ionic/react";
-import { pauseCircleOutline, basket } from "ionicons/icons";
+import { basket } from "ionicons/icons";
 import React, { useState } from "react";
 import "./Market.css";
 import ShopItem from "./ShopItem";
@@ -21,13 +20,9 @@ import Cart from "./Cart";
 import { connect } from "react-redux";
 import { CartState } from "../reducers/Cart";
 import data from "../data/hmarketitems.json";
-
-interface ItemObj {
-  market: string;
-  itemName: string;
-  itemDesc: string;
-  itemCost: number;
-}
+import { MarketItemsProps } from "../model/ComponentProps";
+import { ItemObj } from "../model/DomainModels";
+import GoBack from "../components/GoBack";
 
 interface ItemJson {
   产品: string;
@@ -37,18 +32,8 @@ interface ItemJson {
   [key: string]: string | number | null;
 }
 
-interface CategoryObj {
-  id: number;
-  market: string;
-  categoryName: string;
-  imageUrl: string;
-}
-
-interface MarketItemsProps {
-  cname: string;
-}
-
 const MarketItems: React.FC<MarketItemsProps> = () => {
+  console.log("entering MarketItems");
   // const { categoryName } = useParams<{ categoryName: string }>();
   const [showModal, setShowModal] = useState(false);
   const Items: ItemObj[] = [];
@@ -63,7 +48,6 @@ const MarketItems: React.FC<MarketItemsProps> = () => {
 
   function mapStateToProps(state: CartState) {
     const { cartItemList } = state;
-    console.log(state);
     return { cartItemList };
   }
   const CartCounter = connect(mapStateToProps)(CartBadge);
@@ -95,7 +79,6 @@ const MarketItems: React.FC<MarketItemsProps> = () => {
     Items.push(itemobj);
     return Items;
   });
-  console.log(Items.length);
   // {
   //   const itemobj: ItemObj = {
   //     market: "Hi Fresh",
@@ -120,6 +103,7 @@ const MarketItems: React.FC<MarketItemsProps> = () => {
   return (
     <IonPage>
       <IonHeader>
+        
         <IonToolbar>
           <IonButtons slot="end">
             <IonButton onClick={() => setShowModal(true)} slot="start">
@@ -128,10 +112,8 @@ const MarketItems: React.FC<MarketItemsProps> = () => {
             </IonButton>
             <IonMenuButton />
           </IonButtons>
-          <IonTitle size="large">
-            <IonIcon icon={pauseCircleOutline}></IonIcon>
-            StartMall
-          </IonTitle>
+          
+          <GoBack />
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
@@ -139,7 +121,7 @@ const MarketItems: React.FC<MarketItemsProps> = () => {
           <IonRow>
             {Items.map(obj => {
               return (
-                <IonCol>
+                <IonCol key={obj.itemName}>
                   <ShopItem item={obj} />
                 </IonCol>
               );

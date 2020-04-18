@@ -18,22 +18,23 @@ import { Redirect, Route } from "react-router-dom";
 import Dashboard from "../pages/Dashboard";
 import Market from "../containers/Market";
 import MarketItems from "../containers/MarketItems";
+import { MainTabsProps } from "../model/ComponentProps";
 
-interface ContainerProps {
-  name: string;
-}
-
-const MainTabs: React.FC<ContainerProps> = () => {
+const MainTabs: React.FC<MainTabsProps> = () => {
   return (
     <IonTabs>
       <IonRouterOutlet>
-        <Route path="/tabs/dashboard" component={Dashboard} exact={true} />
         <Route
-          path="/tabs/ItemsList/:categoryName"
-          component={MarketItems}
-          exact
+          path="/tabs/dashboard"
+          render={() => <Dashboard  />}
+          exact={true}
         />
-        <Route path="/tabs/market" component={Market} exact={true} />
+        <Route
+          path="/tabs/:tab(ItemsList)/:categoryName"
+          render={() => <MarketItems cname="" />}
+          
+        />
+        <Route path="/tabs/:tab(market)" render={() => <Market />} exact={true} />
         <Redirect exact path="/tabs" to="/tabs/dashboard" />
       </IonRouterOutlet>
       <IonTabBar slot="bottom">

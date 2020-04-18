@@ -19,13 +19,9 @@ import {
   mailUnread
 } from "ionicons/icons";
 import "./Menu.css";
+import { AppPage } from "../model/DomainModels";
 
-interface AppPage {
-  url: string;
-  iosIcon: string;
-  mdIcon: string;
-  title: string;
-}
+
 
 const appPages: AppPage[] = [
   {

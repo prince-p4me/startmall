@@ -1,12 +1,8 @@
 import { IonList, IonItem, IonLabel, IonText } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 import { getFeedListing } from "../services/loadfeed";
+import { IFeed } from "../model/DomainModels";
 
-interface IFeed {
-  description: string;
-  title: string;
-  pubDate: string;
-}
 
 function FeedPage(url: string) {
   const [initialized, setInitialized] = useState(false);
@@ -24,6 +20,7 @@ function FeedPage(url: string) {
   };
 
   useEffect(() => {
+    
     if (!initialized) {
       getListing(url);
       setInitialized(true);

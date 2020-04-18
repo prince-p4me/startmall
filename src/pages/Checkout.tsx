@@ -17,10 +17,8 @@ import Address from "../components/Address";
 import Payment from "../components/Payment";
 import { useHistory } from "react-router-dom";
 import { closeOutline } from "ionicons/icons";
+import { CheckoutProps } from "../model/ComponentProps";
 
-interface CheckoutProps {
-  completeHandler: any;
-}
 
 const Checkout: React.FC<CheckoutProps> = () => {
   let history = useHistory();

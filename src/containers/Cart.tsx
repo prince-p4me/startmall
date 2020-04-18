@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import {
   IonModal,
   IonButton,
@@ -14,21 +14,16 @@ import { CartState } from "../reducers/Cart";
 import { connect } from "react-redux";
 import { closeOutline } from "ionicons/icons";
 import ItemList from "../components/ItemList";
-import { useHistory } from 'react-router-dom';
-
-
-interface CartProps {
-  modal: boolean;
-  closehandler: any;
-}
+import { useHistory } from "react-router-dom";
+import { CartProps } from "../model/ComponentProps";
 
 const Cart: React.FC<CartProps> = ({ modal, closehandler }) => {
-  let history = useHistory(); 
+  let history = useHistory();
   function mapStateToProps(state: CartState) {
     const { cartItemList } = state;
     return { cartItemList };
   }
-  function handleCheckOut () {
+  function handleCheckOut() {
     history.push("/page/checkout");
     closehandler();
   }
@@ -55,9 +50,8 @@ const Cart: React.FC<CartProps> = ({ modal, closehandler }) => {
           <CartItemList />
         </IonContent>
         <IonFooter>
-          <IonLabel >Total: $00.00</IonLabel>
-          <IonButton expand="full"  onClick={handleCheckOut}
-                  >
+          <IonLabel>Total: $00.00</IonLabel>
+          <IonButton expand="full" onClick={handleCheckOut}>
             Check Out
           </IonButton>
         </IonFooter>

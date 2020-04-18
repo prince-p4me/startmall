@@ -6,7 +6,8 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
-  IonIcon} from "@ionic/react";
+  IonIcon
+} from "@ionic/react";
 import { pauseCircleOutline } from "ionicons/icons";
 import React from "react";
 import { useParams } from "react-router";
@@ -16,7 +17,7 @@ import News from "../components/News";
 
 const Dashboard: React.FC = () => {
   const { name } = useParams<{ name: string }>();
-
+  console.log("entering Dashboard");
   return (
     <IonPage>
       <IonHeader>
@@ -25,8 +26,8 @@ const Dashboard: React.FC = () => {
             <IonMenuButton />
           </IonButtons>
           <IonTitle size="large" class="icon">
-              <IonIcon icon={pauseCircleOutline}></IonIcon>
-              StartMall
+            <IonIcon icon={pauseCircleOutline}></IonIcon>
+            StartMall
           </IonTitle>
         </IonToolbar>
       </IonHeader>
