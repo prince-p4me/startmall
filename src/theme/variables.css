@@ -137,7 +137,7 @@ ion-header p {
   position: absolute;
   z-index: 999;
   /* TODO: may use fab-vertical-top in future*/
-  top: 10px;
+  top: calc(10px + var(--ion-safe-area-top, 0px));
   left: calc(10px + var(--ion-safe-area-left, 0px));
 }
 
