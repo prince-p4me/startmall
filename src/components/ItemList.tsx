@@ -4,6 +4,7 @@ import { IonList, IonLabel, IonButton, IonContent, IonItem, IonIcon } from "@ion
 import { trashOutline } from "ionicons/icons";
 
 const ItemList: React.FC<CartState> = ({ cartItemList }) => {
+    
     return (
       <IonContent>
         <IonList>
@@ -19,6 +20,9 @@ const ItemList: React.FC<CartState> = ({ cartItemList }) => {
             );
           })}
         </IonList>
+        <IonItem>
+          Cart Total: $ 00
+        </IonItem>
       </IonContent>
     );
   };

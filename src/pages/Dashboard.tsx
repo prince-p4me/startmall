@@ -4,20 +4,18 @@ import {
   IonHeader,
   IonMenuButton,
   IonPage,
-  IonTitle,
   IonToolbar,
-  IonIcon
+  IonImg,
+  IonItem,
+  IonInput,
+  IonButton,
+  IonFooter
 } from "@ionic/react";
-import { pauseCircleOutline } from "ionicons/icons";
-import React from "react";
-import { useParams } from "react-router";
-import Weather from "../components/Weather";
-import "./Dashboard.css";
-import News from "../components/News";
+import React, { useState } from "react";
 
 const Dashboard: React.FC = () => {
-  const { name } = useParams<{ name: string }>();
   console.log("entering Dashboard");
+  const [postcode] = useState("");
   return (
     <IonPage>
       <IonHeader>
@@ -25,16 +23,37 @@ const Dashboard: React.FC = () => {
           <IonButtons slot="end">
             <IonMenuButton />
           </IonButtons>
-          <IonTitle size="large" class="icon">
-            <IonIcon icon={pauseCircleOutline}></IonIcon>
-            StartMall
-          </IonTitle>
         </IonToolbar>
+        <IonImg
+          class="startmall_header "
+          src="/assets/icon/1x/logo2.png"
+        />
+        
+        
       </IonHeader>
+
       <IonContent fullscreen>
-        <Weather name={name} />
-        <News />
+        <IonImg  src="/assets/icon/1x/cover.png" />
+        
+        <IonItem>
+          <IonInput
+            placeholder="Enter postcode to search"
+            value={postcode}
+          ></IonInput>
+          <IonButton> Search</IonButton>
+        </IonItem>
+        <IonImg src="/assets/img/instructions.png" />
       </IonContent>
+      <IonFooter>
+        <IonItem lines="none">
+          <IonImg
+            class="footer_pay"
+            slot="start"
+            src="/assets/icon/1x/payment.png"
+          ></IonImg>
+          <IonButton slot="end"> Order now </IonButton>
+        </IonItem>
+      </IonFooter>
     </IonPage>
   );
 };

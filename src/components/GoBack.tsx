@@ -6,9 +6,9 @@ import { chevronBackOutline } from "ionicons/icons";
 const GoBack = () => {
   var history = useHistory();
   return (
-    <IonButton onClick={() => history.goBack()}>
+    <IonButton fill="clear" class="back_button" onClick={() => history.goBack()}>
       <IonIcon
-        size="large"
+        size="small"
         slot="icon-only"
         icon={chevronBackOutline}
       ></IonIcon>

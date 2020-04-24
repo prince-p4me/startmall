@@ -10,8 +10,8 @@ import {
   IonRow,
   IonCol,
   IonBadge,
-  IonButton
-} from "@ionic/react";
+  IonButton,
+  IonTitle} from "@ionic/react";
 import { basket } from "ionicons/icons";
 import React, { useState } from "react";
 import "./Market.css";
@@ -23,6 +23,7 @@ import data from "../data/hmarketitems.json";
 import { MarketItemsProps } from "../model/ComponentProps";
 import { ItemObj } from "../model/DomainModels";
 import GoBack from "../components/GoBack";
+import ShopHeader from "../components/ShopHeader";
 
 interface ItemJson {
   产品: string;
@@ -103,8 +104,7 @@ const MarketItems: React.FC<MarketItemsProps> = () => {
   return (
     <IonPage>
       <IonHeader>
-        
-        <IonToolbar>
+        <IonToolbar color="secondary">
           <IonButtons slot="end">
             <IonButton onClick={() => setShowModal(true)} slot="start">
               <IonIcon size="large" slot="icon-only" icon={basket}></IonIcon>
@@ -112,11 +112,17 @@ const MarketItems: React.FC<MarketItemsProps> = () => {
             </IonButton>
             <IonMenuButton />
           </IonButtons>
-          
-          <GoBack />
+          <IonButtons slot="start">
+            <GoBack />
+          </IonButtons>
+          <IonTitle size="large">
+            <p>Cutoff Order 9 pm - 10 pm Delivery Date April 23th</p>
+          </IonTitle>
         </IonToolbar>
       </IonHeader>
+
       <IonContent fullscreen>
+        <ShopHeader />
         <IonGrid>
           <IonRow>
             {Items.map(obj => {

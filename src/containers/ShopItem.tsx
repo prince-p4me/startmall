@@ -7,7 +7,9 @@ import {
   IonButton,
   IonIcon,
   IonFooter,
-  IonItem
+  IonItem,
+  IonLabel,
+  IonImg
 } from "@ionic/react";
 import { add, heart, heartOutline } from "ionicons/icons";
 import state, { CartItem } from "../reducers/Cart";
@@ -34,7 +36,7 @@ const ShopItem: React.FC<ShopItemProps> = ({ item }) => {
       name: item.itemName,
       desc: item.itemDesc,
       cost: item.itemCost,
-      qty: 10
+      qty: 1
     };
 
     dispatch(addCartAction(cartItem));
@@ -49,31 +51,43 @@ const ShopItem: React.FC<ShopItemProps> = ({ item }) => {
       <IonCardHeader>
         <IonCardSubtitle>{item.market}</IonCardSubtitle>
       </IonCardHeader>
-      <IonCardContent>{item.itemName}</IonCardContent>
+      <IonCardContent>
+        <IonItem lines="none">
+          {item.itemName}
+          {item.itemDesc}
+        </IonItem>
+        <IonItem lines="none">
+          <IonImg src="/assets/icon/temp/organic_apple.png"></IonImg>
+        </IonItem>
+      </IonCardContent>
       <IonFooter>
-        <IonItem>
+        <IonItem lines="none">
           <div className="currency">
             $ {item.itemCost} {item.itemDesc}
             <br />
           </div>
+          <IonItem lines="none" slot="end">
+            <IonButton
+              color="tertiary"
+              fill="outline"
+              size="small"
+              onClick={() => addCart(item)}
+            >
+              <IonIcon slot="start" icon={add} />
+              Add to Cart
+            </IonButton>
+            <IonButton
+              color="secondary"
+              fill="clear"
+              size="small"
+              onClick={() => addFavorites()}
+            >
+              <IonIcon slot="end" icon={favorites} />
+            </IonButton>
+          </IonItem>
         </IonItem>
         <IonItem lines="none">
-          <IonButton
-            color="tertiary"
-            fill="clear"
-            size="small"
-            onClick={() => addCart(item)}
-          >
-            <IonIcon slot="start" icon={add} />
-          </IonButton>
-          <IonButton
-            color="secondary"
-            fill="clear"
-            size="small"
-            onClick={() => addFavorites()}
-          >
-            <IonIcon slot="end" icon={favorites} />
-          </IonButton>
+          <IonLabel color="tertiary">Minimum order: Nil</IonLabel>
         </IonItem>
       </IonFooter>
     </IonCard>

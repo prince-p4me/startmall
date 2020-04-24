@@ -1,17 +1,16 @@
 import {
   IonButtons,
   IonContent,
-  IonHeader,
-  IonMenuButton,
   IonPage,
-  IonTitle,
   IonToolbar,
   IonIcon,
   IonGrid,
   IonRow,
   IonCol,
   IonBadge,
-  IonButton} from "@ionic/react";
+  IonButton,
+  IonItem
+} from "@ionic/react";
 import { basket } from "ionicons/icons";
 import React, { useState } from "react";
 import "./Market.css";
@@ -21,8 +20,8 @@ import { CartState } from "../reducers/Cart";
 import data from "../data/hmarketitems.json";
 import CategoryItem from "./CategoryItem";
 import { CategoryObj } from "../model/DomainModels";
+import OrderDayShopHeader from "../components/OrderDayShopHeader";
 import ShopHeader from "../components/ShopHeader";
-import GoBack from "../components/GoBack";
 
 // const mItems = fetch("../data/hmarketitems.json")
 //   .then(response => {
@@ -41,11 +40,11 @@ import GoBack from "../components/GoBack";
 //     return data;
 //   });
 
-const Market: React.FC = () => {
+const ShopMain: React.FC = () => {
   console.log("entering market");
   const [showModal, setShowModal] = useState(false);
   const Categories: CategoryObj[] = [];
-  const CartBadge: React.FC<CartState> = ({ cartItemList }) => {
+  const CartBadge: React.FC<CartState> = ({ cartItemList}) => {
     const cartSize = cartItemList.length;
     if (cartSize > 0) {
       return <IonBadge color="danger">{cartItemList.length}</IonBadge>;
@@ -78,23 +77,15 @@ const Market: React.FC = () => {
   // mItems.json().
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar color="secondary">
-          <IonButtons slot="end">
-            <IonButton onClick={() => setShowModal(true)} slot="start">
-              <IonIcon size="large" slot="icon-only" icon={basket}></IonIcon>
-              <CartCounter />
-            </IonButton>
-            <IonMenuButton />
-          </IonButtons>
-          <IonButtons slot="start">
-            <GoBack />
-          </IonButtons>
-          <IonTitle size="large">
-            <p>Cutoff Order 9 pm - 10 pm Delivery Date April 23th</p>
-          </IonTitle>
-        </IonToolbar>
-      </IonHeader>
+      <IonToolbar>
+        <IonButtons slot="end">
+          <IonButton onClick={() => setShowModal(true)} slot="start">
+            <IonIcon size="large" slot="icon-only" icon={basket}></IonIcon>
+            <CartCounter />
+          </IonButton>
+        </IonButtons>
+      </IonToolbar>
+      <OrderDayShopHeader />
       <IonContent fullscreen>
         <ShopHeader />
         <IonGrid>
@@ -108,10 +99,12 @@ const Market: React.FC = () => {
             })}
           </IonRow>
         </IonGrid>
-        <Cart modal={showModal} closehandler={() => setShowModal(false)} />
+        <IonItem hidden={showModal}>
+          <Cart modal={showModal} closehandler={() => setShowModal(false)} />
+        </IonItem>
       </IonContent>
     </IonPage>
   );
 };
 
-export default Market;
+export default ShopMain;

@@ -1,4 +1,4 @@
-import { CategoryObj, ItemObj } from "./DomainModels";
+import { CategoryObj, ItemObj, AddressObj, PaymentObj } from "./DomainModels";
 
 export interface CategoryProps {
   category: CategoryObj;
@@ -6,6 +6,8 @@ export interface CategoryProps {
 
 export interface AddressProps {
   id: string;
+  address: AddressObj  | undefined;
+
 }
 
 export interface ContainerProps {
@@ -16,7 +18,9 @@ export interface MainTabsProps {
   name: string;
 }
 
-export interface PaymentProps {}
+export interface PaymentProps {
+  payment: PaymentObj | undefined;
+}
 
 export interface CheckoutProps {
   completeHandler: any;
@@ -33,4 +37,9 @@ export interface MarketItemsProps {
 export interface CartProps {
   modal: boolean;
   closehandler: any;
+}
+
+export interface OrderDayShopHeaderProps{
+  setShowModal: any;
+  CartCounter: any;
 }

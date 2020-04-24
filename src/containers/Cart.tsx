@@ -29,9 +29,8 @@ const Cart: React.FC<CartProps> = ({ modal, closehandler }) => {
   }
 
   const CartItemList = connect(mapStateToProps)(ItemList);
-
+  
   return (
-    <IonContent>
       <IonModal isOpen={modal}>
         <IonHeader>
           <IonToolbar>
@@ -47,16 +46,15 @@ const Cart: React.FC<CartProps> = ({ modal, closehandler }) => {
           </IonToolbar>
         </IonHeader>
         <IonContent>
-          <CartItemList />
+          <CartItemList  />
         </IonContent>
         <IonFooter>
-          <IonLabel>Total: $00.00</IonLabel>
+          <IonLabel>Total: $0</IonLabel>
           <IonButton expand="full" onClick={handleCheckOut}>
             Check Out
           </IonButton>
         </IonFooter>
       </IonModal>
-    </IonContent>
   );
 };
 

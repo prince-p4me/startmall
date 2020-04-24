@@ -1,10 +1,12 @@
-
 export const INITIAL_STATE = {
-  cartItemList: []  
+  cartItemList: []
+  // cart: {
+  //   total: 0.0
+  // }
 };
 
-export const ADD_ITEM="ADD_ITEM";
-export const DEL_ITEM="DEL_ITEM";
+export const ADD_ITEM = "ADD_ITEM";
+export const DEL_ITEM = "DEL_ITEM";
 
 export interface CartItem {
   market: string;
@@ -14,22 +16,21 @@ export interface CartItem {
   qty: number;
 }
 
-
-const rootReducer =  (state = INITIAL_STATE, action : any ) => {
+const rootReducer = (state = INITIAL_STATE, action: any) => {
   switch (action.type) {
     case ADD_ITEM:
       return {
-        cartItemList: [
-          ...state.cartItemList,
-          action.payload
-        ]
+        cartItemList: [...state.cartItemList, action.payload]
+        // cart: {
+        //   total: state.cart.total + (action.payload.cost * action.payload.qty)
+        // }
       };
     case DEL_ITEM:
       return {
-        cartItemList: [
-          ...state.cartItemList,
-          action.payload
-        ]
+        cartItemList: [...state.cartItemList, action.payload]
+        // cart: {
+        //   total: state.cart.total
+        // }
       };
     default:
       return state;
@@ -38,5 +39,4 @@ const rootReducer =  (state = INITIAL_STATE, action : any ) => {
 
 export type CartState = ReturnType<typeof rootReducer>;
 
-
-export default rootReducer
+export default rootReducer;

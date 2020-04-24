@@ -25,6 +25,9 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 import MainTabs from "./components/MainTabs";
 import Checkout from "./pages/Checkout";
+import Dashboard from "./pages/Dashboard";
+import ShopSelection from "./pages/ShopSelection";
+import ShopMain from "./containers/ShopMain";
 
 const App: React.FC = () => {
   console.log("entering app");
@@ -36,6 +39,10 @@ const App: React.FC = () => {
           <IonRouterOutlet id="main">
             <Route path="/page/checkout" component={Checkout} exact={true} />
             <Route path="/tabs" component={MainTabs} exact />
+            <Route path="/landing" component={Dashboard} exact />
+            <Route path="/shopselection" component={ShopSelection} exact />
+            <Route path="/tabs" component={MainTabs} exact />
+            <Route path="/shop/:name/categories" component={ShopMain} exact />
             <Route path="/page/:name" component={Page} exact />
             <Redirect from="/" to="/tabs" exact />
           </IonRouterOutlet>

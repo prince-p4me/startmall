@@ -9,7 +9,7 @@ import {
   IonButtons,
   IonIcon
 } from "@ionic/react";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { CartState } from "../reducers/Cart";
 import { connect } from "react-redux";
 import ItemList from "../components/ItemList";
@@ -18,15 +18,20 @@ import Payment from "../components/Payment";
 import { useHistory } from "react-router-dom";
 import { closeOutline } from "ionicons/icons";
 import { CheckoutProps } from "../model/ComponentProps";
+import { AddressObj, PaymentObj } from "../model/DomainModels";
 
 
 const Checkout: React.FC<CheckoutProps> = () => {
   let history = useHistory();
   let slideRef = useRef<HTMLIonSlidesElement>(null);
+  const [addressObject] = useState<AddressObj>();
+  const [paymentOption] = useState<PaymentObj>();
+  
   function mapStateToProps(state: CartState) {
     const { cartItemList } = state;
     return { cartItemList };
   }
+
 
   const CartItemList = connect(mapStateToProps)(ItemList);
   // Optional parameters to pass to the swiper instance. See http://idangero.us/swiper/api/ for valid options.
@@ -69,18 +74,18 @@ const Checkout: React.FC<CheckoutProps> = () => {
               <IonHeader>
                 <h1>Where to? </h1>
               </IonHeader>
-              <Address id="123" />
+              <Address id="123" address={addressObject}/>
             </IonContent>
           </IonSlide>
-          <IonSlide>
+          <IonSlide >
             <IonContent>
               <IonHeader>
                 <h1>How to Pay?</h1>
               </IonHeader>
-              <Payment />
+              <Payment payment={paymentOption} />
             </IonContent>
           </IonSlide>
-          <IonSlide>
+          <IonSlide >
             <IonContent>
               <IonHeader>
                 <h1>Review</h1>

@@ -26,3 +26,19 @@ export interface IFeed {
   title: string;
   pubDate: string;
 }
+
+export interface AddressObj {
+  address1: string;
+  address2: string;
+  suburb: string;
+  state: string;
+  postcode: string;
+  phone: string;
+  email: string;
+}
+
+export interface PaymentObj {
+  cashOnDelivery: boolean;
+  paypal: boolean;
+  visaMaster: boolean;
+}

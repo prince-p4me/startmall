@@ -3,8 +3,8 @@ import {
   IonCard,
   IonCardHeader,
   IonCardSubtitle,
-  IonCardTitle,
-  IonImg
+  IonImg,
+  IonFooter
 } from "@ionic/react";
 import { CategoryProps } from "../model/ComponentProps";
 
@@ -14,8 +14,8 @@ const CategoryItem: React.FC<CategoryProps> = ({ category }) => {
     <IonCard routerLink={ "/tabs/ItemsList/" + category.categoryName} class="category">
       <IonCardHeader>
         <IonCardSubtitle>{category.market}</IonCardSubtitle>
-        <IonCardTitle>{category.categoryName}</IonCardTitle>
         <IonImg src={category.imageUrl}></IonImg>
+        <IonFooter>{category.categoryName}</IonFooter>
       </IonCardHeader>
     </IonCard>
   );

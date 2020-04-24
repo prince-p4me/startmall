@@ -12,13 +12,14 @@ import {
   informationCircle,
   happy,
   cartSharp,
-  rocketSharp
+  heartCircle
 } from "ionicons/icons";
 import { Redirect, Route } from "react-router-dom";
 import Dashboard from "../pages/Dashboard";
 import Market from "../containers/Market";
 import MarketItems from "../containers/MarketItems";
 import { MainTabsProps } from "../model/ComponentProps";
+import ShopSelection from "../pages/ShopSelection";
 
 const MainTabs: React.FC<MainTabsProps> = () => {
   return (
@@ -26,15 +27,23 @@ const MainTabs: React.FC<MainTabsProps> = () => {
       <IonRouterOutlet>
         <Route
           path="/tabs/dashboard"
-          render={() => <Dashboard  />}
+          render={() => <Dashboard />}
           exact={true}
         />
         <Route
           path="/tabs/:tab(ItemsList)/:categoryName"
           render={() => <MarketItems cname="" />}
-          
         />
-        <Route path="/tabs/:tab(market)" render={() => <Market />} exact={true} />
+        <Route
+          path="/tabs/:tab(ShopSelections)"
+          render={() => <ShopSelection />}
+          exact={true}
+        />
+        <Route
+          path="/tabs/:tab(market)"
+          render={() => <Market />}
+          exact={true}
+        />
         <Redirect exact path="/tabs" to="/tabs/dashboard" />
       </IonRouterOutlet>
       <IonTabBar slot="bottom">
@@ -44,14 +53,14 @@ const MainTabs: React.FC<MainTabsProps> = () => {
           <IonBadge>6</IonBadge>
         </IonTabButton>
 
-        <IonTabButton tab="market" href="/tabs/market">
+        <IonTabButton tab="market" href="/tabs/ShopSelections">
           <IonIcon icon={cartSharp} />
           <IonLabel>Market</IonLabel>
         </IonTabButton>
 
         <IonTabButton tab="slashiee">
-          <IonIcon icon={rocketSharp} />
-          <IonLabel>Slashiee</IonLabel>
+          <IonIcon icon={heartCircle} />
+          <IonLabel>My List</IonLabel>
         </IonTabButton>
 
         <IonTabButton tab="about">

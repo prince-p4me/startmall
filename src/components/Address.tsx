@@ -9,7 +9,7 @@ import {
 import fetchAddressFinder from "../services/AddressFinderService";
 import { AddressProps } from "../model/ComponentProps";
 
-const Address: React.FC<AddressProps> = () => {
+const Address: React.FC<AddressProps> = ({id, address}) => {
   const [address1] = useState("");
   const [address2] = useState("");
   const [suburb] = useState("");
@@ -18,6 +18,15 @@ const Address: React.FC<AddressProps> = () => {
   const [phone] = useState("");
   const [email] = useState("");
 
+  address = {
+    address1: address1,
+    address2: address2,
+    suburb: suburb,
+    state: state, 
+    postcode: postcode, 
+    phone: phone, 
+    email: email
+  }
   useEffect(() => {
     var possibleAddresses = fetchAddressFinder(address1);
     console.log(possibleAddresses);

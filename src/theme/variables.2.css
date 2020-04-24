@@ -67,10 +67,9 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
 
-  --ion-toolbar-background: var(--ion-color-primary);
+  --ion-toolbar-background: #1e9360;
   --ion-toolbar-color: #ffff;
 }
-
 ion-menu {
   background-color: var(--ion-color-primary-shade);
   opacity: 0.9;
@@ -105,11 +104,10 @@ ion-card-content {
 
 ion-header p {
   padding-top: 3px;
-  padding-left: 40px;
   font-size: 12px;
   display: block;
   margin-block-end: 0em;
-  width: 60%;
+  width: 50%;
   white-space: pre-wrap;
 }
 
@@ -133,18 +131,12 @@ ion-header p {
   margin-top: 10px;
 }
 .startmall_header {
-  width: 170px;
+  width: 150px;
   position: absolute;
   z-index: 999;
   /* TODO: may use fab-vertical-top in future*/
   top: 10px;
   left: calc(10px + var(--ion-safe-area-left, 0px));
-}
-
-.startmall_header_text {
-  padding-left: 60px;
-  padding-top: 10px;
-  width: 220px;
 }
 
 .category {
@@ -167,15 +159,11 @@ ion-header p {
   white-space: pre-line;
 }
 
-.back_button {
-    height:30px;
-}
-
 @media (prefers-color-scheme: dark) {
   /*
-     * Dark Colors
-     * -------------------------------------------
-     */
+   * Dark Colors
+   * -------------------------------------------
+   */
 
   body {
     --ion-color-primary: #428cff;
@@ -243,9 +231,9 @@ ion-header p {
   }
 
   /*
-     * iOS Dark Theme
-     * -------------------------------------------
-     */
+   * iOS Dark Theme
+   * -------------------------------------------
+   */
 
   .ios body {
     --ion-background-color: #000000;
@@ -280,9 +268,9 @@ ion-header p {
   }
 
   /*
-     * Material Design Dark Theme
-     * -------------------------------------------
-     */
+   * Material Design Dark Theme
+   * -------------------------------------------
+   */
 
   .md body {
     --ion-background-color: #121212;
