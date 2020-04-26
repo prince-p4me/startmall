@@ -12,10 +12,10 @@ import {
   IonImg
 } from "@ionic/react";
 import { add, heart, heartOutline } from "ionicons/icons";
-import state, { CartItem } from "../reducers/Cart";
+import state from "../reducers/Cart";
 import { useDispatch } from "react-redux";
 import { addCartAction } from "../reducers/CartAction";
-import { ItemObj } from "../model/DomainModels";
+import { ItemObj, CartItem } from "../model/DomainModels";
 import { ShopItemProps } from "../model/ComponentProps";
 
 const ShopItem: React.FC<ShopItemProps> = ({ item }) => {
@@ -36,6 +36,8 @@ const ShopItem: React.FC<ShopItemProps> = ({ item }) => {
       name: item.itemName,
       desc: item.itemDesc,
       cost: item.itemCost,
+      item_key: 1,
+      cart_key: 0,
       qty: 1
     };
 

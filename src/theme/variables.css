@@ -69,6 +69,9 @@ http://ionicframework.com/docs/theming/ */
 
   --ion-toolbar-background: var(--ion-color-primary);
   --ion-toolbar-color: #ffff;
+
+  --fontsize-large: 18px;
+  --fontsize-small: 12px;
 }
 
 ion-menu {
@@ -106,11 +109,17 @@ ion-card-content {
 ion-header p {
   padding-top: 3px;
   padding-left: 40px;
-  font-size: 12px;
+  font-size: var(--fontsize-small);
   display: block;
   margin-block-end: 0em;
   width: 60%;
   white-space: pre-wrap;
+}
+
+.checkout_conditions p {
+  width:100%;
+  text-align: right;
+  font-size: var(--fontsize-small);
 }
 
 .orderDayShopHeader {

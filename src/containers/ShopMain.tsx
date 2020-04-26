@@ -54,9 +54,8 @@ const ShopMain: React.FC = () => {
   };
 
   function mapStateToProps(state: CartState) {
-    const { cartItemList } = state;
-    // console.log("mapping state to cart state");
-    return { cartItemList };
+    const { cartItemList, cart } = state;
+    return { cartItemList, cart };
   }
   const CartCounter = connect(mapStateToProps)(CartBadge);
 

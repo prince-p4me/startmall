@@ -26,6 +26,7 @@ const MainTabs: React.FC<MainTabsProps> = () => {
     <IonTabs>
       <IonRouterOutlet>
         <Route
+          animated={false}
           path="/tabs/dashboard"
           render={() => <Dashboard />}
           exact={true}

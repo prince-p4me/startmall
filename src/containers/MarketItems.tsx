@@ -38,7 +38,7 @@ const MarketItems: React.FC<MarketItemsProps> = () => {
   // const { categoryName } = useParams<{ categoryName: string }>();
   const [showModal, setShowModal] = useState(false);
   const Items: ItemObj[] = [];
-  const CartBadge: React.FC<CartState> = ({ cartItemList }) => {
+  const CartBadge: React.FC<CartState> = ({ cartItemList, cart }) => {
     const cartSize = cartItemList.length;
     if (cartSize > 0) {
       return <IonBadge color="danger">{cartItemList.length}</IonBadge>;
@@ -48,8 +48,8 @@ const MarketItems: React.FC<MarketItemsProps> = () => {
   };
 
   function mapStateToProps(state: CartState) {
-    const { cartItemList } = state;
-    return { cartItemList };
+    const { cartItemList, cart } = state;
+    return { cartItemList, cart };
   }
   const CartCounter = connect(mapStateToProps)(CartBadge);
   // var index = 0;

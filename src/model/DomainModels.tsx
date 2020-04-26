@@ -42,3 +42,21 @@ export interface PaymentObj {
   paypal: boolean;
   visaMaster: boolean;
 }
+
+
+export interface CartItem {
+  market: string;
+  item_key:number;
+  cart_key:number;
+  name: string;
+  desc: string;
+  cost: number;
+  qty: number;
+}
+
+export interface CartWithQty{
+  [key :string]: string | number | CartItem| null;
+  item: CartItem;
+  count: number;
+  
+}

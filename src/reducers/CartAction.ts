@@ -1,4 +1,5 @@
-import { CartItem, ADD_ITEM } from "./Cart";
+import { ADD_ITEM } from "./Cart";
+import { CartItem } from "../model/DomainModels";
 
 export function addCartAction(newItem: CartItem) {
   return {

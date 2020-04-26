@@ -1,15 +1,18 @@
 import {
   IonContent,
   IonPage,
-  IonSlides,
-  IonSlide,
   IonButton,
-  IonHeader,
   IonToolbar,
   IonButtons,
-  IonIcon
+  IonIcon,
+  IonLabel,
+  IonItem,
+  IonCheckbox,
+  IonItemDivider,
+  IonFooter,
+  IonImg
 } from "@ionic/react";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { CartState } from "../reducers/Cart";
 import { connect } from "react-redux";
 import ItemList from "../components/ItemList";
@@ -19,29 +22,30 @@ import { useHistory } from "react-router-dom";
 import { closeOutline } from "ionicons/icons";
 import { CheckoutProps } from "../model/ComponentProps";
 import { AddressObj, PaymentObj } from "../model/DomainModels";
-
+import ShopHeader from "../components/ShopHeader";
+import ShopConditionAndOperatingHours from "../components/ShopConditionAndOperatingHours";
 
 const Checkout: React.FC<CheckoutProps> = () => {
   let history = useHistory();
-  let slideRef = useRef<HTMLIonSlidesElement>(null);
   const [addressObject] = useState<AddressObj>();
   const [paymentOption] = useState<PaymentObj>();
-  
+  const [cartState, setCartState] = useState<CartState>({
+    cartItemList: [],
+    cart: {
+      total: 0.0
+    }
+  });
+
   function mapStateToProps(state: CartState) {
-    const { cartItemList } = state;
-    return { cartItemList };
+    const { cartItemList, cart } = state;
+    setCartState(state);
+    return { cartItemList, cart };
   }
 
-
   const CartItemList = connect(mapStateToProps)(ItemList);
-  // Optional parameters to pass to the swiper instance. See http://idangero.us/swiper/api/ for valid options.
-  const slideOpts = {
-    initialSlide: 0,
-    speed: 400
-  };
 
   const handleComplete = async () => {
-    history.push("/tabs/dashboard");
+    history.push("/");
     // setHide(true);
     // if (thisEl != null) {
     //   thisEl.current.remove();
@@ -50,13 +54,13 @@ const Checkout: React.FC<CheckoutProps> = () => {
     // completeHandler();
   };
 
-  const closehandler = async() => {
+  const closehandler = async () => {
     history.goBack();
-  }
+  };
 
   return (
     <IonPage id="checkout">
-      <IonToolbar>
+      <IonToolbar color="secondary">
         <IonButtons slot="end">
           <IonButton onClick={closehandler}>
             <IonIcon
@@ -68,39 +72,55 @@ const Checkout: React.FC<CheckoutProps> = () => {
         </IonButtons>
       </IonToolbar>
       <IonContent>
-        <IonSlides ref={slideRef} pager={true} options={slideOpts}>
-          <IonSlide>
-            <IonContent>
-              <IonHeader>
-                <h1>Where to? </h1>
-              </IonHeader>
-              <Address id="123" address={addressObject}/>
-            </IonContent>
-          </IonSlide>
-          <IonSlide >
-            <IonContent>
-              <IonHeader>
-                <h1>How to Pay?</h1>
-              </IonHeader>
-              <Payment payment={paymentOption} />
-            </IonContent>
-          </IonSlide>
-          <IonSlide >
-            <IonContent>
-              <IonHeader>
-                <h1>Review</h1>
-              </IonHeader>
+        <ShopHeader />
+        <CartItemList />
+        <IonItem>
+          <IonLabel>Total incl GST ${cartState.cart.total}</IonLabel>
+        </IonItem>
+        <ShopConditionAndOperatingHours />
+        <IonLabel>
+          <h1>Where to? </h1>
+        </IonLabel>
+        <Address id="123" address={addressObject} />
+        <IonLabel>
+          <h1>How to Pay?</h1>
+        </IonLabel>
+        <Payment payment={paymentOption} />
+        <IonItemDivider>Comfirm</IonItemDivider>
+        <IonFooter>
+        <IonToolbar>
+          <IonItem>
+            <IonCheckbox></IonCheckbox>
+            <IonLabel>I read and understand Terms & Condition</IonLabel>
+          </IonItem>
+          <IonItem>
+            <IonButtons slot="end">
+              <IonButton
+                color="secondary"
+                fill="outline"
+                onClick={handleComplete}
+              >
+                Continue Shopping
+              </IonButton>
               <IonButton
                 color="primary"
                 fill="outline"
                 onClick={handleComplete}
               >
-                Complete
+                Confirm
               </IonButton>
-              <CartItemList />
-            </IonContent>
-          </IonSlide>
-        </IonSlides>
+            </IonButtons>
+          </IonItem>
+        </IonToolbar>
+        <IonItem lines="none">
+          <IonImg
+            class="footer_pay"
+            slot="start"
+            src="/assets/icon/1x/payment.png"
+          ></IonImg>
+          <IonButton slot="end"> Order now </IonButton>
+        </IonItem>
+      </IonFooter>
       </IonContent>
     </IonPage>
   );
