@@ -23,39 +23,22 @@ import { CategoryObj } from "../model/DomainModels";
 import OrderDayShopHeader from "../components/OrderDayShopHeader";
 import ShopHeader from "../components/ShopHeader";
 
-// const mItems = fetch("../data/hmarketitems.json")
-//   .then(response => {
-//     console.log(response);
-//     var res = response.json();
-//     for (var x in res) {
-//       console.log(x);
-//     }
-//     return res;
-//   })
-//   .then(data => {
-//     console.log(data);
-//     for (var x in data) {
-//       console.log(x);
-//     }
-//     return data;
-//   });
-
 const ShopMain: React.FC = () => {
   console.log("entering market");
   const [showModal, setShowModal] = useState(false);
   const Categories: CategoryObj[] = [];
-  const CartBadge: React.FC<CartState> = ({ cartItemList}) => {
-    const cartSize = cartItemList.length;
+  const CartBadge: React.FC<CartState> = ({ firebase, cart}) => {
+    const cartSize = cart.cartItemList.length;
     if (cartSize > 0) {
-      return <IonBadge color="danger">{cartItemList.length}</IonBadge>;
+      return <IonBadge color="danger">{cart.cartItemList.length}</IonBadge>;
     } else {
       return <div></div>;
     }
   };
 
   function mapStateToProps(state: CartState) {
-    const { cartItemList, cart } = state;
-    return { cartItemList, cart };
+    const { firebase, cart } = state;
+    return { firebase, cart };
   }
   const CartCounter = connect(mapStateToProps)(CartBadge);
 
@@ -86,13 +69,13 @@ const ShopMain: React.FC = () => {
       </IonToolbar>
       <OrderDayShopHeader />
       <IonContent fullscreen>
-        <ShopHeader />
+        <ShopHeader image_url=""/>
         <IonGrid>
           <IonRow>
             {Categories.map(obj => {
               return (
                 <IonCol key={obj.id}>
-                  <CategoryItem category={obj} />
+                  <CategoryItem market_id="" category={obj} />
                 </IonCol>
               );
             })}

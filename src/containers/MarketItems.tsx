@@ -11,96 +11,96 @@ import {
   IonCol,
   IonBadge,
   IonButton,
-  IonTitle} from "@ionic/react";
+  IonTitle
+} from "@ionic/react";
 import { basket } from "ionicons/icons";
 import React, { useState } from "react";
 import "./Market.css";
 import ShopItem from "./ShopItem";
 import Cart from "./Cart";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { CartState } from "../reducers/Cart";
-import data from "../data/hmarketitems.json";
 import { MarketItemsProps } from "../model/ComponentProps";
-import { ItemObj } from "../model/DomainModels";
 import GoBack from "../components/GoBack";
 import ShopHeader from "../components/ShopHeader";
+import { useParams } from "react-router";
+import { useFirestoreConnect, FirestoreReducer } from "react-redux-firebase";
+import { RootState, Markets } from "../services/FirebaseIniti";
 
-interface ItemJson {
-  产品: string;
-  售出单价: number;
-  规格: string;
+// interface ItemJson {
+//   产品: string;
+//   售出单价: number;
+//   规格: string;
 
-  [key: string]: string | number | null;
-}
+//   [key: string]: string | number | null;
+// }
 
 const MarketItems: React.FC<MarketItemsProps> = () => {
   console.log("entering MarketItems");
+  const { market_id } = useParams<{ market_id: string }>();
+  const { category_id } = useParams<{ category_id: string }>();
+  var shop = {} as Markets;
   // const { categoryName } = useParams<{ categoryName: string }>();
   const [showModal, setShowModal] = useState(false);
-  const Items: ItemObj[] = [];
-  const CartBadge: React.FC<CartState> = ({ cartItemList, cart }) => {
-    const cartSize = cartItemList.length;
+
+  useFirestoreConnect([
+    { collection: "Markets", doc: market_id },
+    {
+      collection: "Markets",
+      doc: market_id,
+      subcollections: [
+        {
+          collection: "Categories",
+          doc: category_id,
+          subcollections: [{ collection: "Items" }]
+        }
+      ],
+      storeAs: "ItemList"
+    }
+  ]);
+  const dataStore = useSelector<RootState>(
+    state => state.firestore
+  ) as FirestoreReducer.Reducer;
+
+  if (dataStore.ordered.Markets && dataStore.ordered.Markets.length > 0) {
+    dataStore.ordered.Markets.map(tmarket => {
+      console.log(tmarket.name);
+      shop = tmarket;
+      return shop;
+    });
+  }
+
+
+  console.log("datastore");
+  console.log(dataStore);
+
+  const CartBadge: React.FC<CartState> = ({ cart }) => {
+    const cartSize = cart.cartItemList.length;
     if (cartSize > 0) {
-      return <IonBadge color="danger">{cartItemList.length}</IonBadge>;
+      return <IonBadge color="danger">{cart.cartItemList.length}</IonBadge>;
     } else {
       return <div></div>;
     }
   };
 
   function mapStateToProps(state: CartState) {
-    const { cartItemList, cart } = state;
-    return { cartItemList, cart };
+    const { firebase, cart } = state;
+    return { firebase, cart };
   }
   const CartCounter = connect(mapStateToProps)(CartBadge);
-  // var index = 0;
-  // const jsonData = JSON.parse(data.toString());
 
-  // var index = 0;
-  // // const jsonData = JSON.parse(data.toString());
-  // const [jsonData, setjsonData] = useState({});
-  // for (var x in data) {
-  //   console.log(x);
-  //   var oneCategory = data[categoryName] as [ItemJson]
-  //   index++;
-
-  // const [jsonData, setjsonData] = useState({});
-  // for (var x in data) {
-  //   console.log(x);
-  //   setjsonData(data);
-  //   index++;
-  //   if (x.toString() === categoryName) {
-  data.禽蛋类.map(item => {
-    var jsonitem = item as ItemJson;
-    const itemobj: ItemObj = {
-      market: "Hi Fresh",
-      itemName: jsonitem.产品,
-      itemDesc: jsonitem.规格,
-      itemCost: jsonitem.售出单价
-    };
-    Items.push(itemobj);
-    return Items;
-  });
-  // {
+  // data.禽蛋类.map(item => {
+  //   var jsonitem = item as ItemJson;
   //   const itemobj: ItemObj = {
   //     market: "Hi Fresh",
-  //     itemName: item.toString(),
-  //     itemDesc: item[0],
-  //     itemCost: 0
+  //     itemName: jsonitem.产品,
+  //     itemDesc: jsonitem.规格,
+  //     itemCost: jsonitem.售出单价
   //   };
   //   Items.push(itemobj);
-  // }
-  //     break;
-  //   }
-  //   const obj: CategoryObj = {
-  //     id: index,
-  //     categoryName: x.toString(),
-  //     market: "Hi Fresh",
-  //     imageUrl: "./assets/img/veg-stock2.jpg "
-  //   };
-  //   Categories.push(obj);
-  // }
+  //   return Items;
+  // });
 
-  // mItems.json().
   return (
     <IonPage>
       <IonHeader>
@@ -116,22 +116,24 @@ const MarketItems: React.FC<MarketItemsProps> = () => {
             <GoBack />
           </IonButtons>
           <IonTitle size="large">
-            <p>Cutoff Order 9 pm - 10 pm Delivery Date April 23th</p>
+          <p>{shop.terms_condition}</p>
           </IonTitle>
         </IonToolbar>
       </IonHeader>
 
       <IonContent fullscreen>
-        <ShopHeader />
+        <ShopHeader image_url={shop.img_url as string} />
         <IonGrid>
           <IonRow>
-            {Items.map(obj => {
+            {(dataStore.ordered.ItemList && dataStore.ordered.ItemList.length >0) ? (
+              dataStore.ordered.ItemList.map(obj => {
               return (
-                <IonCol key={obj.itemName}>
+                <IonCol key={obj.id}>
                   <ShopItem item={obj} />
                 </IonCol>
               );
-            })}
+            })) : (<p></p>)
+          }
           </IonRow>
         </IonGrid>
         <Cart modal={showModal} closehandler={() => setShowModal(false)} />

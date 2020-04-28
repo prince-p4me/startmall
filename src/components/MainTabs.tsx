@@ -32,16 +32,16 @@ const MainTabs: React.FC<MainTabsProps> = () => {
           exact={true}
         />
         <Route
-          path="/tabs/:tab(ItemsList)/:categoryName"
+          path="/tabs/market/:market_id/:tab(item_list)/:category_id"
           render={() => <MarketItems cname="" />}
         />
         <Route
-          path="/tabs/:tab(ShopSelections)"
+          path="/tabs/:tab(shop_selections)"
           render={() => <ShopSelection />}
           exact={true}
         />
         <Route
-          path="/tabs/:tab(market)"
+          path="/tabs/:tab(market)/:market_id"
           render={() => <Market />}
           exact={true}
         />
@@ -54,7 +54,7 @@ const MainTabs: React.FC<MainTabsProps> = () => {
           <IonBadge>6</IonBadge>
         </IonTabButton>
 
-        <IonTabButton tab="market" href="/tabs/ShopSelections">
+        <IonTabButton tab="market" href="/tabs/shop_selections">
           <IonIcon icon={cartSharp} />
           <IonLabel>Market</IonLabel>
         </IonTabButton>

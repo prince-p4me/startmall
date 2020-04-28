@@ -117,7 +117,7 @@ ion-header p {
 }
 
 .checkout_conditions p {
-  width:100%;
+  width: 100%;
   text-align: right;
   font-size: var(--fontsize-small);
 }
@@ -159,6 +159,15 @@ ion-header p {
 .category {
   height: 157px;
 }
+
+.category ion-img {
+  max-height: 109px;
+}
+
+img {
+  max-height: inherit;
+}
+
 .toolbar-ios {
   padding-top: env(safe-area-inset-top);
 }
@@ -177,7 +186,7 @@ ion-header p {
 }
 
 .back_button {
-    height:30px;
+  height: 30px;
 }
 
 @media (prefers-color-scheme: dark) {

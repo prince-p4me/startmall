@@ -2,16 +2,15 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import { createStore } from "redux";
-import cart from "./reducers/Cart";
 import { Provider } from "react-redux";
-
-const store = createStore(cart as any);
-
+import { ReactReduxFirebaseProvider } from "react-redux-firebase";
+import rrfProps, { firebaseStore } from "./services/FirebaseIniti";
 
 ReactDOM.render(
-  <Provider store={store}>
-    <App />
+  <Provider store={firebaseStore}>
+    <ReactReduxFirebaseProvider {...rrfProps}>
+      <App />
+    </ReactReduxFirebaseProvider>
   </Provider>,
 
   document.getElementById("root")

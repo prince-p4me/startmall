@@ -21,7 +21,7 @@ import Payment from "../components/Payment";
 import { useHistory } from "react-router-dom";
 import { closeOutline } from "ionicons/icons";
 import { CheckoutProps } from "../model/ComponentProps";
-import { AddressObj, PaymentObj } from "../model/DomainModels";
+import { AddressObj, PaymentObj, CartStateType } from "../model/DomainModels";
 import ShopHeader from "../components/ShopHeader";
 import ShopConditionAndOperatingHours from "../components/ShopConditionAndOperatingHours";
 
@@ -29,7 +29,56 @@ const Checkout: React.FC<CheckoutProps> = () => {
   let history = useHistory();
   const [addressObject] = useState<AddressObj>();
   const [paymentOption] = useState<PaymentObj>();
-  const [cartState, setCartState] = useState<CartState>({
+  
+  // const { market_id } = useParams<{ market_id: string }>();
+  // const { category_id } = useParams<{ category_id: string }>();
+  // var shop = {} as Markets;
+  // // const { categoryName } = useParams<{ categoryName: string }>();
+  // const [showModal, setShowModal] = useState(false);
+
+  // useFirestoreConnect([
+  //   { collection: "Markets", doc: market_id },
+  //   {
+  //     collection: "Markets",
+  //     doc: market_id,
+  //     subcollections: [
+  //       {
+  //         collection: "Categories",
+  //         doc: category_id,
+  //         subcollections: [{ collection: "Items" }]
+  //       }
+  //     ],
+  //     storeAs: "ItemList"
+  //   }
+  // ]);
+  // const dataStore = useSelector<RootState>(
+  //   state => state.firestore
+  // ) as FirestoreReducer.Reducer;
+
+  // if (dataStore.ordered.Markets && dataStore.ordered.Markets.length > 0) {
+  //   dataStore.ordered.Markets.map(tmarket => {
+  //     console.log(tmarket.name);
+  //     shop = tmarket;
+  //     return shop;
+  //   });
+  // }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  const [cartState, setCartState] = useState<CartStateType>({
     cartItemList: [],
     cart: {
       total: 0.0
@@ -37,21 +86,16 @@ const Checkout: React.FC<CheckoutProps> = () => {
   });
 
   function mapStateToProps(state: CartState) {
-    const { cartItemList, cart } = state;
-    setCartState(state);
-    return { cartItemList, cart };
+    const { firebase, cart } = state;
+    setCartState(cart);
+    return { firebase, cart };
   }
 
   const CartItemList = connect(mapStateToProps)(ItemList);
 
   const handleComplete = async () => {
     history.push("/");
-    // setHide(true);
-    // if (thisEl != null) {
-    //   thisEl.current.remove();
-    // }
     console.log("Did I go back?");
-    // completeHandler();
   };
 
   const closehandler = async () => {
@@ -72,7 +116,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
         </IonButtons>
       </IonToolbar>
       <IonContent>
-        <ShopHeader />
+        <ShopHeader image_url=""/>
         <CartItemList />
         <IonItem>
           <IonLabel>Total incl GST ${cartState.cart.total}</IonLabel>

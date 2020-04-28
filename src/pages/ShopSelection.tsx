@@ -6,21 +6,29 @@ import {
   IonPage,
   IonToolbar,
   IonImg,
-  IonItem,
-  IonText,
-  IonCard
+  IonText
 } from "@ionic/react";
 import React from "react";
 import "./Dashboard.css";
 import { useHistory } from "react-router";
+import { RootState } from "../services/FirebaseIniti";
+import { useFirestoreConnect, FirestoreReducer } from "react-redux-firebase";
+import { useSelector } from "react-redux";
+import ShopSelectionList from "../containers/ShopSelectionList";
 
 const ShopSelection: React.FC = () => {
   console.log("entering Dashboard");
   const history = useHistory();
 
-  function handleShopClick() {
-    history.push("/tabs/market");
+  function handleShopClick(market_id: any) {
+    history.push("/tabs/market/" + market_id);
   }
+
+  useFirestoreConnect([{ collection: "Markets" }]);
+
+  const markets = useSelector<RootState>(
+    state => state.firestore
+  ) as FirestoreReducer.Reducer;
 
   return (
     <IonPage>
@@ -30,38 +38,18 @@ const ShopSelection: React.FC = () => {
             <IonMenuButton />
           </IonButtons>
         </IonToolbar>
-         <IonImg
-          class="startmall_header "
-          src="/assets/icon/1x/logo2.png"
-        />
-        
+        <IonImg class="startmall_header " src="/assets/icon/1x/logo2.png" />
       </IonHeader>
       <IonText slot="right">SHOP CAN DELIVERY TO YOUR AREA</IonText>
       <IonContent fullscreen>
-        <IonCard class="shop_card" onClick={handleShopClick}>
-          <IonImg src="/assets/icon/1x/hi-fresh.png"></IonImg>
-          <IonItem lines="none">
-            <IonText>Provide Fruit .... </IonText>
-          </IonItem>
-          <IonItem lines="none">
-            <IonText>No Incl Fruit .... </IonText>
-          </IonItem>
-          <IonItem lines="none">
-            <IonText>Cutoff Order Fruit .... </IonText>
-          </IonItem>
-        </IonCard>
-        <IonCard class="shop_card">
-          <IonImg src="/assets/img/goldmark.png"></IonImg>
-          <IonItem lines="none">
-            <IonText>Provide Fruit .... </IonText>
-          </IonItem>
-          <IonItem lines="none">
-            <IonText>No Incl Fruit .... </IonText>
-          </IonItem>
-          <IonItem lines="none">
-            <IonText>Cutoff Order Fruit .... </IonText>
-          </IonItem>
-        </IonCard>
+        {markets.ordered.Markets && markets.ordered.Markets.length > 0 ? (
+          <ShopSelectionList
+            handleShopClick={handleShopClick}
+            shops={markets.ordered.Markets}
+          />
+        ) : (
+          <p></p>
+        )}
       </IonContent>
     </IonPage>
   );

@@ -40,7 +40,7 @@ const App: React.FC = () => {
             <Route path="/page/checkout" component={Checkout} exact={true} />
             <Route path="/tabs" component={MainTabs} exact />
             <Route path="/landing" component={Dashboard} exact />
-            <Route path="/shopselection" component={ShopSelection} exact />
+            <Route path="/shop_selections" component={ShopSelection} exact />
             <Route path="/tabs" component={MainTabs} exact />
             <Route path="/shop/:name/categories" component={ShopMain} exact />
             <Route path="/page/:name" component={Page} exact />

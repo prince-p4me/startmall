@@ -8,13 +8,14 @@ import {
   IonText,
   IonImg
 } from "@ionic/react";
+import { ShopHeaderProps } from "../model/ComponentProps";
 
-const ShopHeader: React.FC = () => {
+const ShopHeader: React.FC<ShopHeaderProps> = ({image_url}) => {
   return (
       <IonGrid>
         <IonRow>
           <IonCol>
-            <IonImg src="/assets/img/hifreshlogo.png"></IonImg>
+            <IonImg src={image_url}></IonImg>
           </IonCol>
           <IonCol>
              <IonImg src="/assets/img/payments.png"></IonImg>

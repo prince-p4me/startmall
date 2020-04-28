@@ -1,7 +1,6 @@
 import { CartState } from "../reducers/Cart";
 import React from "react";
 import {
-  IonLabel,
   IonButton,
   IonIcon,
   IonGrid,
@@ -10,27 +9,28 @@ import {
   IonButtons
 } from "@ionic/react";
 import { trashOutline } from "ionicons/icons";
-import { CartItem, CartWithQty } from "../model/DomainModels";
-import { addCartAction } from "../reducers/CartAction";
+import { CartWithQty, ItemObj } from "../model/DomainModels";
+import { addCartAction, delCartAction } from "../reducers/CartAction";
 import { useDispatch } from "react-redux";
 
-const ItemList: React.FC<CartState> = ({ cartItemList, cart }) => {
+const ItemList: React.FC<CartState> = ({ cart }) => {
   const dispatch = useDispatch();
   const cartListWithQty: CartWithQty[] = [];
   const cartListArray: Array<CartWithQty> =[];
-  cartItemList.map((cartItem, index) => {
-    if (cartListWithQty[cartItem.name] == null) {
-      cartListWithQty[cartItem.name] = {
-        key: cartItem.name,
+
+  console.log(cart.cartItemList);
+  cart.cartItemList.map((cartItem) => {
+    if (cartListWithQty[cartItem.id] == null) {
+      cartListWithQty[cartItem.id] = {
+        key: cartItem.id,
         item: cartItem,
         count: 0
       };
     }
-    if (cartListWithQty[cartItem.name].count === 0) {
-      cartListWithQty[cartItem.name].count = 1;
+    if (cartListWithQty[cartItem.id].count === 0) {
+      cartListWithQty[cartItem.id].count = 1;
     } else {
-      cartListWithQty[cartItem.name].count =
-        cartListWithQty[cartItem.name].count + 1;
+      cartListWithQty[cartItem.id].count ++;
     }
     return {};
   });
@@ -40,19 +40,13 @@ const ItemList: React.FC<CartState> = ({ cartItemList, cart }) => {
     cartListArray.push(cartListWithQty[cartlistitemqty])
     console.log(cartlistitemqty);
   }
-  function addCart(cartItem: CartItem) {
-    const tempItem: CartItem = {
-      market: cartItem.market,
-      name: cartItem.name,
-      desc: cartItem.desc,
-      cost: cartItem.cost,
-      qty: 1,
-      item_key: cartItem.item_key,
-      cart_key: cartItem.cart_key
-    };
-
-    dispatch(addCartAction(tempItem));
+  function addCart(cartItem: ItemObj) {
+    dispatch(addCartAction(cartItem));
   }
+  function delCart(cartItem: ItemObj) {
+    dispatch(delCartAction(cartItem));
+  }
+
 
   return (
     <IonGrid>
@@ -65,15 +59,19 @@ const ItemList: React.FC<CartState> = ({ cartItemList, cart }) => {
       {cartListArray.map(cartWithQty => {
         return (
           <IonRow>
-            <IonCol>
+            <IonCol size="2">
               <IonButton>
                 <IonIcon slot="icon-only" icon={trashOutline} />
               </IonButton>
             </IonCol>
-            <IonCol>{cartWithQty.item.name}</IonCol>
-            <IonCol>
+            <IonCol size="4">{cartWithQty.item.name}</IonCol>
+            <IonCol size="3">
               <IonButtons>
-                <IonButton fill="outline">-</IonButton>
+                <IonButton fill="outline"
+                onClick={() => {
+                  delCart(cartWithQty.item);
+                }}
+                >-</IonButton>
                 {cartWithQty.count}
                 <IonButton
                   fill="outline"
@@ -85,8 +83,8 @@ const ItemList: React.FC<CartState> = ({ cartItemList, cart }) => {
                 </IonButton>
               </IonButtons>
             </IonCol>
-            <IonCol>
-              <IonLabel slot="end">$ {cartWithQty.item.cost}</IonLabel>
+            <IonCol size="2">
+              $ {cartWithQty.item.unit_price}
             </IonCol>
           </IonRow>
         );

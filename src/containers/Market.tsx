@@ -11,71 +11,66 @@ import {
   IonRow,
   IonCol,
   IonBadge,
-  IonButton} from "@ionic/react";
+  IonButton
+} from "@ionic/react";
 import { basket } from "ionicons/icons";
 import React, { useState } from "react";
 import "./Market.css";
 import Cart from "./Cart";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { CartState } from "../reducers/Cart";
-import data from "../data/hmarketitems.json";
 import CategoryItem from "./CategoryItem";
-import { CategoryObj } from "../model/DomainModels";
 import ShopHeader from "../components/ShopHeader";
 import GoBack from "../components/GoBack";
-
-// const mItems = fetch("../data/hmarketitems.json")
-//   .then(response => {
-//     console.log(response);
-//     var res = response.json();
-//     for (var x in res) {
-//       console.log(x);
-//     }
-//     return res;
-//   })
-//   .then(data => {
-//     console.log(data);
-//     for (var x in data) {
-//       console.log(x);
-//     }
-//     return data;
-//   });
+import { useFirestoreConnect, FirestoreReducer } from "react-redux-firebase";
+import { RootState, Markets } from "../services/FirebaseIniti";
+import { useParams } from "react-router";
 
 const Market: React.FC = () => {
-  console.log("entering market");
+  const { market_id } = useParams<{ market_id: string }>();
+  var shop = {} as Markets;
   const [showModal, setShowModal] = useState(false);
-  const Categories: CategoryObj[] = [];
-  const CartBadge: React.FC<CartState> = ({ cartItemList, cart }) => {
-    const cartSize = cartItemList.length;
+  const CartBadge: React.FC<CartState> = ({ cart }) => {
+    const cartSize = cart.cartItemList.length;
     if (cartSize > 0) {
-      return <IonBadge color="danger">{cartItemList.length}</IonBadge>;
+      return <IonBadge color="danger">{cart.cartItemList.length}</IonBadge>;
     } else {
       return <div></div>;
     }
   };
 
+  useFirestoreConnect([
+    { collection: "Markets", doc: market_id },
+    {
+      collection: "Markets",
+      doc: market_id,
+      subcollections: [
+        {
+          collection: "Categories"
+        }
+      ],
+      storeAs: "Categories"
+    }
+  ]);
+
+  const stateStore = useSelector<RootState>(
+    state => state.firestore
+  ) as FirestoreReducer.Reducer;
+
+  if (stateStore.ordered.Markets && stateStore.ordered.Markets.length > 0) {
+    stateStore.ordered.Markets.map(tmarket => {
+      console.log(tmarket.name);
+      shop = tmarket;
+      return shop;
+    });
+  }
+
   function mapStateToProps(state: CartState) {
-    const { cartItemList, cart } = state;
-    // console.log("mapping state to cart state");
-    return { cartItemList, cart };
+    const { firebase, cart } = state;
+    return { firebase, cart };
   }
   const CartCounter = connect(mapStateToProps)(CartBadge);
 
-  var index = 0;
-  for (var x in data) {
-    // console.log("how many category " + index + " : " + x);
-    index++;
-    const obj: CategoryObj = {
-      id: index,
-      categoryName: x.toString(),
-      market: "Hi Fresh",
-      imageUrl: "./assets/img/veg-stock2.jpg",
-      key: index
-    };
-    Categories.push(obj);
-  }
-
-  // mItems.json().
   return (
     <IonPage>
       <IonHeader>
@@ -91,21 +86,26 @@ const Market: React.FC = () => {
             <GoBack />
           </IonButtons>
           <IonTitle size="large">
-            <p>Cutoff Order 9 pm - 10 pm Delivery Date April 23th</p>
+            <p>{shop.terms_condition}</p>
           </IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <ShopHeader />
+        <ShopHeader image_url={shop.img_url as string} />
         <IonGrid>
           <IonRow>
-            {Categories.map(obj => {
-              return (
-                <IonCol key={obj.id}>
-                  <CategoryItem category={obj} />
-                </IonCol>
-              );
-            })}
+            {stateStore.ordered.Categories &&
+            stateStore.ordered.Categories.length > 0 ? (
+              stateStore.ordered.Categories.map(obj => {
+                return (
+                  <IonCol key={obj.id}>
+                    <CategoryItem market_id={market_id} category={obj} />
+                  </IonCol>
+                );
+              })
+            ) : (
+              <p></p>
+            )}
           </IonRow>
         </IonGrid>
         <Cart modal={showModal} closehandler={() => setShowModal(false)} />

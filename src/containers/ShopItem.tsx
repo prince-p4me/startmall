@@ -15,7 +15,7 @@ import { add, heart, heartOutline } from "ionicons/icons";
 import state from "../reducers/Cart";
 import { useDispatch } from "react-redux";
 import { addCartAction } from "../reducers/CartAction";
-import { ItemObj, CartItem } from "../model/DomainModels";
+import { ItemObj } from "../model/DomainModels";
 import { ShopItemProps } from "../model/ComponentProps";
 
 const ShopItem: React.FC<ShopItemProps> = ({ item }) => {
@@ -31,17 +31,17 @@ const ShopItem: React.FC<ShopItemProps> = ({ item }) => {
   }
 
   function addCart(item: ItemObj) {
-    const cartItem: CartItem = {
-      market: item.market,
-      name: item.itemName,
-      desc: item.itemDesc,
-      cost: item.itemCost,
-      item_key: 1,
-      cart_key: 0,
-      qty: 1
-    };
+    // const cartItem: CartItem = {
+    //   market: item.market,
+    //   name: item.itemName,
+    //   desc: item.itemDesc,
+    //   cost: item.itemCost,
+    //   item_key: 1,
+    //   cart_key: 0,
+    //   qty: 1
+    // };
 
-    dispatch(addCartAction(cartItem));
+    dispatch(addCartAction(item));
 
     console.log("add item to state");
     console.log(state);
@@ -55,17 +55,16 @@ const ShopItem: React.FC<ShopItemProps> = ({ item }) => {
       </IonCardHeader>
       <IonCardContent>
         <IonItem lines="none">
-          {item.itemName}
-          {item.itemDesc}
+          {item.name}
         </IonItem>
         <IonItem lines="none">
-          <IonImg src="/assets/icon/temp/organic_apple.png"></IonImg>
+          <IonImg src={item.img_url as string}></IonImg>
         </IonItem>
       </IonCardContent>
       <IonFooter>
         <IonItem lines="none">
           <div className="currency">
-            $ {item.itemCost} {item.itemDesc}
+            $ {item.unit_price} {item.unit}
             <br />
           </div>
           <IonItem lines="none" slot="end">

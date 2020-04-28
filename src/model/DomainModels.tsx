@@ -43,6 +43,12 @@ export interface PaymentObj {
   visaMaster: boolean;
 }
 
+export interface CartStateType {
+  cartItemList: ItemObj[],
+  cart: {
+    total: number
+  }
+}
 
 export interface CartItem {
   market: string;
@@ -55,8 +61,8 @@ export interface CartItem {
 }
 
 export interface CartWithQty{
-  [key :string]: string | number | CartItem| null;
-  item: CartItem;
+  [key :string]: string | number | ItemObj| null;
+  item: ItemObj;
   count: number;
   
 }

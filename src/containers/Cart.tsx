@@ -20,8 +20,8 @@ import { CartProps } from "../model/ComponentProps";
 const Cart: React.FC<CartProps> = ({ modal, closehandler }) => {
   let history = useHistory();
   function mapStateToProps(state: CartState) {
-    const { cartItemList, cart } = state;
-    return { cartItemList, cart };
+    const { firebase, cart } = state;
+    return { firebase, cart };
   }
   function handleCheckOut() {
     history.push("/page/checkout");

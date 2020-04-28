@@ -1,13 +1,14 @@
 import { CategoryObj, ItemObj, AddressObj, PaymentObj } from "./DomainModels";
+import { Markets } from "../services/FirebaseIniti";
 
 export interface CategoryProps {
+  market_id: string;
   category: CategoryObj;
 }
 
 export interface AddressProps {
   id: string;
-  address: AddressObj  | undefined;
-
+  address: AddressObj | undefined;
 }
 
 export interface ContainerProps {
@@ -39,7 +40,16 @@ export interface CartProps {
   closehandler: any;
 }
 
-export interface OrderDayShopHeaderProps{
+export interface OrderDayShopHeaderProps {
   setShowModal: any;
   CartCounter: any;
+}
+
+export interface ShopHeaderProps {
+  image_url: string;
+}
+
+export interface ShopSelectionListProps {
+  handleShopClick: (id: string) => void;
+  shops: Markets[] ;
 }
