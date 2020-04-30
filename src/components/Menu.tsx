@@ -7,29 +7,24 @@ import {
   IonListHeader,
   IonMenu,
   IonMenuToggle,
-  IonNote
+  IonNote,
+  IonAvatar,
+  IonImg,
+  IonFooter
 } from "@ionic/react";
 
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import {
   bookmarkOutline,
-  rocketOutline,
-  peopleOutline,
-  mailUnread
-} from "ionicons/icons";
+  rocketOutline} from "ionicons/icons";
 import "./Menu.css";
-import { AppPage } from "../model/DomainModels";
-
-
+import { AppPage, RootState } from "../model/DomainModels";
+import { useFirebase, isLoaded, isEmpty } from "react-redux-firebase";
+import { useSelector } from "react-redux";
+import { UserInfo } from "@firebase/auth-types";
 
 const appPages: AppPage[] = [
-  {
-    title: "Inbox",
-    url: "/page/Inbox",
-    iosIcon: mailUnread,
-    mdIcon: mailUnread
-  },
   {
     title: "My Profile",
     url: "/page/MyProfile",
@@ -41,19 +36,8 @@ const appPages: AppPage[] = [
     url: "/page/checkout",
     iosIcon: rocketOutline,
     mdIcon: rocketOutline
-  },
-  {
-    title: "Slashiee Go",
-    url: "/tabs/market",
-    iosIcon: rocketOutline,
-    mdIcon: rocketOutline
-  },
-  {
-    title: "Slashiee OneOne",
-    url: "/page/Inbox",
-    iosIcon: peopleOutline,
-    mdIcon: peopleOutline
   }
+
   // {
   //   title: 'Outbox',
   //   url: '/page/Outbox',
@@ -90,13 +74,29 @@ const labels = ["#11321", "#21322", "#43211"];
 
 const Menu: React.FC = () => {
   const location = useLocation();
-
+  const firebase = useFirebase();
+  const history = useHistory();
+  const auth: UserInfo = useSelector<RootState>(
+    state => state.firebase.auth
+  ) as UserInfo;
+  console.log(auth);
+  function handleSignOut() {
+    firebase.logout().then(() => {
+      auth.photoURL = "";
+      history.push("/");
+    });
+  }
   return (
     <IonMenu contentId="main" type="overlay" side="end">
       <IonContent>
         <IonList id="inbox-list">
-          <IonListHeader>Gary </IonListHeader>
-          <IonNote>gary@gmail.com</IonNote>
+          <IonListHeader>
+            <IonItem lines="none">{auth.displayName}</IonItem>
+            <IonAvatar>
+              <IonImg src={auth.photoURL as string}></IonImg>
+            </IonAvatar>{" "}
+          </IonListHeader>
+          <IonNote>{auth.email}</IonNote>
           {appPages.map((appPage, index) => {
             return (
               <IonMenuToggle key={index} autoHide={false}>
@@ -126,6 +126,14 @@ const Menu: React.FC = () => {
             </IonItem>
           ))}
         </IonList>
+        <IonFooter>
+          {isLoaded(auth) && !isEmpty(auth) ? (
+            <IonItem onClick={handleSignOut}>Sign Out</IonItem>
+          ) : (
+            <IonItem routerLink="/login" routerDirection="none"detail={false} >Sign In</IonItem>
+          )
+          }
+        </IonFooter>
       </IonContent>
     </IonMenu>
   );

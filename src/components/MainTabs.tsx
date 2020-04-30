@@ -22,6 +22,8 @@ import { MainTabsProps } from "../model/ComponentProps";
 import ShopSelection from "../pages/ShopSelection";
 
 const MainTabs: React.FC<MainTabsProps> = () => {
+ // const defaultProtectedRouteProps = getDefaultProtectedRouteProps();
+
   return (
     <IonTabs>
       <IonRouterOutlet>

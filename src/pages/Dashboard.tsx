@@ -1,10 +1,6 @@
 import {
-  IonButtons,
   IonContent,
-  IonHeader,
-  IonMenuButton,
   IonPage,
-  IonToolbar,
   IonImg,
   IonItem,
   IonInput,
@@ -12,25 +8,14 @@ import {
   IonFooter
 } from "@ionic/react";
 import React, { useState } from "react";
+import MainHeader from "../components/MainHeader";
 
 const Dashboard: React.FC = () => {
   console.log("entering Dashboard");
   const [postcode] = useState("");
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonButtons slot="end">
-            <IonMenuButton />
-          </IonButtons>
-        </IonToolbar>
-        <IonImg
-          class="startmall_header "
-          src="/assets/icon/1x/logo2.png"
-        />
-        
-        
-      </IonHeader>
+      <MainHeader />
 
       <IonContent fullscreen>
         <IonImg  src="/assets/icon/1x/cover.png" />

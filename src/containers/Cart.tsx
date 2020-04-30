@@ -7,7 +7,6 @@ import {
   IonToolbar,
   IonButtons,
   IonIcon,
-  IonLabel,
   IonFooter
 } from "@ionic/react";
 import { connect } from "react-redux";
@@ -16,6 +15,7 @@ import ItemList from "../components/ItemList";
 import { useHistory } from "react-router-dom";
 import { CartProps } from "../model/ComponentProps";
 import { CartState } from "../services/FirebaseIniti";
+import CartTotal from "../components/CartTotal";
 
 const Cart: React.FC<CartProps> = ({ modal, closehandler }) => {
   let history = useHistory();
@@ -29,7 +29,8 @@ const Cart: React.FC<CartProps> = ({ modal, closehandler }) => {
   }
 
   const CartItemList = connect(mapStateToProps)(ItemList);
-  
+  const EnhancedCartTotal = connect(mapStateToProps)(CartTotal);
+
   return (
       <IonModal  isOpen={modal}>
         <IonHeader>
@@ -49,7 +50,7 @@ const Cart: React.FC<CartProps> = ({ modal, closehandler }) => {
           <CartItemList  />
         </IonContent>
         <IonFooter>
-          <IonLabel>Total: $0</IonLabel>
+          <EnhancedCartTotal />
           <IonButton expand="full" onClick={handleCheckOut}>
             Check Out
           </IonButton>

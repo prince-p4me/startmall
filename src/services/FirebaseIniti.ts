@@ -22,6 +22,8 @@ const firebaseConfig = {
 // react-redux-firebase config
 const rrfConfig = {
   userProfile: 'users',
+  presence:'presence',
+  sessions:'sessions',
   markets: 'Markets'
   // useFirestoreForProfile: true // Firestore for Profile instead of Realtime DB
 }
