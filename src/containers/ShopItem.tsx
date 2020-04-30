@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   IonCard,
   IonCardHeader,
-  IonCardSubtitle,
   IonCardContent,
   IonButton,
   IonIcon,
@@ -51,12 +50,9 @@ const ShopItem: React.FC<ShopItemProps> = ({ item }) => {
   return (
     <IonCard>
       <IonCardHeader>
-        <IonCardSubtitle>{item.market}</IonCardSubtitle>
+        <IonItem lines="none">{item.name}</IonItem>
       </IonCardHeader>
       <IonCardContent>
-        <IonItem lines="none">
-          {item.name}
-        </IonItem>
         <IonItem lines="none">
           <IonImg src={item.img_url as string}></IonImg>
         </IonItem>
@@ -87,7 +83,7 @@ const ShopItem: React.FC<ShopItemProps> = ({ item }) => {
             </IonButton>
           </IonItem>
         </IonItem>
-        <IonItem lines="none">
+        <IonItem lines="none" className="shop_item_min_order">
           <IonLabel color="tertiary">Minimum order: Nil</IonLabel>
         </IonItem>
       </IonFooter>

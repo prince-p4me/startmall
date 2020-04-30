@@ -3,32 +3,37 @@ import { ShopSelectionListProps } from "../model/ComponentProps";
 import {
   IonList,
   IonCard,
-  IonLabel,
   IonImg,
   IonItem,
   IonText
 } from "@ionic/react";
 
-const ShopSelectionList: React.FC<ShopSelectionListProps> = ({shops, handleShopClick}) => {
+const ShopSelectionList: React.FC<ShopSelectionListProps> = ({
+  shops,
+  handleShopClick
+}) => {
   console.log(shops);
   return (
-    <IonList>
+    <IonList className="shop_selection">
       {shops.map(obj => {
         return (
           <IonCard
             class="shop_card"
             onClick={() => {
-              handleShopClick(obj.id);
+              handleShopClick(obj);
             }}
           >
-            <IonLabel>{obj.name}</IonLabel>
-            <IonImg src={obj.img_url as string}></IonImg>
+            <IonImg src={obj.img_url as string} alt={obj.name}></IonImg>
             <IonItem lines="none">
               <IonText>Provide: </IonText>
+            </IonItem>
+            <IonItem lines="none">
               <IonText>{obj.service_offering}</IonText>
             </IonItem>
             <IonItem lines="none">
               <IonText>Terms: </IonText>
+            </IonItem>
+            <IonItem lines="none">
               <IonText>{obj.terms_condition}</IonText>
             </IonItem>
           </IonCard>

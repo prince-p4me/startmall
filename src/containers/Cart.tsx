@@ -10,18 +10,18 @@ import {
   IonLabel,
   IonFooter
 } from "@ionic/react";
-import { CartState } from "../reducers/Cart";
 import { connect } from "react-redux";
 import { closeOutline } from "ionicons/icons";
 import ItemList from "../components/ItemList";
 import { useHistory } from "react-router-dom";
 import { CartProps } from "../model/ComponentProps";
+import { CartState } from "../services/FirebaseIniti";
 
 const Cart: React.FC<CartProps> = ({ modal, closehandler }) => {
   let history = useHistory();
   function mapStateToProps(state: CartState) {
-    const { firebase, cart } = state;
-    return { firebase, cart };
+    const { firebase, cart, shop } = state;
+    return { firebase, cart, shop };
   }
   function handleCheckOut() {
     history.push("/page/checkout");
@@ -31,7 +31,7 @@ const Cart: React.FC<CartProps> = ({ modal, closehandler }) => {
   const CartItemList = connect(mapStateToProps)(ItemList);
   
   return (
-      <IonModal isOpen={modal}>
+      <IonModal  isOpen={modal}>
         <IonHeader>
           <IonToolbar>
             <IonButtons slot="end">
@@ -45,7 +45,7 @@ const Cart: React.FC<CartProps> = ({ modal, closehandler }) => {
             </IonButtons>
           </IonToolbar>
         </IonHeader>
-        <IonContent>
+        <IonContent className="checkout_page">
           <CartItemList  />
         </IonContent>
         <IonFooter>

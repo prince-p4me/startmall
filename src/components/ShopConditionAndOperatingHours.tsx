@@ -1,13 +1,22 @@
 import React from "react";
 import { IonItem } from "@ionic/react";
+import { ShopHeaderProps } from "../model/ComponentProps";
+import { Markets } from "../model/DomainModels";
+import { isLoaded } from "react-redux-firebase";
 
 
-const ShopConditionAndOperatingHours: React.FC = () => {
+const ShopConditionAndOperatingHours: React.FC<ShopHeaderProps> = ({shop}) => {
+  
+  var loadedShop = {} as Markets;
+
+  if (isLoaded(shop)){
+    loadedShop = shop.shop;
+  }
   return (
     <IonItem className="checkout_conditions">
-      <p>Over $100 Free Delivery to Sydney Metro 
+      <p>{loadedShop.free_delivery_conditions}
       <br/>
-      Cutoff Order 9 pm - 10 pm<br/> Delivery Date April 23th</p>
+      {loadedShop.terms_condition}</p>
     </IonItem>
   );
 };

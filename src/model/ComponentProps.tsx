@@ -1,5 +1,4 @@
-import { CategoryObj, ItemObj, AddressObj, PaymentObj } from "./DomainModels";
-import { Markets } from "../services/FirebaseIniti";
+import { CategoryObj, ItemObj, AddressObj, PaymentObj, Markets, ShopStateType } from "./DomainModels";
 
 export interface CategoryProps {
   market_id: string;
@@ -46,10 +45,10 @@ export interface OrderDayShopHeaderProps {
 }
 
 export interface ShopHeaderProps {
-  image_url: string;
+  shop: ShopStateType;
 }
 
 export interface ShopSelectionListProps {
-  handleShopClick: (id: string) => void;
+  handleShopClick: (shop: Markets) => void;
   shops: Markets[] ;
 }

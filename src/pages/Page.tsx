@@ -5,7 +5,8 @@ import {
   IonMenuButton,
   IonPage,
   IonTitle,
-  IonToolbar
+  IonToolbar,
+  IonButton
 } from "@ionic/react";
 import React from "react";
 import { useParams } from "react-router";
@@ -13,9 +14,13 @@ import ExploreContainer from "../components/ExploreContainer";
 import "./Page.css";
 import {
   useFirestoreConnect,
-  FirestoreReducer} from "react-redux-firebase";
+  FirestoreReducer,
+  getFirebase
+} from "react-redux-firebase";
 import { useSelector } from "react-redux";
-import { RootState, Markets } from "../services/FirebaseIniti";
+import "firebase/firestore";
+import hifreshdata from "../data/hmarketitems.json";
+import { Categories, Markets, RootState } from "../model/DomainModels";
 
 interface testprop {
   market: Markets;
@@ -28,7 +33,7 @@ const Test: React.FC<testprop> = ({ market, doc }) => {
       doc: doc,
       subcollections: [
         {
-          collection: "Categories",
+          collection: "Categories"
           // doc: "m1lyTmP7ZgDNWQrjSaIF",
           // subcollections: [{ collection: "Items" }],
         }
@@ -49,6 +54,30 @@ const Page: React.FC = () => {
   const { name } = useParams<{ name: string }>();
   var doc_id = "123";
 
+  console.log(hifreshdata);
+  var keys = Object.keys(hifreshdata);
+  var values = Object.values(hifreshdata);
+
+  console.log(keys);
+
+  var upload_categories = [] as Categories[];
+
+  var i = 0;
+  keys.forEach((key) => {
+    upload_categories.push({
+      id: i,
+      img_url: "",
+      name: key,
+
+      load_order:0
+    });
+    i++;
+  });
+
+  console.log(values[0]);
+values[0].forEach(obj =>  {
+  console.log(obj);
+})
   useFirestoreConnect([{ collection: "Markets" }]);
 
   const markets = useSelector<RootState>(
@@ -77,6 +106,70 @@ const Page: React.FC = () => {
   //   }))
   // )(Test);
 
+  function CreateMarket() {
+
+    const firebase = getFirebase();
+    // const firestore = getFirestore(firebase);
+    // firebase
+    //   .firestore()
+    //   .collection("Markets")
+    //   .add(test_market)
+    //   .then(() => {
+    //     console.log("Add Completed");
+    //   });
+
+    // keys.forEach((key, index) => {
+    //   upload_categories.push({
+    //     id: i,
+    //     img_url: "",
+    //     name: key
+    //   });
+    //   i++;
+    // });
+    var i=0;
+    keys.forEach(key => {
+      firebase
+        .firestore()
+        .collection("Markets")
+        .doc("FtSvVlEa4G4xHduMnf2l")
+        .collection("Categories")
+        .add({
+          img_url: "",
+          name: key,
+          load_order: i
+        })
+        .then(docRef => {
+          console.log(docRef);
+          var new_category_id = docRef.id;
+          console.log("Add Categories Completed");
+          
+
+          values[i].forEach(item => {
+            firebase
+            .firestore()
+            .collection("Markets")
+            .doc("FtSvVlEa4G4xHduMnf2l")
+            .collection("Categories")
+            .doc(new_category_id)
+            .collection("Items")
+            .add({
+              name: item.产品,
+              unit_price: item.售出单价,
+              unit: item.规格,
+              img_url:"",
+              store_name:""
+            })
+            .then(() => {
+              console.log("Added Items to category");
+            });
+
+          });
+          i++;
+        });
+    });
+  }
+
+
   console.log("entering page");
   return (
     <IonPage>
@@ -91,6 +184,7 @@ const Page: React.FC = () => {
 
       <IonContent>
         <Test doc={doc_id} market={market} />
+        <IonButton onClick={CreateMarket}>Test Creat Market</IonButton>
         <IonHeader collapse="condense">
           <IonToolbar>
             <IonTitle size="large">{name}</IonTitle>

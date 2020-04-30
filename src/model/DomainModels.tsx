@@ -1,3 +1,8 @@
+import { FirebaseReducer, FirestoreReducer } from "react-redux-firebase";
+import { Reducer } from "redux";
+import MarketItems from "../containers/MarketItems";
+import Market from "../containers/Market";
+
 export interface CategoryObj {
   id: number;
   market: string;
@@ -50,6 +55,10 @@ export interface CartStateType {
   }
 }
 
+export interface ShopStateType {
+  shop: Markets;
+}
+
 export interface CartItem {
   market: string;
   item_key:number;
@@ -65,4 +74,52 @@ export interface CartWithQty{
   item: ItemObj;
   count: number;
   
+}
+
+// Optional: If you use the user profile option
+export interface Profile {
+  name: string;
+  email: string;
+}
+
+// Optional: You can define the schema of your Firebase Redux store.
+// This will give you type-checking for state.firebase.data.todos and state.firebase.ordered.todos
+export interface Schema {
+  markets: Market;
+}
+
+// If you have a todos collection, you might have this type
+export interface Market {
+  id: string;
+  name: string;
+}
+
+// with both reducer types
+export interface RootState {
+  firebase: FirebaseReducer.Reducer<Profile, Schema>;
+  firestore: Reducer<FirestoreReducer.Reducer>;
+  cart: CartStateType;
+  shop: ShopStateType;
+}
+
+export interface Categories {
+  img_url : string;
+  name: string;
+  id: number;
+  load_order:number;
+}
+export interface Markets {
+  [key: string]: string | number | [] | null;
+  id: string;
+  name : string;
+  opening_hour: [] ;
+  // imageUrl:string;
+  // serviceOffering: string;
+  // terms: string;
+  free_delivery: string;
+  img_url:string;
+  store_address:string;
+  support_postcodes:[];
+  terms_condition:string;
+
 }

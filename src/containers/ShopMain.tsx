@@ -16,12 +16,12 @@ import React, { useState } from "react";
 import "./Market.css";
 import Cart from "./Cart";
 import { connect } from "react-redux";
-import { CartState } from "../reducers/Cart";
 import data from "../data/hmarketitems.json";
 import CategoryItem from "./CategoryItem";
 import { CategoryObj } from "../model/DomainModels";
 import OrderDayShopHeader from "../components/OrderDayShopHeader";
 import ShopHeader from "../components/ShopHeader";
+import { CartState } from "../services/FirebaseIniti";
 
 const ShopMain: React.FC = () => {
   console.log("entering market");
@@ -37,10 +37,12 @@ const ShopMain: React.FC = () => {
   };
 
   function mapStateToProps(state: CartState) {
-    const { firebase, cart } = state;
-    return { firebase, cart };
+    const { firebase, cart, shop } = state;
+    return { firebase, cart, shop };
   }
   const CartCounter = connect(mapStateToProps)(CartBadge);
+  const ShopHeaderWithShop = connect(mapStateToProps)(ShopHeader);
+
 
   var index = 0;
   for (var x in data) {
@@ -69,7 +71,8 @@ const ShopMain: React.FC = () => {
       </IonToolbar>
       <OrderDayShopHeader />
       <IonContent fullscreen>
-        <ShopHeader image_url=""/>
+      <ShopHeaderWithShop
+        />
         <IonGrid>
           <IonRow>
             {Categories.map(obj => {

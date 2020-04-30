@@ -1,30 +1,21 @@
 import {
-  IonButtons,
   IonContent,
-  IonHeader,
-  IonMenuButton,
   IonPage,
-  IonTitle,
-  IonToolbar,
-  IonIcon,
   IonGrid,
   IonRow,
   IonCol,
-  IonBadge,
-  IonButton
-} from "@ionic/react";
-import { basket } from "ionicons/icons";
+  IonBadge} from "@ionic/react";
 import React, { useState } from "react";
 import "./Market.css";
 import Cart from "./Cart";
 import { connect, useSelector } from "react-redux";
-import { CartState } from "../reducers/Cart";
 import CategoryItem from "./CategoryItem";
 import ShopHeader from "../components/ShopHeader";
-import GoBack from "../components/GoBack";
 import { useFirestoreConnect, FirestoreReducer } from "react-redux-firebase";
-import { RootState, Markets } from "../services/FirebaseIniti";
 import { useParams } from "react-router";
+import { RootState, Markets } from "../model/DomainModels";
+import { CartState } from "../services/FirebaseIniti";
+import MarketHeader from "../components/MarketHeader";
 
 const Market: React.FC = () => {
   const { market_id } = useParams<{ market_id: string }>();
@@ -40,7 +31,7 @@ const Market: React.FC = () => {
   };
 
   useFirestoreConnect([
-    { collection: "Markets", doc: market_id },
+    { collection: "Markets", doc: market_id, storeAs: "Market" },
     {
       collection: "Markets",
       doc: market_id,
@@ -57,8 +48,8 @@ const Market: React.FC = () => {
     state => state.firestore
   ) as FirestoreReducer.Reducer;
 
-  if (stateStore.ordered.Markets && stateStore.ordered.Markets.length > 0) {
-    stateStore.ordered.Markets.map(tmarket => {
+  if (stateStore.ordered.Market && stateStore.ordered.Market.length > 0) {
+    stateStore.ordered.Market.map(tmarket => {
       console.log(tmarket.name);
       shop = tmarket;
       return shop;
@@ -66,32 +57,19 @@ const Market: React.FC = () => {
   }
 
   function mapStateToProps(state: CartState) {
-    const { firebase, cart } = state;
-    return { firebase, cart };
+    const { firebase, cart, shop } = state;
+    return { firebase, cart, shop };
   }
   const CartCounter = connect(mapStateToProps)(CartBadge);
+  const ShopHeaderWithShop = connect(mapStateToProps)(ShopHeader);
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar color="secondary">
-          <IonButtons slot="end">
-            <IonButton onClick={() => setShowModal(true)} slot="start">
-              <IonIcon size="large" slot="icon-only" icon={basket}></IonIcon>
-              <CartCounter />
-            </IonButton>
-            <IonMenuButton />
-          </IonButtons>
-          <IonButtons slot="start">
-            <GoBack />
-          </IonButtons>
-          <IonTitle size="large">
-            <p>{shop.terms_condition}</p>
-          </IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent fullscreen>
-        <ShopHeader image_url={shop.img_url as string} />
+      <MarketHeader setShowModal={setShowModal} shop={shop} CartCounter={CartCounter}/>
+
+      <IonContent className="category" fullscreen>
+        <ShopHeaderWithShop
+        />
         <IonGrid>
           <IonRow>
             {stateStore.ordered.Categories &&

@@ -70,7 +70,8 @@ http://ionicframework.com/docs/theming/ */
   --ion-toolbar-background: var(--ion-color-primary);
   --ion-toolbar-color: #ffff;
 
-  --fontsize-large: 18px;
+  --fontsize-large: 14px;
+  --fontsize-medium: 13px;
   --fontsize-small: 12px;
 }
 
@@ -126,14 +127,20 @@ ion-header p {
   background-color: var(--ion-color-secondary);
   font-size: 12zpx;
 }
+.category_name {
+  text-align: center;
+  margin-top: 5px;
+}
 
 .footer_pay {
-  width: 130px;
+  width: 170px;
 }
 .shop_card {
   min-height: 300px;
   margin-left: 21px;
   margin-right: 21px;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
 }
 
 .shop_card ion-img {
@@ -157,11 +164,24 @@ ion-header p {
 }
 
 .category {
-  height: 157px;
+  height: 80px;
+}
+.category ion-item {
+  font-size: var(--fontsize-medium);
+}
+.category ion-card-header {
+  padding: 10 0 0 0;
 }
 
 .category ion-img {
   max-height: 109px;
+  height: 129px;
+}
+.category ion-img img {
+  max-height: 109px;
+}
+.category .category_payments {
+  height: 25px;
 }
 
 img {
@@ -188,6 +208,59 @@ img {
 .back_button {
   height: 30px;
 }
+
+.checkout_page {
+  font-size: var(--fontsize-medium);
+}
+
+.checkout_page ion-item {
+  font-size: var(--fontsize-medium);
+}
+
+.checkout_page ion-label {
+  font-size: var(--fontsize-medium);
+}
+
+.shop_selection ion-item {
+  font-size: var(--fontsize-medium);
+  height: 30px;
+}
+
+.shop_header_condition {
+  text-align: left;
+    padding-left: 3px;
+    width:70%;
+}
+
+.shope_item_listing {
+  height: 80px;
+}
+
+.shope_item_listing ion-item {
+  font-size: var(--fontsize-medium);
+}
+
+.shope_item_listing ion-card-header {
+  padding: 10 0 0 0;
+}
+.shope_item_listing ion-card-content {
+  padding-bottom: 3px;
+}
+.shope_item_listing ion-img {
+  max-height: 109px;
+  height: 129px;
+}
+.shope_item_listing ion-img img {
+  max-height: 109px;
+}
+.shope_item_listing .category_payments {
+  height: 25px;
+}
+
+.shope_item_listing .shop_item_min_order {
+  font-size: var(--fontsize-small);
+}
+
 
 @media (prefers-color-scheme: dark) {
   /*

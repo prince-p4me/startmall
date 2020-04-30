@@ -1,4 +1,3 @@
-import { CartState } from "../reducers/Cart";
 import React from "react";
 import {
   IonButton,
@@ -6,20 +5,26 @@ import {
   IonGrid,
   IonRow,
   IonCol,
-  IonButtons
+  IonButtons,
+  IonItem
 } from "@ionic/react";
-import { trashOutline } from "ionicons/icons";
+import { closeOutline } from "ionicons/icons";
 import { CartWithQty, ItemObj } from "../model/DomainModels";
-import { addCartAction, delCartAction } from "../reducers/CartAction";
+import {
+  addCartAction,
+  delCartAction,
+  delItemGroup
+} from "../reducers/CartAction";
 import { useDispatch } from "react-redux";
+import { CartState } from "../services/FirebaseIniti";
 
 const ItemList: React.FC<CartState> = ({ cart }) => {
   const dispatch = useDispatch();
   const cartListWithQty: CartWithQty[] = [];
-  const cartListArray: Array<CartWithQty> =[];
+  const cartListArray: Array<CartWithQty> = [];
 
   console.log(cart.cartItemList);
-  cart.cartItemList.map((cartItem) => {
+  cart.cartItemList.map(cartItem => {
     if (cartListWithQty[cartItem.id] == null) {
       cartListWithQty[cartItem.id] = {
         key: cartItem.id,
@@ -30,14 +35,14 @@ const ItemList: React.FC<CartState> = ({ cart }) => {
     if (cartListWithQty[cartItem.id].count === 0) {
       cartListWithQty[cartItem.id].count = 1;
     } else {
-      cartListWithQty[cartItem.id].count ++;
+      cartListWithQty[cartItem.id].count++;
     }
     return {};
   });
   console.log(cartListWithQty);
 
   for (var cartlistitemqty in cartListWithQty) {
-    cartListArray.push(cartListWithQty[cartlistitemqty])
+    cartListArray.push(cartListWithQty[cartlistitemqty]);
     console.log(cartlistitemqty);
   }
   function addCart(cartItem: ItemObj) {
@@ -46,7 +51,6 @@ const ItemList: React.FC<CartState> = ({ cart }) => {
   function delCart(cartItem: ItemObj) {
     dispatch(delCartAction(cartItem));
   }
-
 
   return (
     <IonGrid>
@@ -60,18 +64,29 @@ const ItemList: React.FC<CartState> = ({ cart }) => {
         return (
           <IonRow>
             <IonCol size="2">
-              <IonButton>
-                <IonIcon slot="icon-only" icon={trashOutline} />
+              <IonButton
+                size="small"
+                fill="clear"
+                onClick={() => {
+                  dispatch(delItemGroup(cartWithQty.item));
+                }}
+              >
+                <IonIcon slot="icon-only" color="danger" icon={closeOutline} />
               </IonButton>
             </IonCol>
-            <IonCol size="4">{cartWithQty.item.name}</IonCol>
+            <IonCol size="4">
+              <IonItem lines="none">{cartWithQty.item.name}</IonItem>
+            </IonCol>
             <IonCol size="3">
               <IonButtons>
-                <IonButton fill="outline"
-                onClick={() => {
-                  delCart(cartWithQty.item);
-                }}
-                >-</IonButton>
+                <IonButton
+                  fill="outline"
+                  onClick={() => {
+                    delCart(cartWithQty.item);
+                  }}
+                >
+                  -
+                </IonButton>
                 {cartWithQty.count}
                 <IonButton
                   fill="outline"
@@ -84,7 +99,7 @@ const ItemList: React.FC<CartState> = ({ cart }) => {
               </IonButtons>
             </IonCol>
             <IonCol size="2">
-              $ {cartWithQty.item.unit_price}
+              <IonItem lines="none">${cartWithQty.item.unit_price}</IonItem>
             </IonCol>
           </IonRow>
         );

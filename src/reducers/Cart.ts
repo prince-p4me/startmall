@@ -1,6 +1,6 @@
 import { FirebaseReducer, firebaseReducer } from "react-redux-firebase";
 import { combineReducers, Reducer } from "redux";
-import { CartStateType } from "../model/DomainModels";
+import { CartStateType, ShopStateType } from "../model/DomainModels";
 
 export const INITIAL_STATE = {
   cartItemList: [],
@@ -11,8 +11,11 @@ export const INITIAL_STATE = {
 
 export const ADD_ITEM = "ADD_ITEM";
 export const DEL_ITEM = "DEL_ITEM";
+export const DEL_ITEM_GROUP = "DEL_ITEM_GROUP";
+export const SET_CURRENT_SHOP = "SET_CURRENT_SHOP";
 
 export const cartReducer = (state = INITIAL_STATE, action: any) => {
+  var x = 0;
   // export default function cartReducer(state = INITIAL_STATE, action: any) {
   switch (action.type) {
     case ADD_ITEM:
@@ -26,17 +29,55 @@ export const cartReducer = (state = INITIAL_STATE, action: any) => {
     case DEL_ITEM:
       return {
         cartItemList: [
-          ...state.cartItemList.map((obj, x=0) => {
-            if (x===0 && obj.id === action.payload.id) {
-              x=1;
-              return null;
-            }
-            return obj;
-          }).filter(obj => obj != null)
+          ...state.cartItemList
+            .map(obj => {
+              if (x === 0 && obj.id === action.payload.id) {
+                x = 1;
+                return null;
+              }
+              return obj;
+            })
+            .filter(obj => obj != null)
         ],
         cart: {
           total: ((state.cart.total as number) -
             action.payload.unit_price) as number
+        }
+      };
+    case DEL_ITEM_GROUP:
+      var total = 0;
+      var newlist = state.cartItemList
+        .map(obj => {
+          if (obj.id === action.payload.id) {
+            return null;
+          }
+          total += obj.unit_price as number;
+          return obj;
+        })
+        .filter(obj => obj != null);
+      return {
+        cartItemList: [...newlist],
+        cart: {
+          total: total
+          // total: () => {
+          //   state.cart.total = 0;
+          //   var total = 0;
+          //   state.cartItemList
+          //     .map(obj => {
+          //       if (obj.id === action.payload.id) {
+          //         return null;
+          //       }
+          //       return obj;
+          //     })
+          //     .filter(obj => obj != null)
+          //     .map(obj => {
+          //       if (obj) {
+          //         total += obj.unit_price as number;
+          //       }
+          //     });
+          //   state.cart.total = total;
+          //   return state.cart.total as number;
+          // }
         }
       };
     default:
@@ -66,13 +107,21 @@ interface Market {
 interface RootState {
   firebase: FirebaseReducer.Reducer<Profile, Schema>;
   cart: Reducer<CartStateType>;
+  shop: Reducer<ShopStateType>;
 }
 
+export const shopReducer = (state = { shop: {} }, action: any) => {
+  switch (action.type) {
+    case SET_CURRENT_SHOP:
+      return action.payload;
+    default:
+      return state;
+  }
+};
 const rootReducer = combineReducers({
   firebase: firebaseReducer,
-  cart: cartReducer
+  cart: cartReducer,
+  shop: shopReducer
 });
-
-export type CartState = ReturnType<typeof rootReducer>;
 
 export default rootReducer;

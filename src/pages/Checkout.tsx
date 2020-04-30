@@ -7,13 +7,11 @@ import {
   IonIcon,
   IonLabel,
   IonItem,
-  IonCheckbox,
   IonItemDivider,
   IonFooter,
   IonImg
 } from "@ionic/react";
 import React, { useState } from "react";
-import { CartState } from "../reducers/Cart";
 import { connect } from "react-redux";
 import ItemList from "../components/ItemList";
 import Address from "../components/Address";
@@ -24,6 +22,7 @@ import { CheckoutProps } from "../model/ComponentProps";
 import { AddressObj, PaymentObj, CartStateType } from "../model/DomainModels";
 import ShopHeader from "../components/ShopHeader";
 import ShopConditionAndOperatingHours from "../components/ShopConditionAndOperatingHours";
+import { CartState } from "../services/FirebaseIniti";
 
 const Checkout: React.FC<CheckoutProps> = () => {
   let history = useHistory();
@@ -64,18 +63,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
   // }
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+ 
   
   
   const [cartState, setCartState] = useState<CartStateType>({
@@ -86,15 +74,16 @@ const Checkout: React.FC<CheckoutProps> = () => {
   });
 
   function mapStateToProps(state: CartState) {
-    const { firebase, cart } = state;
+    const { firebase, cart, shop } = state;
     setCartState(cart);
-    return { firebase, cart };
+    return { firebase, cart, shop };
   }
 
   const CartItemList = connect(mapStateToProps)(ItemList);
-
+  const ShopHeaderWithShop = connect(mapStateToProps)(ShopHeader);
+  const EnhancedCondition = connect(mapStateToProps)(ShopConditionAndOperatingHours);
   const handleComplete = async () => {
-    history.push("/");
+    history.push("/orders");
     console.log("Did I go back?");
   };
 
@@ -102,8 +91,10 @@ const Checkout: React.FC<CheckoutProps> = () => {
     history.goBack();
   };
 
+  
+
   return (
-    <IonPage id="checkout">
+    <IonPage id="checkout" className="checkout_page">
       <IonToolbar color="secondary">
         <IonButtons slot="end">
           <IonButton onClick={closehandler}>
@@ -116,12 +107,12 @@ const Checkout: React.FC<CheckoutProps> = () => {
         </IonButtons>
       </IonToolbar>
       <IonContent>
-        <ShopHeader image_url=""/>
+        <ShopHeaderWithShop />
         <CartItemList />
         <IonItem>
           <IonLabel>Total incl GST ${cartState.cart.total}</IonLabel>
         </IonItem>
-        <ShopConditionAndOperatingHours />
+        <EnhancedCondition />
         <IonLabel>
           <h1>Where to? </h1>
         </IonLabel>
@@ -133,11 +124,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
         <IonItemDivider>Comfirm</IonItemDivider>
         <IonFooter>
         <IonToolbar>
-          <IonItem>
-            <IonCheckbox></IonCheckbox>
-            <IonLabel>I read and understand Terms & Condition</IonLabel>
-          </IonItem>
-          <IonItem>
+          <IonItem lines="none">
             <IonButtons slot="end">
               <IonButton
                 color="secondary"
@@ -162,7 +149,6 @@ const Checkout: React.FC<CheckoutProps> = () => {
             slot="start"
             src="/assets/icon/1x/payment.png"
           ></IonImg>
-          <IonButton slot="end"> Order now </IonButton>
         </IonItem>
       </IonFooter>
       </IonContent>

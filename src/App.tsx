@@ -28,6 +28,7 @@ import Checkout from "./pages/Checkout";
 import Dashboard from "./pages/Dashboard";
 import ShopSelection from "./pages/ShopSelection";
 import ShopMain from "./containers/ShopMain";
+import OrderComplete from "./pages/OrderComplete";
 
 const App: React.FC = () => {
   console.log("entering app");
@@ -42,6 +43,7 @@ const App: React.FC = () => {
             <Route path="/landing" component={Dashboard} exact />
             <Route path="/shop_selections" component={ShopSelection} exact />
             <Route path="/tabs" component={MainTabs} exact />
+            <Route path="/orders" component={OrderComplete} exact />
             <Route path="/shop/:name/categories" component={ShopMain} exact />
             <Route path="/page/:name" component={Page} exact />
             <Redirect from="/" to="/tabs" exact />

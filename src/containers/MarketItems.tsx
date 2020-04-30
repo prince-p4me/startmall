@@ -1,31 +1,22 @@
 import {
-  IonButtons,
   IonContent,
-  IonHeader,
-  IonMenuButton,
   IonPage,
-  IonToolbar,
-  IonIcon,
   IonGrid,
   IonRow,
   IonCol,
-  IonBadge,
-  IonButton,
-  IonTitle
-} from "@ionic/react";
-import { basket } from "ionicons/icons";
+  IonBadge} from "@ionic/react";
 import React, { useState } from "react";
 import "./Market.css";
 import ShopItem from "./ShopItem";
 import Cart from "./Cart";
 import { connect, useSelector } from "react-redux";
-import { CartState } from "../reducers/Cart";
 import { MarketItemsProps } from "../model/ComponentProps";
-import GoBack from "../components/GoBack";
 import ShopHeader from "../components/ShopHeader";
 import { useParams } from "react-router";
 import { useFirestoreConnect, FirestoreReducer } from "react-redux-firebase";
-import { RootState, Markets } from "../services/FirebaseIniti";
+import { RootState, Markets } from "../model/DomainModels";
+import { CartState } from "../services/FirebaseIniti";
+import MarketHeader from "../components/MarketHeader";
 
 // interface ItemJson {
 //   产品: string;
@@ -44,7 +35,7 @@ const MarketItems: React.FC<MarketItemsProps> = () => {
   const [showModal, setShowModal] = useState(false);
 
   useFirestoreConnect([
-    { collection: "Markets", doc: market_id },
+    { collection: "Markets", doc: market_id, storeAs: "Market" },
     {
       collection: "Markets",
       doc: market_id,
@@ -62,17 +53,13 @@ const MarketItems: React.FC<MarketItemsProps> = () => {
     state => state.firestore
   ) as FirestoreReducer.Reducer;
 
-  if (dataStore.ordered.Markets && dataStore.ordered.Markets.length > 0) {
-    dataStore.ordered.Markets.map(tmarket => {
+  if (dataStore.ordered.Market && dataStore.ordered.Market.length > 0) {
+    dataStore.ordered.Market.map(tmarket => {
       console.log(tmarket.name);
       shop = tmarket;
       return shop;
     });
   }
-
-
-  console.log("datastore");
-  console.log(dataStore);
 
   const CartBadge: React.FC<CartState> = ({ cart }) => {
     const cartSize = cart.cartItemList.length;
@@ -84,10 +71,11 @@ const MarketItems: React.FC<MarketItemsProps> = () => {
   };
 
   function mapStateToProps(state: CartState) {
-    const { firebase, cart } = state;
-    return { firebase, cart };
+    const { firebase, cart, shop } = state;
+    return { firebase, cart, shop };
   }
   const CartCounter = connect(mapStateToProps)(CartBadge);
+  const ShopHeaderWithShop = connect(mapStateToProps)(ShopHeader);
 
   // data.禽蛋类.map(item => {
   //   var jsonitem = item as ItemJson;
@@ -103,37 +91,24 @@ const MarketItems: React.FC<MarketItemsProps> = () => {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar color="secondary">
-          <IonButtons slot="end">
-            <IonButton onClick={() => setShowModal(true)} slot="start">
-              <IonIcon size="large" slot="icon-only" icon={basket}></IonIcon>
-              <CartCounter />
-            </IonButton>
-            <IonMenuButton />
-          </IonButtons>
-          <IonButtons slot="start">
-            <GoBack />
-          </IonButtons>
-          <IonTitle size="large">
-          <p>{shop.terms_condition}</p>
-          </IonTitle>
-        </IonToolbar>
-      </IonHeader>
-
-      <IonContent fullscreen>
-        <ShopHeader image_url={shop.img_url as string} />
+      <MarketHeader setShowModal={setShowModal} shop={shop} CartCounter={CartCounter}/>
+      <IonContent className="shope_item_listing" fullscreen>
+        <ShopHeaderWithShop
+        />
         <IonGrid>
           <IonRow>
-            {(dataStore.ordered.ItemList && dataStore.ordered.ItemList.length >0) ? (
+            {dataStore.ordered.ItemList &&
+            dataStore.ordered.ItemList.length > 0 ? (
               dataStore.ordered.ItemList.map(obj => {
-              return (
-                <IonCol key={obj.id}>
-                  <ShopItem item={obj} />
-                </IonCol>
-              );
-            })) : (<p></p>)
-          }
+                return (
+                  <IonCol key={obj.id}>
+                    <ShopItem item={obj} />
+                  </IonCol>
+                );
+              })
+            ) : (
+              <p></p>
+            )}
           </IonRow>
         </IonGrid>
         <Cart modal={showModal} closehandler={() => setShowModal(false)} />

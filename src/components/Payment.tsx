@@ -7,19 +7,14 @@ const Payment: React.FC<PaymentProps> = () => {
     <IonList>
       <IonItemDivider>Direct Debit</IonItemDivider>
 
-      <IonItem>
+      <IonItem lines="none">
         <IonCheckbox></IonCheckbox>Bank Account number XXXXXX
       </IonItem>
-      <IonItemDivider>Cashs on delivery</IonItemDivider>
-      <IonItem>
+      <IonItem lines="none">
         <IonCheckbox></IonCheckbox>Cash on Delivery
       </IonItem>
-      <IonItemDivider>Pay by Visa / Master</IonItemDivider>
-      <IonItem>
-        <IonCheckbox></IonCheckbox>Powered by Paypal
-      </IonItem>
-      <IonItem>
-        <IonCheckbox></IonCheckbox>Agree on our Terms and Conditions
+      <IonItem lines="none">
+        <IonCheckbox></IonCheckbox>I read and agree on our Terms and Conditions
       </IonItem>
     </IonList>
   );
