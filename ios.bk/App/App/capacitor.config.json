@@ -1,0 +1,11 @@
+{
+  "appId": "com.startmall.app",
+  "appName": "StartMall",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "build",
+  "cordova": {},
+  "server": {
+    "url": "http://100.115.92.203:8100"
+  }
+}
