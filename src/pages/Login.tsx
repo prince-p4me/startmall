@@ -29,6 +29,7 @@ const Login: React.FC = () => {
   console.log(auth);
 
   useEffect(() => {
+    console.log("User Logged in");
     if (isLoaded(auth) && !isEmpty(auth)) {
       console.log("User Logged in");
       history.push("/");
@@ -37,12 +38,13 @@ const Login: React.FC = () => {
 
   function loginWithGoogle() {
     return firebase
-      .login({ provider: "google", type: "popup" })
+      .login({ provider: "google", type: "redirect" })
       .then(data => {
         console.log(data);
         history.push("/");
       })
       .catch(data => {
+        console.log("Something Wrong with Google login.");
         console.log(data);
       });
   }
@@ -55,6 +57,7 @@ const Login: React.FC = () => {
         history.push("/");
       })
       .catch(data => {
+        console.log("Something Wrong with Facebook login.");
         console.log(data);
       });
   }

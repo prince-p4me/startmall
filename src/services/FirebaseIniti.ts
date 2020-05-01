@@ -15,7 +15,8 @@ const firebaseConfig = {
     storageBucket: "slashiee.appspot.com",
     messagingSenderId: "326027994327",
     appId: "1:326027994327:web:5a227f71ef8b92ca523c92",
-    measurementId: "G-9DBHG304Z8"
+    measurementId: "G-9DBHG304Z8",
+    enableRedirectHandling: false
 }
 
 // 255334572519961
