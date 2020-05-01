@@ -18,6 +18,30 @@ const firebaseConfig = {
     measurementId: "G-9DBHG304Z8"
 }
 
+// 255334572519961
+//6e8a5dd14adaf8609ba4d8b29f7c7ac7
+// <script>
+//   window.fbAsyncInit = function() {
+//     FB.init({
+//       appId      : '{your-app-id}',
+//       cookie     : true,
+//       xfbml      : true,
+//       version    : '{api-version}'
+//     });
+      
+//     FB.AppEvents.logPageView();   
+      
+//   };
+
+//   (function(d, s, id){
+//      var js, fjs = d.getElementsByTagName(s)[0];
+//      if (d.getElementById(id)) {return;}
+//      js = d.createElement(s); js.id = id;
+//      js.src = "https://connect.facebook.net/en_US/sdk.js";
+//      fjs.parentNode.insertBefore(js, fjs);
+//    }(document, 'script', 'facebook-jssdk'));
+// </script>
+
 
 // react-redux-firebase config
 const rrfConfig = {

@@ -34,7 +34,7 @@ const ShopSelectionList: React.FC<ShopSelectionListProps> = ({
               <IonText>Terms: </IonText>
             </IonItem>
             <IonItem lines="none">
-              <IonText>{obj.terms_condition}</IonText>
+              <IonText>{obj.cut_off_terms}</IonText>
             </IonItem>
           </IonCard>
         );

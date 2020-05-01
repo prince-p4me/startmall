@@ -16,7 +16,7 @@ const ShopConditionAndOperatingHours: React.FC<ShopHeaderProps> = ({shop}) => {
     <IonItem className="checkout_conditions">
       <p>{loadedShop.free_delivery_conditions}
       <br/>
-      {loadedShop.terms_condition}</p>
+      {loadedShop.cut_off_terms}</p>
     </IonItem>
   );
 };

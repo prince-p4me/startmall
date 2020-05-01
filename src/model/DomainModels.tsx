@@ -49,10 +49,10 @@ export interface PaymentObj {
 }
 
 export interface CartStateType {
-  cartItemList: ItemObj[],
+  cartItemList: ItemObj[];
   cart: {
-    total: number
-  }
+    total: number;
+  };
 }
 
 export interface ShopStateType {
@@ -61,19 +61,18 @@ export interface ShopStateType {
 
 export interface CartItem {
   market: string;
-  item_key:number;
-  cart_key:number;
+  item_key: number;
+  cart_key: number;
   name: string;
   desc: string;
   cost: number;
   qty: number;
 }
 
-export interface CartWithQty{
-  [key :string]: string | number | ItemObj| null;
+export interface CartWithQty {
+  [key: string]: string | number | ItemObj | null;
   item: ItemObj;
   count: number;
-  
 }
 
 // Optional: If you use the user profile option
@@ -103,23 +102,36 @@ export interface RootState {
 }
 
 export interface Categories {
-  img_url : string;
+  img_url: string;
   name: string;
   id: number;
-  load_order:number;
+  load_order: number;
 }
 export interface Markets {
   [key: string]: string | number | [] | null;
   id: string;
-  name : string;
-  opening_hour: [] ;
+  name: string;
+  opening_hour: [];
   // imageUrl:string;
   // serviceOffering: string;
   // terms: string;
-  free_delivery: string;
-  img_url:string;
-  store_address:string;
-  support_postcodes:[];
-  terms_condition:string;
+  free_delivery_conditions: string;
+  img_url: string;
+  store_address: string;
+  support_postcodes: [];
+  cut_off_terms: string;
+  service_offering:string;
+}
 
+export interface Invoice {
+  [key: string]: string | number | [] | any | null;
+  id: string;
+  cart_items: CartItem[];
+  user_id: string;
+  address: string;
+  address_id: string;
+  market_id: string;
+  cart_total_cost_inc_GST: number;
+  platform_charges: number;
+  cut_off_terms: string; 
 }

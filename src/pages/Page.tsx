@@ -21,6 +21,7 @@ import { useSelector } from "react-redux";
 import "firebase/firestore";
 import hifreshdata from "../data/hmarketitems.json";
 import { Categories, Markets, RootState } from "../model/DomainModels";
+import { FirestoreIonImg } from "../services/FirebaseStorage";
 
 interface testprop {
   market: Markets;
@@ -63,21 +64,21 @@ const Page: React.FC = () => {
   var upload_categories = [] as Categories[];
 
   var i = 0;
-  keys.forEach((key) => {
+  keys.forEach(key => {
     upload_categories.push({
       id: i,
       img_url: "",
       name: key,
 
-      load_order:0
+      load_order: 0
     });
     i++;
   });
 
   console.log(values[0]);
-values[0].forEach(obj =>  {
-  console.log(obj);
-})
+  values[0].forEach(obj => {
+    console.log(obj);
+  });
   useFirestoreConnect([{ collection: "Markets" }]);
 
   const markets = useSelector<RootState>(
@@ -107,7 +108,6 @@ values[0].forEach(obj =>  {
   // )(Test);
 
   function CreateMarket() {
-
     const firebase = getFirebase();
     // const firestore = getFirestore(firebase);
     // firebase
@@ -126,7 +126,7 @@ values[0].forEach(obj =>  {
     //   });
     //   i++;
     // });
-    var i=0;
+    var i = 0;
     keys.forEach(key => {
       firebase
         .firestore()
@@ -142,33 +142,30 @@ values[0].forEach(obj =>  {
           console.log(docRef);
           var new_category_id = docRef.id;
           console.log("Add Categories Completed");
-          
 
           values[i].forEach(item => {
             firebase
-            .firestore()
-            .collection("Markets")
-            .doc("FtSvVlEa4G4xHduMnf2l")
-            .collection("Categories")
-            .doc(new_category_id)
-            .collection("Items")
-            .add({
-              name: item.产品,
-              unit_price: item.售出单价,
-              unit: item.规格,
-              img_url:"",
-              store_name:""
-            })
-            .then(() => {
-              console.log("Added Items to category");
-            });
-
+              .firestore()
+              .collection("Markets")
+              .doc("FtSvVlEa4G4xHduMnf2l")
+              .collection("Categories")
+              .doc(new_category_id)
+              .collection("Items")
+              .add({
+                name: item.产品,
+                unit_price: item.售出单价,
+                unit: item.规格,
+                img_url: "",
+                store_name: ""
+              })
+              .then(() => {
+                console.log("Added Items to category");
+              });
           });
           i++;
         });
     });
   }
-
 
   console.log("entering page");
   return (
@@ -181,7 +178,7 @@ values[0].forEach(obj =>  {
           <IonTitle>{name}</IonTitle>
         </IonToolbar>
       </IonHeader>
-
+      <FirestoreIonImg src="gs://slashiee.appspot.com/hifresh/categories/y2637HMBAxuFpC89igEL/organic_apple.png" />
       <IonContent>
         <Test doc={doc_id} market={market} />
         <IonButton onClick={CreateMarket}>Test Creat Market</IonButton>

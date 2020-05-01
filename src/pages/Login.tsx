@@ -37,7 +37,7 @@ const Login: React.FC = () => {
 
   function loginWithGoogle() {
     return firebase
-      .login({ provider: "google", type: "redirect" })
+      .login({ provider: "google", type: "popup" })
       .then(data => {
         console.log(data);
         history.push("/");

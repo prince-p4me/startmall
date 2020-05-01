@@ -7,15 +7,14 @@ import {
   IonIcon,
   IonFooter,
   IonItem,
-  IonLabel,
-  IonImg
-} from "@ionic/react";
+  IonLabel} from "@ionic/react";
 import { add, heart, heartOutline } from "ionicons/icons";
 import state from "../reducers/Cart";
 import { useDispatch } from "react-redux";
 import { addCartAction } from "../reducers/CartAction";
 import { ItemObj } from "../model/DomainModels";
 import { ShopItemProps } from "../model/ComponentProps";
+import { FirestoreIonImg } from "../services/FirebaseStorage";
 
 const ShopItem: React.FC<ShopItemProps> = ({ item }) => {
   const [favorites, setFavorites] = useState(heartOutline);
@@ -54,7 +53,8 @@ const ShopItem: React.FC<ShopItemProps> = ({ item }) => {
       </IonCardHeader>
       <IonCardContent>
         <IonItem lines="none">
-          <IonImg src={item.img_url as string}></IonImg>
+          <FirestoreIonImg src={item.img_url as string} />
+          {/* <IonImg src={item.img_url as string}></IonImg> */}
         </IonItem>
       </IonCardContent>
       <IonFooter>
