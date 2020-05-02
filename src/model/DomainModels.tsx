@@ -1,6 +1,5 @@
 import { FirebaseReducer, FirestoreReducer } from "react-redux-firebase";
 import { Reducer } from "redux";
-import MarketItems from "../containers/MarketItems";
 import Market from "../containers/Market";
 
 export interface CategoryObj {

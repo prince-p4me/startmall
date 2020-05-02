@@ -28,14 +28,6 @@
           <string>capacitor</string>
         </array>
       </dict>
-      <dict>
-        <key>CFBundleURLName</key>
-        <string>com.startmall.app</string>
-        <key>CFBundleURLSchemes</key>
-        <array>
-          <string>com.googleusercontent.apps.326027994327-bif3h9ps4ilb4necgdt1kdq1lk6ooek5</string>
-        </array>
-      </dict>
     </array>
     <key>CFBundleVersion</key>
     <string>1</string>
