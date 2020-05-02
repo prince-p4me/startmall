@@ -22,6 +22,8 @@ import "firebase/firestore";
 import hifreshdata from "../data/hmarketitems.json";
 import { Categories, Markets, RootState } from "../model/DomainModels";
 import { FirestoreIonImg } from "../services/FirebaseStorage";
+import {cfaSignIn} from 'capacitor-firebase-auth';
+import { User } from "@firebase/auth-types";
 
 interface testprop {
   market: Markets;
@@ -100,6 +102,12 @@ const Page: React.FC = () => {
     });
   }
 
+
+  function googleLoginHandler() {
+    cfaSignIn('google.com').subscribe (
+      (user: User) => console.log(user.displayName));
+    return "";
+  }
   // const TestComponent = compose(
   //   firestoreConnect(() => ["Markets"]), // or { collection: 'todos' }
   //   connect((state, props) => ({
@@ -187,7 +195,7 @@ const Page: React.FC = () => {
             <IonTitle size="large">{name}</IonTitle>
           </IonToolbar>
         </IonHeader>
-
+<IonButton onClick={googleLoginHandler}> Google Login </IonButton>
         <ExploreContainer name={name} />
       </IonContent>
     </IonPage>
