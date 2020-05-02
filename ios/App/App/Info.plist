@@ -22,10 +22,18 @@
     <array>
       <dict>
         <key>CFBundleURLName</key>
+        <string>com.getcapacitor.capacitor</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>capacitor</string>
+        </array>
+      </dict>
+      <dict>
+        <key>CFBundleURLName</key>
         <string>com.startmall.app</string>
         <key>CFBundleURLSchemes</key>
         <array>
-          <string>startmall</string>
+          <string>com.googleusercontent.apps.326027994327-bif3h9ps4ilb4necgdt1kdq1lk6ooek5</string>
         </array>
       </dict>
     </array>
