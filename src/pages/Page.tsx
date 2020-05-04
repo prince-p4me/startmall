@@ -22,7 +22,7 @@ import "firebase/firestore";
 import hifreshdata from "../data/hmarketitems.json";
 import { Categories, Markets, RootState } from "../model/DomainModels";
 import { FirestoreIonImg } from "../services/FirebaseStorage";
-import {cfaSignIn} from 'capacitor-firebase-auth';
+import { cfaSignIn } from "capacitor-firebase-auth";
 import { User } from "@firebase/auth-types";
 
 interface testprop {
@@ -102,10 +102,10 @@ const Page: React.FC = () => {
     });
   }
 
-
   function googleLoginHandler() {
-    cfaSignIn('google.com').subscribe (
-      (user: User) => console.log(user.displayName));
+    cfaSignIn("google.com").subscribe((user: User) =>
+      console.log(user.displayName)
+    );
     return "";
   }
   // const TestComponent = compose(
@@ -175,6 +175,31 @@ const Page: React.FC = () => {
     });
   }
 
+  function copyMarkets() {
+    const firebase = getFirebase();
+    const targetID = "FtSvVlEa4G4xHduMnf2l";
+    const sourceID = "LX7x6b4dEkXvjRWb0rNK";
+
+    firebase
+      .firestore()
+      .collection("Markets")
+      .doc(sourceID)
+      .get()
+      .then(snapshot => {
+
+        console.log(snapshot.data());
+        firebase
+          .firestore()
+          .collection("Markets")
+          .doc(targetID)
+          .update({...snapshot.data()})
+          .then(result => {
+            console.log("update successfully");
+            console.log(result);
+          });
+      });
+  }
+
   console.log("entering page");
   return (
     <IonPage>
@@ -186,16 +211,17 @@ const Page: React.FC = () => {
           <IonTitle>{name}</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <FirestoreIonImg src="gs://slashiee.appspot.com/hifresh/categories/y2637HMBAxuFpC89igEL/organic_apple.png" />
+      {/* <FirestoreIonImg src="gs://slashiee.appspot.com/hifresh/categories/y2637HMBAxuFpC89igEL/organic_apple.png" /> */}
       <IonContent>
-        <Test doc={doc_id} market={market} />
+        {/* <Test doc={doc_id} market={market} /> */}
         <IonButton onClick={CreateMarket}>Test Creat Market</IonButton>
+        <IonButton onClick={copyMarkets}>Copy HiFresh Market</IonButton>
         <IonHeader collapse="condense">
           <IonToolbar>
             <IonTitle size="large">{name}</IonTitle>
           </IonToolbar>
         </IonHeader>
-<IonButton onClick={googleLoginHandler}> Google Login </IonButton>
+        <IonButton onClick={googleLoginHandler}> Google Login </IonButton>
         <ExploreContainer name={name} />
       </IonContent>
     </IonPage>
