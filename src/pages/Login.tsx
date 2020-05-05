@@ -60,16 +60,21 @@ const Login: React.FC = () => {
   }
 
   function loginWithFacebook() {
-    return firebase
-      .login({ provider: "facebook", type: "redirect" })
-      .then(data => {
-        console.log(data);
-        history.push("/");
-      })
-      .catch(data => {
-        console.log("Something Wrong with Facebook login.");
-        console.log(data);
-      });
+    // return firebase
+    //   .login({ provider: "facebook", type: "redirect" })
+    //   .then(data => {
+    //     console.log(data);
+    //     history.push("/");
+    //   })
+    //   .catch(data => {
+    //     console.log("Something Wrong with Facebook login.");
+    //     console.log(data);
+    //   });
+    return cfaSignIn('facebook.com').pipe(
+      mapUserToUserInfo(),
+    ).subscribe(
+      (user: UserInfo) => console.log(user.displayName)
+    )
   }
 
   return (

@@ -28,7 +28,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
   let history = useHistory();
   const [addressObject] = useState<AddressObj>();
   const [paymentOption] = useState<PaymentObj>();
-  
+
   // const { market_id } = useParams<{ market_id: string }>();
   // const { category_id } = useParams<{ category_id: string }>();
   // var shop = {} as Markets;
@@ -61,11 +61,11 @@ const Checkout: React.FC<CheckoutProps> = () => {
   //     return shop;
   //   });
   // }
-  
-  
- 
-  
-  
+
+
+
+
+
   const [cartState, setCartState] = useState<CartStateType>({
     cartItemList: [],
     cart: {
@@ -90,8 +90,6 @@ const Checkout: React.FC<CheckoutProps> = () => {
   const closehandler = async () => {
     history.goBack();
   };
-
-  
 
   return (
     <IonPage id="checkout" className="checkout_page">
@@ -123,34 +121,34 @@ const Checkout: React.FC<CheckoutProps> = () => {
         <Payment payment={paymentOption} />
         <IonItemDivider>Comfirm</IonItemDivider>
         <IonFooter>
-        <IonToolbar>
+          <IonToolbar>
+            <IonItem lines="none">
+              <IonButtons slot="end">
+                <IonButton
+                  color="secondary"
+                  fill="outline"
+                  onClick={handleComplete}
+                >
+                  Continue Shopping
+              </IonButton>
+                <IonButton
+                  color="primary"
+                  fill="outline"
+                  onClick={handleComplete}
+                >
+                  Confirm
+              </IonButton>
+              </IonButtons>
+            </IonItem>
+          </IonToolbar>
           <IonItem lines="none">
-            <IonButtons slot="end">
-              <IonButton
-                color="secondary"
-                fill="outline"
-                onClick={handleComplete}
-              >
-                Continue Shopping
-              </IonButton>
-              <IonButton
-                color="primary"
-                fill="outline"
-                onClick={handleComplete}
-              >
-                Confirm
-              </IonButton>
-            </IonButtons>
+            <IonImg
+              class="footer_pay"
+              slot="start"
+              src="/assets/icon/1x/payment.png"
+            ></IonImg>
           </IonItem>
-        </IonToolbar>
-        <IonItem lines="none">
-          <IonImg
-            class="footer_pay"
-            slot="start"
-            src="/assets/icon/1x/payment.png"
-          ></IonImg>
-        </IonItem>
-      </IonFooter>
+        </IonFooter>
       </IonContent>
     </IonPage>
   );
