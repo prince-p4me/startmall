@@ -14,12 +14,21 @@
         "phone"
       ],
       "languageCode": "en",
-      "nativeAuth": false,
+      "nativeAuth": true,
       "permissions": {
         "google": [
           "profile",
           "https://www.googleapis.com/auth/drive"
         ]
+      }
+    },
+    "plugins": {
+      "GoogleAuth": {
+        "scopes": [
+          "profile",
+          "email"
+        ],
+        "serverClientId": "326027994327-aqgbjblrpuujfljd9hokalkvdfd5nnbn.apps.googleusercontent.com"
       }
     }
   },
