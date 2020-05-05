@@ -18,9 +18,13 @@ import { CartState } from "../services/FirebaseIniti";
 import MarketHeader from "../components/MarketHeader";
 
 const Market: React.FC = () => {
+  const profile = useSelector<RootState>(state => state.firebase.profile)
+console.log ("User Profile:");
+  console.log (profile);
   const { market_id } = useParams<{ market_id: string }>();
   var shop = {} as Markets;
   const [showModal, setShowModal] = useState(false);
+
   const CartBadge: React.FC<CartState> = ({ cart }) => {
     const cartSize = cart.cartItemList.length;
     if (cartSize > 0) {

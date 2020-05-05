@@ -13,11 +13,9 @@ import {
   IonFooter
 } from "@ionic/react";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useHistory } from "react-router-dom";
-import {
-  bookmarkOutline,
-  rocketOutline} from "ionicons/icons";
+import { bookmarkOutline, rocketOutline } from "ionicons/icons";
 import "./Menu.css";
 import { AppPage, RootState } from "../model/DomainModels";
 import { useFirebase, isLoaded, isEmpty } from "react-redux-firebase";
@@ -76,13 +74,17 @@ const Menu: React.FC = () => {
   const location = useLocation();
   const firebase = useFirebase();
   const history = useHistory();
+  const [userPhoto, setUserPhoto] = useState("");
   const auth: UserInfo = useSelector<RootState>(
     state => state.firebase.auth
   ) as UserInfo;
   console.log(auth);
+  useEffect(() => {
+    setUserPhoto(auth.photoURL as string);
+  });
   function handleSignOut() {
+    setUserPhoto("");
     firebase.logout().then(() => {
-      auth.photoURL = "";
       history.push("/");
     });
   }
@@ -93,8 +95,8 @@ const Menu: React.FC = () => {
           <IonListHeader>
             <IonItem lines="none">{auth.displayName}</IonItem>
             <IonAvatar>
-              <IonImg src={auth.photoURL as string}></IonImg>
-            </IonAvatar>{" "}
+              {userPhoto ? <IonImg src={userPhoto}></IonImg> : <p></p>}
+            </IonAvatar>
           </IonListHeader>
           <IonNote>{auth.email}</IonNote>
           {appPages.map((appPage, index) => {
@@ -130,9 +132,10 @@ const Menu: React.FC = () => {
           {isLoaded(auth) && !isEmpty(auth) ? (
             <IonItem onClick={handleSignOut}>Sign Out</IonItem>
           ) : (
-            <IonItem routerLink="/login" routerDirection="none"detail={false} >Sign In</IonItem>
-          )
-          }
+            <IonItem routerLink="/login" routerDirection="none" detail={false}>
+              Sign In
+            </IonItem>
+          )}
         </IonFooter>
       </IonContent>
     </IonMenu>
