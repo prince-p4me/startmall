@@ -17,12 +17,14 @@ import React from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import {
   bookmarkOutline,
-  rocketOutline} from "ionicons/icons";
+  rocketOutline
+} from "ionicons/icons";
 import "./Menu.css";
 import { AppPage, RootState } from "../model/DomainModels";
 import { useFirebase, isLoaded, isEmpty } from "react-redux-firebase";
 import { useSelector } from "react-redux";
 import { UserInfo } from "@firebase/auth-types";
+import { cfaSignOut } from 'capacitor-firebase-auth';
 
 const appPages: AppPage[] = [
   {
@@ -85,6 +87,8 @@ const Menu: React.FC = () => {
       auth.photoURL = "";
       history.push("/");
     });
+    // cfaSignOut().subscribe();
+
   }
   return (
     <IonMenu contentId="main" type="overlay" side="end">
@@ -130,8 +134,8 @@ const Menu: React.FC = () => {
           {isLoaded(auth) && !isEmpty(auth) ? (
             <IonItem onClick={handleSignOut}>Sign Out</IonItem>
           ) : (
-            <IonItem routerLink="/login" routerDirection="none"detail={false} >Sign In</IonItem>
-          )
+              <IonItem routerLink="/login" routerDirection="none" detail={false} >Sign In</IonItem>
+            )
           }
         </IonFooter>
       </IonContent>

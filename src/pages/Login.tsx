@@ -17,6 +17,9 @@ import { useFirebase, isLoaded, isEmpty } from "react-redux-firebase";
 import { useSelector } from "react-redux";
 import { RootState } from "../model/DomainModels";
 import { useHistory } from "react-router-dom";
+import { Plugins } from '@capacitor/core';
+import { cfaSignIn, mapUserToUserInfo } from 'capacitor-firebase-auth';
+import { UserInfo } from 'firebase/app';
 
 const Login: React.FC = () => {
   const firebase = useFirebase();
@@ -36,17 +39,24 @@ const Login: React.FC = () => {
     }
   }, [auth, history]);
 
-  function loginWithGoogle() {
-    return firebase
-      .login({ provider: "google", type: "redirect" })
-      .then(data => {
-        console.log(data);
-        history.push("/");
-      })
-      .catch(data => {
-        console.log("Something Wrong with Google login.");
-        console.log(data);
-      });
+  async function loginWithGoogle() {
+    await Plugins.GoogleAuth.signOut();
+    // return firebase
+    //   .login({ provider: "google", type: "redirect" })
+    //   .then(data => {
+    //     console.log(data);
+    //     history.push("/");
+    //   })
+    //   .catch(data => {
+    //     console.log("Something Wrong with Google login.");
+    //     console.log(data);
+    //   });
+    // return Plugins.GoogleAuth.signIn();
+    return cfaSignIn('google.com').pipe(
+      mapUserToUserInfo(),
+    ).subscribe(
+      (user: UserInfo) => console.log(user.displayName)
+    )
   }
 
   function loginWithFacebook() {
