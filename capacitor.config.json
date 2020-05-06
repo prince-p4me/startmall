@@ -22,14 +22,12 @@
         ]
       }
     },
-    "plugins": {
-      "GoogleAuth": {
-        "scopes": [
-          "profile",
-          "email"
-        ],
-        "serverClientId": "326027994327-aqgbjblrpuujfljd9hokalkvdfd5nnbn.apps.googleusercontent.com"
-      }
+    "GoogleAuth": {
+      "scopes": [
+        "profile",
+        "email"
+      ],
+      "serverClientId": "326027994327-aqgbjblrpuujfljd9hokalkvdfd5nnbn.apps.googleusercontent.com"
     }
   },
   "server": {

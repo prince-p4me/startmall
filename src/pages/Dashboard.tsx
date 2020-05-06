@@ -9,17 +9,23 @@ import {
 } from "@ionic/react";
 import React, { useState } from "react";
 import MainHeader from "../components/MainHeader";
+import { Plugins } from '@capacitor/core';
+const { SplashScreen } = Plugins;
 
 const Dashboard: React.FC = () => {
   console.log("entering Dashboard");
   const [postcode] = useState("");
+  SplashScreen.show({
+    showDuration: 2000,
+    autoHide: true
+  });
   return (
     <IonPage>
       <MainHeader />
 
       <IonContent fullscreen>
-        <IonImg  src="/assets/icon/1x/cover.png" />
-        
+        <IonImg src="/assets/icon/1x/cover.png" />
+
         <IonItem>
           <IonInput
             placeholder="Enter postcode to search"

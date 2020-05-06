@@ -20,7 +20,6 @@ import "@ionic/react/css/text-alignment.css";
 import "@ionic/react/css/text-transformation.css";
 import "@ionic/react/css/flex-utils.css";
 import "@ionic/react/css/display.css";
-
 /* Theme variables */
 import "./theme/variables.css";
 import MainTabs from "./components/MainTabs";
@@ -32,7 +31,7 @@ import Login from "./pages/Login";
 
 const App: React.FC = () => {
   console.log("entering app");
- 
+
   return (
     <IonApp>
       <IonReactRouter>

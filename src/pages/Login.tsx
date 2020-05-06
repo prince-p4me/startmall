@@ -41,17 +41,6 @@ const Login: React.FC = () => {
 
   async function loginWithGoogle() {
     await Plugins.GoogleAuth.signOut();
-    // return firebase
-    //   .login({ provider: "google", type: "redirect" })
-    //   .then(data => {
-    //     console.log(data);
-    //     history.push("/");
-    //   })
-    //   .catch(data => {
-    //     console.log("Something Wrong with Google login.");
-    //     console.log(data);
-    //   });
-    // return Plugins.GoogleAuth.signIn();
     return cfaSignIn('google.com').pipe(
       mapUserToUserInfo(),
     ).subscribe(
@@ -60,16 +49,7 @@ const Login: React.FC = () => {
   }
 
   function loginWithFacebook() {
-    // return firebase
-    //   .login({ provider: "facebook", type: "redirect" })
-    //   .then(data => {
-    //     console.log(data);
-    //     history.push("/");
-    //   })
-    //   .catch(data => {
-    //     console.log("Something Wrong with Facebook login.");
-    //     console.log(data);
-    //   });
+    // await Plugins.FbAuth.signOut();
     return cfaSignIn('facebook.com').pipe(
       mapUserToUserInfo(),
     ).subscribe(
