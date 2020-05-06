@@ -26,10 +26,29 @@ const Login: React.FC = () => {
   const firebase = useFirebase();
   const auth = useSelector<RootState>(state => state.firebase.auth);
   const history = useHistory();
+  const db = firebase.firestore();
   firebase.auth().onAuthStateChanged(function (user) {
     console.log("Login State changes");
     console.log(user);
+    if (isLoaded(auth) && !isEmpty(auth)) {
+      console.log("User Logged in");
+      writeUserData(auth);
+    }
   });
+
+  function writeUserData(auth1: any) {
+    let auth2 = JSON.parse(JSON.stringify(auth1));
+    db.collection("Users").doc(auth2.uid).set({
+      providerId: auth2.providerData[0].providerId,
+      display_name: auth2.displayName, //displayName
+      payment_detail: "", //
+      contact_mobile: auth2.phoneNumber,
+      address: {},
+      photo_url: auth2.photoURL, //photoURL we get from firebase.auth() when sign in completed
+      user_id: auth2.uid, // uid  we get from firebase.auth() when sign in completed
+      email: auth2.email,
+    });
+  }
 
   useEffect(() => {
     if (isLoaded(auth) && !isEmpty(auth)) {

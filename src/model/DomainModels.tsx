@@ -58,16 +58,6 @@ export interface ShopStateType {
   shop: Markets;
 }
 
-export interface CartItem {
-  market: string;
-  item_key: number;
-  cart_key: number;
-  name: string;
-  desc: string;
-  cost: number;
-  qty: number;
-}
-
 export interface CartWithQty {
   [key: string]: string | number | ItemObj | null;
   item: ItemObj;
@@ -106,6 +96,7 @@ export interface Categories {
   id: number;
   load_order: number;
 }
+
 export interface Markets {
   [key: string]: string | number | [] | null;
   id: string;
@@ -119,18 +110,54 @@ export interface Markets {
   store_address: string;
   support_postcodes: [];
   cut_off_terms: string;
-  service_offering:string;
+  service_offering: string;
+}
+
+export interface CartItem {
+  [key: string]: string | number | [] | any | null;
+  market: string;
+  item_key: number;
+  cart_key: number;
+  name: string;
+  desc: string;
+  cost: number;
+  qty: number;
+  category_id: string;
+  category_name: string;
+  category_image: string;
+}
+
+export interface Cart {
+  [key: string]: string | number | [] | any | null;
+  market: Markets,
+  cart_items: CartItem[];
+}
+
+export interface UserProfile {
+  [key: string]: string | number | [] | any | null;
+  providerId: string;
+  id: string; //profile id generate automatically by firestore
+  display_name: string; //displayName
+  payment_detail: string; //
+  contact_mobile: string;
+  address: AddressObj;
+  photo_url: string; //photoURL we get from firebase.auth() when sign in completed
+  user_id: string; // uid  we get from firebase.auth() when sign in completed
+  email: string;
 }
 
 export interface Invoice {
   [key: string]: string | number | [] | any | null;
   id: string;
-  cart_items: CartItem[];
   user_id: string;
-  address: string;
-  address_id: string;
   market_id: string;
-  cart_total_cost_inc_GST: number;
+  market_name: string;
+  user: UserProfile;
+  cart: Cart[];
+  address: AddressObj;
+  total_amount: number;
   platform_charges: number;
-  cut_off_terms: string; 
+  cut_off_terms: string;
+  cut_off_date: string;
+  delivery_date: string;
 }

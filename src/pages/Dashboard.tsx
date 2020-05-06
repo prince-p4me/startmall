@@ -15,10 +15,10 @@ const { SplashScreen } = Plugins;
 const Dashboard: React.FC = () => {
   console.log("entering Dashboard");
   const [postcode] = useState("");
-  SplashScreen.show({
-    showDuration: 2000,
-    autoHide: true
-  });
+  // SplashScreen.show({
+  //   showDuration: 2000,
+  //   autoHide: true
+  // });
   return (
     <IonPage>
       <MainHeader />

@@ -20,10 +20,14 @@ import {
   rocketOutline
 } from "ionicons/icons";
 import "./Menu.css";
-import { AppPage, RootState } from "../model/DomainModels";
+import { AppPage, RootState, UserProfile } from "../model/DomainModels";
 import { useFirebase, isLoaded, isEmpty } from "react-redux-firebase";
 import { useSelector } from "react-redux";
 import { UserInfo } from "@firebase/auth-types";
+import { menuController } from "@ionic/core";
+import { useFirestoreConnect, FirestoreReducer } from "react-redux-firebase";
+import { useParams } from "react-router";
+// import firebase from "firebase";
 
 const appPages: AppPage[] = [
   {
@@ -82,9 +86,16 @@ const Menu: React.FC = () => {
     state => state.firebase.auth
   ) as UserInfo;
   console.log(auth);
+
   useEffect(() => {
+    if (isLoaded(auth) && !isEmpty(auth)) {
+      console.clear();
+      // console.log("User Logged in and user is:==" + JSON.stringify(auth));
+      // history.push("/");
+    }
     setUserPhoto(auth.photoURL as string);
-  },[auth.photoURL]);
+  }, [auth.photoURL]);
+
   function handleSignOut() {
     setUserPhoto("");
     firebase.logout().then(() => {
@@ -131,7 +142,7 @@ const Menu: React.FC = () => {
             </IonItem>
           ))}
         </IonList>
-        <IonFooter>
+        <IonFooter onClick={async () => await menuController.toggle()}>
           {isLoaded(auth) && !isEmpty(auth) ? (
             <IonItem onClick={handleSignOut}>Sign Out</IonItem>
           ) : (
