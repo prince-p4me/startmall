@@ -9,8 +9,6 @@ import {
 } from "@ionic/react";
 import React, { useState } from "react";
 import MainHeader from "../components/MainHeader";
-import { Plugins } from '@capacitor/core';
-const { SplashScreen } = Plugins;
 
 const Dashboard: React.FC = () => {
   console.log("entering Dashboard");
