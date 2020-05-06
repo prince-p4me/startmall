@@ -21,7 +21,6 @@ import { useSelector } from "react-redux";
 import "firebase/firestore";
 import hifreshdata from "../data/hmarketitems.json";
 import { Categories, Markets, RootState } from "../model/DomainModels";
-import { FirestoreIonImg } from "../services/FirebaseStorage";
 import { cfaSignIn } from "capacitor-firebase-auth";
 import { User } from "@firebase/auth-types";
 
@@ -29,33 +28,9 @@ interface testprop {
   market: Markets;
   doc: string;
 }
-const Test: React.FC<testprop> = ({ market, doc }) => {
-  useFirestoreConnect([
-    {
-      collection: "Markets",
-      doc: doc,
-      subcollections: [
-        {
-          collection: "Categories"
-          // doc: "m1lyTmP7ZgDNWQrjSaIF",
-          // subcollections: [{ collection: "Items" }],
-        }
-      ],
-      storeAs: "HiFreshCategories"
-    }
-  ]);
-
-  return (
-    <div>
-      {market.name}
-      FireBase Test
-    </div>
-  );
-};
 
 const Page: React.FC = () => {
   const { name } = useParams<{ name: string }>();
-  var doc_id = "123";
 
   console.log(hifreshdata);
   var keys = Object.keys(hifreshdata);
@@ -95,8 +70,6 @@ const Page: React.FC = () => {
   if (markets.ordered.Markets && markets.ordered.Markets.length > 0) {
     markets.ordered.Markets.map(tmarket => {
       console.log(tmarket.name);
-      // setMarketName(market.name);
-      doc_id = tmarket.id;
       market = tmarket;
       return market;
     });

@@ -10,29 +10,28 @@ import {
   IonItem,
   IonHeader,
   IonToolbar,
-  IonImg
+  IonImg,
+  getPlatforms
 } from "@ionic/react";
 import { logoFacebook, logoGoogle } from "ionicons/icons";
 import { useFirebase, isLoaded, isEmpty } from "react-redux-firebase";
 import { useSelector } from "react-redux";
 import { RootState } from "../model/DomainModels";
 import { useHistory } from "react-router-dom";
-import { Plugins } from '@capacitor/core';
-import { cfaSignIn, mapUserToUserInfo } from 'capacitor-firebase-auth';
-import { UserInfo } from 'firebase/app';
+import { cfaSignIn, mapUserToUserInfo } from "capacitor-firebase-auth";
+import { UserInfo } from "firebase/app";
+import { isPlatform } from "@ionic/core";
 
 const Login: React.FC = () => {
   const firebase = useFirebase();
   const auth = useSelector<RootState>(state => state.firebase.auth);
   const history = useHistory();
-  firebase.auth().onAuthStateChanged(changes => {
+  firebase.auth().onAuthStateChanged(function (user) {
     console.log("Login State changes");
-    console.log(changes);
+    console.log(user);
   });
-  console.log(auth);
 
   useEffect(() => {
-    console.log("User Logged in");
     if (isLoaded(auth) && !isEmpty(auth)) {
       console.log("User Logged in");
       history.push("/");
@@ -40,21 +39,46 @@ const Login: React.FC = () => {
   }, [auth, history]);
 
   async function loginWithGoogle() {
-    await Plugins.GoogleAuth.signOut();
-    return cfaSignIn('google.com').pipe(
-      mapUserToUserInfo(),
-    ).subscribe(
-      (user: UserInfo) => console.log(user.displayName)
-    )
+    // await Plugins.GoogleAuth.signOut();
+    console.log("platfprms " + getPlatforms() + " platform is" + isPlatform("ios"));
+    if (!isPlatform("ios")) {
+      console.log("Google Web login start");
+      return firebase
+        .login({ provider: "google", type: "redirect" })
+        .then(data => {
+          console.log(data);
+          history.push("/");
+        })
+        .catch(data => {
+          console.log("Something Wrong with Google login.");
+          console.log(data);
+        });
+    } else {
+      return cfaSignIn("google.com")
+        .pipe(mapUserToUserInfo())
+        .subscribe((user: UserInfo) => console.log(user.displayName));
+    }
   }
 
   function loginWithFacebook() {
-    // await Plugins.FbAuth.signOut();
-    return cfaSignIn('facebook.com').pipe(
-      mapUserToUserInfo(),
-    ).subscribe(
-      (user: UserInfo) => console.log(user.displayName)
-    )
+    console.log("platfprms " + getPlatforms() + " platform is" + isPlatform("ios"));
+    if (!isPlatform("ios")) {
+      console.log("Facebook Web login start");
+      return firebase
+        .login({ provider: "facebook", type: "popup" })
+        .then(data => {
+          console.log(data);
+          history.push("/");
+        })
+        .catch(data => {
+          console.log("Something Wrong with Facebook login.");
+          console.log(data);
+        });
+    } else {
+      return cfaSignIn("facebook.com")
+        .pipe(mapUserToUserInfo())
+        .subscribe((user: UserInfo) => console.log(user.displayName));
+    }
   }
 
   return (
@@ -75,7 +99,6 @@ const Login: React.FC = () => {
             <IonButton
               color="facebook"
               fill="solid"
-              shape="round"
               className="facebook_button"
               onClick={loginWithFacebook}
             >
@@ -85,7 +108,6 @@ const Login: React.FC = () => {
             <IonButton
               color="google"
               fill="solid"
-              shape="round"
               className="google_button"
               onClick={loginWithGoogle}
             >
