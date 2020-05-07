@@ -9,7 +9,7 @@ import {
 import fetchAddressFinder from "../services/AddressFinderService";
 import { AddressProps } from "../model/ComponentProps";
 
-const Address: React.FC<AddressProps> = ({id, address}) => {
+const Address: React.FC<AddressProps> = ({ id, address }) => {
   const [address1] = useState("");
   const [address2] = useState("");
   const [suburb] = useState("");
@@ -22,9 +22,9 @@ const Address: React.FC<AddressProps> = ({id, address}) => {
     address1: address1,
     address2: address2,
     suburb: suburb,
-    state: state, 
-    postcode: postcode, 
-    phone: phone, 
+    state: state,
+    postcode: postcode,
+    phone: phone,
     email: email
   }
   useEffect(() => {
@@ -40,7 +40,7 @@ const Address: React.FC<AddressProps> = ({id, address}) => {
         <IonLabel>Address</IonLabel>
       </IonItemDivider>
       <IonItem lines="none">
-        <IonLabel id="address_line_1"  color="medium" position="floating">
+        <IonLabel id="address_line_1" color="medium" position="floating">
           Address Line 1
         </IonLabel>
         <IonInput placeholder="e.g. Level 3A, Levy walk" required={true} value={address1}></IonInput>
@@ -73,16 +73,16 @@ const Address: React.FC<AddressProps> = ({id, address}) => {
         <IonLabel>Contact</IonLabel>
       </IonItemDivider>
       <IonItem lines="none">
-        <IonLabel id="email"  color="medium" position="floating">
+        <IonLabel id="email" color="medium" position="floating">
           Email
         </IonLabel>
         <IonInput type="email" placeholder="e.g. John@test.com " value={email}></IonInput>
       </IonItem>
       <IonItem lines="none">
-        <IonLabel id="phone" color="medium"  position="floating">
+        <IonLabel id="phone" color="medium" position="floating">
           Phone Number
         </IonLabel>
-        <IonInput type="tel"  placeholder="+61 321112321" value={phone}></IonInput>
+        <IonInput type="tel" placeholder="+61 321112321" value={phone}></IonInput>
       </IonItem>
     </IonList>
   );

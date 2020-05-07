@@ -58,7 +58,7 @@ const ItemList: React.FC<CartState> = ({ cart }) => {
         <IonCol size="2"></IonCol>
         <IonCol size="4"></IonCol>
         <IonCol size="3">Qty</IonCol>
-        <IonCol size="2">Total</IonCol>
+        <IonCol size="2.7">Total</IonCol>
       </IonRow>
       {cartListArray.map(cartWithQty => {
         return (
@@ -98,7 +98,7 @@ const ItemList: React.FC<CartState> = ({ cart }) => {
                 </IonButton>
               </IonButtons>
             </IonCol>
-            <IonCol size="2">
+            <IonCol size="2.7">
               <IonItem lines="none">${cartWithQty.item.unit_price}</IonItem>
             </IonCol>
           </IonRow>

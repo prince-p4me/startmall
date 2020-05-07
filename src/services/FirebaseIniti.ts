@@ -8,15 +8,15 @@ import { RootState } from '../model/DomainModels';
 import { cartReducer, shopReducer } from '../reducers/Cart';
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCQyvVWaa4R-FxZ05zGSktssnKtwGtRLa8",
-    authDomain: "slashiee.firebaseapp.com",
-    databaseURL: "https://slashiee.firebaseio.com",
-    projectId: "slashiee",
-    storageBucket: "slashiee.appspot.com",
-    messagingSenderId: "326027994327",
-    appId: "1:326027994327:web:5a227f71ef8b92ca523c92",
-    measurementId: "G-9DBHG304Z8",
-    enableRedirectHandling: false
+  apiKey: "AIzaSyCQyvVWaa4R-FxZ05zGSktssnKtwGtRLa8",
+  authDomain: "slashiee.firebaseapp.com",
+  databaseURL: "https://slashiee.firebaseio.com",
+  projectId: "slashiee",
+  storageBucket: "slashiee.appspot.com",
+  messagingSenderId: "326027994327",
+  appId: "1:326027994327:web:5a227f71ef8b92ca523c92",
+  measurementId: "G-9DBHG304Z8",
+  enableRedirectHandling: false
 }
 
 // 255334572519
@@ -24,8 +24,8 @@ const firebaseConfig = {
 // react-redux-firebase config
 const rrfConfig = {
   userProfile: 'users',
-  presence:'presence',
-  sessions:'sessions',
+  presence: 'presence',
+  sessions: 'sessions',
   markets: 'Markets'
   // useFirestoreForProfile: true // Firestore for Profile instead of Realtime DB
 }
@@ -40,13 +40,13 @@ firebase.firestore() // <- needed if using firestore
 const rootReducer = combineReducers<RootState>({
   firebase: firebaseReducer,
   firestore: firestoreReducer as any,
-  cart: cartReducer, 
+  cart: cartReducer,
   shop: shopReducer
 })
 
 const localReducer = combineReducers({
   firebase: firebaseReducer,
-  cart: cartReducer, 
+  cart: cartReducer,
   shop: shopReducer
 })
 

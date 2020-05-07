@@ -5,9 +5,10 @@ import {
   IonCardContent,
   IonButton,
   IonIcon,
-  IonFooter,
+  IonFooter, IonRow, IonCol,
   IonItem,
-  IonLabel} from "@ionic/react";
+  IonLabel
+} from "@ionic/react";
 import { add, heart, heartOutline } from "ionicons/icons";
 import state from "../reducers/Cart";
 import { useDispatch } from "react-redux";
@@ -48,45 +49,45 @@ const ShopItem: React.FC<ShopItemProps> = ({ item }) => {
 
   return (
     <IonCard>
-      <IonCardHeader>
-        <IonItem lines="none">{item.name}</IonItem>
-      </IonCardHeader>
-      <IonCardContent>
-        <IonItem lines="none">
-          <FirestoreIonImg src={item.img_url as string} />
-          {/* <IonImg src={item.img_url as string}></IonImg> */}
-        </IonItem>
-      </IonCardContent>
-      <IonFooter>
-        <IonItem lines="none">
-          <div className="currency">
-            $ {item.unit_price} {item.unit}
+      <IonCardContent style={{ padding: 10 }}>
+        <IonRow>
+          <IonCol size="4">
+            <FirestoreIonImg src={item.img_url as string} />
+          </IonCol>
+          <IonCol size="7.8">
+            <IonLabel >
+              <p>{item.name}</p>
+              <br />
+              <p className="currency">
+                $ {item.unit_price} {item.unit}
+              </p>
+            </IonLabel>
             <br />
-          </div>
-          <IonItem lines="none" slot="end">
-            <IonButton
-              color="tertiary"
-              fill="outline"
-              size="small"
-              onClick={() => addCart(item)}
-            >
-              <IonIcon slot="start" icon={add} />
-              Add to Cart
-            </IonButton>
-            <IonButton
-              color="secondary"
-              fill="clear"
-              size="small"
-              onClick={() => addFavorites()}
-            >
-              <IonIcon slot="end" icon={favorites} />
-            </IonButton>
-          </IonItem>
-        </IonItem>
-        <IonItem lines="none" className="shop_item_min_order">
-          <IonLabel color="tertiary">Minimum order: Nil</IonLabel>
-        </IonItem>
-      </IonFooter>
+            <IonItem lines="none" style={{ float: "right" }} >
+              <IonButton
+                color="tertiary"
+                fill="outline"
+                size="small"
+                onClick={() => addCart(item)}
+              >
+                <IonIcon slot="start" icon={add} />
+                Add to Cart
+                </IonButton>
+              <IonButton
+                color="secondary"
+                fill="clear"
+                size="small"
+                onClick={() => addFavorites()}
+              >
+                <IonIcon icon={favorites} />
+              </IonButton>
+            </IonItem>
+            <IonItem lines="none" style={{ float: "right" }} className="shop_item_min_order" >
+              <IonLabel>Minimum order: Nil</IonLabel>
+            </IonItem>
+          </IonCol>
+        </IonRow>
+      </IonCardContent>
     </IonCard>
   );
 };

@@ -19,11 +19,12 @@ export const cartReducer = (state = INITIAL_STATE, action: any) => {
   // export default function cartReducer(state = INITIAL_STATE, action: any) {
   switch (action.type) {
     case ADD_ITEM:
+      // console.log("adding");
       return {
         cartItemList: [...state.cartItemList, action.payload],
         cart: {
-          total: ((state.cart.total as number) +
-            action.payload.unit_price) as number
+          total: (parseFloat(state.cart.total.toString()) +
+            parseFloat(action.payload.unit_price))
         }
       };
     case DEL_ITEM:
@@ -40,8 +41,8 @@ export const cartReducer = (state = INITIAL_STATE, action: any) => {
             .filter(obj => obj != null)
         ],
         cart: {
-          total: ((state.cart.total as number) -
-            action.payload.unit_price) as number
+          total: (parseFloat(state.cart.total.toString()) +
+            parseFloat(action.payload.unit_price))
         }
       };
     case DEL_ITEM_GROUP:
@@ -51,7 +52,7 @@ export const cartReducer = (state = INITIAL_STATE, action: any) => {
           if (obj.id === action.payload.id) {
             return null;
           }
-          total += obj.unit_price as number;
+          total += obj.unit_price ? (parseFloat(obj.unit_price.toString())) : 0;
           return obj;
         })
         .filter(obj => obj != null);
