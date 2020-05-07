@@ -1,6 +1,7 @@
 import { FirebaseReducer, firebaseReducer } from "react-redux-firebase";
 import { combineReducers, Reducer } from "redux";
 import { CartStateType, ShopStateType } from "../model/DomainModels";
+import addressReducer from "./Address";
 
 export const INITIAL_STATE = {
   cartItemList: [],
@@ -122,7 +123,8 @@ export const shopReducer = (state = { shop: {} }, action: any) => {
 const rootReducer = combineReducers({
   firebase: firebaseReducer,
   cart: cartReducer,
-  shop: shopReducer
+  shop: shopReducer,
+  address: addressReducer
 });
 
 export default rootReducer;

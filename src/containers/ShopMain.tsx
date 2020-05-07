@@ -27,7 +27,7 @@ const ShopMain: React.FC = () => {
   console.log("entering market");
   const [showModal, setShowModal] = useState(false);
   const Categories: CategoryObj[] = [];
-  const CartBadge: React.FC<CartState> = ({ firebase, cart}) => {
+  const CartBadge: React.FC<CartState> = ({ firebase, cart }) => {
     const cartSize = cart.cartItemList.length;
     if (cartSize > 0) {
       return <IonBadge color="danger">{cart.cartItemList.length}</IonBadge>;
@@ -37,8 +37,8 @@ const ShopMain: React.FC = () => {
   };
 
   function mapStateToProps(state: CartState) {
-    const { firebase, cart, shop } = state;
-    return { firebase, cart, shop };
+    const { firebase, cart, shop, address } = state;
+    return { firebase, cart, shop, address };
   }
   const CartCounter = connect(mapStateToProps)(CartBadge);
   const ShopHeaderWithShop = connect(mapStateToProps)(ShopHeader);
@@ -71,7 +71,7 @@ const ShopMain: React.FC = () => {
       </IonToolbar>
       <OrderDayShopHeader />
       <IonContent fullscreen>
-      <ShopHeaderWithShop
+        <ShopHeaderWithShop
         />
         <IonGrid>
           <IonRow>

@@ -88,6 +88,7 @@ export interface RootState {
   firestore: Reducer<FirestoreReducer.Reducer>;
   cart: CartStateType;
   shop: ShopStateType;
+  address: AddressObj
 }
 
 export interface Categories {
@@ -116,21 +117,18 @@ export interface Markets {
 export interface CartItem {
   [key: string]: string | number | [] | any | null;
   market: string;
-  item_key: number;
-  cart_key: number;
   name: string;
   desc: string;
   cost: number;
   qty: number;
   category_id: string;
   category_name: string;
-  category_image: string;
 }
 
 export interface Cart {
   [key: string]: string | number | [] | any | null;
   market: Markets,
-  cart_items: CartItem[];
+  cart_items: ItemObj[];
 }
 
 export interface UserProfile {

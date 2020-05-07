@@ -20,8 +20,8 @@ import CartTotal from "../components/CartTotal";
 const Cart: React.FC<CartProps> = ({ modal, closehandler }) => {
   let history = useHistory();
   function mapStateToProps(state: CartState) {
-    const { firebase, cart, shop } = state;
-    return { firebase, cart, shop };
+    const { firebase, cart, shop, address } = state;
+    return { firebase, cart, shop, address };
   }
   function handleCheckOut() {
     history.push("/page/checkout");
@@ -32,30 +32,30 @@ const Cart: React.FC<CartProps> = ({ modal, closehandler }) => {
   const EnhancedCartTotal = connect(mapStateToProps)(CartTotal);
 
   return (
-      <IonModal  isOpen={modal}>
-        <IonHeader>
-          <IonToolbar>
-            <IonButtons slot="end">
-              <IonButton onClick={closehandler}>
-                <IonIcon
-                  size="large"
-                  slot="icon-only"
-                  icon={closeOutline}
-                ></IonIcon>
-              </IonButton>
-            </IonButtons>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent className="checkout_page">
-          <CartItemList  />
-        </IonContent>
-        <IonFooter>
-          <EnhancedCartTotal />
-          <IonButton expand="full" onClick={handleCheckOut}>
-            Check Out
+    <IonModal isOpen={modal}>
+      <IonHeader>
+        <IonToolbar>
+          <IonButtons slot="end">
+            <IonButton onClick={closehandler}>
+              <IonIcon
+                size="large"
+                slot="icon-only"
+                icon={closeOutline}
+              ></IonIcon>
+            </IonButton>
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent className="checkout_page">
+        <CartItemList />
+      </IonContent>
+      <IonFooter>
+        <EnhancedCartTotal />
+        <IonButton expand="full" onClick={handleCheckOut}>
+          Check Out
           </IonButton>
-        </IonFooter>
-      </IonModal>
+      </IonFooter>
+    </IonModal>
   );
 };
 

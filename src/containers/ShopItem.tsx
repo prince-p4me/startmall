@@ -10,7 +10,7 @@ import {
   IonLabel
 } from "@ionic/react";
 import { add, heart, heartOutline } from "ionicons/icons";
-import state from "../reducers/Cart";
+import state from "../reducers/Address";
 import { useDispatch } from "react-redux";
 import { addCartAction } from "../reducers/CartAction";
 import { ItemObj } from "../model/DomainModels";

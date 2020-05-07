@@ -11,60 +11,29 @@ import {
   IonFooter,
   IonImg
 } from "@ionic/react";
-import React, { useState } from "react";
-import { connect } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { connect, useSelector } from "react-redux";
 import ItemList from "../components/ItemList";
 import Address from "../components/Address";
 import Payment from "../components/Payment";
 import { useHistory } from "react-router-dom";
-import { closeOutline } from "ionicons/icons";
+import { closeOutline, cart } from "ionicons/icons";
 import { CheckoutProps } from "../model/ComponentProps";
-import { AddressObj, PaymentObj, CartStateType } from "../model/DomainModels";
+import { RootState, PaymentObj, CartStateType, UserProfile, ShopStateType, Cart, CartItem } from "../model/DomainModels";
 import ShopHeader from "../components/ShopHeader";
 import ShopConditionAndOperatingHours from "../components/ShopConditionAndOperatingHours";
-import { CartState } from "../services/FirebaseIniti";
+import { CartState, firebaseStore } from "../services/FirebaseIniti";
+import { useFirebase, isLoaded, isEmpty } from "react-redux-firebase";
+import { string } from "prop-types";
 
 const Checkout: React.FC<CheckoutProps> = () => {
+  const firebase = useFirebase();
+  const db = firebase.firestore();
+  const auth = useSelector<RootState>(state => state.firebase.auth);
+
   let history = useHistory();
-  const [addressObject] = useState<AddressObj>();
+  // const [state] = useState<CartState>();
   const [paymentOption] = useState<PaymentObj>();
-
-  // const { market_id } = useParams<{ market_id: string }>();
-  // const { category_id } = useParams<{ category_id: string }>();
-  // var shop = {} as Markets;
-  // // const { categoryName } = useParams<{ categoryName: string }>();
-  // const [showModal, setShowModal] = useState(false);
-
-  // useFirestoreConnect([
-  //   { collection: "Markets", doc: market_id },
-  //   {
-  //     collection: "Markets",
-  //     doc: market_id,
-  //     subcollections: [
-  //       {
-  //         collection: "Categories",
-  //         doc: category_id,
-  //         subcollections: [{ collection: "Items" }]
-  //       }
-  //     ],
-  //     storeAs: "ItemList"
-  //   }
-  // ]);
-  // const dataStore = useSelector<RootState>(
-  //   state => state.firestore
-  // ) as FirestoreReducer.Reducer;
-
-  // if (dataStore.ordered.Markets && dataStore.ordered.Markets.length > 0) {
-  //   dataStore.ordered.Markets.map(tmarket => {
-  //     console.log(tmarket.name);
-  //     shop = tmarket;
-  //     return shop;
-  //   });
-  // }
-
-
-
-
 
   const [cartState, setCartState] = useState<CartStateType>({
     cartItemList: [],
@@ -73,23 +42,92 @@ const Checkout: React.FC<CheckoutProps> = () => {
     }
   });
 
+  const [shopState, setShop] = useState<ShopStateType>({
+    shop: {
+      id: "",
+      name: "",
+      opening_hour: [],
+      free_delivery_conditions: "",
+      img_url: "",
+      store_address: "",
+      support_postcodes: [],
+      cut_off_terms: "",
+      service_offering: "",
+    }
+  });
+
   function mapStateToProps(state: CartState) {
-    const { firebase, cart, shop } = state;
+    const { firebase, cart, shop, address } = state;
     setCartState(cart);
-    return { firebase, cart, shop };
+    setShop(shop);
+    return { firebase, cart, shop, address };
   }
 
   const CartItemList = connect(mapStateToProps)(ItemList);
   const ShopHeaderWithShop = connect(mapStateToProps)(ShopHeader);
   const EnhancedCondition = connect(mapStateToProps)(ShopConditionAndOperatingHours);
+  const AddressComponent = connect(mapStateToProps)(Address);
+
+  function writeUserData(auth1: any) {
+    let auth2 = JSON.parse(JSON.stringify(auth1));
+    let user = {
+      providerId: auth2.providerData[0].providerId,
+      display_name: auth2.displayName, //displayName
+      payment_detail: "", //
+      contact_mobile: "87687687687",
+      address: {},
+      photo_url: auth2.photoURL, //photoURL we get from firebase.auth() when sign in completed
+      user_id: auth2.uid, // uid  we get from firebase.auth() when sign in completed
+      email: auth2.email,
+    };
+    db.collection("Users").doc(auth2.uid).set(user).then((response) => {
+      console.error("user updated:--" + JSON.stringify(response));
+      db.collection("Invoices").add({
+        user_id: auth1.uid,
+        market_id: shopState.shop.id,
+        market_name: shopState.shop.name,
+        address: {},
+        total_amount: cartState.cart.total,
+        platform_charges: "135.0",
+        cut_off_terms: shopState.shop.cutoff_terms,
+        cut_off_date: "12 May 2020",
+        delivery_date: "22 May 2020",
+      }).then((res) => {
+        let invoice_id = res.id;
+        let carts = {
+          market: shopState.shop,
+          cart_items: cartState.cartItemList
+        };
+        db.collection("Invoices").doc(invoice_id).update({
+          cart: carts,
+          user: user,
+        }).then((data) => {
+          console.log("successfully inserted carts and user also");
+        }).catch((err) => {
+          console.log("not inserted carts and user :===" + JSON.stringify(err));
+        })
+      }).catch((err) => {
+        console.log("not inserted+==" + JSON.stringify(err));
+      });
+    }).catch((error) => {
+      console.error("user not found");
+    })
+  }
+
   const handleComplete = async () => {
-    history.push("/orders");
-    console.log("Did I go back?");
+    // history.push("/orders");
+    // console.log("address is:-" + JSON.stringify(address));
+    writeUserData(auth);
   };
+
+  // useEffect(() => {
+  //   console.log("address is:-" + JSON.stringify(address));
+  // }, [auth, address]);
 
   const closehandler = async () => {
     history.goBack();
   };
+
 
   return (
     <IonPage id="checkout" className="checkout_page">
@@ -114,12 +152,12 @@ const Checkout: React.FC<CheckoutProps> = () => {
         <IonLabel>
           <h1>Where to? </h1>
         </IonLabel>
-        <Address id="123" address={addressObject} />
+        <AddressComponent />
         <IonLabel>
           <h1>How to Pay?</h1>
         </IonLabel>
         <Payment payment={paymentOption} />
-        <IonItemDivider>Comfirm</IonItemDivider>
+        <IonItemDivider>Confirm</IonItemDivider>
         <IonFooter>
           <IonToolbar>
             <IonItem lines="none">

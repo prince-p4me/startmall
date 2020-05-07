@@ -137,7 +137,9 @@ const Page: React.FC = () => {
                 unit_price: item.售出单价,
                 unit: item.规格,
                 img_url: "",
-                store_name: ""
+                store_name: "",
+                category_id: new_category_id,
+                category_name: key
               })
               .then(() => {
                 console.log("Added Items to category");
@@ -165,7 +167,7 @@ const Page: React.FC = () => {
           .firestore()
           .collection("Markets")
           .doc(targetID)
-          .update({...snapshot.data()})
+          .update({ ...snapshot.data() })
           .then(result => {
             console.log("update successfully");
             console.log(result);
