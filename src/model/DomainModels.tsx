@@ -1,6 +1,8 @@
 import { FirebaseReducer, FirestoreReducer } from "react-redux-firebase";
 import { Reducer } from "redux";
 import Market from "../containers/Market";
+import { Address } from "cluster";
+import { AddressInfo } from "net";
 
 export interface CategoryObj {
   id: number;
@@ -36,6 +38,7 @@ export interface AddressObj {
   address2: string;
   suburb: string;
   state: string;
+  country: string;
   postcode: string;
   phone: string;
   email: string;
@@ -56,6 +59,16 @@ export interface CartStateType {
 
 export interface ShopStateType {
   shop: Markets;
+}
+
+export interface CartItem {
+  market: string;
+  item_key: number;
+  cart_key: number;
+  name: string;
+  desc: string;
+  cost: number;
+  qty: number;
 }
 
 export interface CartWithQty {
@@ -97,7 +110,6 @@ export interface Categories {
   id: number;
   load_order: number;
 }
-
 export interface Markets {
   [key: string]: string | number | [] | null;
   id: string;
@@ -111,7 +123,7 @@ export interface Markets {
   store_address: string;
   support_postcodes: [];
   cut_off_terms: string;
-  service_offering: string;
+  service_offering:string;
 }
 
 export interface CartItem {
@@ -131,31 +143,31 @@ export interface Cart {
   cart_items: ItemObj[];
 }
 
-export interface UserProfile {
-  [key: string]: string | number | [] | any | null;
-  providerId: string;
-  id: string; //profile id generate automatically by firestore
-  display_name: string; //displayName
-  payment_detail: string; //
-  contact_mobile: string;
-  address: AddressObj;
-  photo_url: string; //photoURL we get from firebase.auth() when sign in completed
-  user_id: string; // uid  we get from firebase.auth() when sign in completed
-  email: string;
-}
-
 export interface Invoice {
   [key: string]: string | number | [] | any | null;
   id: string;
+  cart_items: CartItem[];
   user_id: string;
+  address: string;
+  address_id: string;
   market_id: string;
-  market_name: string;
-  user: UserProfile;
-  cart: Cart[];
-  address: AddressObj;
-  total_amount: number;
+  cart_total_cost_inc_GST: number;
   platform_charges: number;
-  cut_off_terms: string;
-  cut_off_date: string;
-  delivery_date: string;
+  cut_off_terms: string; 
+  batch_id: string;
+  status: string; // open, close, cancelled
+  order_date:string;
+  address_one_line:string;
 }
+
+export interface ProfileData{
+  display_name:string;
+  payment_detail:string;
+  contact_mobile:string;
+  address: AddressObj;
+  photo_url:string;
+  id:string;
+  email:string;
+}
+
+export const ORDER_STATUS = {open:"open", close:"close", cancelled:"cancelled"};

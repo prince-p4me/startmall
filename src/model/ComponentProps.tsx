@@ -6,9 +6,10 @@ export interface CategoryProps {
 }
 
 export interface AddressProps {
-  id: string;
-  address: AddressObj | undefined;
-  updateAddress: any
+  // id: string;
+  // address: AddressObj | undefined;
+  // updateAddress: any;
+  onAddressChange: any;
 }
 
 export interface ContainerProps {

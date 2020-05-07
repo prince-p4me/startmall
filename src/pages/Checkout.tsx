@@ -14,22 +14,23 @@ import {
 import React, { useState, useEffect } from "react";
 import { connect, useSelector } from "react-redux";
 import ItemList from "../components/ItemList";
-import Address from "../components/Address";
 import Payment from "../components/Payment";
 import { useHistory } from "react-router-dom";
 import { closeOutline, cart } from "ionicons/icons";
 import { CheckoutProps } from "../model/ComponentProps";
-import { RootState, PaymentObj, CartStateType, UserProfile, ShopStateType, Cart, CartItem } from "../model/DomainModels";
+import { RootState, PaymentObj, CartStateType, ShopStateType, Cart, CartItem, AddressObj } from "../model/DomainModels";
 import ShopHeader from "../components/ShopHeader";
 import ShopConditionAndOperatingHours from "../components/ShopConditionAndOperatingHours";
 import { CartState, firebaseStore } from "../services/FirebaseIniti";
 import { useFirebase, isLoaded, isEmpty } from "react-redux-firebase";
 import { string } from "prop-types";
+import AddressForm from "../components/Address";
 
 const Checkout: React.FC<CheckoutProps> = () => {
   const firebase = useFirebase();
   const db = firebase.firestore();
   const auth = useSelector<RootState>(state => state.firebase.auth);
+  const [addressObj, setAddress] = useState<AddressObj>();
 
   let history = useHistory();
   // const [state] = useState<CartState>();
@@ -66,27 +67,32 @@ const Checkout: React.FC<CheckoutProps> = () => {
   const CartItemList = connect(mapStateToProps)(ItemList);
   const ShopHeaderWithShop = connect(mapStateToProps)(ShopHeader);
   const EnhancedCondition = connect(mapStateToProps)(ShopConditionAndOperatingHours);
-  const AddressComponent = connect(mapStateToProps)(Address);
+  // const AddressComponent = connect(mapStateToProps)(Address);
 
-  function writeUserData(auth1: any) {
-    let auth2 = JSON.parse(JSON.stringify(auth1));
+  function writeUserData(my_auth: any) {
+    let json_auth = JSON.parse(JSON.stringify(my_auth));
     let user = {
-      providerId: auth2.providerData[0].providerId,
-      display_name: auth2.displayName, //displayName
+      providerId: json_auth.providerData[0].providerId,
+      display_name: json_auth.displayName, //displayName
       payment_detail: "", //
       contact_mobile: "87687687687",
-      address: {},
-      photo_url: auth2.photoURL, //photoURL we get from firebase.auth() when sign in completed
-      user_id: auth2.uid, // uid  we get from firebase.auth() when sign in completed
-      email: auth2.email,
+      address: addressObj,
+      photo_url: json_auth.photoURL, //photoURL we get from firebase.auth() when sign in completed
+      user_id: json_auth.uid, // uid  we get from firebase.auth() when sign in completed
+      email: json_auth.email,
     };
-    db.collection("Users").doc(auth2.uid).set(user).then((response) => {
+
+
+    console.log("user info");
+    console.log(user);
+
+    db.collection("Users").doc(json_auth.uid).set(user).then((response) => {
       console.error("user updated:--" + JSON.stringify(response));
       db.collection("Invoices").add({
-        user_id: auth1.uid,
+        user_id: my_auth.uid,
         market_id: shopState.shop.id,
         market_name: shopState.shop.name,
-        address: {},
+        address: addressObj,
         total_amount: cartState.cart.total,
         platform_charges: "135.0",
         cut_off_terms: shopState.shop.cutoff_terms,
@@ -152,7 +158,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
         <IonLabel>
           <h1>Where to? </h1>
         </IonLabel>
-        <AddressComponent />
+        <AddressForm onAddressChange={setAddress}/>
         <IonLabel>
           <h1>How to Pay?</h1>
         </IonLabel>

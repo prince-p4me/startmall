@@ -1,8 +1,7 @@
 import React, { ComponentType, useState } from "react";
-import { isEmpty } from "@firebase/util";
 import { useSelector } from "react-redux";
 import { Route, Redirect, RouteProps, useLocation } from "react-router";
-import { isLoaded } from "react-redux-firebase";
+import { isLoaded, isEmpty } from "react-redux-firebase";
 import { RootState } from "../model/DomainModels";
 
 // A wrapper for <Route> that redirects to the login
@@ -42,7 +41,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = props => {
 
   console.log("Redirecting to others site");
   let redirectPath = "";
-  if (!isAuthenticated) {
+  if (!isAuthenticated && currentLocation.pathname != props.authenticationPath) {
     redirectPath = props.authenticationPath;
     console.log("Not Authenticate.. redirecting to " + redirectPath);
   }

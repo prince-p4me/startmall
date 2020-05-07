@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {  } from "react";
 import {
   IonItem,
   IonInput,
@@ -6,15 +6,15 @@ import {
   IonList,
   IonItemDivider
 } from "@ionic/react";
-import fetchAddressFinder from "../services/AddressFinderService";
 import { AddressProps } from "../model/ComponentProps";
 import * as Actions from "../reducers/AddressAction";
 import { useDispatch } from "react-redux";
-import { CartState } from "../services/FirebaseIniti";
+import { Address } from "cluster";
+import { AddressObj } from "../model/DomainModels";
 
-const Address: React.FC<CartState> = ({ address }) => {
+const AddressForm: React.FC<AddressProps> = ({ onAddressChange }) => {
   const dispatch = useDispatch();
-
+  const address = {} as AddressObj;
   // let address1 = {
   //   address1: address.address1,
   //   address2: address.address2,
@@ -24,12 +24,12 @@ const Address: React.FC<CartState> = ({ address }) => {
   //   phone: address.phone,
   //   email: address.email
   // }
-  useEffect(() => {
-    var possibleAddresses = fetchAddressFinder(address.address1);
-    console.log(possibleAddresses);
-  }, [address]);
+  // useEffect(() => {
+  //   var possibleAddresses = fetchAddressFinder(address.address1);
+  //   console.log(possibleAddresses);
+  // }, [address]);
 
-  console.log(address);
+  // console.log(address);
   return (
     <IonList>
       <IonItemDivider>
@@ -39,9 +39,10 @@ const Address: React.FC<CartState> = ({ address }) => {
         <IonLabel id="address_line_1" color="medium" position="floating">
           Address Line 1
         </IonLabel>
-        <IonInput placeholder="e.g. Level 3A, Levy walk" required={true} value={address.address1}
+        <IonInput placeholder="e.g. Level 3A, Levy walk" required={true}
           onIonChange={e => {
-            dispatch(Actions.addAddress1Action(e.detail.value!));
+            console.log(e);
+            onAddressChange({...address, address1:e.detail.value})
           }}></IonInput>
       </IonItem>
       <IonItem lines="none">
@@ -105,4 +106,4 @@ const Address: React.FC<CartState> = ({ address }) => {
   );
 };
 
-export default Address;
+export default AddressForm;
