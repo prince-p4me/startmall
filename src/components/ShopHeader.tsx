@@ -27,10 +27,10 @@ const ShopHeader: React.FC<ShopHeaderProps> = ({ shop }) => {
         <IonCol size="4">
           <IonImg src={loadedShop.img_url as string}></IonImg>
         </IonCol>
-        <IonCol size="7">
+        <IonCol size="7.8" style={{}}>
           <IonImg className="category_payments" src="/assets/img/payments.png"></IonImg>
           <IonItem lines="none">
-            <IonText>{loadedShop.free_delivery_conditions}</IonText>
+            <IonText style={{ textAlign: "right" }}>{loadedShop.free_delivery_conditions}</IonText>
           </IonItem>
         </IonCol>
       </IonRow>

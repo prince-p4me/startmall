@@ -34,6 +34,7 @@ export interface IFeed {
 }
 
 export interface AddressObj {
+  name: string;
   address1: string;
   address2: string;
   suburb: string;
@@ -45,6 +46,7 @@ export interface AddressObj {
 }
 
 export interface PaymentObj {
+  directDebit: boolean;
   cashOnDelivery: boolean;
   paypal: boolean;
   visaMaster: boolean;
@@ -62,13 +64,14 @@ export interface ShopStateType {
 }
 
 export interface CartItem {
+  [key: string]: string | number | [] | any | null;
   market: string;
-  item_key: number;
-  cart_key: number;
   name: string;
   desc: string;
   cost: number;
   qty: number;
+  category_id: string;
+  category_name: string;
 }
 
 export interface CartWithQty {
@@ -123,18 +126,7 @@ export interface Markets {
   store_address: string;
   support_postcodes: [];
   cut_off_terms: string;
-  service_offering:string;
-}
-
-export interface CartItem {
-  [key: string]: string | number | [] | any | null;
-  market: string;
-  name: string;
-  desc: string;
-  cost: number;
-  qty: number;
-  category_id: string;
-  category_name: string;
+  service_offering: string;
 }
 
 export interface Cart {
@@ -148,26 +140,31 @@ export interface Invoice {
   id: string;
   cart_items: CartItem[];
   user_id: string;
-  address: string;
+  address: AddressObj | {} | string | null | undefined;
   address_id: string;
   market_id: string;
+  market_name: string;
   cart_total_cost_inc_GST: number;
   platform_charges: number;
-  cut_off_terms: string; 
+  cut_off_terms: string | number | [] | null;
   batch_id: string;
   status: string; // open, close, cancelled
-  order_date:string;
-  address_one_line:string;
+  payment_status: string; //pending, success
+  order_date: string;
+  delivery_date: string;
+  address_one_line: string;
+  payment_type: string
 }
 
-export interface ProfileData{
-  display_name:string;
-  payment_detail:string;
-  contact_mobile:string;
-  address: AddressObj;
-  photo_url:string;
-  id:string;
-  email:string;
+export interface ProfileData {
+  providerId: string | null | any;
+  display_name: string;
+  payment_detail: string;
+  contact_mobile: string;
+  address: AddressObj | any | {};
+  photo_url: string;
+  id: string;
+  email: string;
 }
 
-export const ORDER_STATUS = {open:"open", close:"close", cancelled:"cancelled"};
+export const ORDER_STATUS = { open: "open", close: "close", cancelled: "cancelled" };

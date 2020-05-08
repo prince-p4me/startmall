@@ -61,25 +61,6 @@ export const cartReducer = (state = INITIAL_STATE, action: any) => {
         cartItemList: [...newlist],
         cart: {
           total: total
-          // total: () => {
-          //   state.cart.total = 0;
-          //   var total = 0;
-          //   state.cartItemList
-          //     .map(obj => {
-          //       if (obj.id === action.payload.id) {
-          //         return null;
-          //       }
-          //       return obj;
-          //     })
-          //     .filter(obj => obj != null)
-          //     .map(obj => {
-          //       if (obj) {
-          //         total += obj.unit_price as number;
-          //       }
-          //     });
-          //   state.cart.total = total;
-          //   return state.cart.total as number;
-          // }
         }
       };
     default:

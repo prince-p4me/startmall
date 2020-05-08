@@ -5,18 +5,18 @@ import { Markets } from "../model/DomainModels";
 import { isLoaded } from "react-redux-firebase";
 
 
-const ShopConditionAndOperatingHours: React.FC<ShopHeaderProps> = ({shop}) => {
-  
+const ShopConditionAndOperatingHours: React.FC<ShopHeaderProps> = ({ shop }) => {
+
   var loadedShop = {} as Markets;
 
-  if (isLoaded(shop)){
+  if (isLoaded(shop)) {
     loadedShop = shop.shop;
   }
   return (
-    <IonItem className="checkout_conditions">
+    <IonItem lines="none" className="checkout_conditions">
       <p>{loadedShop.free_delivery_conditions}
-      <br/>
-      {loadedShop.cut_off_terms}</p>
+        <br />
+        {loadedShop.cut_off_terms}</p>
     </IonItem>
   );
 };

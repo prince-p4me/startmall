@@ -4,7 +4,7 @@ import {
   IonIcon,
   IonGrid,
   IonRow,
-  IonCol,
+  IonCol, IonLabel,
   IonButtons,
   IonItem
 } from "@ionic/react";
@@ -57,8 +57,8 @@ const ItemList: React.FC<CartState> = ({ cart }) => {
       <IonRow>
         <IonCol size="2"></IonCol>
         <IonCol size="4"></IonCol>
-        <IonCol size="3">Qty</IonCol>
-        <IonCol size="2.7">Total</IonCol>
+        <IonCol size="3" style={{ textAlign: "center" }}>Qty</IonCol>
+        <IonCol size="2.7" style={{ textAlign: "right" }}>Total</IonCol>
       </IonRow>
       {cartListArray.map(cartWithQty => {
         return (
@@ -78,7 +78,7 @@ const ItemList: React.FC<CartState> = ({ cart }) => {
               <IonItem lines="none">{cartWithQty.item.name}</IonItem>
             </IonCol>
             <IonCol size="3">
-              <IonButtons>
+              <IonButtons style={{ flexDirection: "row", justifyContent: "space-around" }}>
                 <IonButton
                   fill="outline"
                   onClick={() => {
@@ -98,8 +98,10 @@ const ItemList: React.FC<CartState> = ({ cart }) => {
                 </IonButton>
               </IonButtons>
             </IonCol>
-            <IonCol size="2.7">
-              <IonItem lines="none">${cartWithQty.item.unit_price}</IonItem>
+            <IonCol size="2.7" style={{ textAlign: "right", paddingRight: 0 }}>
+              <IonItem lines="none" >
+                <p style={{ textAlign: "right", width: "100%" }}>${cartWithQty.item.unit_price}</p>
+              </IonItem>
             </IonCol>
           </IonRow>
         );

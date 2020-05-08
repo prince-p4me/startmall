@@ -7,7 +7,7 @@ export interface CategoryProps {
 
 export interface AddressProps {
   // id: string;
-  // address: AddressObj | undefined;
+  address: AddressObj | {} | undefined;
   // updateAddress: any;
   onAddressChange: any;
 }
@@ -21,7 +21,8 @@ export interface MainTabsProps {
 }
 
 export interface PaymentProps {
-  payment: PaymentObj | undefined;
+  payment: string;
+  onChange: any
 }
 
 export interface CheckoutProps {
