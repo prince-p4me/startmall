@@ -7,10 +7,6 @@ import {
   IonItemDivider
 } from "@ionic/react";
 import { AddressProps } from "../model/ComponentProps";
-import * as Actions from "../reducers/AddressAction";
-import { useDispatch } from "react-redux";
-import { Address } from "cluster";
-import { AddressObj } from "../model/DomainModels";
 
 const AddressForm: React.FC<AddressProps> = ({ address, onAddressChange }) => {
   // const dispatch = useDispatch();

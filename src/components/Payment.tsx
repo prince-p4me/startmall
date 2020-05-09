@@ -1,5 +1,5 @@
 import React from "react";
-import { IonItem, IonItemDivider, IonIcon, IonRadioGroup, IonRadio, IonLabel, IonList, IonCheckbox } from "@ionic/react";
+import { IonItem, IonItemDivider, IonIcon, IonRadioGroup, IonRadio, IonLabel, IonList } from "@ionic/react";
 import { PaymentProps } from "../model/ComponentProps";
 import { chevronForwardOutline } from 'ionicons/icons';
 
