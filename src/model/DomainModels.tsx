@@ -141,8 +141,6 @@ export interface Invoice {
   cart_items: CartItem[];
   user_id: string;
   address: AddressObj | {} | string | null | undefined;
-  address_id: string;
-  market_id: string;
   market_name: string;
   cart_total_cost_inc_GST: number;
   platform_charges: number;
@@ -152,7 +150,7 @@ export interface Invoice {
   payment_status: string; //pending, success
   order_date: string;
   delivery_date: string;
-  address_one_line: string;
+  // address_one_line: string;
   payment_type: string
 }
 

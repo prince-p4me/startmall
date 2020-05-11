@@ -19,13 +19,13 @@ import {
 import { CartState } from "../services/FirebaseIniti";
 import { connect } from "react-redux";
 import { closeOutline } from "ionicons/icons";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 
 const OrderComplete: React.FC<CartState> = ({ shop, cart }) => {
   const cartListWithQty: CartWithQty[] = ConvertCartWithQty(cart);
+  const { invoice_id } = useParams<{ invoice_id: string }>();
   const cartListArray: Array<CartWithQty> = [];
   let history = useHistory();
-  var invoice_id = "INV12345";
   for (var cartlistitemqty in cartListWithQty) {
     cartListArray.push(cartListWithQty[cartlistitemqty]);
     console.log(cartlistitemqty);

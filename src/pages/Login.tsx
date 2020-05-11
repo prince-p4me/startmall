@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   IonPage,
   IonContent,
@@ -11,7 +11,8 @@ import {
   IonHeader,
   IonToolbar,
   IonImg,
-  getPlatforms
+  getPlatforms,
+  IonLoading
 } from "@ionic/react";
 import { logoFacebook, logoGoogle } from "ionicons/icons";
 import { useFirebase, isLoaded, isEmpty } from "react-redux-firebase";
@@ -27,6 +28,8 @@ const Login: React.FC = () => {
   const auth = useSelector<RootState>(state => state.firebase.auth);
   const history = useHistory();
   const db = firebase.firestore();
+  const [showLoading, setShowLoading] = useState(false);
+
   firebase.auth().onAuthStateChanged(function (user) {
     console.log("Login State changes");
     console.log(user);
@@ -38,16 +41,18 @@ const Login: React.FC = () => {
 
   function writeUserData(auth1: any) {
     let auth2 = JSON.parse(JSON.stringify(auth1));
-    db.collection("Users").doc(auth2.uid).set({
-      providerId: auth2.providerData[0].providerId,
-      display_name: auth2.displayName, //displayName
-      payment_detail: "", //
-      contact_mobile: auth2.phoneNumber,
-      address: {},
-      photo_url: auth2.photoURL, //photoURL we get from firebase.auth() when sign in completed
-      user_id: auth2.uid, // uid  we get from firebase.auth() when sign in completed
-      email: auth2.email,
-    });
+    db.collection("Users")
+      .doc(auth2.uid)
+      .set({
+        providerId: auth2.providerData[0].providerId,
+        display_name: auth2.displayName, //displayName
+        payment_detail: "", //
+        contact_mobile: auth2.phoneNumber,
+        address: {},
+        photo_url: auth2.photoURL, //photoURL we get from firebase.auth() when sign in completed
+        user_id: auth2.uid, // uid  we get from firebase.auth() when sign in completed
+        email: auth2.email
+      });
   }
 
   useEffect(() => {
@@ -58,45 +63,66 @@ const Login: React.FC = () => {
   }, [auth, history]);
 
   async function loginWithGoogle() {
+    setShowLoading(true);
     // await Plugins.GoogleAuth.signOut();
-    console.log("platfprms " + getPlatforms() + " platform is" + isPlatform("ios"));
-    if (!isPlatform("ios")) {
+    console.log(
+      "platfprms " + getPlatforms() + " platform is" + isPlatform("ios")
+    );
+    if (!isPlatform("ios") || isPlatform("mobileweb")) {
       console.log("Google Web login start");
       return firebase
-        .login({ provider: "google", type: "redirect" })
+        .login({ provider: "google", type: "popup" })
         .then(data => {
           console.log(data);
           history.push("/");
+          setShowLoading(false);
         })
         .catch(data => {
-          console.log("Something Wrong with Google login.");
+          console.log("Something Wrong with Google login. Please try again later");
           console.log(data);
+          history.push("/");
+          setShowLoading(false);
+
         });
     } else {
       return cfaSignIn("google.com")
         .pipe(mapUserToUserInfo())
-        .subscribe((user: UserInfo) => console.log(user.displayName));
+        .subscribe((user: UserInfo) => {
+          setShowLoading(false);
+          console.log(user.displayName);
+        });
     }
   }
 
   function loginWithFacebook() {
-    console.log("platfprms " + getPlatforms() + " platform is" + isPlatform("ios"));
-    if (!isPlatform("ios")) {
+    setShowLoading(true);
+
+    console.log(
+      "platfprms " + getPlatforms() + " platform is" + isPlatform("ios")
+    );
+    if (!isPlatform("ios") || isPlatform("mobileweb")) {
       console.log("Facebook Web login start");
       return firebase
         .login({ provider: "facebook", type: "popup" })
         .then(data => {
           console.log(data);
           history.push("/");
+          setShowLoading(false);
         })
         .catch(data => {
-          console.log("Something Wrong with Facebook login.");
+          console.log("Something Wrong with Facebook login. Please try again later");
           console.log(data);
+          history.push("/");
+          setShowLoading(false);
+
         });
     } else {
       return cfaSignIn("facebook.com")
         .pipe(mapUserToUserInfo())
-        .subscribe((user: UserInfo) => console.log(user.displayName));
+        .subscribe((user: UserInfo) => {
+          console.log(user.displayName);
+          setShowLoading(false);
+        });
     }
   }
 
@@ -151,6 +177,12 @@ const Login: React.FC = () => {
             </div>
           </IonCardContent>
         </IonCard>
+        <IonLoading
+          isOpen={showLoading}
+          onDidDismiss={() => setShowLoading(false)}
+          message={"Please wait..."}
+          duration={5000}
+        />
       </IonContent>
     </IonPage>
   );

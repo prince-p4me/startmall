@@ -1,5 +1,3 @@
-import { FirebaseReducer, firebaseReducer } from "react-redux-firebase";
-import { combineReducers, Reducer } from "redux";
 import { AddressObj } from "../model/DomainModels";
 
 export const INITIAL_STATE = {

@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import {
   IonCard,
-  IonCardHeader,
   IonCardContent,
   IonButton,
   IonIcon,
-  IonFooter, IonRow, IonCol,
+  IonRow, IonCol,
   IonItem,
   IonLabel
 } from "@ionic/react";
