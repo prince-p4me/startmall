@@ -61,48 +61,68 @@ const App: React.FC = () => {
   //     </IonApp>
   //   );
   // } else {
-    return (
-      <IonApp>
-        <IonReactRouter>
-          <IonSplitPane contentId="main">
-            <Menu />
-            <IonRouterOutlet id="main">
-              <Route path="/page/checkout" component={Checkout} exact={true} />
-              <Route path="/tabs" component={MainTabs} exact />
-              <Route path="/landing" component={Dashboard} exact />
-              {/* <ProtectedRoute {...defaultProtectedRouteProps}  path="/shop_selections" component={ShopSelection} exact /> */}
-              <Route path="/login" component={Login} exact />
-              <Route path="/stripe" component={StripeComponent} exact />
-              <Route path="/orders/:invoice_id" component={OrderComplete} exact />
-              <Route path="/shop/:name/categories" component={ShopMain} exact />
-              <Route
-                animated={false}
-                path="/tabs/dashboard"
-                render={() => <Dashboard />}
-                exact={true}
-              />
-              <Route
-                path="/tabs/market/:market_id/:tab(item_list)/:category_id"
-                render={() => <MarketItems cname="" />}
-              />
-              <Route
-                path="/tabs/:tab(shop_selections)"
-                render={() => <ShopSelection />}
-                exact={true}
-              />
-              <Route
-                path="/tabs/:tab(market)/:market_id"
-                render={() => <Market />}
-                exact={true}
-              />
-              <Route path="/page/:name" component={Page} exact />
-              <Redirect from="/" to="/tabs/dashboard" exact />
-            </IonRouterOutlet>
-          </IonSplitPane>
-        </IonReactRouter>
-      </IonApp>
-    );
-  }
+  // return (
+  //   <IonApp>
+  //     <IonReactRouter>
+  //       <IonSplitPane contentId="main">
+  //         <Menu />
+  //         <IonRouterOutlet id="main">
+  //           <Route path="/page/checkout" component={Checkout} exact={true} />
+  //           <Route path="/tabs" component={MainTabs} exact />
+  //           <Route path="/landing" component={Dashboard} exact />
+  //           {/* <ProtectedRoute {...defaultProtectedRouteProps}  path="/shop_selections" component={ShopSelection} exact /> */}
+  //           <Route path="/login" component={Login} exact />
+  //           <Route path="/orders" component={OrderComplete} exact />
+  //           <Route path="/shop/:name/categories" component={ShopMain} exact />
+  //           <Route path="/page/:name" component={Page} exact />
+  //           <Redirect from="/" to="/tabs" exact />
+  //         </IonRouterOutlet>
+  //       </IonSplitPane>
+  //     </IonReactRouter>
+  //   </IonApp>
+  // );
+  return (
+    <IonApp>
+      <IonReactRouter>
+        <IonSplitPane contentId="main">
+          <Menu />
+          <IonRouterOutlet id="main">
+            <Route path="/page/checkout" component={Checkout} exact={true} />
+            <Route path="/tabs" component={MainTabs} exact />
+            <Route path="/landing" component={Dashboard} exact />
+            {/* <ProtectedRoute {...defaultProtectedRouteProps}  path="/shop_selections" component={ShopSelection} exact /> */}
+            <Route path="/login" component={Login} exact />
+            <Route path="/stripe" component={StripeComponent} exact />
+            <Route path="/orders/:invoice_id" component={OrderComplete} exact />
+            <Route path="/shop/:name/categories" component={ShopMain} exact />
+            <Route
+              animated={false}
+              path="/tabs/dashboard"
+              render={() => <Dashboard />}
+              exact={true}
+            />
+            <Route
+              path="/tabs/market/:market_id/:tab(item_list)/:category_id"
+              render={() => <MarketItems cname="" />}
+            />
+            <Route
+              path="/tabs/:tab(shop_selections)"
+              render={() => <ShopSelection />}
+              exact={true}
+            />
+            <Route
+              path="/tabs/:tab(market)/:market_id"
+              render={() => <Market />}
+              exact={true}
+            />
+            <Route path="/page/:name" component={Page} exact />
+            <Redirect from="/" to="/tabs/dashboard" exact />
+          </IonRouterOutlet>
+        </IonSplitPane>
+      </IonReactRouter>
+    </IonApp>
+  );
+}
 // };
 
 export default App;

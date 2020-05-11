@@ -44,7 +44,7 @@ const AddressForm: React.FC<AddressProps> = ({ address, onAddressChange }) => {
       </IonItem>
       <IonItem style={{ paddingRight: 16 }}>
         <IonLabel id="address_line_1" color="medium" position="floating">
-          Address Line 1
+          Address Line 1 *
         </IonLabel>
         <IonInput placeholder="e.g. Level 3A, Levy walk" required={true}
           onIonChange={e => {
@@ -100,7 +100,7 @@ const AddressForm: React.FC<AddressProps> = ({ address, onAddressChange }) => {
       </IonItem>
       <IonItem style={{ paddingRight: 16 }}>
         <IonLabel id="phone" color="medium" position="floating">
-          Phone Number
+          Phone Number *
         </IonLabel>
         <IonInput type="tel" placeholder="+61 321112321"
           onIonChange={e => {

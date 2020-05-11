@@ -22,11 +22,11 @@ import { MainTabsProps } from "../model/ComponentProps";
 import ShopSelection from "../pages/ShopSelection";
 
 const MainTabs: React.FC<MainTabsProps> = () => {
- // const defaultProtectedRouteProps = getDefaultProtectedRouteProps();
+  // const defaultProtectedRouteProps = getDefaultProtectedRouteProps();
 
   return (
     <IonTabs>
-      <IonTabBar slot="bottom">
+      <IonTabBar slot="bottom" >
         <IonTabButton tab="today" href="/tabs/dashboard">
           <IonIcon icon={happy} />
           <IonLabel>Today</IonLabel>

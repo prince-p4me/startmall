@@ -93,7 +93,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
       providerId: json_auth.providerData[0].providerId,
       display_name: json_auth.displayName, //displayName
       payment_detail: "", //
-      contact_mobile: "87687687687",
+      contact_mobile: "",
       address: addressObj,
       photo_url: json_auth.photoURL, //photoURL we get from firebase.auth() when sign in completed
       id: json_auth.uid, // uid  we get from firebase.auth() when sign in completed
@@ -144,6 +144,16 @@ const Checkout: React.FC<CheckoutProps> = () => {
 
   const handleComplete = async () => {
     setShowLoading(true);
+    if (!addressObj.address1 || addressObj.address1 == "") {
+      alert("Please Type Address Line 1");
+      setShowLoading(false);
+      return;
+    }
+    if (!addressObj.phone || addressObj.phone == "") {
+      alert("Please Type the Contact person number");
+      setShowLoading(false);
+      return;
+    }
     if (paymentType === "" || paymentType === "none") {
       alert("Please select any payment option");
       setShowLoading(false);
