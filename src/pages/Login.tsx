@@ -145,7 +145,7 @@ const Login: React.FC = () => {
             </IonButton>
             <div>
               <IonLabel>
-                By signing up, you agree to Canva's <u>Terms of Use</u> and{" "}
+                By signing up, you agree to StartMall's <u>Terms of Use</u> and{" "}
                 <u>Privacy Policy</u>.
               </IonLabel>
             </div>

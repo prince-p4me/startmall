@@ -25,8 +25,8 @@ import { CartState, firebaseStore } from "../services/FirebaseIniti";
 import { useFirebase, isLoaded, isEmpty } from "react-redux-firebase";
 import { string } from "prop-types";
 import AddressForm from "../components/Address";
-import { async } from "q";
-import { ApplePay } from '@ionic-native/apple-pay/ngx';
+// import { async } from "q";
+// import { ApplePay } from '@ionic-native/apple-pay/ngx';
 
 const Checkout: React.FC<CheckoutProps> = () => {
 

@@ -42,7 +42,7 @@ export const cartReducer = (state = INITIAL_STATE, action: any) => {
             .filter(obj => obj != null)
         ],
         cart: {
-          total: (parseFloat(state.cart.total.toString()) +
+          total: (parseFloat(state.cart.total.toString()) -
             parseFloat(action.payload.unit_price))
         }
       };
