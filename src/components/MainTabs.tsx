@@ -26,29 +26,6 @@ const MainTabs: React.FC<MainTabsProps> = () => {
 
   return (
     <IonTabs>
-      <IonRouterOutlet>
-        <Route
-          animated={false}
-          path="/tabs/dashboard"
-          render={() => <Dashboard />}
-          exact={true}
-        />
-        <Route
-          path="/tabs/market/:market_id/:tab(item_list)/:category_id"
-          render={() => <MarketItems cname="" />}
-        />
-        <Route
-          path="/tabs/:tab(shop_selections)"
-          render={() => <ShopSelection />}
-          exact={true}
-        />
-        <Route
-          path="/tabs/:tab(market)/:market_id"
-          render={() => <Market />}
-          exact={true}
-        />
-        <Redirect exact path="/tabs" to="/tabs/dashboard" />
-      </IonRouterOutlet>
       <IonTabBar slot="bottom">
         <IonTabButton tab="today" href="/tabs/dashboard">
           <IonIcon icon={happy} />

@@ -23,13 +23,20 @@ import {
   CartStateType,
   ShopStateType,
   ProfileData,
-  AddressObj
+  AddressObj,
+  Invoice
 } from "../model/DomainModels";
 import ShopHeader from "../components/ShopHeader";
 import ShopConditionAndOperatingHours from "../components/ShopConditionAndOperatingHours";
 import { CartState } from "../services/FirebaseIniti";
 import { useFirebase } from "react-redux-firebase";
 import AddressForm from "../components/Address";
+
+interface MockInvoice {
+  // TODO: Please fix the DomainModels > Invoice object same as below write invoice function
+  id:string;
+  [key: string]: string | number | [] | any | null;
+}
 
 const Checkout: React.FC<CheckoutProps> = () => {
   const firebase = useFirebase();
@@ -39,7 +46,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
   const [aggreement, setAggreement] = useState<boolean>(false);
   const [paymentType, setPaymentType] = useState<string>("none");
   const [, setInvoiceId] = useState<string>("");
-  const [, setInvoice] = useState<{}>({});
+  const [invoice, setInvoice] = useState<MockInvoice>({} as MockInvoice);
   const [showLoading, setShowLoading] = useState(false);
 
   let history = useHistory();
@@ -149,7 +156,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
     }
     try {
       await writeUserData(auth);
-      history.push("/orders");
+      history.push("/orders/" + invoice.id);
       console.clear();
       console.log("Successfully inserted");
       setShowLoading(false);

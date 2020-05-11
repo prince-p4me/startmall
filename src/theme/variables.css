@@ -331,3 +331,34 @@ img {
   top: calc(12% + var(--ion-safe-area-top, 0px));
   left: calc(35% + var(--ion-safe-area-left, 0px));
 }
+
+
+.dashboard_ad {
+}
+
+.dashboard_main {
+position: absolute;;
+  bottom:50px
+}
+.hide {
+  display:none;
+}
+.postcode_input {
+  outline-color: var(--ion-color-danger);
+}
+.blinking-cursor {
+  /* font-weight: 100; */
+  /* font-size: 30px; */
+  color: #2E3D48;
+  -webkit-animation: 1s blink step-end infinite;
+  -moz-animation: 1s blink step-end infinite;
+  -ms-animation: 1s blink step-end infinite;
+  -o-animation: 1s blink step-end infinite;
+  animation: 1s blink step-end infinite;
+}
+
+.nonsupport_page {
+  text-align: center;
+  background-color: var(--ion-color-primary);
+  background:var(--ion-color-primary);
+}

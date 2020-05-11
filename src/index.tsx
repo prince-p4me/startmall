@@ -5,6 +5,8 @@ import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
 import { ReactReduxFirebaseProvider } from "react-redux-firebase";
 import rrfProps, { firebaseStore } from "./services/FirebaseIniti";
+import {Elements} from '@stripe/react-stripe-js';
+import {loadStripe} from '@stripe/stripe-js';
 
 // type Props ={
 //   children: ReactNode
@@ -44,13 +46,20 @@ import rrfProps, { firebaseStore } from "./services/FirebaseIniti";
 //   );
 // }
 
+// Make sure to call `loadStripe` outside of a component’s render to avoid
+// recreating the `Stripe` object on every render.
+const stripeKey = "pk_test_YC0gcyGppNgDEzsD5FxBzPXJ00nUQJqCvw";
+ 
+const stripePromise = loadStripe(stripeKey);
 
 ReactDOM.render(
-  <Provider store={firebaseStore}>
-    <ReactReduxFirebaseProvider {...rrfProps}>
-      <App />
-    </ReactReduxFirebaseProvider>
-  </Provider>,
+  <Elements stripe={stripePromise} >
+    <Provider store={firebaseStore}>
+      <ReactReduxFirebaseProvider {...rrfProps}>
+        <App />
+      </ReactReduxFirebaseProvider>
+    </Provider>
+  </Elements>,
 
   document.getElementById("root")
 );
