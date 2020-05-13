@@ -19,8 +19,6 @@ export const FirestoreIonImg: React.FC<GetURLProps> = ({ src }) => {
         // Insert url into an <img> tag to "download"
         // Or inserted into an <img> element:
         setDownloadUrl(url);
-        console.log ("found URL");
-        console.log (url);
       })
       .catch(function(error: any) {
         // A full list of error codes is available at

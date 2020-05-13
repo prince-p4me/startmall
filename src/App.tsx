@@ -28,13 +28,12 @@ import Dashboard from "./pages/Dashboard";
 import ShopMain from "./containers/ShopMain";
 import OrderComplete from "./pages/OrderComplete";
 import Login from "./pages/Login";
-import { Stripe } from "@ionic-native/stripe";
 import StripeComponent from "./services/Stripe";
 import MarketItems from "./containers/MarketItems";
 import ShopSelection from "./pages/ShopSelection";
 import Market from "./containers/Market";
-import NonSupport from "./pages/NonSupport";
 import ApplePay from './pages/ApplePay';
+import ProtectedRoute, { getDefaultProtectedRouteProps } from "./services/FirebaseAuth";
 
 const App: React.FC = () => {
   console.log("entering app");
@@ -82,6 +81,7 @@ const App: React.FC = () => {
   //     </IonReactRouter>
   //   </IonApp>
   // );
+  const defaultProtectedRouteProps = getDefaultProtectedRouteProps();
   return (
     <IonApp>
       <IonReactRouter>
@@ -89,7 +89,7 @@ const App: React.FC = () => {
           <Menu />
           <IonRouterOutlet id="main">
             <Route path="/page/applepay" component={ApplePay} exact={true} />
-            <Route path="/page/checkout" component={Checkout} exact={true} />
+            <ProtectedRoute  {...defaultProtectedRouteProps}  path="/page/checkout" component={Checkout} exact={true} />
             <Route path="/tabs" component={MainTabs} exact />
             <Route path="/landing" component={Dashboard} exact />
             {/* <ProtectedRoute {...defaultProtectedRouteProps}  path="/shop_selections" component={ShopSelection} exact /> */}

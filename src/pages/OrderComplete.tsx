@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import { CartWithQty, RootState, Invoice, CartItem } from "../model/DomainModels";
-import { ConvertCartWithQty } from "../services/CartService";
+import React from "react";
+import { RootState, Invoice, CartItem } from "../model/DomainModels";
 import {
   IonPage,
   IonHeader,
@@ -15,23 +14,17 @@ import {
   IonButton,
   IonIcon,
   IonFooter,
-  IonCard,
-  IonCardContent,
 } from "@ionic/react";
 import { CartState } from "../services/FirebaseIniti";
 import { connect, useSelector } from "react-redux";
 import { closeOutline } from "ionicons/icons";
 import { useHistory, useParams } from "react-router-dom";
-import { useFirebase, useFirestoreConnect, FirestoreReducer } from "react-redux-firebase";
+import { useFirestoreConnect, FirestoreReducer } from "react-redux-firebase";
 
 
-const OrderComplete: React.FC<CartState> = ({ shop, cart }) => {
-  const firebase = useFirebase();
+const OrderComplete: React.FC<CartState> = () => {
 
-  const cartListWithQty: CartWithQty[] = ConvertCartWithQty(cart);
   const { invoice_id } = useParams<{ invoice_id: string }>();
-  // const [ invoice,setInvoice ] = useState<Invoice>({} as Invoice);
-  const cartListArray: Array<CartWithQty> = [];
   const cartItems: Array<CartItem> = [];
   let invoice: Invoice = {} as Invoice;
   let history = useHistory();
@@ -107,7 +100,7 @@ const OrderComplete: React.FC<CartState> = ({ shop, cart }) => {
         <IonItem className="order_cutoff" lines="none">
           {/* {invoice.cut_off_terms} */}
           <IonLabel>
-            <b>{"INV " + invoice_id}</b>
+            <b>{"Invoice Reference Numer: " + invoice_id}</b>
           </IonLabel>
         </IonItem>
         <IonItem className="order_completed" lines="none">

@@ -23,9 +23,7 @@ import {
   CartStateType,
   ShopStateType,
   ProfileData,
-  AddressObj,
-  Invoice
-} from "../model/DomainModels";
+  AddressObj} from "../model/DomainModels";
 import ShopHeader from "../components/ShopHeader";
 import ShopConditionAndOperatingHours from "../components/ShopConditionAndOperatingHours";
 import { CartState } from "../services/FirebaseIniti";
@@ -45,8 +43,8 @@ const Checkout: React.FC<CheckoutProps> = () => {
   const [addressObj, setAddress] = useState<AddressObj>({} as AddressObj);
   const [aggreement, setAggreement] = useState<boolean>(false);
   const [paymentType, setPaymentType] = useState<string>("none");
-  const [invoiceId, setInvoiceId] = useState<string>("");
-  const [invoice, setInvoice] = useState<MockInvoice>({} as MockInvoice);
+  const [, setInvoiceId] = useState<string>("");
+  const [, setInvoice] = useState<MockInvoice>({} as MockInvoice);
   const [showLoading, setShowLoading] = useState(false);
 
   let history = useHistory();
