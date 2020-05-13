@@ -1,5 +1,5 @@
-import React from "react";
-import { CartWithQty } from "../model/DomainModels";
+import React, { useState } from "react";
+import { CartWithQty, RootState, Invoice, CartItem } from "../model/DomainModels";
 import { ConvertCartWithQty } from "../services/CartService";
 import {
   IonPage,
@@ -14,25 +14,72 @@ import {
   IonButtons,
   IonButton,
   IonIcon,
-  IonFooter
+  IonFooter,
+  IonCard,
+  IonCardContent,
 } from "@ionic/react";
 import { CartState } from "../services/FirebaseIniti";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { closeOutline } from "ionicons/icons";
 import { useHistory, useParams } from "react-router-dom";
+import { useFirebase, useFirestoreConnect, FirestoreReducer } from "react-redux-firebase";
+
 
 const OrderComplete: React.FC<CartState> = ({ shop, cart }) => {
+  const firebase = useFirebase();
+
   const cartListWithQty: CartWithQty[] = ConvertCartWithQty(cart);
   const { invoice_id } = useParams<{ invoice_id: string }>();
+  // const [ invoice,setInvoice ] = useState<Invoice>({} as Invoice);
   const cartListArray: Array<CartWithQty> = [];
+  const cartItems: Array<CartItem> = [];
+  let invoice: Invoice = {} as Invoice;
   let history = useHistory();
-  for (var cartlistitemqty in cartListWithQty) {
-    cartListArray.push(cartListWithQty[cartlistitemqty]);
-    console.log(cartlistitemqty);
-  }
+  // for (var cartlistitemqty in cartListWithQty) {
+  //   cartListArray.push(cartListWithQty[cartlistitemqty]);
+  //   console.log(cartlistitemqty);
+  // }
   function closehandler() {
     history.push("/");
   }
+
+  useFirestoreConnect([{ collection: "Invoices", doc: invoice_id, storeAs: "Invoice" }]);
+
+  const invoiceStore = useSelector<RootState>(
+    state => state.firestore
+  ) as FirestoreReducer.Reducer;
+
+
+  // setInvoice(invoice.ordered.Invoice[0])
+  console.log("INVOICE: " + invoice_id);
+  // console.log(JSON.stringify(invoice.ordered.Invoice[0]));
+
+  if (invoiceStore.ordered.Invoice && invoiceStore.ordered.Invoice.length > 0) {
+    // setInvoice(invoiceStore.ordered.Invoice[0])
+    invoice = invoiceStore.ordered.Invoice[0]
+    invoice.cart_items.forEach(element => {
+      // let ele = element
+      // let item = invoice.filter(function (item:CartItem) {
+      //   if (item.id == element.id) {
+      //     item.qty = 
+      //   }
+      //   return item.teacher_class_subject_id == element.id;
+      // })
+      // if (item.length > 0) {
+      //   newData.push(item[0])
+      // } else {
+      //   newData.push(ele)
+      // }
+      cartItems.push(element);
+    });
+
+    // for (var item in invoice.cart_items) {
+
+    //   cartItems.push(invoice.cart_items[item]);
+    //   console.log(cartItems);
+    // }
+  }
+
 
   return (
     <IonPage>
@@ -52,10 +99,15 @@ const OrderComplete: React.FC<CartState> = ({ shop, cart }) => {
       </IonHeader>
 
       <IonContent>
-        <IonItem className="order_completed" lines="none">
-          {shop.free_delivery_conditions}
+        <IonItem className="order_cutoff" lines="none">
+          <p>
+            {invoice.cut_off_terms}
+          </p>
+        </IonItem>
+        <IonItem className="order_cutoff" lines="none">
+          {/* {invoice.cut_off_terms} */}
           <IonLabel>
-            <b>{invoice_id}</b>
+            <b>{"INV " + invoice_id}</b>
           </IonLabel>
         </IonItem>
         <IonItem className="order_completed" lines="none">
@@ -69,13 +121,15 @@ const OrderComplete: React.FC<CartState> = ({ shop, cart }) => {
             order confirmation from us shortly.
           </p>
         </IonItem>
-        <IonGrid>
-          <IonRow>
-            <IonCol size="4"></IonCol>
-            <IonCol size="3">Qty</IonCol>
-            <IonCol size="2">Total</IonCol>
-          </IonRow>
-          {cartListArray.map(cartWithQty => {
+        {/* <IonCard className="complete_order_card">
+          <IonCardContent> */}
+            <IonGrid>
+              <IonRow>
+                <IonCol size="4"></IonCol>
+                <IonCol size="3">Qty</IonCol>
+                <IonCol size="2">Total</IonCol>
+              </IonRow>
+              {/* {cartListArray.map(cartWithQty => {
             return (
               <IonRow>
                 <IonCol size="4">
@@ -87,13 +141,28 @@ const OrderComplete: React.FC<CartState> = ({ shop, cart }) => {
                 </IonCol>
               </IonRow>
             );
-          })}
-        </IonGrid>
+          })} */}
+              {cartItems.map(cartWithQty => {
+                return (
+                  <IonRow>
+                    <IonCol size="4">
+                      <IonItem lines="none">{cartWithQty.name}</IonItem>
+                    </IonCol>
+                    <IonCol size="3">{1}</IonCol>
+                    <IonCol size="2">
+                      <IonItem lines="none">${cartWithQty.unit_price}</IonItem>
+                    </IonCol>
+                  </IonRow>
+                );
+              })}
+            </IonGrid>
+          {/* </IonCardContent>
+        </IonCard> */}
         <IonItem></IonItem>
-        <IonItem className="total_cart" lines="none">Total incl GST ${cart.cart.total}</IonItem>
+        <IonItem className="total_cart" lines="none">Total incl GST ${invoice.total_amount}</IonItem>
       </IonContent>
       <IonFooter>
-        <IonButton expand="full" onClick={()=>history.push("/")}>Continue Shopping</IonButton>
+        <IonButton expand="full" onClick={() => history.push("/")}>Continue Shopping</IonButton>
       </IonFooter>
     </IonPage>
   );
