@@ -274,6 +274,11 @@ img {
   text-align: center;
 }
 
+.order_cutoff,
+.login_card {
+  text-align: left;
+}
+
 .total_cart {
   margin-left: 45%;
 }
@@ -361,4 +366,17 @@ position: absolute;;
   text-align: center;
   background-color: var(--ion-color-primary);
   background:var(--ion-color-primary);
+}
+
+.payment_modal{
+  margin-top: 30%;
+}
+
+.complete_order_card {
+  margin: 30% 20px 20px 20px;
+  text-align: center;
+}
+
+.order_complete_border{
+  border: think solid black;
 }

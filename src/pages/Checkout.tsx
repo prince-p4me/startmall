@@ -23,9 +23,7 @@ import {
   CartStateType,
   ShopStateType,
   ProfileData,
-  AddressObj,
-  Invoice
-} from "../model/DomainModels";
+  AddressObj} from "../model/DomainModels";
 import ShopHeader from "../components/ShopHeader";
 import ShopConditionAndOperatingHours from "../components/ShopConditionAndOperatingHours";
 import { CartState } from "../services/FirebaseIniti";
@@ -46,7 +44,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
   const [aggreement, setAggreement] = useState<boolean>(false);
   const [paymentType, setPaymentType] = useState<string>("none");
   const [, setInvoiceId] = useState<string>("");
-  const [invoice, setInvoice] = useState<MockInvoice>({} as MockInvoice);
+  const [, setInvoice] = useState<MockInvoice>({} as MockInvoice);
   const [showLoading, setShowLoading] = useState(false);
 
   let history = useHistory();
@@ -132,6 +130,10 @@ const Checkout: React.FC<CheckoutProps> = () => {
             setInvoiceId(res.id);
             invoice.id = res.id;
             setInvoice(invoice);
+            history.push("/orders/" + res.id);
+            console.clear();
+            console.log("Successfully inserted");
+            setShowLoading(false);
           })
           .catch(err => {
             console.log("Not inserted+==" + JSON.stringify(err));
@@ -166,9 +168,9 @@ const Checkout: React.FC<CheckoutProps> = () => {
     }
     try {
       await writeUserData(auth);
-      history.push("/orders/" + invoice.id);
-      console.clear();
-      console.log("Successfully inserted");
+      // history.push("/orders/" + invoice.id);
+      // console.clear();
+      // console.log("Successfully inserted");
       setShowLoading(false);
     } catch (error) {
       console.log("Can't insert the data for invoice");
