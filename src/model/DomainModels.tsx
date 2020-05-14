@@ -165,4 +165,10 @@ export interface ProfileData {
   email: string;
 }
 
+export interface WishList {
+  [key: string]: string | number | [] | any | null;
+  market_id: string | null | any;
+  item_id: string | null | any;
+}
+
 export const ORDER_STATUS = { open: "open", close: "close", cancelled: "cancelled" };

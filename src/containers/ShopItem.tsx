@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   IonCard,
   IonCardContent,
@@ -10,41 +10,74 @@ import {
 } from "@ionic/react";
 import { add, heart, heartOutline } from "ionicons/icons";
 import state from "../reducers/Address";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addCartAction } from "../reducers/CartAction";
-import { ItemObj } from "../model/DomainModels";
+import { ItemObj, RootState, WishList } from "../model/DomainModels";
 import { ShopItemProps } from "../model/ComponentProps";
 import { FirestoreIonImg } from "../services/FirebaseStorage";
+import { useFirebase } from "react-redux-firebase";
+import { async } from "@firebase/util";
 
-const ShopItem: React.FC<ShopItemProps> = ({ item }) => {
+const ShopItem: React.FC<ShopItemProps> = ({ item, market_id }) => {
   const [favorites, setFavorites] = useState(heartOutline);
+  const [wishlist, setWishlist] = useState<WishList>({} as WishList);
   const dispatch = useDispatch();
+  const db = useFirebase().firestore();
+  const auth = useSelector<RootState>(state => state.firebase.auth);
 
   function addFavorites() {
-    if (favorites === heartOutline) {
-      setFavorites(heart);
-    } else {
-      setFavorites(heartOutline);
-    }
+    console.log("adding favorites");
+    const json_auth = JSON.parse(JSON.stringify(auth));
+    var docRef = db.collection("WishLists").doc(json_auth.uid).collection("List");
+    let obj: WishList = {
+      item_id: item.id,
+      market_id: market_id
+    };
+    writeData(obj, json_auth.uid);
+  }
+
+  async function writeData(data: WishList, user_id: string) {
+    await db.collection("WishLists").doc(user_id).collection("List").add(data);
+    // updateFavorite();
+    setFavorites(heart);
   }
 
   function addCart(item: ItemObj) {
-    // const cartItem: CartItem = {
-    //   market: item.market,
-    //   name: item.itemName,
-    //   desc: item.itemDesc,
-    //   cost: item.itemCost,
-    //   item_key: 1,
-    //   cart_key: 0,
-    //   qty: 1
-    // };
-
     dispatch(addCartAction(item));
-
-    console.log("add item to state");
-    console.log(state);
-    //setFavorites(heart);
   }
+
+  function checkFavorite(writing: boolean) {
+    console.log("updating favorite");
+    const json_auth = JSON.parse(JSON.stringify(auth));
+    var docRef = db.collection("WishLists").doc(json_auth.uid).collection("List");
+
+    docRef.where('item_id', '==', item.id).get().then(function (snapshot) {
+      if (snapshot.empty) {
+        console.log("No such document!");
+        if (writing) {
+          addFavorites();
+        } else setFavorites(heartOutline);
+      } else {
+        if (writing) {
+          snapshot.forEach(doc => {
+            console.log(doc.id, '=>', doc.data());
+            // deleteFavorite(doc.id, docRef);
+            docRef.doc(doc.id).delete().then(() => {
+              console.log(doc.id + " deleted");
+            })
+          });
+          setFavorites(heartOutline);
+        } else setFavorites(heart);
+      }
+    }).catch(function (error) {
+      setFavorites(heartOutline);
+      console.log("Error getting document:", error);
+    });
+  }
+
+  useEffect(function () {
+    checkFavorite(false);
+  }, []);
 
   return (
     <IonCard>
@@ -76,7 +109,7 @@ const ShopItem: React.FC<ShopItemProps> = ({ item }) => {
                 color="secondary"
                 fill="clear"
                 size="small"
-                onClick={() => addFavorites()}
+                onClick={() => checkFavorite(true)}
               >
                 <IonIcon icon={favorites} />
               </IonButton>

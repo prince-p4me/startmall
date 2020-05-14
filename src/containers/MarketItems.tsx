@@ -4,7 +4,8 @@ import {
   IonGrid,
   IonRow,
   IonCol,
-  IonBadge} from "@ionic/react";
+  IonBadge
+} from "@ionic/react";
 import React, { useState } from "react";
 import "./Market.css";
 import ShopItem from "./ShopItem";
@@ -91,24 +92,24 @@ const MarketItems: React.FC<MarketItemsProps> = () => {
 
   return (
     <IonPage>
-      <MarketHeader setShowModal={setShowModal} shop={shop} CartCounter={CartCounter}/>
+      <MarketHeader setShowModal={setShowModal} shop={shop} CartCounter={CartCounter} />
       <IonContent className="shope_item_listing" fullscreen>
         <ShopHeaderWithShop
         />
         <IonGrid>
           <IonRow>
             {dataStore.ordered.ItemList &&
-            dataStore.ordered.ItemList.length > 0 ? (
-              dataStore.ordered.ItemList.map(obj => {
-                return (
-                  <IonCol key={obj.id}>
-                    <ShopItem item={obj} />
-                  </IonCol>
-                );
-              })
-            ) : (
-              <p></p>
-            )}
+              dataStore.ordered.ItemList.length > 0 ? (
+                dataStore.ordered.ItemList.map(obj => {
+                  return (
+                    <IonCol key={obj.id}>
+                      <ShopItem item={obj} market_id={market_id} />
+                    </IonCol>
+                  );
+                })
+              ) : (
+                <p></p>
+              )}
           </IonRow>
         </IonGrid>
         <Cart modal={showModal} closehandler={() => setShowModal(false)} />

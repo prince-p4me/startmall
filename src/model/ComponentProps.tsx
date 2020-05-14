@@ -31,6 +31,7 @@ export interface CheckoutProps {
 
 export interface ShopItemProps {
   item: ItemObj;
+  market_id: string;
 }
 
 export interface MarketItemsProps {
