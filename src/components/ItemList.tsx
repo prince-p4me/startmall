@@ -60,9 +60,9 @@ const ItemList: React.FC<CartState> = ({ cart }) => {
         <IonCol size="3" style={{ textAlign: "center" }}>Qty</IonCol>
         <IonCol size="2.7" style={{ textAlign: "right" }}>Total</IonCol>
       </IonRow>
-      {cartListArray.map(cartWithQty => {
+      {cartListArray.map((cartWithQty, index) => {
         return (
-          <IonRow>
+          <IonRow key={index}>
             <IonCol size="2">
               <IonButton
                 size="small"

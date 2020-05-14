@@ -54,7 +54,7 @@ const App: React.FC = () => {
   // }
   // if (MobileCheck()) {
   //   return (
-  //     <IonApp>
+  //     <IonApp>                                             
   //       <IonReactRouter>
   //         <Route component={NonSupport} />
   //       </IonReactRouter>
@@ -66,7 +66,7 @@ const App: React.FC = () => {
   //     <IonReactRouter>
   //       <IonSplitPane contentId="main">
   //         <Menu />
-  //         <IonRouterOutlet id="main">
+  //         <IonRouterOutlet id="main">                       
   //           <Route path="/page/checkout" component={Checkout} exact={true} />
   //           <Route path="/tabs" component={MainTabs} exact />
   //           <Route path="/landing" component={Dashboard} exact />
