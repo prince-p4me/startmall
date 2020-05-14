@@ -23,6 +23,7 @@ import { connect, useSelector } from "react-redux";
 import { closeOutline } from "ionicons/icons";
 import { useHistory, useParams } from "react-router-dom";
 import { useFirebase, useFirestoreConnect, FirestoreReducer } from "react-redux-firebase";
+import CurrencyAmount from "../components/CurrencyAmount";
 
 
 const OrderComplete: React.FC<CartState> = ({ shop, cart }) => {
@@ -58,20 +59,32 @@ const OrderComplete: React.FC<CartState> = ({ shop, cart }) => {
     // setInvoice(invoiceStore.ordered.Invoice[0])
     invoice = invoiceStore.ordered.Invoice[0]
     invoice.cart_items.forEach(element => {
-      // let ele = element
-      // let item = invoice.filter(function (item:CartItem) {
-      //   if (item.id == element.id) {
-      //     item.qty = 
-      //   }
-      //   return item.teacher_class_subject_id == element.id;
-      // })
-      // if (item.length > 0) {
-      //   newData.push(item[0])
-      // } else {
-      //   newData.push(ele)
-      // }
-      cartItems.push(element);
+      let ele = { ...element, qty: 1, img_url: "" }
+      // ele.map((updateItem:CartItem) => ({
+      //   ...updateItem,
+      //   qty: 1       
+      // }));
+      // let ele:CartItem = {} as CartItem
+      // ele.name = element.name;
+      // ele.qty = 1;
+      // ele.unit_price = element.unit_price;
+      // ele.img_url = element.img_url;
+      // ele.unit = element.unit;
+      // ele.id = element.id;
+
+      let item = cartItems.filter(function (item: CartItem) {
+        return item.id == element.id;
+      })
+      if (item.length > 0) {
+        let existedItem = item[0];
+        existedItem.qty = existedItem.qty + 1;
+        // let newList = cartItems;
+        // cartItems = [...newList,existedItem]
+      } else {
+        cartItems.push(ele);
+      }
     });
+    console.log("ITEMS:" + JSON.stringify(cartItems));
 
     // for (var item in invoice.cart_items) {
 
@@ -123,13 +136,13 @@ const OrderComplete: React.FC<CartState> = ({ shop, cart }) => {
         </IonItem>
         {/* <IonCard className="complete_order_card">
           <IonCardContent> */}
-            <IonGrid>
-              <IonRow>
-                <IonCol size="4"></IonCol>
-                <IonCol size="3">Qty</IonCol>
-                <IonCol size="2">Total</IonCol>
-              </IonRow>
-              {/* {cartListArray.map(cartWithQty => {
+        <IonGrid >
+          <IonRow>
+            <IonCol size="5" ><IonItem lines="none"></IonItem></IonCol>
+            <IonCol size="2.5" ><IonItem text-center lines="none">Qty</IonItem></IonCol>
+            <IonCol size="3.5" text-center><IonItem text-center lines="none">Total</IonItem></IonCol>
+          </IonRow>
+          {/* {cartListArray.map(cartWithQty => {
             return (
               <IonRow>
                 <IonCol size="4">
@@ -142,24 +155,24 @@ const OrderComplete: React.FC<CartState> = ({ shop, cart }) => {
               </IonRow>
             );
           })} */}
-              {cartItems.map(cartWithQty => {
-                return (
-                  <IonRow>
-                    <IonCol size="4">
-                      <IonItem lines="none">{cartWithQty.name}</IonItem>
-                    </IonCol>
-                    <IonCol size="3">{1}</IonCol>
-                    <IonCol size="2">
-                      <IonItem lines="none">${cartWithQty.unit_price}</IonItem>
-                    </IonCol>
-                  </IonRow>
-                );
-              })}
-            </IonGrid>
-          {/* </IonCardContent>
+          {cartItems.map(item => {
+            return (
+              <IonRow>
+                <IonCol size="5" >
+                  <IonItem lines="none">{item.name}</IonItem>
+                </IonCol>
+                <IonCol size="2.5" ><IonItem lines="none">{item.qty}</IonItem></IonCol>
+                <IonCol size="3.5" >
+                  <IonItem lines="none"><CurrencyAmount amount={item.unit_price} /></IonItem>
+                </IonCol>
+              </IonRow>
+            );
+          })}
+        </IonGrid>
+        {/* </IonCardContent>
         </IonCard> */}
         <IonItem></IonItem>
-        <IonItem className="total_cart" lines="none">Total incl GST ${invoice.total_amount}</IonItem>
+        <IonItem className="total_cart" lines="none">Total incl GST <CurrencyAmount amount={invoice.total_amount} /></IonItem>
       </IonContent>
       <IonFooter>
         <IonButton expand="full" onClick={() => history.push("/")}>Continue Shopping</IonButton>

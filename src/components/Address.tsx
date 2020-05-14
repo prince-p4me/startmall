@@ -43,13 +43,13 @@ const AddressForm: React.FC<AddressProps> = ({ address, onAddressChange }) => {
           }}></IonInput>
       </IonItem>
       <IonItem style={{ paddingRight: 16 }}>
-        <IonLabel id="address_line_1" color="medium" position="floating">
+        <IonLabel id="address_line_1" color={(address && !address?.isValidAddress1) ? "danger" : "medium"} position="floating">
           Address Line 1 *
         </IonLabel>
         <IonInput placeholder="e.g. Level 3A, Levy walk" required={true}
           onIonChange={e => {
             console.log(e);
-            onAddressChange({ ...address, address1: e.detail.value })
+            onAddressChange({ ...address, address1: e.detail.value, isValidAddress1: true })
           }}></IonInput>
       </IonItem>
       <IonItem style={{ paddingRight: 16 }}>
@@ -99,15 +99,25 @@ const AddressForm: React.FC<AddressProps> = ({ address, onAddressChange }) => {
           }}></IonInput>
       </IonItem>
       <IonItem style={{ paddingRight: 16 }}>
-        <IonLabel id="phone" color="medium" position="floating">
+        <IonLabel id="phone" color={(address && !address?.isValidNumber) ? "danger" : "medium"} position="floating">
           Phone Number *
         </IonLabel>
         <IonInput type="tel" placeholder="+61 321112321"
           onIonChange={e => {
-            onAddressChange({ ...address, phone: e.detail.value })
+            onAddressChange({ ...address, phone: e.detail.value, isValidNumber:true })
             // dispatch(Actions.addPhoneAction(e.detail.value!));
           }}></IonInput>
       </IonItem>
+
+      {
+        (address && (!address?.isValidAddress1 || !address?.isValidNumber ))
+          ? <IonItem style={{ paddingRight: 16 }} lines="none">
+            <IonLabel color="danger" position="floating">
+              * Please fill up all the required information.
+        </IonLabel>
+          </IonItem>
+          : null
+      }
     </IonList>
   );
 };

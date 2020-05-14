@@ -13,7 +13,7 @@ import { useHistory } from "react-router";
 
 const Dashboard: React.FC = () => {
   console.log("entering Dashboard");
-  const [postcode] = useState("");
+  const [postcode,setPostCode] = useState<string>();
   const history = useHistory();
   // SplashScreen.show({
   //   showDuration: 2000,
@@ -28,7 +28,11 @@ const Dashboard: React.FC = () => {
   }
 
   function handleSearch() {
-    history.push("/tabs/shop_selections")
+    if(postcode == ""){
+      alert("Please enter postcode");
+      return;
+    }
+    history.push("/tabs/shop_selections/"+postcode)
   }
 
   return (
@@ -44,7 +48,10 @@ const Dashboard: React.FC = () => {
               className="postcode_input"
               inputMode="numeric"
               placeholder="Enter postcode to search"
-              value={postcode}
+              onIonChange={e => {
+                let value = e.detail.value
+                setPostCode(value+"")
+              }}
             ></IonInput>
             <IonButton onClick={handleSearch}> Search</IonButton>
           </IonItem>

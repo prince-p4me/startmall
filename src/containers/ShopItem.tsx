@@ -15,6 +15,7 @@ import { addCartAction } from "../reducers/CartAction";
 import { ItemObj } from "../model/DomainModels";
 import { ShopItemProps } from "../model/ComponentProps";
 import { FirestoreIonImg } from "../services/FirebaseStorage";
+import CurrencyAmount from "../components/CurrencyAmount";
 
 const ShopItem: React.FC<ShopItemProps> = ({ item }) => {
   const [favorites, setFavorites] = useState(heartOutline);
@@ -58,7 +59,8 @@ const ShopItem: React.FC<ShopItemProps> = ({ item }) => {
               <p>{item.name}</p>
               <br />
               <p className="currency">
-                $ {item.unit_price} {item.unit}
+                {/* $ {item.unit_price} {item.unit} */}
+                <CurrencyAmount amount={item.unit_price}  /> {item.unit}
               </p>
             </IonLabel>
             <br />

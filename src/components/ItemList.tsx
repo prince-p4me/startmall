@@ -17,6 +17,7 @@ import {
 } from "../reducers/CartAction";
 import { useDispatch } from "react-redux";
 import { CartState } from "../services/FirebaseIniti";
+import CurrencyAmount from "./CurrencyAmount";
 
 const ItemList: React.FC<CartState> = ({ cart }) => {
   const dispatch = useDispatch();
@@ -55,15 +56,15 @@ const ItemList: React.FC<CartState> = ({ cart }) => {
   return (
     <IonGrid>
       <IonRow>
-        <IonCol size="2"></IonCol>
+        <IonCol size="1.7"></IonCol>
         <IonCol size="4"></IonCol>
         <IonCol size="3" style={{ textAlign: "center" }}>Qty</IonCol>
-        <IonCol size="2.7" style={{ textAlign: "right" }}>Total</IonCol>
+        <IonCol size="3" style={{ textAlign: "right" }}>Total</IonCol>
       </IonRow>
       {cartListArray.map(cartWithQty => {
         return (
           <IonRow>
-            <IonCol size="2">
+            <IonCol size="1.7">
               <IonButton
                 size="small"
                 fill="clear"
@@ -98,9 +99,9 @@ const ItemList: React.FC<CartState> = ({ cart }) => {
                 </IonButton>
               </IonButtons>
             </IonCol>
-            <IonCol size="2.7" style={{ textAlign: "right", paddingRight: 0 }}>
+            <IonCol size="3" style={{ textAlign: "right", paddingRight: 0 }}>
               <IonItem lines="none" >
-                <p style={{ textAlign: "right", width: "100%" }}>${cartWithQty.item.unit_price}</p>
+                <p style={{ textAlign: "right", width: "100%" }}><CurrencyAmount amount={cartWithQty.item.unit_price} /></p>
               </IonItem>
             </IonCol>
           </IonRow>

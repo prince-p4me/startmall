@@ -33,7 +33,7 @@ const MainTabs: React.FC<MainTabsProps> = () => {
           <IonBadge>6</IonBadge>
         </IonTabButton>
 
-        <IonTabButton tab="market" href="/tabs/shop_selections">
+        <IonTabButton tab="market" href="/tabs/shop_selections/">
           <IonIcon icon={cartSharp} />
           <IonLabel>Market</IonLabel>
         </IonTabButton>
