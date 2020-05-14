@@ -30,7 +30,7 @@ const Login: React.FC = () => {
   const db = firebase.firestore();
   const [showLoading, setShowLoading] = useState(false);
 
-  firebase.auth().onAuthStateChanged(function (user) {
+  firebase.auth().onAuthStateChanged(function(user) {
     console.log("Login State changes");
     console.log(user);
     if (isLoaded(auth) && !isEmpty(auth)) {
@@ -58,8 +58,8 @@ const Login: React.FC = () => {
   useEffect(() => {
     if (isLoaded(auth) && !isEmpty(auth)) {
       console.log("User Logged in");
-      // history.push("/");
-      history.goBack();
+      history.push("/");
+      // history.goBack();
     }
   }, [auth, history]);
 
@@ -72,20 +72,19 @@ const Login: React.FC = () => {
     if (!isPlatform("ios") || isPlatform("mobileweb")) {
       console.log("Google Web login start");
       return firebase
-        .login({ provider: "google", type: "popup" })
+        .login({ provider: "google", type: "redirect" })
         .then(data => {
           console.log(data);
-          // history.push("/");
-          history.goBack()
+          history.push("/");
+          // history.goBack();
           setShowLoading(false);
         })
         .catch(data => {
-          console.log("Something Wrong with Google login. Please try again later");
+          alert("Something Wrong with Google login. Please try again later");
           console.log(data);
-          // history.push("/");
-          history.goBack()
+          history.push("/");
+          // history.goBack();
           setShowLoading(false);
-
         });
     } else {
       return cfaSignIn("google.com")
@@ -94,6 +93,7 @@ const Login: React.FC = () => {
           setShowLoading(false);
           console.log(user.displayName);
         });
+      //TODO: what if error?
     }
   }
 
@@ -106,20 +106,19 @@ const Login: React.FC = () => {
     if (!isPlatform("ios") || isPlatform("mobileweb")) {
       console.log("Facebook Web login start");
       return firebase
-        .login({ provider: "facebook", type: "popup" })
+        .login({ provider: "facebook", type: "redirect" })
         .then(data => {
           console.log(data);
           // history.push("/");
-          history.goBack()
+          history.goBack();
           setShowLoading(false);
         })
         .catch(data => {
-          console.log("Something Wrong with Facebook login. Please try again later");
+          alert("Something Wrong with Facebook login. Please try again later");
           console.log(data);
           // history.push("/");
-          history.goBack()
+          history.goBack();
           setShowLoading(false);
-
         });
     } else {
       return cfaSignIn("facebook.com")
@@ -128,6 +127,7 @@ const Login: React.FC = () => {
           console.log(user.displayName);
           setShowLoading(false);
         });
+      //TODO: what if error
     }
   }
 
@@ -143,7 +143,7 @@ const Login: React.FC = () => {
         src="assets/icon/logo_small.svg"
       />
 
-      <IonContent >
+      <IonContent>
         <IonCard className="login_card">
           <IonCardContent>
             <IonButton
@@ -182,16 +182,10 @@ const Login: React.FC = () => {
             </div>
           </IonCardContent>
         </IonCard>
-        <IonLoading
-          isOpen={showLoading}
-          onDidDismiss={() => setShowLoading(false)}
-          message={"Please wait..."}
-          duration={5000}
-        />
+        <IonLoading isOpen={showLoading} message={"Please wait..."} />
       </IonContent>
     </IonPage>
   );
 };
-
 
 export default Login;
