@@ -43,6 +43,8 @@ export interface AddressObj {
   postcode: string;
   phone: string;
   email: string;
+  isValidAddress1:boolean;
+  isValidNumber:boolean;
 }
 
 export interface PaymentObj {

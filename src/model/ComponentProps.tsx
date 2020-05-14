@@ -7,7 +7,7 @@ export interface CategoryProps {
 
 export interface AddressProps {
   // id: string;
-  address: AddressObj | {} | undefined;
+  address: AddressObj;
   // updateAddress: any;
   onAddressChange: any;
 }
@@ -55,4 +55,8 @@ export interface ShopHeaderProps {
 export interface ShopSelectionListProps {
   handleShopClick: (shop: Markets) => void;
   shops: Markets[];
+}
+
+export interface CurrencyAmountProps {
+  amount: any;
 }

@@ -378,5 +378,11 @@ position: absolute;;
 }
 
 .order_complete_border{
-  border: think solid black;
+  border: thin solid black;
+  padding:2;
+  margin-left:20;
+}
+
+.no_data_found{
+  text-align: center;
 }

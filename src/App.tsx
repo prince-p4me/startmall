@@ -108,7 +108,7 @@ const App: React.FC = () => {
               render={() => <MarketItems cname="" />}
             />
             <Route
-              path="/tabs/:tab(shop_selections)"
+              path="/tabs/:tab(shop_selections)/:postcode"
               render={() => <ShopSelection />}
               exact={true}
             />

@@ -18,6 +18,7 @@ import { FirestoreIonImg } from "../services/FirebaseStorage";
 import { async } from "@firebase/util";
 import { useFirebase, isLoaded, isEmpty } from "react-redux-firebase";
 import { useHistory } from "react-router-dom";
+import CurrencyAmount from "../components/CurrencyAmount";
 
 
 const ShopItem: React.FC<ShopItemProps> = ({ item, market_id }) => {
@@ -103,7 +104,8 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id }) => {
               <p>{item.name}</p>
               <br />
               <p className="currency">
-                $ {item.unit_price} {item.unit}
+                {/* $ {item.unit_price} {item.unit} */}
+                <CurrencyAmount amount={item.unit_price} /> {item.unit}
               </p>
             </IonLabel>
             <br />
@@ -121,7 +123,13 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id }) => {
                 color="secondary"
                 fill="clear"
                 size="small"
-                onClick={() => checkFavorite(true)}
+                onClick={() => {
+                  if (isLoaded(auth) && !isEmpty(auth)) {
+                    checkFavorite(true);
+                  } else {
+                    alert("Please login to add item in wishlist");
+                  }
+                }}
               >
                 <IonIcon icon={favorites} />
               </IonButton>

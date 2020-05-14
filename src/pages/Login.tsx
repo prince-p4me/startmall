@@ -58,7 +58,8 @@ const Login: React.FC = () => {
   useEffect(() => {
     if (isLoaded(auth) && !isEmpty(auth)) {
       console.log("User Logged in");
-      history.push("/");
+      // history.push("/");
+      history.goBack();
     }
   }, [auth, history]);
 
@@ -74,13 +75,15 @@ const Login: React.FC = () => {
         .login({ provider: "google", type: "popup" })
         .then(data => {
           console.log(data);
-          history.push("/");
+          // history.push("/");
+          history.goBack()
           setShowLoading(false);
         })
         .catch(data => {
           console.log("Something Wrong with Google login. Please try again later");
           console.log(data);
-          history.push("/");
+          // history.push("/");
+          history.goBack()
           setShowLoading(false);
 
         });
@@ -106,13 +109,15 @@ const Login: React.FC = () => {
         .login({ provider: "facebook", type: "popup" })
         .then(data => {
           console.log(data);
-          history.push("/");
+          // history.push("/");
+          history.goBack()
           setShowLoading(false);
         })
         .catch(data => {
           console.log("Something Wrong with Facebook login. Please try again later");
           console.log(data);
-          history.push("/");
+          // history.push("/");
+          history.goBack()
           setShowLoading(false);
 
         });
@@ -138,7 +143,7 @@ const Login: React.FC = () => {
         src="assets/icon/logo_small.svg"
       />
 
-      <IonContent>
+      <IonContent >
         <IonCard className="login_card">
           <IonCardContent>
             <IonButton
@@ -187,5 +192,6 @@ const Login: React.FC = () => {
     </IonPage>
   );
 };
+
 
 export default Login;

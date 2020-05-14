@@ -27,8 +27,9 @@ import {
 import ShopHeader from "../components/ShopHeader";
 import ShopConditionAndOperatingHours from "../components/ShopConditionAndOperatingHours";
 import { CartState } from "../services/FirebaseIniti";
-import { useFirebase } from "react-redux-firebase";
+import { useFirebase, isEmpty } from "react-redux-firebase";
 import AddressForm from "../components/Address";
+import CurrencyAmount from "../components/CurrencyAmount";
 
 interface MockInvoice {
   // TODO: Please fix the DomainModels > Invoice object same as below write invoice function
@@ -40,12 +41,14 @@ const Checkout: React.FC<CheckoutProps> = () => {
   const firebase = useFirebase();
   const db = firebase.firestore();
   const auth = useSelector<RootState>(state => state.firebase.auth);
-  const [addressObj, setAddress] = useState<AddressObj>({} as AddressObj);
+  const [addressObj, setAddress] = useState<AddressObj>({isValidAddress1:true,isValidNumber:true} as AddressObj);
   const [aggreement, setAggreement] = useState<boolean>(false);
   const [paymentType, setPaymentType] = useState<string>("none");
   const [, setInvoiceId] = useState<string>("");
   const [, setInvoice] = useState<MockInvoice>({} as MockInvoice);
   const [showLoading, setShowLoading] = useState(false);
+  const [isValidAddress1, setIsValidAddress1] = useState(true);
+  const [isValidNumber, setIsValidNumber] = useState(true);
 
   let history = useHistory();
   // const [state] = useState<CartState>();
@@ -147,12 +150,14 @@ const Checkout: React.FC<CheckoutProps> = () => {
   const handleComplete = async () => {
     setShowLoading(true);
     if (!addressObj.address1 || addressObj.address1 == "") {
-      alert("Please Type Address Line 1");
+      // alert("Please Type Address Line 1");
+      setAddress({ ...addressObj,isValidAddress1:false })
       setShowLoading(false);
       return;
     }
     if (!addressObj.phone || addressObj.phone == "") {
-      alert("Please Type the Contact person number");
+      // alert("Please Type the Contact person number");
+      setAddress({ ...addressObj,isValidNumber:false })
       setShowLoading(false);
       return;
     }
@@ -163,6 +168,18 @@ const Checkout: React.FC<CheckoutProps> = () => {
     }
     if (!aggreement) {
       alert("Please check our aggreement");
+      setShowLoading(false);
+      return;
+    }
+
+    if (cartState.cartItemList.length == 0) {
+      alert("Please add products in card");
+      setShowLoading(false);
+      return;
+    }
+
+    if (isEmpty(auth)) {
+      alert("Please login to continue checkout");
       setShowLoading(false);
       return;
     }
@@ -235,11 +252,12 @@ const Checkout: React.FC<CheckoutProps> = () => {
         <CartItemList />
         <IonItem lines="none">
           <IonLabel color="primary" style={{ textAlign: "right" }}>
-            Total incl GST ${cartState.cart.total}
+            {/* Total incl GST ${cartState.cart.total} */}
+            Total incl GST {<CurrencyAmount amount={cartState.cart.total} />}
           </IonLabel>
         </IonItem>
         <EnhancedCondition />
-        <AddressForm address={addressObj} onAddressChange={setAddress} />
+        <AddressForm address={addressObj} onAddressChange={setAddress}/>
         <br></br>
         <Payment payment={paymentType} onChange={setPaymentType} />
         <IonItem lines="none">
