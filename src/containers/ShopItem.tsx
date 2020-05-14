@@ -15,10 +15,12 @@ import { addCartAction } from "../reducers/CartAction";
 import { ItemObj, RootState, WishList } from "../model/DomainModels";
 import { ShopItemProps } from "../model/ComponentProps";
 import { FirestoreIonImg } from "../services/FirebaseStorage";
-import { useFirebase } from "react-redux-firebase";
 import { async } from "@firebase/util";
+import { useFirebase, isLoaded, isEmpty } from "react-redux-firebase";
+
 
 const ShopItem: React.FC<ShopItemProps> = ({ item, market_id }) => {
+  const [logined, setLogin] = useState(false);
   const [favorites, setFavorites] = useState(heartOutline);
   const [wishlist, setWishlist] = useState<WishList>({} as WishList);
   const dispatch = useDispatch();
@@ -47,6 +49,9 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id }) => {
   }
 
   function checkFavorite(writing: boolean) {
+    if (!logined) {
+      return
+    }
     console.log("updating favorite");
     const json_auth = JSON.parse(JSON.stringify(auth));
     var docRef = db.collection("WishLists").doc(json_auth.uid).collection("List");
@@ -76,7 +81,11 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id }) => {
   }
 
   useEffect(function () {
-    checkFavorite(false);
+    if (isLoaded(auth) && !isEmpty(auth)) {
+      console.log("User Logged in");
+      setLogin(true);
+      checkFavorite(false);
+    }
   }, []);
 
   return (
