@@ -17,6 +17,7 @@ import { ShopItemProps } from "../model/ComponentProps";
 import { FirestoreIonImg } from "../services/FirebaseStorage";
 import { async } from "@firebase/util";
 import { useFirebase, isLoaded, isEmpty } from "react-redux-firebase";
+import { useHistory } from "react-router-dom";
 
 
 const ShopItem: React.FC<ShopItemProps> = ({ item, market_id }) => {
@@ -26,6 +27,7 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id }) => {
   const dispatch = useDispatch();
   const db = useFirebase().firestore();
   const auth = useSelector<RootState>(state => state.firebase.auth);
+  const history = useHistory();
 
   function addFavorites() {
     console.log("adding favorites");
@@ -49,35 +51,36 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id }) => {
   }
 
   function checkFavorite(writing: boolean) {
-    if (!logined) {
-      return
-    }
-    console.log("updating favorite");
-    const json_auth = JSON.parse(JSON.stringify(auth));
-    var docRef = db.collection("WishLists").doc(json_auth.uid).collection("List");
+    if (logined) {
+      console.log("updating favorite");
+      const json_auth = JSON.parse(JSON.stringify(auth));
+      var docRef = db.collection("WishLists").doc(json_auth.uid).collection("List");
 
-    docRef.where('item_id', '==', item.id).get().then(function (snapshot) {
-      if (snapshot.empty) {
-        console.log("No such document!");
-        if (writing) {
-          addFavorites();
-        } else setFavorites(heartOutline);
-      } else {
-        if (writing) {
-          snapshot.forEach(doc => {
-            console.log(doc.id, '=>', doc.data());
-            // deleteFavorite(doc.id, docRef);
-            docRef.doc(doc.id).delete().then(() => {
-              console.log(doc.id + " deleted");
-            })
-          });
-          setFavorites(heartOutline);
-        } else setFavorites(heart);
-      }
-    }).catch(function (error) {
-      setFavorites(heartOutline);
-      console.log("Error getting document:", error);
-    });
+      docRef.where('item_id', '==', item.id).get().then(function (snapshot) {
+        if (snapshot.empty) {
+          console.log("No such document!");
+          if (writing) {
+            addFavorites();
+          } else setFavorites(heartOutline);
+        } else {
+          if (writing) {
+            snapshot.forEach(doc => {
+              console.log(doc.id, '=>', doc.data());
+              // deleteFavorite(doc.id, docRef);
+              docRef.doc(doc.id).delete().then(() => {
+                console.log(doc.id + " deleted");
+              })
+            });
+            setFavorites(heartOutline);
+          } else setFavorites(heart);
+        }
+      }).catch(function (error) {
+        setFavorites(heartOutline);
+        console.log("Error getting document:", error);
+      });
+    } else {
+      history.push("/login");
+    }
   }
 
   useEffect(function () {
