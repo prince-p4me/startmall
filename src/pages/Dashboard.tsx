@@ -28,7 +28,7 @@ const Dashboard: React.FC = () => {
   }
 
   function handleSearch() {
-    if(postcode == ""){
+    if(!postcode || postcode == ""){
       alert("Please enter postcode");
       return;
     }

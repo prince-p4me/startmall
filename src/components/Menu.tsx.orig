@@ -15,14 +15,7 @@ import {
 
 import React, { useState, useEffect } from "react";
 import { useLocation, useHistory } from "react-router-dom";
-<<<<<<< HEAD
 import { bookmarkOutline, rocketOutline } from "ionicons/icons";
-=======
-import {
-  bookmarkOutline,
-  rocketOutline
-} from "ionicons/icons";
->>>>>>> 49afc61d0ddbe42a76d47e280be74e11782e7898
 import "./Menu.css";
 import { AppPage, RootState } from "../model/DomainModels";
 import { useFirebase, isLoaded, isEmpty } from "react-redux-firebase";
@@ -142,16 +135,9 @@ const Menu: React.FC = () => {
           {isLoaded(auth) && !isEmpty(auth) ? (
             <IonItem onClick={handleSignOut}>Sign Out</IonItem>
           ) : (
-<<<<<<< HEAD
-            <IonItem routerLink="/login" routerDirection="none" detail={false}>
-              Sign In
-            </IonItem>
-          )}
-=======
               <IonItem routerLink="/login" routerDirection="none" detail={false} >Sign In</IonItem>
             )
           }
->>>>>>> 49afc61d0ddbe42a76d47e280be74e11782e7898
         </IonFooter>
       </IonContent>
     </IonMenu>

@@ -10,7 +10,7 @@ import {loadStripe} from '@stripe/stripe-js';
 
 // type Props ={
 //   children: ReactNode
-// }
+// }                
 
 // const AuthIsLoaded : Component<Props> = ({children = {}}) => {
 
