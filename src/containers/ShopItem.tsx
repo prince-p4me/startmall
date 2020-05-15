@@ -21,7 +21,7 @@ import { useHistory } from "react-router-dom";
 import CurrencyAmount from "../components/CurrencyAmount";
 
 
-const ShopItem: React.FC<ShopItemProps> = ({ item, market_id }) => {
+const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => {
   const [logined, setLogin] = useState(false);
   const [favorites, setFavorites] = useState(heartOutline);
   const [wishlist, setWishlist] = useState<WishList>({} as WishList);
@@ -36,7 +36,9 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id }) => {
     var docRef = db.collection("WishLists").doc(json_auth.uid).collection("List");
     let obj: WishList = {
       item_id: item.id,
-      market_id: market_id
+      market_id: market_id,
+      category_id: category_id,
+      item: item
     };
     writeData(obj, json_auth.uid);
   }
@@ -52,7 +54,8 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id }) => {
   }
 
   function checkFavorite(writing: boolean) {
-    if (logined) {
+    if (isLoaded(auth) && !isEmpty(auth)) {
+      setLogin(true);
       console.log("updating favorite");
       const json_auth = JSON.parse(JSON.stringify(auth));
       var docRef = db.collection("WishLists").doc(json_auth.uid).collection("List");
@@ -80,16 +83,14 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id }) => {
         console.log("Error getting document:", error);
       });
     } else {
-      history.push("/login");
+      if (writing) {
+        history.push("/login");
+      }
     }
   }
 
   useEffect(function () {
-    if (isLoaded(auth) && !isEmpty(auth)) {
-      console.log("User Logged in");
-      setLogin(true);
-      checkFavorite(false);
-    }
+    checkFavorite(false);
   }, []);
 
   return (
@@ -124,11 +125,12 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id }) => {
                 fill="clear"
                 size="small"
                 onClick={() => {
-                  if (isLoaded(auth) && !isEmpty(auth)) {
-                    checkFavorite(true);
-                  } else {
-                    alert("Please login to add item in wishlist");
-                  }
+                  checkFavorite(true);
+                  // if (isLoaded(auth) && !isEmpty(auth)) {
+                  //   checkFavorite(true);
+                  // } else {
+                  //   alert("Please login to add item in wishlist");
+                  // }
                 }}
               >
                 <IonIcon icon={favorites} />

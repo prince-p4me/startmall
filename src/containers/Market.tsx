@@ -4,7 +4,8 @@ import {
   IonGrid,
   IonRow,
   IonCol,
-  IonBadge} from "@ionic/react";
+  IonBadge
+} from "@ionic/react";
 import React, { useState } from "react";
 import "./Market.css";
 import Cart from "./Cart";
@@ -19,8 +20,8 @@ import MarketHeader from "../components/MarketHeader";
 
 const Market: React.FC = () => {
   const profile = useSelector<RootState>(state => state.firebase.profile)
-console.log ("User Profile:");
-  console.log (profile);
+  console.log("User Profile:");
+  console.log(profile);
   const { market_id } = useParams<{ market_id: string }>();
   var shop = {} as Markets;
   const [showModal, setShowModal] = useState(false);
@@ -69,7 +70,7 @@ console.log ("User Profile:");
 
   return (
     <IonPage>
-      <MarketHeader setShowModal={setShowModal} shop={shop} CartCounter={CartCounter}/>
+      <MarketHeader setShowModal={setShowModal} shop={shop} CartCounter={CartCounter} />
 
       <IonContent className="category" fullscreen>
         <ShopHeaderWithShop
@@ -77,17 +78,17 @@ console.log ("User Profile:");
         <IonGrid>
           <IonRow>
             {stateStore.ordered.Categories &&
-            stateStore.ordered.Categories.length > 0 ? (
-              stateStore.ordered.Categories.map(obj => {
-                return (
-                  <IonCol key={obj.id}>
-                    <CategoryItem market_id={market_id} category={obj} />
-                  </IonCol>
-                );
-              })
-            ) : (
-              <p></p>
-            )}
+              stateStore.ordered.Categories.length > 0 ? (
+                stateStore.ordered.Categories.map(obj => {
+                  return (
+                    <IonCol key={obj.id}>
+                      <CategoryItem market_id={market_id} category={obj} />
+                    </IonCol>
+                  );
+                })
+              ) : (
+                <p></p>
+              )}
           </IonRow>
         </IonGrid>
         <Cart modal={showModal} closehandler={() => setShowModal(false)} />

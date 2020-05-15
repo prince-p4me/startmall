@@ -43,8 +43,8 @@ export interface AddressObj {
   postcode: string;
   phone: string;
   email: string;
-  isValidAddress1:boolean;
-  isValidNumber:boolean;
+  isValidAddress1: boolean;
+  isValidNumber: boolean;
 }
 
 export interface PaymentObj {
@@ -171,6 +171,7 @@ export interface WishList {
   [key: string]: string | number | [] | any | null;
   market_id: string | null | any;
   item_id: string | null | any;
+  item: {} | any | null
 }
 
 export const ORDER_STATUS = { open: "open", close: "close", cancelled: "cancelled" };
