@@ -33,7 +33,7 @@ const Login: React.FC = () => {
   const [showLoading, setShowLoading] = useState(false);
   const [isMoved, setMoved] = useState(false)
 
-  firebase.auth().onAuthStateChanged(function(user) {
+  firebase.auth().onAuthStateChanged(function (user) {
     console.log("Login State changes");
     console.log(user);
     if (isLoaded(auth) && !isEmpty(auth)) {
@@ -65,7 +65,7 @@ const Login: React.FC = () => {
       setShowLoading(false);
       history.goBack()
     }
-  }, [auth, history,isMoved]);
+  }, [auth, history, isMoved]);
 
   async function loginWithGoogle() {
     setShowLoading(true);
@@ -83,7 +83,7 @@ const Login: React.FC = () => {
           // // history.push("/");
           // history.goBack()
           // setShowLoading(false);
-          
+
         })
         .catch(data => {
           console.log("Something Wrong with Google login. Please try again later");
@@ -187,8 +187,9 @@ const Login: React.FC = () => {
               fill="solid"
               shape="round"
               className="wechat_button"
+              onClick={()=>history.push("/mobilelogin")}
             >
-              WeChat
+              Login with Mobile
             </IonButton>
             <div>
               <IonLabel>

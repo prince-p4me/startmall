@@ -33,6 +33,7 @@ import MarketItems from "./containers/MarketItems";
 import ShopSelection from "./pages/ShopSelection";
 import Market from "./containers/Market";
 import ApplePay from './pages/ApplePay';
+import MobileNumberLogin from './pages/MobileNumberLogin';
 import ProtectedRoute, { getDefaultProtectedRouteProps } from "./services/FirebaseAuth";
 
 const App: React.FC = () => {
@@ -88,6 +89,7 @@ const App: React.FC = () => {
         <IonSplitPane contentId="main">
           <Menu />
           <IonRouterOutlet id="main">
+            <Route path="/mobilelogin" component={MobileNumberLogin} exact={true} />
             <Route path="/page/applepay" component={ApplePay} exact={true} />
             {/* <ProtectedRoute  {...defaultProtectedRouteProps}  path="/page/checkout" component={Checkout} exact={true} /> */}
             <Route path="/page/checkout" component={Checkout} exact={true} />
