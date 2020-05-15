@@ -82,7 +82,7 @@ const Market: React.FC = () => {
                 stateStore.ordered.Categories.map(obj => {
                   return (
                     <IonCol key={obj.id}>
-                      <CategoryItem market_id={market_id} category={obj} />
+                      <CategoryItem market_id={market_id} category={obj} shop={shop} />
                     </IonCol>
                   );
                 })

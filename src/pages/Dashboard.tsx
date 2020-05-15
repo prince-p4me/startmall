@@ -50,13 +50,11 @@ const Dashboard: React.FC = () => {
               placeholder="Enter postcode to search"
               value={postcode}
               onIonChange={e => {
-                let value = e.detail.value
-                setPostCode(value + "")
+                setPostCode(e.detail.value + "");
               }}
             ></IonInput>
             <IonButton onClick={handleSearch}> Search</IonButton>
           </IonItem>
-
           <IonImg src="/assets/img/instructions.png" />
         </div>
       </IonContent>

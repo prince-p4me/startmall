@@ -3,7 +3,7 @@ import { IonCard, IonCardHeader, IonCardSubtitle } from "@ionic/react";
 import { CategoryProps } from "../model/ComponentProps";
 import { FirestoreIonImg } from "../services/FirebaseStorage";
 
-const CategoryItem: React.FC<CategoryProps> = ({ market_id, category }) => {
+const CategoryItem: React.FC<CategoryProps> = ({ market_id, category, shop }) => {
   return (
     <IonCard
       routerLink={"/tabs/market/" + market_id + "/item_list/" + category.id}

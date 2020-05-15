@@ -3,6 +3,7 @@ import { CategoryObj, ItemObj, AddressObj, PaymentObj, Markets, ShopStateType } 
 export interface CategoryProps {
   market_id: string;
   category: CategoryObj;
+  shop: Markets | null | {}
 }
 
 export interface AddressProps {

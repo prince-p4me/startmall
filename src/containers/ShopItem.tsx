@@ -28,6 +28,7 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
   const dispatch = useDispatch();
   const db = useFirebase().firestore();
   const auth = useSelector<RootState>(state => state.firebase.auth);
+  const shop = useSelector<RootState>(state => state.shop);
   const history = useHistory();
 
   function addFavorites() {
@@ -44,8 +45,35 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
   }
 
   async function writeData(data: WishList, user_id: string) {
-    await db.collection("WishLists").doc(user_id).collection("List").add(data);
-    // updateFavorite();
+    var json_shop = JSON.parse(JSON.stringify(shop));
+    console.log(JSON.stringify(shop));
+    var items = await db.collection("WishLists")
+      .doc(user_id)
+      .collection("Markets")
+      .doc(market_id).collection("Items").get();
+    if (items.empty) {
+      await db.collection("WishLists")
+        .doc(user_id)
+        .collection("Markets")
+        .doc(market_id).set(json_shop.shop);
+      await db.collection("WishLists")
+        .doc(user_id)
+        .collection("Markets")
+        .doc(market_id)
+        .collection("Items")
+        .add(data);
+      // updateFavorite();
+    } else {
+      var itemList: any = [];
+      items.forEach(doc => {
+        var doc1 = doc.data();
+        itemList.push(doc1);
+      })
+      await db.collection("WishLists")
+        .doc(user_id)
+        .collection("Markets")
+        .doc(market_id).collection("Items").doc(data.item_id).set(data);
+    }
     setFavorites(heart);
   }
 
@@ -58,7 +86,7 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
       setLogin(true);
       console.log("updating favorite");
       const json_auth = JSON.parse(JSON.stringify(auth));
-      var docRef = db.collection("WishLists").doc(json_auth.uid).collection("List");
+      var docRef = db.collection("WishLists").doc(json_auth.uid).collection("Markets").doc(market_id).collection("Items");
 
       docRef.where('item_id', '==', item.id).get().then(function (snapshot) {
         if (snapshot.empty) {
@@ -67,6 +95,7 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
             addFavorites();
           } else setFavorites(heartOutline);
         } else {
+          console.log("market found");
           if (writing) {
             snapshot.forEach(doc => {
               console.log(doc.id, '=>', doc.data());
