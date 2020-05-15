@@ -78,18 +78,6 @@ const MarketItems: React.FC<MarketItemsProps> = () => {
   const CartCounter = connect(mapStateToProps)(CartBadge);
   const ShopHeaderWithShop = connect(mapStateToProps)(ShopHeader);
 
-  // data.禽蛋类.map(item => {
-  //   var jsonitem = item as ItemJson;
-  //   const itemobj: ItemObj = {
-  //     market: "Hi Fresh",
-  //     itemName: jsonitem.产品,
-  //     itemDesc: jsonitem.规格,
-  //     itemCost: jsonitem.售出单价
-  //   };
-  //   Items.push(itemobj);
-  //   return Items;
-  // });
-
   return (
     <IonPage>
       <MarketHeader setShowModal={setShowModal} shop={shop} CartCounter={CartCounter} />
@@ -103,7 +91,7 @@ const MarketItems: React.FC<MarketItemsProps> = () => {
                 dataStore.ordered.ItemList.map(obj => {
                   return (
                     <IonCol key={obj.id}>
-                      <ShopItem item={obj} market_id={market_id} />
+                      <ShopItem item={obj} market_id={market_id} category_id={category_id} />
                     </IonCol>
                   );
                 })

@@ -16,7 +16,7 @@ import {
 import React, { useState, useEffect } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import {
-  bookmarkOutline,
+  bookmarkOutline, heartOutline,
   rocketOutline
 } from "ionicons/icons";
 import "./Menu.css";
@@ -33,6 +33,12 @@ const appPages: AppPage[] = [
     url: "/page/MyProfile",
     iosIcon: rocketOutline,
     mdIcon: rocketOutline
+  },
+  {
+    title: "WishList",
+    url: "/wishlist",
+    iosIcon: heartOutline,
+    mdIcon: heartOutline
   },
   {
     title: "Check Out",

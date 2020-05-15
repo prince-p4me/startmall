@@ -20,14 +20,14 @@ import { useFirebase, isLoaded, isEmpty } from "react-redux-firebase";
 import { useHistory } from "react-router-dom";
 import CurrencyAmount from "../components/CurrencyAmount";
 
-
-const ShopItem: React.FC<ShopItemProps> = ({ item, market_id }) => {
-  let [isLogin, setLogin] = useState(false);
+const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => {
+  const [logined, setLogin] = useState(false);
   const [favorites, setFavorites] = useState(heartOutline);
   const [wishlist, setWishlist] = useState<WishList>({} as WishList);
   const dispatch = useDispatch();
   const db = useFirebase().firestore();
   const auth = useSelector<RootState>(state => state.firebase.auth);
+  const shop = useSelector<RootState>(state => state.shop);
   const history = useHistory();
 
   function addFavorites() {
@@ -36,14 +36,43 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id }) => {
     var docRef = db.collection("WishLists").doc(json_auth.uid).collection("List");
     let obj: WishList = {
       item_id: item.id,
-      market_id: market_id
+      market_id: market_id,
+      category_id: category_id,
+      item: item
     };
     writeData(obj, json_auth.uid);
   }
 
   async function writeData(data: WishList, user_id: string) {
-    await db.collection("WishLists").doc(user_id).collection("List").add(data);
-    // updateFavorite();
+    var json_shop = JSON.parse(JSON.stringify(shop));
+    console.log(JSON.stringify(shop));
+    var items = await db.collection("WishLists")
+      .doc(user_id)
+      .collection("Markets")
+      .doc(market_id).collection("Items").get();
+    if (items.empty) {
+      await db.collection("WishLists")
+        .doc(user_id)
+        .collection("Markets")
+        .doc(market_id).set(json_shop.shop);
+      await db.collection("WishLists")
+        .doc(user_id)
+        .collection("Markets")
+        .doc(market_id)
+        .collection("Items")
+        .add(data);
+      // updateFavorite();
+    } else {
+      var itemList: any = [];
+      items.forEach(doc => {
+        var doc1 = doc.data();
+        itemList.push(doc1);
+      })
+      await db.collection("WishLists")
+        .doc(user_id)
+        .collection("Markets")
+        .doc(market_id).collection("Items").doc(data.item_id).set(data);
+    }
     setFavorites(heart);
   }
 
@@ -52,10 +81,11 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id }) => {
   }
 
   function checkFavorite(writing: boolean) {
-    if (isLogin) {
+    if (isLoaded(auth) && !isEmpty(auth)) {
+      setLogin(true);
       console.log("updating favorite");
       const json_auth = JSON.parse(JSON.stringify(auth));
-      var docRef = db.collection("WishLists").doc(json_auth.uid).collection("List");
+      var docRef = db.collection("WishLists").doc(json_auth.uid).collection("Markets").doc(market_id).collection("Items");
 
       docRef.where('item_id', '==', item.id).get().then(function (snapshot) {
         if (snapshot.empty) {
@@ -64,6 +94,7 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id }) => {
             addFavorites();
           } else setFavorites(heartOutline);
         } else {
+          console.log("market found");
           if (writing) {
             snapshot.forEach(doc => {
               console.log(doc.id, '=>', doc.data());
@@ -80,17 +111,14 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id }) => {
         console.log("Error getting document:", error);
       });
     } else {
-      history.push("/login");
+      if (writing) {
+        history.push("/login");
+      }
     }
   }
 
   useEffect(function () {
-    if (isLoaded(auth) && !isEmpty(auth)) {
-      console.log("User Logged in");
-      // setLogin(true);
-      isLogin = true;
-      checkFavorite(false);
-    }
+    checkFavorite(false);
   }, []);
 
   return (
@@ -125,13 +153,7 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id }) => {
                 fill="clear"
                 size="small"
                 onClick={() => {
-                  if (isLoaded(auth) && !isEmpty(auth)) {
-                    isLogin = true;
-                    checkFavorite(true);
-                  } else {
-                    history.push("/login");
-                    // alert("Please login to add item in wishlist");
-                  }
+                  checkFavorite(true);
                 }}
               >
                 <IonIcon icon={favorites} />

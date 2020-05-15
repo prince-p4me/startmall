@@ -17,7 +17,7 @@ import { Markets } from "../model/DomainModels";
 
 interface MarketHeaderProps {
   setShowModal: any;
-  shop: Markets;
+  shop: Markets | any;
   CartCounter: any;
 }
 
@@ -37,7 +37,7 @@ const MarketHeader: React.FC<MarketHeaderProps> = ({
           <IonMenuToggle>
             <IonButton>
 
-            <IonIcon slot="start" src="assets/icon/logo_small.svg"></IonIcon>
+              <IonIcon slot="start" src="assets/icon/logo_small.svg"></IonIcon>
             </IonButton>
           </IonMenuToggle>
         </IonButtons>

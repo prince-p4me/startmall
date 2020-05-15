@@ -6,8 +6,8 @@ import {
 } from "@ionic/react";
 import React from "react";
 
-interface SamplePageProps {}
-const SamplePage: React.FC<SamplePageProps> = () => {
+interface SamplePageProps { }
+const WishList: React.FC<SamplePageProps> = () => {
   return (
     <IonPage>
       <IonHeader></IonHeader>
@@ -18,4 +18,4 @@ const SamplePage: React.FC<SamplePageProps> = () => {
   );
 };
 
-export default SamplePage;
+export default WishList;

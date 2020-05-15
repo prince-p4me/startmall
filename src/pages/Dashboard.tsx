@@ -13,7 +13,7 @@ import { useHistory } from "react-router";
 
 const Dashboard: React.FC = () => {
   console.log("entering Dashboard");
-  const [postcode, setPostCode] = useState<string>();
+  const [postcode, setPostCode] = useState<string>("2000");
   const history = useHistory();
   // SplashScreen.show({
   //   showDuration: 2000,
@@ -48,14 +48,13 @@ const Dashboard: React.FC = () => {
               className="postcode_input"
               inputMode="numeric"
               placeholder="Enter postcode to search"
+              value={postcode}
               onIonChange={e => {
-                let value = e.detail.value
-                setPostCode(value + "")
+                setPostCode(e.detail.value + "");
               }}
             ></IonInput>
             <IonButton onClick={handleSearch}> Search</IonButton>
           </IonItem>
-
           <IonImg src="/assets/img/instructions.png" />
         </div>
       </IonContent>

@@ -3,6 +3,7 @@ import { CategoryObj, ItemObj, AddressObj, PaymentObj, Markets, ShopStateType } 
 export interface CategoryProps {
   market_id: string;
   category: CategoryObj;
+  shop: Markets | null | {}
 }
 
 export interface AddressProps {
@@ -32,6 +33,7 @@ export interface CheckoutProps {
 export interface ShopItemProps {
   item: ItemObj;
   market_id: string;
+  category_id: string;
 }
 
 export interface MarketItemsProps {

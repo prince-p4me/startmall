@@ -78,7 +78,7 @@ const ShopMain: React.FC = () => {
             {Categories.map(obj => {
               return (
                 <IonCol key={obj.id}>
-                  <CategoryItem market_id="" category={obj} />
+                  <CategoryItem market_id="" category={obj} shop={null} />
                 </IonCol>
               );
             })}

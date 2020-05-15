@@ -27,6 +27,8 @@ import Checkout from "./pages/Checkout";
 import Dashboard from "./pages/Dashboard";
 import ShopMain from "./containers/ShopMain";
 import OrderComplete from "./pages/OrderComplete";
+import WishList from "./pages/WishList";
+import FavoriteMarkets from "./pages/FavoriteMarkets";
 import Login from "./pages/Login";
 import StripeComponent from "./services/Stripe";
 import MarketItems from "./containers/MarketItems";
@@ -97,6 +99,8 @@ const App: React.FC = () => {
             <Route path="/landing" component={Dashboard} exact />
             {/* <ProtectedRoute {...defaultProtectedRouteProps}  path="/shop_selections" component={ShopSelection} exact /> */}
             <Route path="/login" component={Login} exact />
+            <Route path="/wishlist/" component={FavoriteMarkets} exact />
+            <Route path="/favoriteitems/:market_id" component={WishList} exact />
             <Route path="/stripe" component={StripeComponent} exact />
             <Route path="/orders/:invoice_id" component={OrderComplete} exact />
             <Route path="/shop/:name/categories" component={ShopMain} exact />
@@ -122,7 +126,7 @@ const App: React.FC = () => {
             />
             <Route path="/page/:name" component={Page} exact />
             <Redirect from="/" to="/tabs/dashboard" exact />
-            
+
           </IonRouterOutlet>
         </IonSplitPane>
       </IonReactRouter>
