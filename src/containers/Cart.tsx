@@ -9,22 +9,31 @@ import {
   IonIcon,
   IonFooter
 } from "@ionic/react";
-import { connect } from "react-redux";
+import { connect,useSelector } from "react-redux";
 import { closeOutline } from "ionicons/icons";
 import ItemList from "../components/ItemList";
 import { useHistory } from "react-router-dom";
 import { CartProps } from "../model/ComponentProps";
 import { CartState } from "../services/FirebaseIniti";
 import CartTotal from "../components/CartTotal";
+import { useFirebase, isLoaded, isEmpty } from "react-redux-firebase";
+import { RootState } from "../model/DomainModels";
 
 const Cart: React.FC<CartProps> = ({ modal, closehandler }) => {
   let history = useHistory();
+  const auth = useSelector<RootState>(state => state.firebase.auth);
+
   function mapStateToProps(state: CartState) {
     const { firebase, cart, shop, address } = state;
     return { firebase, cart, shop, address };
   }
   function handleCheckOut() {
-    history.push("/page/checkout");
+    // history.push("/page/checkout");
+    if (isLoaded(auth) && !isEmpty(auth)) {
+      history.push("/page/checkout");
+    } else {
+      history.push("/login");
+    }
     closehandler();
   }
 

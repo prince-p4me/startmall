@@ -20,7 +20,6 @@ import { useFirebase, isLoaded, isEmpty } from "react-redux-firebase";
 import { useHistory } from "react-router-dom";
 import CurrencyAmount from "../components/CurrencyAmount";
 
-
 const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => {
   const [logined, setLogin] = useState(false);
   const [favorites, setFavorites] = useState(heartOutline);
@@ -155,11 +154,6 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
                 size="small"
                 onClick={() => {
                   checkFavorite(true);
-                  // if (isLoaded(auth) && !isEmpty(auth)) {
-                  //   checkFavorite(true);
-                  // } else {
-                  //   alert("Please login to add item in wishlist");
-                  // }
                 }}
               >
                 <IonIcon icon={favorites} />

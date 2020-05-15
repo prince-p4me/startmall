@@ -91,7 +91,8 @@ const App: React.FC = () => {
           <Menu />
           <IonRouterOutlet id="main">
             <Route path="/page/applepay" component={ApplePay} exact={true} />
-            <ProtectedRoute  {...defaultProtectedRouteProps} path="/page/checkout" component={Checkout} exact={true} />
+            {/* <ProtectedRoute  {...defaultProtectedRouteProps}  path="/page/checkout" component={Checkout} exact={true} /> */}
+            <Route path="/page/checkout" component={Checkout} exact={true} />
             <Route path="/tabs" component={MainTabs} exact />
             <Route path="/landing" component={Dashboard} exact />
             {/* <ProtectedRoute {...defaultProtectedRouteProps}  path="/shop_selections" component={ShopSelection} exact /> */}

@@ -104,17 +104,18 @@ const AddressForm: React.FC<AddressProps> = ({ address, onAddressChange }) => {
         </IonLabel>
         <IonInput type="tel" placeholder="+61 321112321"
           onIonChange={e => {
-            onAddressChange({ ...address, phone: e.detail.value, isValidNumber:true })
+            onAddressChange({ ...address, phone: e.detail.value, isValidNumber: true })
             // dispatch(Actions.addPhoneAction(e.detail.value!));
           }}></IonInput>
       </IonItem>
 
       {
-        (address && (!address?.isValidAddress1 || !address?.isValidNumber ))
-          ? <IonItem style={{ paddingRight: 16 }} lines="none">
-            <IonLabel color="danger" position="floating">
+        (address && (!(address.isValidAddress1 && address.isValidNumber)))
+          ? 
+          <IonItem style={{ paddingRight: 16 }} lines="none">
+            <IonLabel id="validate" color="danger" position="floating">
               * Please fill up all the required information.
-        </IonLabel>
+            </IonLabel>
           </IonItem>
           : null
       }

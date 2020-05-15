@@ -130,7 +130,7 @@ const Menu: React.FC = () => {
                   className={
                     location.pathname === appPage.url ? "selected" : ""
                   }
-                  routerLink={appPage.url}
+                  routerLink={appPage.url === "/page/checkout" ? (isLoaded(auth) && !isEmpty(auth)) ? "/page/checkout" : "/login" : appPage.url}
                   routerDirection="none"
                   lines="none"
                   detail={false}
