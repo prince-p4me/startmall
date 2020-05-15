@@ -10,8 +10,8 @@ export const FirestoreIonImg: React.FC<GetURLProps> = ({ src }) => {
   var storage = useFirebase().storage();
   if (src.startsWith("gs")) {
     var imgref = storage.refFromURL(src);
-    console.log("Image Ref");
-    console.log(imgref);
+    // console.log("Image Ref");
+    // console.log(imgref);
     // Get the download URL
     imgref
       .getDownloadURL()

@@ -22,6 +22,8 @@ import { useHistory } from "react-router-dom";
 import { cfaSignIn, mapUserToUserInfo } from "capacitor-firebase-auth";
 import { UserInfo } from "firebase/app";
 import { isPlatform } from "@ionic/core";
+import { Route, Redirect, RouteProps, useLocation } from "react-router";
+
 
 const Login: React.FC = () => {
   const firebase = useFirebase();
@@ -31,7 +33,7 @@ const Login: React.FC = () => {
   const [showLoading, setShowLoading] = useState(false);
   const [isMoved, setMoved] = useState(false)
 
-  firebase.auth().onAuthStateChanged(function (user) {
+  firebase.auth().onAuthStateChanged(function(user) {
     console.log("Login State changes");
     console.log(user);
     if (isLoaded(auth) && !isEmpty(auth)) {
@@ -88,7 +90,7 @@ const Login: React.FC = () => {
           // alert("Something Wrong with Google login. Please try again later");
           console.log(data);
           // history.push("/");
-          history.goBack()
+          history.goBack();
           setShowLoading(false);
           setTimeout(() => {
             alert("Something Wrong with Google login. Please try again later");
@@ -101,6 +103,7 @@ const Login: React.FC = () => {
           setShowLoading(false);
           console.log(user.displayName);
         });
+      //TODO: what if error?
     }
   }
 
@@ -126,7 +129,7 @@ const Login: React.FC = () => {
           // alert("Something Wrong with Facebook login. Please try again later");
           console.log(data);
           // history.push("/");
-          history.goBack()
+          history.goBack();
           setShowLoading(false);
           setTimeout(() => {
             alert("Something Wrong with Facebook login. Please try again later");
@@ -140,6 +143,7 @@ const Login: React.FC = () => {
           console.log(user.displayName);
           setShowLoading(false);
         });
+      //TODO: what if error
     }
   }
 
@@ -155,7 +159,7 @@ const Login: React.FC = () => {
         src="assets/icon/logo_small.svg"
       />
 
-      <IonContent >
+      <IonContent>
         <IonCard className="login_card">
           <IonCardContent>
             <IonButton
@@ -194,14 +198,10 @@ const Login: React.FC = () => {
             </div>
           </IonCardContent>
         </IonCard>
-        <IonLoading
-          isOpen={showLoading}
-          message={"Please wait..."}
-        />
+        <IonLoading isOpen={showLoading} message={"Please wait..."} />
       </IonContent>
     </IonPage>
   );
 };
-
 
 export default Login;

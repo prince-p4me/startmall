@@ -147,13 +147,13 @@ const Checkout: React.FC<CheckoutProps> = () => {
 
   const handleComplete = async () => {
     setShowLoading(true);
-    if (!addressObj.address1 || addressObj.address1 == "") {
+    if (!addressObj.address1 || addressObj.address1 === "") {
       alert("Please Type Address Line 1");
       setAddress({ ...addressObj,isValidAddress1:false })
       setShowLoading(false);
       return;
     }
-    if (!addressObj.phone || addressObj.phone == "") {
+    if (!addressObj.phone || addressObj.phone === "") {
       alert("Please Type the Contact person number");
       setAddress({ ...addressObj,isValidNumber:false })
       setShowLoading(false);

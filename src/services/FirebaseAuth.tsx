@@ -41,8 +41,13 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = props => {
 
   console.log("Redirecting to others site");
   let redirectPath = "";
+  const currentPath = currentLocation.pathname;
+
   if (!isAuthenticated && currentLocation.pathname != props.authenticationPath) {
-    redirectPath = props.authenticationPath;
+    redirectPath = props.authenticationPath
+    // console.log("CURRENT_LOCATION")
+    // console.log(currentLocation)
+      // redirectPath = props.authenticationPath+"?current=" + currentPath;
     console.log("Not Authenticate.. redirecting to " + redirectPath);
   }
   if (isAuthenticated && !props.isAllowed) {
@@ -51,7 +56,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = props => {
   }
 
   if (redirectPath) {
-    const renderComponent = () => <Redirect to={{ pathname: redirectPath }} />;
+    const renderComponent = () => <Redirect to={{ pathname: redirectPath}} />;
     return <Route {...props} component={renderComponent} render={undefined} />;
   } else {
     return <Route {...props} />;
