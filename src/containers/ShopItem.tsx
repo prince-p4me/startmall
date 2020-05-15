@@ -22,7 +22,7 @@ import CurrencyAmount from "../components/CurrencyAmount";
 
 
 const ShopItem: React.FC<ShopItemProps> = ({ item, market_id }) => {
-  const [logined, setLogin] = useState(false);
+  let [isLogin, setLogin] = useState(false);
   const [favorites, setFavorites] = useState(heartOutline);
   const [wishlist, setWishlist] = useState<WishList>({} as WishList);
   const dispatch = useDispatch();
@@ -52,7 +52,7 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id }) => {
   }
 
   function checkFavorite(writing: boolean) {
-    if (logined) {
+    if (isLogin) {
       console.log("updating favorite");
       const json_auth = JSON.parse(JSON.stringify(auth));
       var docRef = db.collection("WishLists").doc(json_auth.uid).collection("List");
@@ -87,7 +87,8 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id }) => {
   useEffect(function () {
     if (isLoaded(auth) && !isEmpty(auth)) {
       console.log("User Logged in");
-      setLogin(true);
+      // setLogin(true);
+      isLogin = true;
       checkFavorite(false);
     }
   }, []);
@@ -125,9 +126,11 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id }) => {
                 size="small"
                 onClick={() => {
                   if (isLoaded(auth) && !isEmpty(auth)) {
+                    isLogin = true;
                     checkFavorite(true);
                   } else {
-                    alert("Please login to add item in wishlist");
+                    history.push("/login");
+                    // alert("Please login to add item in wishlist");
                   }
                 }}
               >

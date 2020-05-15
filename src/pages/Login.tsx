@@ -29,6 +29,7 @@ const Login: React.FC = () => {
   const history = useHistory();
   const db = firebase.firestore();
   const [showLoading, setShowLoading] = useState(false);
+  const [isMoved, setMoved] = useState(false)
 
   firebase.auth().onAuthStateChanged(function (user) {
     console.log("Login State changes");
@@ -56,12 +57,13 @@ const Login: React.FC = () => {
   }
 
   useEffect(() => {
-    if (isLoaded(auth) && !isEmpty(auth)) {
+    if (isLoaded(auth) && !isEmpty(auth) && isMoved) {
       console.log("User Logged in");
       // history.push("/");
-      history.goBack();
+      setShowLoading(false);
+      history.goBack()
     }
-  }, [auth, history]);
+  }, [auth, history,isMoved]);
 
   async function loginWithGoogle() {
     setShowLoading(true);
@@ -74,18 +76,23 @@ const Login: React.FC = () => {
       return firebase
         .login({ provider: "google", type: "popup" })
         .then(data => {
-          console.log(data);
-          // history.push("/");
-          history.goBack()
-          setShowLoading(false);
+          setMoved(true)
+          // console.log(data);
+          // // history.push("/");
+          // history.goBack()
+          // setShowLoading(false);
+          
         })
         .catch(data => {
           console.log("Something Wrong with Google login. Please try again later");
+          // alert("Something Wrong with Google login. Please try again later");
           console.log(data);
           // history.push("/");
           history.goBack()
           setShowLoading(false);
-
+          setTimeout(() => {
+            alert("Something Wrong with Google login. Please try again later");
+          }, 200);
         });
     } else {
       return cfaSignIn("google.com")
@@ -108,17 +115,22 @@ const Login: React.FC = () => {
       return firebase
         .login({ provider: "facebook", type: "popup" })
         .then(data => {
+          setMoved(true)
           console.log(data);
           // history.push("/");
-          history.goBack()
-          setShowLoading(false);
+          // history.goBack()
+          // setShowLoading(false);
         })
         .catch(data => {
           console.log("Something Wrong with Facebook login. Please try again later");
+          // alert("Something Wrong with Facebook login. Please try again later");
           console.log(data);
           // history.push("/");
           history.goBack()
           setShowLoading(false);
+          setTimeout(() => {
+            alert("Something Wrong with Facebook login. Please try again later");
+          }, 200);
 
         });
     } else {
@@ -184,9 +196,7 @@ const Login: React.FC = () => {
         </IonCard>
         <IonLoading
           isOpen={showLoading}
-          onDidDismiss={() => setShowLoading(false)}
           message={"Please wait..."}
-          duration={5000}
         />
       </IonContent>
     </IonPage>
