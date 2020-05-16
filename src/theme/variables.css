@@ -348,6 +348,10 @@ position: absolute;;
 .hide {
   display:none;
 }
+
+.unhide{
+  visibility: inherit;
+}
 .postcode_input {
   outline-color: var(--ion-color-danger);
 }
