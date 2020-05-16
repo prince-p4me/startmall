@@ -10,6 +10,7 @@ import {
   useStripe,
   Elements
 } from "@stripe/react-stripe-js";
+import { isEmpty } from "@firebase/util";
 
 const StripeComponent: React.FC = () => {
   // const stripeKey = "pk_test_YC0gcyGppNgDEzsD5FxBzPXJ00nUQJqCvw";
@@ -33,7 +34,7 @@ const StripeComponent: React.FC = () => {
   // );
 
   const stripe = useStripe();
-  const [paymentRequest, setPaymentRequest] = useState(null);
+  const [paymentRequest, setPaymentRequest] = useState({} as PaymentRequest);
 
   useEffect(() => {
     if (stripe) {
@@ -48,29 +49,33 @@ const StripeComponent: React.FC = () => {
         requestPayerEmail: true
       });
 
+      console.log(pr);
       // Check the availability of the Payment Request API.
       pr.canMakePayment().then(result => {
         if (result) {
+          console.log(result);
           setPaymentRequest(pr as any);
         }
       });
     }
   }, [stripe]);
 
-  // if (paymentRequest) {
-  //   return (
-  //     <IonPage>
-  //       <PaymentRequestButtonElement options={{ paymentRequest }} />
-  //     </IonPage>
-  //   );
-  // }
+  console.log(paymentRequest);
+  if (!isEmpty(paymentRequest)) {
+    console.log(paymentRequest);
+    return (
+      <IonPage>
+        <PaymentRequestButtonElement options={paymentRequest as any} />
+      </IonPage>
+    );
+  }
 
   return (
     <IonPage>
       hello
-        {/* <CheckoutForm /> */}
-        <PaymentRequestButtonElement 
-       />
+      {/* <CheckoutForm /> */}
+      {/* <PaymentRequestButtonElement options={paymentRequest as any}
+       /> */}
     </IonPage>
   );
 };
