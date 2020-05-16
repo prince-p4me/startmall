@@ -2,17 +2,16 @@ import React, { useEffect, useState } from "react";
 import {
   IonRow, IonCol,
   IonPage,
-  IonHeader, IonBadge,
-  IonToolbar, IonGrid,
-  IonTitle, IonContent
+  IonBadge,
+  IonGrid,
+  IonContent
 } from "@ionic/react";
 import ShopItem from "../containers/ShopItem";
 import { useSelector, connect } from "react-redux";
-import { useFirestoreConnect, FirestoreReducer, useFirebase } from "react-redux-firebase";
+import { useFirestoreConnect, useFirebase } from "react-redux-firebase";
 import { RootState, WishList, Markets, } from "../model/DomainModels";
 import { useParams } from "react-router";
 import { CartState } from "../services/FirebaseIniti";
-import ShopHeader from "../components/ShopHeader";
 import MarketHeader from "../components/MarketHeader";
 import Cart from "../containers/Cart";
 
@@ -40,32 +39,31 @@ const WishListPage: React.FC = () => {
     return { firebase, cart, shop };
   }
   const CartCounter = connect(mapStateToProps)(CartBadge);
-  const ShopHeaderWithShop = connect(mapStateToProps)(ShopHeader);
 
-  function fetchData() {
-    db.collection("WishLists")
-      .doc(json_auth.uid)
-      .collection("Markets")
-      .doc(market_id).get().then(res => {
-        var shop1: any = res.data();
-        setShop(shop1 as Markets);
-      });
-    db.collection("WishLists")
-      .doc(json_auth.uid)
-      .collection("Markets")
-      .doc(market_id)
-      .collection("Items")
-      .get().then((snapshot) => {
-        var data: Array<WishList> = [];
-        if (!snapshot.empty) {
-          snapshot.forEach(doc => {
-            var item = doc.data();
-            data.push(item as WishList);
-          });
-        }
-        setItems(data);
-      })
-  }
+  // function fetchData() {
+  //   db.collection("WishLists")
+  //     .doc(json_auth.uid)
+  //     .collection("Markets")
+  //     .doc(market_id).get().then(res => {
+  //       var shop1: any = res.data();
+  //       setShop(shop1 as Markets);
+  //     });
+  //   db.collection("WishLists")
+  //     .doc(json_auth.uid)
+  //     .collection("Markets")
+  //     .doc(market_id)
+  //     .collection("Items")
+  //     .get().then((snapshot) => {
+  //       var data: Array<WishList> = [];
+  //       if (!snapshot.empty) {
+  //         snapshot.forEach(doc => {
+  //           var item = doc.data();
+  //           data.push(item as WishList);
+  //         });
+  //       }
+  //       setItems(data);
+  //     })
+  // }
 
   useFirestoreConnect([
     {
@@ -81,13 +79,31 @@ const WishListPage: React.FC = () => {
     }
   ]);
 
-  const dataStore = useSelector<RootState>(
-    state => state.firestore
-  ) as FirestoreReducer.Reducer;
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    db.collection("WishLists")
+    .doc(json_auth.uid)
+    .collection("Markets")
+    .doc(market_id).get().then(res => {
+      var shop1: any = res.data();
+      setShop(shop1 as Markets);
+    });
+  db.collection("WishLists")
+    .doc(json_auth.uid)
+    .collection("Markets")
+    .doc(market_id)
+    .collection("Items")
+    .get().then((snapshot) => {
+      var data: Array<WishList> = [];
+      if (!snapshot.empty) {
+        snapshot.forEach(doc => {
+          var item = doc.data();
+          data.push(item as WishList);
+        });
+      }
+      setItems(data);
+    })
+  },[db, json_auth.uid, market_id]);
 
   return (
     <IonPage>

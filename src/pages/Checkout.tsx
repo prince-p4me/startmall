@@ -170,7 +170,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
       return;
     }
 
-    if (cartState.cartItemList.length == 0) {
+    if (cartState.cartItemList.length === 0) {
       alert("Please add products in card");
       setShowLoading(false);
       return;

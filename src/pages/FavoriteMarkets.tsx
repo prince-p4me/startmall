@@ -8,25 +8,23 @@ import {
   IonImg, IonCardSubtitle,
   IonText, IonRow, IonGrid, IonCol,
   IonLabel, IonCard,
-  IonItem,
-  IonList,
   IonIcon,
 } from "@ionic/react";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./Dashboard.css";
 import { useHistory } from "react-router";
-import { useFirestoreConnect, FirestoreReducer, useFirebase } from "react-redux-firebase";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState, FavoriteMarket } from "../model/DomainModels";
+import { useFirestoreConnect, FirestoreReducer } from "react-redux-firebase";
+import { useSelector } from "react-redux";
+import { RootState } from "../model/DomainModels";
 import { heart } from "ionicons/icons";
 
 const FavoriteMarkets: React.FC = () => {
   console.log("entering Dashboard");
-  const [marketList, setMarktList] = useState<Array<FavoriteMarket>>([]);
+  // const [] = useState<Array<FavoriteMarket>>([]);
   const history = useHistory();
   const auth = useSelector<RootState>(state => state.firebase.auth);
   const json_auth = JSON.parse(JSON.stringify(auth));
-  const db = useFirebase().firestore();
+  // const db = useFirebase().firestore();
   function handleShopClick(obj: any) {
     history.push("favoriteitems/" + obj.id);
   }
@@ -48,16 +46,6 @@ const FavoriteMarkets: React.FC = () => {
     state => state.firestore
   ) as FirestoreReducer.Reducer;
 
-  async function getCount(market_id: string) {
-    var count = 0;
-    var items = await db.collection("WishLists").doc(json_auth.uid).collection("Markets").doc(market_id).collection("Items").get();
-    if (!items.empty) {
-      items.forEach(item => {
-        count++;
-      });
-    }
-    return count;
-  }
 
   // async function fetchData() {
   //   var data: Array<FavoriteMarket> = [];

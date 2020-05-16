@@ -7,8 +7,6 @@ import {
   IonToolbar,
   IonImg,
   IonText,
-  IonLabel,
-  IonItem,
 } from "@ionic/react";
 import React from "react";
 import "./Dashboard.css";

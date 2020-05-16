@@ -5,7 +5,6 @@ import {
   IonTabButton,
   IonIcon,
   IonLabel,
-  IonBadge,
   IonRouterOutlet
 } from "@ionic/react";
 import {
@@ -19,10 +18,8 @@ import { Route, Redirect } from "react-router";
 import MarketItems from "../containers/MarketItems";
 import ShopSelection from "../pages/ShopSelection";
 import Market from "../containers/Market";
-import { IonReactRouter } from "@ionic/react-router";
 import Dashboard from "../pages/Dashboard";
 import FavoriteMarkets from "../pages/FavoriteMarkets";
-import WishList from "../pages/SamplePage";
 
 const MainTabs: React.FC<MainTabsProps> = () => {
   // const defaultProtectedRouteProps = getDefaultProtectedRouteProps();

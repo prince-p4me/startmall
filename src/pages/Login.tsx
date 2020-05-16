@@ -22,7 +22,6 @@ import { useHistory } from "react-router-dom";
 import { cfaSignIn, mapUserToUserInfo } from "capacitor-firebase-auth";
 import { UserInfo } from "firebase/app";
 import { isPlatform } from "@ionic/core";
-import { Route, Redirect, RouteProps, useLocation } from "react-router";
 
 
 const Login: React.FC = () => {

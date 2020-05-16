@@ -66,7 +66,7 @@ const OrderComplete: React.FC<CartState> = () => {
       // ele.id = element.id;
 
       let item = cartItems.filter(function (item: CartItem) {
-        return item.id == element.id;
+        return item.id === element.id;
       })
       if (item.length > 0) {
         let existedItem = item[0];

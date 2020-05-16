@@ -1,58 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
     IonPage,
     IonContent,
-    IonCard,
-    IonCardContent,
     IonButton,
     IonLabel,
-    IonIcon,
     IonItem,
     IonHeader,
     IonToolbar,
-    IonImg,
     IonInput,
     IonLoading,
     IonButtons,
-    IonItemDivider,
     IonText,
     IonRow,
     IonCol
 } from "@ionic/react";
-import { useFirebase, isLoaded, isEmpty } from "react-redux-firebase";
-import { useSelector } from "react-redux";
-import { RootState } from "../model/DomainModels";
-import { useHistory } from "react-router-dom";
-import { cfaSignIn, mapUserToUserInfo } from "capacitor-firebase-auth";
-import { UserInfo } from "firebase/app";
-import { isPlatform } from "@ionic/core";
-import { closeOutline } from "ionicons/icons";
 import GoBack from "../components/GoBack";
 
 const MobileNumberLogin: React.FC = () => {
-    const firebase = useFirebase();
-    const auth = useSelector<RootState>(state => state.firebase.auth);
-    const history = useHistory();
-    const db = firebase.firestore();
-    const [showLoading, setShowLoading] = useState(false);
-    const [isValidNumber, setValidNumber] = useState(true);
+    const [showLoading] = useState(false);
+    // const [] = useState(true);
     const [mobileNumber, setMobileNumber] = useState<string | null | undefined>("" as string);
     const [isNumberAdded, setIsNumberAdded] = useState(false)
 
-    // var appVerifier = firebase.auth.RecaptchaVerifier('recaptcha-container');
-
-    // firebase.auth().RecaptchaVerifier(function (user) {
-    //     console.log("Login State changes");
-    //     console.log(user);
-    //     if (isLoaded(auth) && !isEmpty(auth)) {
-    //       console.log("User Logged in");
-    //       writeUserData(auth);
-    //     }
-    //   });
-
-    async function verifyPhoneNumber() {
-       
-    }
 
     return (
         <IonPage>
@@ -103,7 +72,7 @@ const MobileNumberLogin: React.FC = () => {
                             <IonItem className="center" lines="none">
                                 <IonLabel color="shade">
                                     <p>{"We’ve just sent a SMS to your mobile"}</p>
-                                    <p>{mobileNumber ? mobileNumber : "+61 321112321" + ","}</p>
+                                    <p>{mobileNumber ? mobileNumber : ("+61 321112321,")}</p>
                                     <p>{"please enter the verification code:"}</p>
                                 </IonLabel>
                             </IonItem>
