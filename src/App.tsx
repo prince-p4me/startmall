@@ -37,6 +37,10 @@ import Market from "./containers/Market";
 import ApplePay from './pages/ApplePay';
 import MobileNumberLogin from './pages/MobileNumberLogin';
 import ProtectedRoute, { getDefaultProtectedRouteProps } from "./services/FirebaseAuth";
+import {Elements} from "@stripe/react-stripe-js";
+import {loadStripe} from '@stripe/stripe-js';
+
+const stripePromise = loadStripe('pk_test_YC0gcyGppNgDEzsD5FxBzPXJ00nUQJqCvw');
 
 const App: React.FC = () => {
   console.log("entering app");
@@ -88,47 +92,49 @@ const App: React.FC = () => {
   return (
     <IonApp>
       <IonReactRouter>
-        <IonSplitPane contentId="main">
-          <Menu />
-          <IonRouterOutlet id="main">
-            <Route path="/mobilelogin" component={MobileNumberLogin} exact={true} />
-            <Route path="/page/applepay" component={ApplePay} exact={true} />
-            {/* <ProtectedRoute  {...defaultProtectedRouteProps}  path="/page/checkout" component={Checkout} exact={true} /> */}
-            <Route path="/page/checkout" component={Checkout} exact={true} />
-            <Route path="/tabs" component={MainTabs} exact />
-            <Route path="/landing" component={Dashboard} exact />
-            {/* <ProtectedRoute {...defaultProtectedRouteProps}  path="/shop_selections" component={ShopSelection} exact /> */}
-            <Route path="/login" component={Login} exact />
-            <Route path="/wishlist/" component={FavoriteMarkets} exact />
-            <Route path="/favoriteitems/:market_id" component={WishList} exact />
-            <Route path="/stripe" component={StripeComponent} exact />
-            <Route path="/orders/:invoice_id" component={OrderComplete} exact />
-            <Route path="/shop/:name/categories" component={ShopMain} exact />
-            <Route
-              animated={false}
-              path="/tabs/dashboard"
-              render={() => <Dashboard />}
-              exact={true}
-            />
-            <Route
-              path="/tabs/market/:market_id/:tab(item_list)/:category_id"
-              render={() => <MarketItems cname="" />}
-            />
-            <Route
-              path="/tabs/:tab(shop_selections)/:postcode"
-              render={() => <ShopSelection />}
-              exact={true}
-            />
-            <Route
-              path="/tabs/:tab(market)/:market_id"
-              render={() => <Market />}
-              exact={true}
-            />
-            <Route path="/page/:name" component={Page} exact />
-            <Redirect from="/" to="/tabs/dashboard" exact />
+        <Elements stripe={stripePromise}>
+          <IonSplitPane contentId="main">
+            <Menu />
+            <IonRouterOutlet id="main">
+              <Route path="/mobilelogin" component={MobileNumberLogin} exact={true} />
+              <Route path="/page/applepay" component={ApplePay} exact={true} />
+              {/* <ProtectedRoute  {...defaultProtectedRouteProps}  path="/page/checkout" component={Checkout} exact={true} /> */}
+              <Route path="/page/checkout" component={Checkout} exact={true} />
+              <Route path="/tabs" component={MainTabs} exact />
+              <Route path="/landing" component={Dashboard} exact />
+              {/* <ProtectedRoute {...defaultProtectedRouteProps}  path="/shop_selections" component={ShopSelection} exact /> */}
+              <Route path="/login" component={Login} exact />
+              <Route path="/wishlist/" component={FavoriteMarkets} exact />
+              <Route path="/favoriteitems/:market_id" component={WishList} exact />
+              <Route path="/stripe" component={StripeComponent} exact />
+              <Route path="/orders/:invoice_id" component={OrderComplete} exact />
+              <Route path="/shop/:name/categories" component={ShopMain} exact />
+              <Route
+                animated={false}
+                path="/tabs/dashboard"
+                render={() => <Dashboard />}
+                exact={true}
+              />
+              <Route
+                path="/tabs/market/:market_id/:tab(item_list)/:category_id"
+                render={() => <MarketItems cname="" />}
+              />
+              <Route
+                path="/tabs/:tab(shop_selections)/:postcode"
+                render={() => <ShopSelection />}
+                exact={true}
+              />
+              <Route
+                path="/tabs/:tab(market)/:market_id"
+                render={() => <Market />}
+                exact={true}
+              />
+              <Route path="/page/:name" component={Page} exact />
+              <Redirect from="/" to="/tabs/dashboard" exact />
 
-          </IonRouterOutlet>
-        </IonSplitPane>
+            </IonRouterOutlet>
+          </IonSplitPane>
+        </Elements>
       </IonReactRouter>
     </IonApp>
   );

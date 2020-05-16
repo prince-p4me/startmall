@@ -51,7 +51,13 @@ const appPages: AppPage[] = [
     url: "/page/applepay",
     iosIcon: rocketOutline,
     mdIcon: rocketOutline
-  }
+  },
+  {
+    title: "Stripe Pay",
+    url: "/stripe",
+    iosIcon: rocketOutline,
+    mdIcon: rocketOutline
+  },
 
   // {
   //   title: 'Outbox',
