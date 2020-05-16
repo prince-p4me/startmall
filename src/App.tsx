@@ -104,35 +104,15 @@ const App: React.FC = () => {
               <Route path="/landing" component={Dashboard} exact />
               {/* <ProtectedRoute {...defaultProtectedRouteProps}  path="/shop_selections" component={ShopSelection} exact /> */}
               <Route path="/login" component={Login} exact />
-              <Route path="/wishlist/" component={FavoriteMarkets} exact />
+              {/* <Route path="/wishlist/" component={FavoriteMarkets} exact /> */}
               <Route path="/favoriteitems/:market_id" component={WishList} exact />
               <Route path="/stripe" component={StripeComponent} exact />
               <Route path="/orders/:invoice_id" component={OrderComplete} exact />
               <Route path="/shop/:name/categories" component={ShopMain} exact />
-              <Route
-                animated={false}
-                path="/tabs/dashboard"
-                render={() => <Dashboard />}
-                exact={true}
-              />
-              <Route
-                path="/tabs/market/:market_id/:tab(item_list)/:category_id"
-                render={() => <MarketItems cname="" />}
-              />
-              <Route
-                path="/tabs/:tab(shop_selections)/:postcode"
-                render={() => <ShopSelection />}
-                exact={true}
-              />
-              <Route
-                path="/tabs/:tab(market)/:market_id"
-                render={() => <Market />}
-                exact={true}
-              />
               <Route path="/page/:name" component={Page} exact />
-              <Redirect from="/" to="/tabs/dashboard" exact />
+              <Redirect from="/" to="/tabs" exact />
 
-            </IonRouterOutlet>
+              </IonRouterOutlet>
           </IonSplitPane>
         </Elements>
       </IonReactRouter>

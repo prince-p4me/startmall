@@ -9,23 +9,29 @@ import {
 } from "@ionic/react";
 import React, { useState } from "react";
 import MainHeader from "../components/MainHeader";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 
 const Dashboard: React.FC = () => {
   console.log("entering Dashboard");
   const [postcode, setPostCode] = useState<string>("2000");
   const history = useHistory();
-  // SplashScreen.show({
-  //   showDuration: 2000,
-  //   autoHide: true
-  // });
-  // let elements = document.querySelectorAll("ion-tab-bar");
+  const location = useLocation();
+  // // SplashScreen.show({
+  // //   showDuration: 2000,
+  // //   autoHide: true
+  // // });
+  let elements = document.querySelectorAll("ion-tab-bar");
 
-  // if (elements != null) {
-  //   Object.keys(elements).map((key: any) => {
-  //     elements[key].className = "hide";
-  //   });
-  // }
+  if (elements != null && location.pathname.endsWith("dashboard")) {
+    console.log(location.pathname.endsWith("dashboard"));
+    Object.keys(elements).map((key: any) => {
+      elements[key].className = "hide";
+    });
+  } else {
+    Object.keys(elements).map((key: any) => {
+      elements[key].className = "unhide";
+    });
+  }
 
   function handleSearch() {
     if (!postcode || postcode == "") {

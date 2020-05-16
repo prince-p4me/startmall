@@ -14,6 +14,7 @@ import { useParams } from "react-router";
 import { CartState } from "../services/FirebaseIniti";
 import ShopHeader from "../components/ShopHeader";
 import MarketHeader from "../components/MarketHeader";
+import Cart from "../containers/Cart";
 
 const WishListPage: React.FC = () => {
   console.log("entering WishListPage");
@@ -86,7 +87,7 @@ const WishListPage: React.FC = () => {
 
   useEffect(() => {
     fetchData();
-  }, [items]);
+  }, []);
 
   return (
     <IonPage>
@@ -109,6 +110,7 @@ const WishListPage: React.FC = () => {
               )}
           </IonRow>
         </IonGrid>
+        <Cart modal={showModal} closehandler={() => setShowModal(!showModal)} />
       </IonContent>
     </IonPage >
   );
