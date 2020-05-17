@@ -28,9 +28,9 @@ const Payment: React.FC<PaymentProps> = ({ payment, onChange }) => {
           <IonIcon slot="end" color="primary" icon={chevronForwardOutline}></IonIcon>
         </IonItem>
         <IonItem lines="none">
-          <IonRadio slot="start" value="paypal"></IonRadio>
+          <IonRadio slot="start" value="applepay"></IonRadio>
           <IonLabel>
-            <p>Paypal</p>
+            <p>Apple Pay</p>
           </IonLabel>
         </IonItem>
         <IonItem lines="none">

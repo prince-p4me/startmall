@@ -30,6 +30,11 @@ export interface CheckoutProps {
   completeHandler: any;
 }
 
+export interface StripePaymentProps {
+  paymentMode: 'applePay' | 'visaCard',
+  completeHandler: any;
+}
+
 export interface ShopItemProps {
   item: ItemObj;
   market_id: string;

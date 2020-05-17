@@ -24,6 +24,7 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 import MainTabs from "./components/MainTabs";
 import Checkout from "./pages/Checkout";
+import Payment from "./pages/Payment";
 import Dashboard from "./pages/Dashboard";
 import ShopMain from "./containers/ShopMain";
 import OrderComplete from "./pages/OrderComplete";
@@ -48,6 +49,7 @@ const App: React.FC = () => {
               <Route path="/mobilelogin" component={MobileNumberLogin} exact={true} />
               {/* <ProtectedRoute  {...defaultProtectedRouteProps}  path="/page/checkout" component={Checkout} exact={true} /> */}
               <Route path="/page/checkout" component={Checkout} exact={true} />
+              <Route path="/payment/:invoice_id" component={Payment} exact={true} />
               <Route path="/tabs" component={MainTabs} exact />
               <Route path="/landing" component={Dashboard} exact />
               {/* <ProtectedRoute {...defaultProtectedRouteProps}  path="/shop_selections" component={ShopSelection} exact /> */}

@@ -132,7 +132,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
             setInvoiceId(res.id);
             invoice.id = res.id;
             setInvoice(invoice);
-            history.push("/orders/" + res.id);
+            history.push("/payment/" + res.id);
             console.clear();
             console.log("Successfully inserted");
             setShowLoading(false);
@@ -184,9 +184,6 @@ const Checkout: React.FC<CheckoutProps> = () => {
     }
     try {
       await writeUserData(auth);
-      // history.push("/orders/" + invoice.id);
-      // console.clear();
-      // console.log("Successfully inserted");
       setShowLoading(false);
     } catch (error) {
       console.log("Can't insert the data for invoice");
