@@ -79,11 +79,12 @@ const Checkout: React.FC<CheckoutProps> = () => {
     return { firebase, cart, shop, address };
   }
 
-  const CartItemList = connect(mapStateToProps)(ItemList);
-  const ShopHeaderWithShop = connect(mapStateToProps)(ShopHeader);
-  const EnhancedCondition = connect(mapStateToProps)(
+  const [CartItemList] = useState<React.ElementType>(connect(mapStateToProps)(ItemList));
+  const [ShopHeaderWithShop] = useState<React.ElementType>(connect(mapStateToProps)(ShopHeader));
+  const [EnhancedCondition] = useState<React.ElementType>(connect(mapStateToProps)(
     ShopConditionAndOperatingHours
-  );
+  ));
+
   // const AddressComponent = connect(mapStateToProps)(Address);
 
   function writeUserData(my_auth: any): Promise<void> {
