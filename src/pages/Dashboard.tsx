@@ -26,15 +26,17 @@ const Dashboard: React.FC = () => {
     console.log(location.pathname.endsWith("dashboard"));
     Object.keys(elements).map((key: any) => {
       elements[key].className = "hide";
+      return "";
     });
   } else {
     Object.keys(elements).map((key: any) => {
       elements[key].className = "unhide";
+      return "";
     });
   }
 
   function handleSearch() {
-    if (!postcode || postcode == "") {
+    if (!postcode || postcode === "") {
       alert("Please enter postcode");
       return;
     }

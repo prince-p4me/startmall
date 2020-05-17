@@ -9,21 +9,19 @@ import {
   IonLabel
 } from "@ionic/react";
 import { add, heart, heartOutline } from "ionicons/icons";
-import state from "../reducers/Address";
 import { useDispatch, useSelector } from "react-redux";
 import { addCartAction } from "../reducers/CartAction";
 import { ItemObj, RootState, WishList } from "../model/DomainModels";
 import { ShopItemProps } from "../model/ComponentProps";
 import { FirestoreIonImg } from "../services/FirebaseStorage";
-import { async } from "@firebase/util";
 import { useFirebase, isLoaded, isEmpty } from "react-redux-firebase";
 import { useHistory } from "react-router-dom";
 import CurrencyAmount from "../components/CurrencyAmount";
 
 const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => {
-  const [logined, setLogin] = useState(false);
+  const [, setLogin] = useState(false);
   const [favorites, setFavorites] = useState(heartOutline);
-  const [wishlist, setWishlist] = useState<WishList>({} as WishList);
+  // const [] = useState<WishList>({} as WishList);
   const dispatch = useDispatch();
   const db = useFirebase().firestore();
   const auth = useSelector<RootState>(state => state.firebase.auth);
@@ -33,7 +31,6 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
   function addFavorites() {
     console.log("adding favorites");
     const json_auth = JSON.parse(JSON.stringify(auth));
-    var docRef = db.collection("WishLists").doc(json_auth.uid).collection("List");
     let obj: WishList = {
       item_id: item.id,
       market_id: market_id,
@@ -82,6 +79,7 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
 
   function checkFavorite(writing: boolean) {
     if (isLoaded(auth) && !isEmpty(auth)) {
+      setFavorites(heart);
       setLogin(true);
       console.log("updating favorite");
       const json_auth = JSON.parse(JSON.stringify(auth));
@@ -117,9 +115,12 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
     }
   }
 
-  useEffect(function () {
-    checkFavorite(false);
-  }, []);
+  useEffect(() => {
+    if (!favorites) {
+      console.log("use Effect Set Favorites");
+      checkFavorite(false);
+    }
+  });
 
   return (
     <IonCard>

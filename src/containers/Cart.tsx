@@ -16,7 +16,7 @@ import { useHistory } from "react-router-dom";
 import { CartProps } from "../model/ComponentProps";
 import { CartState } from "../services/FirebaseIniti";
 import CartTotal from "../components/CartTotal";
-import { useFirebase, isLoaded, isEmpty } from "react-redux-firebase";
+import { isLoaded, isEmpty } from "react-redux-firebase";
 import { RootState } from "../model/DomainModels";
 
 const Cart: React.FC<CartProps> = ({ modal, closehandler }) => {

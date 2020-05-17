@@ -4,21 +4,21 @@ import {closeOutline} from "ionicons/icons";
 import {CardExpiryElement, CardNumberElement, CardCvcElement, useElements, useStripe, PaymentRequestButtonElement} from '@stripe/react-stripe-js';
 import { ApplePay } from '@ionic-native/apple-pay';
 
-const ELEMENT_OPTIONS = {
-    style: {
-        paymentRequestButton: {
-            type: 'buy',
-            theme: 'dark',
-        },
-    },
-};
+// const ELEMENT_OPTIONS = {
+//     style: {
+//         paymentRequestButton: {
+//             type: 'buy',
+//             theme: 'dark',
+//         },
+//     },
+// };
 
 const StripeComponent = () => {
     const stripe = useStripe();
     const elements = useElements();
     const [paymentRequest, setPaymentRequest] = useState(null) as any;
-    const [errorMessage, setErrorMessage] = useState(null);
-    const [notAvailable, setNotAvailable] = useState(false);
+    // const [errorMessage, setErrorMessage] = useState(null);
+    const [, setNotAvailable] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState(null);
 
     useEffect(() => {
@@ -49,7 +49,7 @@ const StripeComponent = () => {
                 setNotAvailable(true);
             }
         });
-    }, [stripe]);
+    }, [stripe, setPaymentRequest]);
 
     const options = useMemo(
         () => ({
