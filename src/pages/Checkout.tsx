@@ -24,13 +24,15 @@ import {
   CartStateType,
   ShopStateType,
   ProfileData,
-  AddressObj} from "../model/DomainModels";
+  AddressObj
+} from "../model/DomainModels";
 import ShopHeader from "../components/ShopHeader";
 import ShopConditionAndOperatingHours from "../components/ShopConditionAndOperatingHours";
 import { CartState } from "../services/FirebaseIniti";
 import { useFirebase, isEmpty } from "react-redux-firebase";
 import AddressForm from "../components/Address";
 import CurrencyAmount from "../components/CurrencyAmount";
+import ErrorDisplay from "../components/ErrorDisplay";
 
 interface MockInvoice {
   // TODO: Please fix the DomainModels > Invoice object same as below write invoice function
@@ -42,12 +44,14 @@ const Checkout: React.FC<CheckoutProps> = () => {
   const firebase = useFirebase();
   const db = firebase.firestore();
   const auth = useSelector<RootState>(state => state.firebase.auth);
-  const [addressObj, setAddress] = useState<AddressObj>({isValidAddress1:true,isValidNumber:true} as AddressObj);
+  const [addressObj, setAddress] = useState<AddressObj>({ isValidAddress1: true, isValidNumber: true } as AddressObj);
   const [aggreement, setAggreement] = useState<boolean>(false);
   const [paymentType, setPaymentType] = useState<string>("none");
   const [, setInvoiceId] = useState<string>("");
   const [, setInvoice] = useState<MockInvoice>({} as MockInvoice);
   const [showLoading, setShowLoading] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   let history = useHistory();
   // const [state] = useState<CartState>();
@@ -150,36 +154,48 @@ const Checkout: React.FC<CheckoutProps> = () => {
   const handleComplete = async () => {
     setShowLoading(true);
     if (!addressObj.address1 || addressObj.address1 === "") {
-      alert("Please Type Address Line 1");
-      setAddress({ ...addressObj,isValidAddress1:false })
+      // alert("Please Type Address Line 1");
+      setErrorMessage("Please Type Address Line 1")
+      setShowError(true)
+      setAddress({ ...addressObj, isValidAddress1: false })
       setShowLoading(false);
       return;
     }
     if (!addressObj.phone || addressObj.phone === "") {
-      alert("Please Type the Contact person number");
-      setAddress({ ...addressObj,isValidNumber:false })
+      // alert("Please Type the Contact person number");
+      setErrorMessage("Please Type the Contact person number")
+      setShowError(true)
+      setAddress({ ...addressObj, isValidNumber: false })
       setShowLoading(false);
       return;
     }
     if (paymentType === "" || paymentType === "none") {
-      alert("Please select any payment option");
+      // alert("Please select any payment option");
+      setErrorMessage("Please select any payment option")
+      setShowError(true)
       setShowLoading(false);
       return;
     }
     if (!aggreement) {
-      alert("Please check our aggreement");
+      // alert("Please check our aggreement");
+      setErrorMessage("Please check our aggreement")
+      setShowError(true)
       setShowLoading(false);
       return;
     }
 
     if (cartState.cartItemList.length === 0) {
-      alert("Please add products in card");
+      // alert("Please add products in card");
+      setErrorMessage("Please add products in card")
+      setShowError(true)
       setShowLoading(false);
       return;
     }
 
     if (isEmpty(auth)) {
-      alert("Please login to continue checkout");
+      // alert("Please login to continue checkout");
+      setErrorMessage("Please login to continue checkout")
+      setShowError(true)
       setShowLoading(false);
       return;
     }
@@ -244,7 +260,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
           </IonButton>
         </IonButtons>
         <IonTitle text-center>
-            <b>CHECK OUT</b>
+          <b>CHECK OUT</b>
         </IonTitle>
       </IonToolbar>
       <IonContent>
@@ -257,7 +273,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
           </IonLabel>
         </IonItem>
         <EnhancedCondition />
-        <AddressForm address={addressObj} onAddressChange={setAddress}/>
+        <AddressForm address={addressObj} onAddressChange={setAddress} />
         <br></br>
         <Payment payment={paymentType} onChange={setPaymentType} />
         <IonItem lines="none">
@@ -292,6 +308,9 @@ const Checkout: React.FC<CheckoutProps> = () => {
               Confirm
             </IonButton>
           </IonButtons>
+
+          <ErrorDisplay type={1} message={errorMessage} showToast={showError} closehandler={() => setShowError(false)} />
+
           <IonLoading
             isOpen={showLoading}
             onDidDismiss={() => setShowLoading(false)}
@@ -300,6 +319,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
           />
         </IonItem>
         <br></br>
+
       </IonContent>
     </IonPage>
   );

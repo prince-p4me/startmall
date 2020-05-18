@@ -68,3 +68,11 @@ export interface ShopSelectionListProps {
 export interface CurrencyAmountProps {
   amount: any;
 }
+
+export interface ErrorDisplayProps {
+  type: any;
+  message: any;
+  closehandler: any;
+  showToast:boolean;
+}
+
