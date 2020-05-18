@@ -20,34 +20,16 @@ import firebase, { UserInfo } from "firebase/app";
 import { useHistory } from "react-router-dom";
 import { VeriFyCode } from "../model/DomainModels";
 
-function useInterval(callback: any, delay: number) {
-  const savedCallback = useRef<any>();
-  // console.log("calling timer 2");
-
-  useEffect(() => {
-    savedCallback.current = callback;
-  });
-
-  useEffect(() => {
-    // console.log("calling timer 3");
-
-    function tick() {
-      savedCallback.current();
-    }
-    let id = setInterval(tick, delay);
-    return () => clearInterval(id);
-  }, [delay]);
-}
-
 const MobileNumberLogin: React.FC = () => {
   const history = useHistory();
   console.log("Mobile number login");
   const [showLoading] = useState(false);
   // const [] = useState(true);
-  const [mobileNumber, setMobileNumber] = useState<string | null | undefined>("8285724681" as string);
+  const [mobileNumber, setMobileNumber] = useState<string | null | undefined>("8178691529" as string);
   const [isNumberAdded, setIsNumberAdded] = useState(false);
   const [confirmationCode, setConfirmationCode] = useState<any>();
   var [timer, setTime] = useState<number>(60);
+  // var [interval_id, setIntervalId] = useState<NodeJS.Timeout>();
   const [verificationCode, setVerificationCode] = useState<VeriFyCode>({ first: "", second: "", third: "", fourth: "", sixth: "", fifth: "" });
   const input1 = useRef<any>();
   const input2 = useRef<any>();
@@ -71,20 +53,25 @@ const MobileNumberLogin: React.FC = () => {
         setConfirmationCode(confirmationResult);
         setTime(60);
         setIsNumberAdded(true);
+        startInterval();
       })
       .catch(function (error) {
         console.error("SMS not sent", error);
       });
   }
 
-  useInterval(() => {
-    var timer1 = JSON.parse(JSON.stringify(timer));
-    setTime(timer1);
-    if ((timer1) == 0) {
-      setTime(60);
-      setIsNumberAdded(false);
-    }
-  }, 1000);
+  function startInterval() {
+    var interval = setInterval(() => {
+      // setIntervalId(interval);
+      var timer1 = JSON.parse(JSON.stringify(timer--));
+      setTime(timer1);
+      if ((timer1) == 0) {
+        setTime(60);
+        setIsNumberAdded(false);
+        clearInterval(interval);
+      }
+    }, 1000);
+  }
 
   function verifyCode() {
     if ((!verificationCode.first || verificationCode.first == "") ||
@@ -108,7 +95,6 @@ const MobileNumberLogin: React.FC = () => {
   return (
     <IonPage>
       <div id="sign-in-button" ></div>
-      {/* <input id="sign-in-button" type="button" onClick={() => sendVerificationCode()} /> */}
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
