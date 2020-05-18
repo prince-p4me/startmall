@@ -75,8 +75,8 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
         supportedNetworks: ['visa', 'masterCard', 'discover'],
         merchantCapabilities: ['3ds', 'debit', 'credit'],
         merchantIdentifier: 'merchant.com.startmall.app',
-        currencyCode: 'USD',
-        countryCode: 'US',
+        currencyCode: 'AUD',
+        countryCode: 'AU',
         billingAddressRequirement: 'none',
         shippingAddressRequirement: 'none',
         shippingType: 'shipping'
@@ -184,10 +184,11 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
             size={'large'}>
             {
               !loading ?
-                `Pay ${invoice.total_amount}` :
+                `Pay AUD $${invoice.total_amount} inc GST` :
                 <IonSpinner name={'dots'}></IonSpinner>
             }
           </IonButton>
+          <IonLabel>* by hitting Pay you are confirming your order with us.</IonLabel>
         </form>
       }
       {

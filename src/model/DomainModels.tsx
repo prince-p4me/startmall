@@ -129,6 +129,7 @@ export interface Markets {
   support_postcodes: [];
   cut_off_terms: string;
   service_offering: string;
+  delivery_terms:string;
 }
 
 export interface FavoriteMarket {

@@ -52,7 +52,7 @@ const AddressForm: React.FC<AddressProps> = ({ address, onAddressChange }) => {
             onAddressChange({ ...address, address1: e.detail.value, isValidAddress1: true })
           }}></IonInput>
       </IonItem>
-      <IonItem style={{ paddingRight: 16 }}>
+      <IonItem hidden style={{ paddingRight: 16 }}>
         <IonLabel id="address_line_2" color="medium" position="floating">
           Address Line 2
         </IonLabel>
@@ -61,16 +61,16 @@ const AddressForm: React.FC<AddressProps> = ({ address, onAddressChange }) => {
             onAddressChange({ ...address, address2: e.detail.value })
           }}></IonInput>
       </IonItem>
-      <IonItem style={{ paddingRight: 16 }}>
+      <IonItem hidden style={{ paddingRight: 16 }}>
         <IonLabel id="suburb" color="medium" position="floating">
           Suburb
         </IonLabel>
-        <IonInput placeholder="e.g CBD, Chatswood" required={true}
+        <IonInput hidden placeholder="e.g CBD, Chatswood" required={true}
           onIonChange={e => {
             onAddressChange({ ...address, suburb: e.detail.value })
           }}></IonInput>
       </IonItem>
-      <IonItem style={{ paddingRight: 16 }}>
+      <IonItem hidden style={{ paddingRight: 16 }}>
         <IonLabel id="state" color="medium" position="floating">
           State
         </IonLabel>
@@ -79,11 +79,11 @@ const AddressForm: React.FC<AddressProps> = ({ address, onAddressChange }) => {
             onAddressChange({ ...address, state: e.detail.value })
           }}></IonInput>
       </IonItem>
-      <IonItem style={{ paddingRight: 16 }}>
+      <IonItem hidden style={{ paddingRight: 16 }}>
         <IonLabel id="postcode" color="medium" position="floating">
           Postcode
         </IonLabel>
-        <IonInput placeholder="e.g. 2000"
+        <IonInput hidden placeholder="e.g. 2000"
           onIonChange={e => {
             onAddressChange({ ...address, postcode: e.detail.value })
           }}></IonInput>

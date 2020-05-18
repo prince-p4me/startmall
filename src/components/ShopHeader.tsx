@@ -11,6 +11,7 @@ import {
 import { ShopHeaderProps } from "../model/ComponentProps";
 import { Markets } from "../model/DomainModels";
 import { isLoaded } from "react-redux-firebase";
+import { FirestoreIonImg } from "../services/FirebaseStorage";
 
 const ShopHeader: React.FC<ShopHeaderProps> = ({ shop }) => {
   var loadedShop = {} as Markets;
@@ -25,10 +26,10 @@ const ShopHeader: React.FC<ShopHeaderProps> = ({ shop }) => {
     <IonGrid>
       <IonRow>
         <IonCol size="4">
-          <IonImg src={loadedShop.img_url as string}></IonImg>
+          <FirestoreIonImg src={loadedShop.img_url as string}></FirestoreIonImg>
         </IonCol>
         <IonCol size="7.8" style={{}}>
-          <IonImg className="category_payments" src="/assets/img/payments.png"></IonImg>
+          <FirestoreIonImg className="category_payments" src="/assets/img/payments.png"></FirestoreIonImg>
           <IonItem lines="none">
             <IonText style={{ textAlign: "right" }}>{loadedShop.free_delivery_conditions}</IonText>
           </IonItem>

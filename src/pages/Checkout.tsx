@@ -73,6 +73,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
       store_address: "",
       support_postcodes: [],
       cut_off_terms: "",
+      delivery_terms:"",
       service_offering: ""
     }
   });
@@ -113,6 +114,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
       total_amount: cartState.cart.total,
       platform_charges: 135.0,
       cut_off_terms: shopState.shop.cutoff_terms,
+      delivery_terms: shopState.shop.delivery_terms,
       delivery_date: "22 May 2020",
       order_date: "12 May 2020",
       status: "open",
@@ -169,13 +171,13 @@ const Checkout: React.FC<CheckoutProps> = () => {
       setShowLoading(false);
       return;
     }
-    if (paymentType === "" || paymentType === "none") {
-      // alert("Please select any payment option");
-      setErrorMessage("Please select any payment option")
-      setShowError(true)
-      setShowLoading(false);
-      return;
-    }
+    // if (paymentType === "" || paymentType === "none") {
+    //   // alert("Please select any payment option");
+    //   setErrorMessage("Please select any payment option")
+    //   setShowError(true)
+    //   setShowLoading(false);
+    //   return;
+    // }
     if (!aggreement) {
       // alert("Please check our aggreement");
       setErrorMessage("Please check our aggreement")
@@ -275,7 +277,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
         <EnhancedCondition />
         <AddressForm address={addressObj} onAddressChange={setAddress} />
         <br></br>
-        <Payment payment={paymentType} onChange={setPaymentType} />
+        {/* <Payment payment={paymentType} onChange={setPaymentType} /> */}
         <IonItem lines="none">
           <IonImg
             class="footer_pay"
@@ -304,8 +306,9 @@ const Checkout: React.FC<CheckoutProps> = () => {
             >
               Continue Shopping
             </IonButton>
+            <br/>
             <IonButton color="secondary" fill="solid" onClick={handleComplete}>
-              Confirm
+              Proceed to Payment
             </IonButton>
           </IonButtons>
 

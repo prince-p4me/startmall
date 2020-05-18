@@ -7,6 +7,7 @@ import {
   IonItem,
   IonText
 } from "@ionic/react";
+import { FirestoreIonImg } from "../services/FirebaseStorage";
 
 const ShopSelectionList: React.FC<ShopSelectionListProps> = ({
   shops,
@@ -23,7 +24,7 @@ const ShopSelectionList: React.FC<ShopSelectionListProps> = ({
               handleShopClick(obj);
             }} key={index}
           >
-            <IonImg src={obj.img_url as string} alt={obj.name}></IonImg>
+            <FirestoreIonImg src={obj.img_url as string} ></FirestoreIonImg>
             <IonItem lines="none">
               <IonText>Provide: </IonText>
             </IonItem>

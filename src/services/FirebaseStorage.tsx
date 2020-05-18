@@ -4,10 +4,13 @@ import { IonImg } from "@ionic/react";
 
 interface GetURLProps {
   src: string;
+  className?:string;
 }
-export const FirestoreIonImg: React.FC<GetURLProps> = ({ src }) => {
+export const FirestoreIonImg: React.FC<GetURLProps> = ({ className, src }) => {
   var [downloadUrl, setDownloadUrl] = useState(src);
   var storage = useFirebase().storage();
+  // console.log(src);
+
   if (src.startsWith("gs")) {
     var imgref = storage.refFromURL(src);
     // console.log("Image Ref");

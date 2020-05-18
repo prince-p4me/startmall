@@ -16,8 +16,10 @@ import {
 import React, { useState, useEffect } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import {
-  bookmarkOutline, heartOutline,
-  rocketOutline
+  bookmarkOutline,
+  heartOutline,
+  rocketOutline,
+  nutritionOutline
 } from "ionicons/icons";
 import "./Menu.css";
 import { AppPage, RootState } from "../model/DomainModels";
@@ -45,13 +47,14 @@ const appPages: AppPage[] = [
     url: "/page/checkout",
     iosIcon: rocketOutline,
     mdIcon: rocketOutline
-  },
-  {
-    title: "Apple Pay",
-    url: "/stripe",
-    iosIcon: rocketOutline,
-    mdIcon: rocketOutline
-  },
+  }
+
+  // {
+  //   title: "Shop Owner",
+  //   url: "https://startmall-admin.web.app",
+  //   iosIcon: nutritionOutline,
+  //   mdIcon: nutritionOutline
+  // }
 
   // {
   //   title: 'Outbox',
@@ -130,7 +133,14 @@ const Menu: React.FC = () => {
                   className={
                     location.pathname === appPage.url ? "selected" : ""
                   }
-                  routerLink={(appPage.url === "/page/checkout" || appPage.url === "/wishlist") ? (isLoaded(auth) && !isEmpty(auth)) ? appPage.url : "/login" : appPage.url}
+                  routerLink={
+                    appPage.url === "/page/checkout" ||
+                    appPage.url === "/wishlist"
+                      ? isLoaded(auth) && !isEmpty(auth)
+                        ? appPage.url
+                        : "/login"
+                      : appPage.url
+                  }
                   routerDirection="none"
                   lines="none"
                   detail={false}
@@ -141,6 +151,12 @@ const Menu: React.FC = () => {
               </IonMenuToggle>
             );
           })}
+          <IonItem lines="none">
+            <IonIcon icon={nutritionOutline}></IonIcon>
+            <IonLabel>
+              <a href="https://startmall-admin.web.app">Owner App </a>
+            </IonLabel>
+          </IonItem>
         </IonList>
 
         <IonList id="labels-list">
@@ -156,9 +172,10 @@ const Menu: React.FC = () => {
           {isLoaded(auth) && !isEmpty(auth) ? (
             <IonItem onClick={handleSignOut}>Sign Out</IonItem>
           ) : (
-              <IonItem routerLink="/login" routerDirection="none" detail={false} >Sign In</IonItem>
-            )
-          }
+            <IonItem routerLink="/login" routerDirection="none" detail={false}>
+              Sign In
+            </IonItem>
+          )}
         </IonFooter>
       </IonContent>
     </IonMenu>

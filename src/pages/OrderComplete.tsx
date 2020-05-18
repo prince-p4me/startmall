@@ -105,20 +105,20 @@ const OrderComplete: React.FC<CartState> = () => {
       </IonHeader>
 
       <IonContent>
-        <IonItem className="order_cutoff" lines="none">
-          <p>
-            {invoice.cut_off_terms}
-          </p>
-        </IonItem>
-        <IonItem className="order_cutoff" lines="none">
-          {/* {invoice.cut_off_terms} */}
-          <IonLabel>
-            <b>{"Invoice Reference Numer: " + invoice_id}</b>
-          </IonLabel>
+        <IonItem className="order_cutoff" lines="none" >
+        <span >
+          {invoice.delivery_terms}
+          </span>
         </IonItem>
         <IonItem className="order_completed" lines="none">
           <IonLabel>
             <b>Order Completed</b>
+          </IonLabel>
+        </IonItem>
+        <IonItem className="order_cutoff" lines="none">
+          {/* {invoice.cut_off_terms} */}
+          <IonLabel>
+            <b>{"Inv: " + invoice_id}</b>
           </IonLabel>
         </IonItem>
         <IonItem className="order_completed">
