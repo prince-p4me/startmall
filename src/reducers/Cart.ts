@@ -25,8 +25,6 @@ export const cartReducer = (state = INITIAL_STATE, action: any) => {
   // export default function cartReducer(state = INITIAL_STATE, action: any) {
   switch (action.type) {
     case ADD_ITEM:
-      console.log("ZERO1:"+action.payload.unit_price);
-      console.log("ZERO2:"+state.cart.total);
       return {
         cartItemList: [...state.cartItemList, action.payload],
         cart: {

@@ -116,11 +116,11 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
   }
 
   useEffect(() => {
-    if (!favorites) {
+    if (favorites == heartOutline) {
       console.log("use Effect Set Favorites");
       checkFavorite(false);
     }
-  });
+  }, []);
 
   return (
     <IonCard>

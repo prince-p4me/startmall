@@ -51,9 +51,6 @@ const MobileNumberLogin: React.FC = () => {
                                     }}></IonInput>
 
                             </IonItem>
-                            <div style={{ marginLeft: 50, marginRight: 50, height: 1, background: "black" }}>
-
-                            </div>
                             <IonButton className="center" style={{ marginTop: "20%" }} color="secondary" fill="solid" onClick={() => { setIsNumberAdded(true) }}>
                                 Send Verification Code
                             </IonButton>
