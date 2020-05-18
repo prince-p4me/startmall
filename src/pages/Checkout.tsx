@@ -9,7 +9,8 @@ import {
   IonCheckbox,
   IonItem,
   IonImg,
-  IonLoading
+  IonLoading,
+  IonTitle
 } from "@ionic/react";
 import React, { useState } from "react";
 import { connect, useSelector } from "react-redux";
@@ -242,6 +243,9 @@ const Checkout: React.FC<CheckoutProps> = () => {
             ></IonIcon>
           </IonButton>
         </IonButtons>
+        <IonTitle text-center>
+            <b>CHECK OUT</b>
+        </IonTitle>
       </IonToolbar>
       <IonContent>
         <ShopHeaderWithShop />
