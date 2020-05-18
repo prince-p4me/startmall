@@ -188,4 +188,14 @@ export interface WishList {
   item: {} | any | null
 }
 
+export interface VeriFyCode {
+  [key: string]: string | number | [] | any | null;
+  first: string | number | any | null;
+  second: string | number | any | null;
+  third: string | number | any | null;
+  fourth: string | number | any | null;
+  fifth: string | number | any | null;
+  sixth: string | number | any | null;
+}
+
 export const ORDER_STATUS = { open: "open", close: "close", cancelled: "cancelled" };

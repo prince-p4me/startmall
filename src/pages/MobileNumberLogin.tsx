@@ -1,105 +1,251 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
-    IonPage,
-    IonContent,
-    IonButton,
-    IonLabel,
-    IonItem,
-    IonHeader,
-    IonToolbar,
-    IonInput,
-    IonLoading,
-    IonButtons,
-    IonText,
-    IonRow,
-    IonCol
+  IonPage,
+  IonContent,
+  IonButton,
+  IonLabel,
+  IonItem,
+  IonHeader,
+  IonToolbar,
+  IonInput,
+  IonLoading,
+  IonButtons,
+  IonText,
+  IonRow,
+  IonCol
 } from "@ionic/react";
 import GoBack from "../components/GoBack";
+import { useFirebase, isLoaded, isEmpty } from "react-redux-firebase";
+import firebase, { UserInfo } from "firebase/app";
+import { useHistory } from "react-router-dom";
+import { VeriFyCode } from "../model/DomainModels";
+
+function useInterval(callback: any, delay: number) {
+  const savedCallback = useRef<any>();
+  // console.log("calling timer 2");
+
+  useEffect(() => {
+    savedCallback.current = callback;
+  });
+
+  useEffect(() => {
+    // console.log("calling timer 3");
+
+    function tick() {
+      savedCallback.current();
+    }
+    let id = setInterval(tick, delay);
+    return () => clearInterval(id);
+  }, [delay]);
+}
 
 const MobileNumberLogin: React.FC = () => {
-    const [showLoading] = useState(false);
-    // const [] = useState(true);
-    const [mobileNumber, setMobileNumber] = useState<string | null | undefined>("" as string);
-    const [isNumberAdded, setIsNumberAdded] = useState(false)
+  const history = useHistory();
+  console.log("Mobile number login");
+  const [showLoading] = useState(false);
+  // const [] = useState(true);
+  const [mobileNumber, setMobileNumber] = useState<string | null | undefined>("8285724681" as string);
+  const [isNumberAdded, setIsNumberAdded] = useState(false);
+  const [confirmationCode, setConfirmationCode] = useState<any>();
+  var [timer, setTime] = useState<number>(60);
+  const [verificationCode, setVerificationCode] = useState<VeriFyCode>({ first: "", second: "", third: "", fourth: "", sixth: "", fifth: "" });
+  const input1 = useRef<any>();
+  const input2 = useRef<any>();
+  const input3 = useRef<any>();
+  const input4 = useRef<any>();
+  const input5 = useRef<any>();
+  const input6 = useRef<any>();
 
+  function sendVerificationCode() {
+    const appVerifier = new firebase.auth.RecaptchaVerifier('sign-in-button', {
+      'size': 'invisible',
+    });
+    const phoneNumberString = "+91" + mobileNumber;
 
-    return (
-        <IonPage>
-            <IonHeader>
-                <IonToolbar>
-                    <IonButtons slot="start">
-                        <IonButtons slot="start">
-                            <GoBack />
-                        </IonButtons>
-                    </IonButtons>
-                </IonToolbar>
-            </IonHeader>
+    firebase.auth().signInWithPhoneNumber(phoneNumberString, appVerifier)
+      .then((confirmationResult: any) => {
+        // SMS sent. Prompt user to type the code from the message, then sign the
+        // user in with confirmationResult.confirm(code).
+        appVerifier.clear();
+        console.log("confirmationResult" + confirmationResult);
+        setConfirmationCode(confirmationResult);
+        setTime(60);
+        setIsNumberAdded(true);
+      })
+      .catch(function (error) {
+        console.error("SMS not sent", error);
+      });
+  }
 
-            <IonContent className="center">
-                {
-                    (!isNumberAdded)
-                        ? <>
-                            <IonItem className="mobile_login_header" lines="none">
-                                <IonLabel>
-                                    <b>Your Mobile Number</b>
-                                </IonLabel>
-                            </IonItem>
-                            <IonItem className="order_completed" style={{ marginTop: "20%" }} lines="none" >
-                                <IonInput type="number" placeholder="+61 321112321"
-                                    onIonChange={e => {
-                                        setMobileNumber(e.detail.value)
-                                    }}></IonInput>
+  useInterval(() => {
+    var timer1 = JSON.parse(JSON.stringify(timer));
+    setTime(timer1);
+    if ((timer1) == 0) {
+      setTime(60);
+      setIsNumberAdded(false);
+    }
+  }, 1000);
 
-                            </IonItem>
-                            <div style={{ marginLeft: 50, marginRight: 50, height: 1, background: "black" }}>
+  function verifyCode() {
+    if ((!verificationCode.first || verificationCode.first == "") ||
+      (!verificationCode.second || verificationCode.second == "") ||
+      (!verificationCode.third || verificationCode.third == "") ||
+      (!verificationCode.fourth || verificationCode.fourth == "") ||
+      (!verificationCode.fifth || verificationCode.fifth == "") ||
+      (!verificationCode.sixth || verificationCode.sixth == "")) {
+      alert("Enter verification code properly");
+    }
+    const code = verificationCode.first + verificationCode.second + verificationCode.third + verificationCode.fourth + verificationCode.fifth + verificationCode.sixth;
+    console.log("code is:==" + code);
+    confirmationCode.confirm(code).then((res: any) => {
+      console.log("verification success:--" + JSON.stringify(res));
+      history.push("/");
+    }).catch((err: any) => {
+      console.log("Error in verification");
+    });
+  }
 
-                            </div>
-                            <IonButton className="center" style={{ marginTop: "20%" }} color="secondary" fill="solid" onClick={() => { setIsNumberAdded(true) }}>
-                                Send Verification Code
+  return (
+    <IonPage>
+      <div id="sign-in-button" ></div>
+      {/* <input id="sign-in-button" type="button" onClick={() => sendVerificationCode()} /> */}
+      <IonHeader>
+        <IonToolbar>
+          <IonButtons slot="start">
+            <IonButtons slot="start">
+              <GoBack />
+            </IonButtons>
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
+
+      <IonContent className="center">
+        {
+          (!isNumberAdded)
+            ? <>
+              <IonItem className="mobile_login_header" lines="none">
+                <IonLabel>
+                  <b>Your Mobile Number</b>
+                </IonLabel>
+              </IonItem>
+              <IonItem className="order_completed" style={{ marginTop: "20%" }} lines="none" >
+                <IonInput type="number" placeholder="+61 321112321"
+                  value={mobileNumber}
+                  onIonChange={e => {
+                    setMobileNumber(e.detail.value)
+                  }}></IonInput>
+
+              </IonItem>
+              <div style={{ marginLeft: 50, marginRight: 50, height: 1, background: "black" }}>
+
+              </div>
+              <IonButton className="center" style={{ marginTop: "20%" }} color="secondary" fill="solid" onClick={() => { sendVerificationCode() }}>
+                Send Verification Code
                             </IonButton>
-                        </>
-                        : null
-                }
+            </>
+            : null
+        }
 
-                {
-                    (isNumberAdded)
-                        ? <>
-                            <IonItem className="mobile_login_header" lines="none">
-                                <IonLabel>
-                                    <b>Verify Your Number</b>
-                                </IonLabel>
-                            </IonItem>
-                            <IonItem className="center" lines="none">
-                                <IonLabel color="shade">
-                                    <p>{"We’ve just sent a SMS to your mobile"}</p>
-                                    <p>{mobileNumber ? mobileNumber : ("+61 321112321,")}</p>
-                                    <p>{"please enter the verification code:"}</p>
-                                </IonLabel>
-                            </IonItem>
-                            <div className="center" style={{ marginTop: 20 }}>
-                                <IonRow >
-                                    <IonCol>
-                                        <IonInput type="number" className="otp_input" maxlength={1}></IonInput>
-                                        <IonInput type="number" className="otp_input" maxlength={1}></IonInput>
-                                        <IonInput type="number" className="otp_input" maxlength={1}></IonInput>
-                                        <IonInput type="number" className="otp_input" maxlength={1}></IonInput>
-                                    </IonCol>
-                                </IonRow>
-                            </div>
-                            <IonItem lines="none" onClick={() => setIsNumberAdded(false)}>
-                                <IonText className="center" color="primary" style={{ fontSize: 12, fontStyle: "italic", textDecorationLine: "underline" }}>Not Receive? Re-send in 60 Seconds</IonText>
-                            </IonItem>
-                            <IonButton className="center" style={{ marginTop: "10%" }} color="secondary" fill="solid" onClick={() => { setIsNumberAdded(false) }}>
-                                Confirm
+        {
+          (isNumberAdded)
+            ? <>
+              <IonItem className="mobile_login_header" lines="none">
+                <IonLabel>
+                  <b>Verify Your Number</b>
+                </IonLabel>
+              </IonItem>
+              <IonItem className="center" lines="none">
+                <IonLabel color="shade">
+                  <p>{"We’ve just sent a SMS to your mobile"}</p>
+                  <p>{mobileNumber ? mobileNumber : ("+61 321112321,")}</p>
+                  <p>{"please enter the verification code:"}</p>
+                </IonLabel>
+              </IonItem>
+              <div className="center" style={{ marginTop: 20 }}>
+                <IonRow >
+                  <IonCol>
+                    <IonInput type="number" className="otp_input" maxlength={1}
+                      value={verificationCode.first}
+                      onIonChange={e => {
+                        if ((e.detail.value as string).length === 1) {
+                          setVerificationCode({ ...verificationCode, first: e.detail.value })
+                          input2.current.setFocus();
+                        }
+                      }}
+                      ref={input1}
+                    ></IonInput>
+                    <IonInput type="number" className="otp_input" maxlength={1}
+                      value={verificationCode.second}
+                      onIonChange={e => {
+                        if ((e.detail.value as string).length === 1) {
+                          setVerificationCode({ ...verificationCode, second: e.detail.value })
+                          input3.current.setFocus();
+                        } else input1.current.setFocus();
+                      }}
+                      ref={input2}
+                    ></IonInput>
+                    <IonInput type="number" className="otp_input" maxlength={1}
+                      value={verificationCode.third}
+                      onIonChange={e => {
+                        if ((e.detail.value as string).length === 1) {
+                          setVerificationCode({ ...verificationCode, third: e.detail.value })
+                          input4.current.setFocus();
+                        } else input2.current.setFocus();
+                      }}
+                      ref={input3}
+                    ></IonInput>
+                    <IonInput type="number" className="otp_input" maxlength={1}
+                      value={verificationCode.fourth}
+                      onIonChange={e => {
+                        console.log(e);
+                        if ((e.detail.value as string).length === 1) {
+                          setVerificationCode({ ...verificationCode, fourth: e.detail.value })
+                          input5.current.setFocus();
+                        } else input3.current.setFocus();
+                      }}
+                      ref={input4}
+                    ></IonInput>
+                    <IonInput type="number" className="otp_input" maxlength={1}
+                      value={verificationCode.fifth}
+                      onIonChange={e => {
+                        if ((e.detail.value as string).length === 1) {
+                          setVerificationCode({ ...verificationCode, fifth: e.detail.value })
+                          input6.current.setFocus();
+                        } else input4.current.setFocus();
+                      }}
+                      ref={input5}
+                    ></IonInput>
+                    <IonInput type="number" className="otp_input" maxlength={1}
+                      value={verificationCode.sixth}
+                      onIonChange={e => {
+                        setVerificationCode({ ...verificationCode, sixth: e.detail.value });
+                        if ((e.detail.value as string).length === 0) {
+                          input5.current.setFocus();
+                        }
+                      }}
+                      ref={input6}
+                    ></IonInput>
+                  </IonCol>
+                </IonRow>
+              </div>
+              <IonItem lines="none" onClick={() => setIsNumberAdded(false)}>
+                <IonText className="center" color="primary" style={{
+                  fontSize: 12,
+                  fontStyle: "italic",
+                  textDecorationLine: "underline"
+                }}>Not Receive? Re-send in {timer} Seconds</IonText>
+              </IonItem>
+              <IonButton className="center" style={{ marginTop: "10%" }} color="secondary" fill="solid" onClick={() => { verifyCode() }}>
+                Confirm
                             </IonButton>
-                        </>
-                        : null
-                }
+            </>
+            : null
+        }
 
-                <IonLoading isOpen={showLoading} message={"Please wait..."} />
-            </IonContent>
-        </IonPage >
-    )
+        <IonLoading isOpen={showLoading} message={"Please wait..."} />
+      </IonContent>
+    </IonPage >
+  )
 };
 
 export default MobileNumberLogin;

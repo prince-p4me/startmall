@@ -32,8 +32,8 @@ import WishList from "./pages/WishList";
 import Login from "./pages/Login";
 import StripeComponent from "./services/Stripe";
 import MobileNumberLogin from './pages/MobileNumberLogin';
-import {Elements} from "@stripe/react-stripe-js";
-import {loadStripe} from '@stripe/stripe-js';
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from '@stripe/stripe-js';
 
 const stripePromise = loadStripe('pk_test_YC0gcyGppNgDEzsD5FxBzPXJ00nUQJqCvw');
 
@@ -62,7 +62,7 @@ const App: React.FC = () => {
               <Route path="/page/:name" component={Page} exact />
               <Redirect from="/" to="/tabs" exact />
 
-              </IonRouterOutlet>
+            </IonRouterOutlet>
           </IonSplitPane>
         </Elements>
       </IonReactRouter>
