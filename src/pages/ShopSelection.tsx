@@ -51,6 +51,8 @@ const ShopSelection: React.FC = () => {
 
   }
 
+  
+
   return (
     <IonPage>
       <IonHeader>
@@ -69,7 +71,7 @@ const ShopSelection: React.FC = () => {
             shops={marketList}
           />
         ) : (
-            <p className="no_data_found">No Data Found</p> 
+            <p className="no_data_found">We are coming soon in your area.</p> 
           )}
       </IonContent>
     </IonPage>

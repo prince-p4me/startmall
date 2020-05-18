@@ -25,12 +25,11 @@ export const cartReducer = (state = INITIAL_STATE, action: any) => {
   // export default function cartReducer(state = INITIAL_STATE, action: any) {
   switch (action.type) {
     case ADD_ITEM:
-      // console.log("adding");
       return {
         cartItemList: [...state.cartItemList, action.payload],
         cart: {
           total: (format((parseFloat(state.cart.total.toString()) +
-            parseFloat(action.payload.unit_price)),
+            parseFloat(action.payload.unit_price?action.payload.unit_price:0)),
             // (format((parseFloat(state.cart.total.toString()) + parseFloat(action.payload.unit_price)),0,2) % 1>0)?2:0,
             2,
             2))
@@ -51,7 +50,7 @@ export const cartReducer = (state = INITIAL_STATE, action: any) => {
         ],
         cart: {
           total: (format((parseFloat(state.cart.total.toString()) -
-            parseFloat(action.payload.unit_price)),
+            parseFloat(action.payload.unit_price?action.payload.unit_price:0)),
             // (format((parseFloat(state.cart.total.toString()) - parseFloat(action.payload.unit_price)),0,2) % 1>0)?2:0,
             2,
             2))

@@ -7,9 +7,10 @@ import {
   IonToolbar,
   IonButtons,
   IonIcon,
-  IonFooter
+  IonFooter,
+  IonTitle
 } from "@ionic/react";
-import { connect,useSelector } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { closeOutline } from "ionicons/icons";
 import ItemList from "../components/ItemList";
 import { useHistory } from "react-router-dom";
@@ -53,6 +54,9 @@ const Cart: React.FC<CartProps> = ({ modal, closehandler }) => {
               ></IonIcon>
             </IonButton>
           </IonButtons>
+          <IonTitle text-center>
+            <b>SHOPPING CART</b>
+        </IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent className="checkout_page">

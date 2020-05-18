@@ -30,7 +30,6 @@ import ShopMain from "./containers/ShopMain";
 import OrderComplete from "./pages/OrderComplete";
 import WishList from "./pages/WishList";
 import Login from "./pages/Login";
-import StripeComponent from "./services/Stripe";
 import MobileNumberLogin from './pages/MobileNumberLogin';
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from '@stripe/stripe-js';
@@ -56,7 +55,6 @@ const App: React.FC = () => {
               <Route path="/login" component={Login} exact />
               {/* <Route path="/wishlist/" component={FavoriteMarkets} exact /> */}
               <Route path="/favoriteitems/:market_id" component={WishList} exact />
-              <Route path="/stripe" component={StripeComponent} exact />
               <Route path="/orders/:invoice_id" component={OrderComplete} exact />
               <Route path="/shop/:name/categories" component={ShopMain} exact />
               <Route path="/page/:name" component={Page} exact />

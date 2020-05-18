@@ -122,7 +122,7 @@ ion-header p {
 }
 
 ion-button {
-  margin: 0 0 0 0; 
+  margin: 0 0 0 0;
 }
 
 .checkout_conditions p {
@@ -336,19 +336,18 @@ img {
   left: calc(35% + var(--ion-safe-area-left, 0px));
 }
 
-
 .dashboard_ad {
 }
 
 .dashboard_main {
-position: absolute;;
-  bottom:50px
+  position: absolute;
+  bottom: 50px;
 }
 .hide {
-  display:none;
+  display: none;
 }
 
-.unhide{
+.unhide {
   visibility: inherit;
 }
 .postcode_input {
@@ -357,7 +356,7 @@ position: absolute;;
 .blinking-cursor {
   /* font-weight: 100; */
   /* font-size: 30px; */
-  color: #2E3D48;
+  color: #2e3d48;
   -webkit-animation: 1s blink step-end infinite;
   -moz-animation: 1s blink step-end infinite;
   -ms-animation: 1s blink step-end infinite;
@@ -368,10 +367,10 @@ position: absolute;;
 .nonsupport_page {
   text-align: center;
   background-color: var(--ion-color-primary);
-  background:var(--ion-color-primary);
+  background: var(--ion-color-primary);
 }
 
-.payment_modal{
+.payment_modal {
   margin-top: 30%;
 }
 
@@ -380,27 +379,27 @@ position: absolute;;
   text-align: center;
 }
 
-.order_complete_border{
+.order_complete_border {
   border: thin solid black;
-  padding:2;
-  margin-left:20;
+  padding: 2;
+  margin-left: 20;
 }
 
-.no_data_found{
+.no_data_found {
   text-align: center;
 }
-.center{
-  text-align:center;
+.center {
+  text-align: center;
   margin-left: auto;
   margin-right: auto;
 }
 
 .mobile_login_header {
   text-align: center;
-  margin-top:25% ;
+  margin-top: 25%;
 }
 
-.otp_input{
+.otp_input {
   text-align: center;
   display:inline-block;
   width:30px;

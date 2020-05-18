@@ -124,7 +124,8 @@ const FavoriteMarkets: React.FC = () => {
                     ))}
                 </IonRow>
               ) : (
-                <p className="no_data_found">No Data Found</p>
+                <p className="no_data_found">You currently do not have any favorites.
+                Save some by clicking the heart on the picture. </p>
               )}
           </IonGrid> : (
               <p className="no_data_found">Please login to see your wishlist</p>
