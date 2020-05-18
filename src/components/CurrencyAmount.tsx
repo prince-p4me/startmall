@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { IonText } from "@ionic/react";
 import { CurrencyAmountProps } from "../model/ComponentProps";
 import { isLoaded } from "react-redux-firebase";
@@ -16,14 +16,8 @@ const CurrencyAmount: React.FC<CurrencyAmountProps> = ({ amount }) => {
 
   if (isLoaded(amount)) {
     if (amount && amount !== undefined) {
-      localAmount = format(amount,2, 2);
-      // if(localAmount % 1> 0){
-      //   localAmount = format(localAmount,0, 2);
-      // }
-    } 
-    // else {
-    //   localAmount = amount;
-    // }
+      localAmount = format(parseFloat(amount), 2, 2);
+    }
   }
 
   return (

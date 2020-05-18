@@ -15,13 +15,13 @@ const ShopSelectionList: React.FC<ShopSelectionListProps> = ({
   console.log(shops);
   return (
     <IonList className="shop_selection">
-      {shops.map(obj => {
+      {shops.map((obj, index) => {
         return (
           <IonCard
             class="shop_card"
             onClick={() => {
               handleShopClick(obj);
-            }}
+            }} key={index}
           >
             <IonImg src={obj.img_url as string} alt={obj.name}></IonImg>
             <IonItem lines="none">

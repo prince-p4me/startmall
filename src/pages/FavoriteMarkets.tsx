@@ -10,10 +10,10 @@ import {
   IonLabel, IonCard,
   IonIcon,
 } from "@ionic/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Dashboard.css";
 import { useHistory } from "react-router";
-import { useFirestoreConnect, FirestoreReducer } from "react-redux-firebase";
+import { useFirestoreConnect, FirestoreReducer, isEmpty, isLoaded } from "react-redux-firebase";
 import { useSelector } from "react-redux";
 import { RootState } from "../model/DomainModels";
 import { heart } from "ionicons/icons";
@@ -24,6 +24,8 @@ const FavoriteMarkets: React.FC = () => {
   const history = useHistory();
   const auth = useSelector<RootState>(state => state.firebase.auth);
   const json_auth = JSON.parse(JSON.stringify(auth));
+  const [isLogin, setLogin] = useState(false);
+
   // const db = useFirebase().firestore();
   function handleShopClick(obj: any) {
     history.push("favoriteitems/" + obj.id);
@@ -46,7 +48,14 @@ const FavoriteMarkets: React.FC = () => {
     state => state.firestore
   ) as FirestoreReducer.Reducer;
 
-
+  useEffect(() => {
+    if (isLoaded(auth) && !isEmpty(auth)) {
+      console.clear();
+      setLogin(true);
+      // console.log("User Logged in and user is:==" + JSON.stringify(auth));
+      // history.push("/");
+    }
+  }, []);
   // async function fetchData() {
   //   var data: Array<FavoriteMarket> = [];
   //   var markets = await db.collection("WishLists").doc(json_auth.uid).collection("Markets").get()
@@ -86,37 +95,42 @@ const FavoriteMarkets: React.FC = () => {
       </IonHeader>
       <IonText slot="right">SHOP CAN DELIVERY TO YOUR AREA</IonText>
       <IonContent fullscreen>
-        <IonGrid>
-          {dataStore.ordered.FavoritesMarkets &&
-            dataStore.ordered.FavoritesMarkets.length > 0 ? (
-              <IonRow>
-                {
-                  dataStore.ordered.FavoritesMarkets.map((obj) => (
-                    <IonCol key={obj.id}>
-                      <IonCard style={{
-                        marginBottom: 10,
-                        paddingBottom: 10,
-                      }}
-                        onClick={() => {
-                          handleShopClick(obj);
+        {
+          isLogin ? <IonGrid>
+            {dataStore.ordered.FavoritesMarkets &&
+              dataStore.ordered.FavoritesMarkets.length > 0 ? (
+                <IonRow>
+                  {
+                    dataStore.ordered.FavoritesMarkets.map((obj) => (
+                      <IonCol key={obj.id}>
+                        <IonCard style={{
+                          marginBottom: 10,
+                          paddingBottom: 10,
                         }}
-                      >
-                        <IonImg src={obj.img_url as string} alt={obj.name}></IonImg>
-                        <IonCardSubtitle className="category_name">{obj.name}</IonCardSubtitle>
-                        <div style={{ textAlign: "center" }} >
-                          <IonLabel>
-                            <IonIcon color="primary" icon={heart} />
-                            {/* <span>{getCount(obj.id)} items</span> */}
-                          </IonLabel>
-                        </div>
-                      </IonCard>
-                    </IonCol>
-                  ))}
-              </IonRow>
-            ) : (
-              <p className="no_data_found">No Data Found</p>
-            )}
-        </IonGrid>
+                          onClick={() => {
+                            handleShopClick(obj);
+                          }}
+                        >
+                          <IonImg src={obj.img_url as string} alt={obj.name}></IonImg>
+                          <IonCardSubtitle className="category_name">{obj.name}</IonCardSubtitle>
+                          <div style={{ textAlign: "center" }} >
+                            <IonLabel>
+                              <IonIcon color="primary" icon={heart} />
+                              {/* <span>{getCount(obj.id)} items</span> */}
+                            </IonLabel>
+                          </div>
+                        </IonCard>
+                      </IonCol>
+                    ))}
+                </IonRow>
+              ) : (
+                <p className="no_data_found">You currently do not have any favorites.
+                Save some by clicking the heart on the picture. </p>
+              )}
+          </IonGrid> : (
+              <p className="no_data_found">Please login to see your wishlist</p>
+            )
+        }
       </IonContent>
     </IonPage>
   );
