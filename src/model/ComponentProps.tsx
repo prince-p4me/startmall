@@ -1,4 +1,4 @@
-import { CategoryObj, ItemObj, AddressObj, PaymentObj, Markets, ShopStateType } from "./DomainModels";
+import { CategoryObj, ItemObj, AddressObj, PaymentObj, Markets, ShopStateType, Invoice } from "./DomainModels";
 
 export interface CategoryProps {
   market_id: string;
@@ -33,6 +33,7 @@ export interface CheckoutProps {
 export interface StripePaymentProps {
   paymentMode: 'applePay' | 'visaCard',
   completeHandler: any;
+  invoice: Invoice
 }
 
 export interface ShopItemProps {

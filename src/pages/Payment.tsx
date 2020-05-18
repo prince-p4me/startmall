@@ -6,15 +6,11 @@ import {
   IonButtons,
   IonIcon,
   IonLabel,
-  IonCheckbox,
-  IonItem,
-  IonImg,
-  IonLoading,
   IonList,
   IonItemDivider
 } from "@ionic/react";
-import React, { useState } from "react";
-import { connect, useSelector } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import { closeOutline } from "ionicons/icons";
 import { useHistory, useParams } from "react-router-dom";
 import { Invoice, CartItem, RootState } from "../model/DomainModels";
@@ -25,7 +21,7 @@ const Payment: React.FC = () => {
 
   const { invoice_id } = useParams<{ invoice_id: string }>();
   const cartItems: Array<CartItem> = [];
-  const invoice: Invoice = {} as Invoice;
+  let invoice: Invoice = {} as Invoice;
   const history = useHistory();
 
   useFirestoreConnect([{ collection: "Invoices", doc: invoice_id, storeAs: "Invoice" }]);
@@ -37,6 +33,14 @@ const Payment: React.FC = () => {
   const closehandler = async () => {
     history.goBack();
   };
+
+  const onPaymentInit = async () => {
+    history.push("/orders/" + invoice_id);
+  }
+
+  if (invoiceStore.ordered.Invoice && invoiceStore.ordered.Invoice.length > 0) {
+    invoice = invoiceStore.ordered.Invoice[0]
+  }
 
   return (
     <IonPage id="checkout">
@@ -57,7 +61,12 @@ const Payment: React.FC = () => {
             <IonIcon slot="start" src="assets/icon/1x/SVG/credit-card.svg"></IonIcon>
             <IonLabel color="primary" style={{ paddingLeft: 10 }}>Payment Detail</IonLabel>
           </IonItemDivider>
-          <StripePaymentContainer paymentMode={'applePay'} completeHandler={(res: any) => console.log(res)} ></StripePaymentContainer>
+          <StripePaymentContainer
+            paymentMode={'visaCard'}
+            completeHandler={onPaymentInit}
+            invoice={invoice}
+          >
+          </StripePaymentContainer>
         </IonList>
       </IonContent>
     </IonPage >

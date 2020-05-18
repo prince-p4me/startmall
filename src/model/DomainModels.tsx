@@ -167,7 +167,8 @@ export interface Invoice {
   order_date: string;
   delivery_date: string;
   // address_one_line: string;
-  payment_type: string
+  payment_type: string;
+  total_amount: number;
 }
 
 export interface ProfileData {
