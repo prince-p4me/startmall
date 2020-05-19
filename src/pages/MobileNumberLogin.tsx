@@ -47,15 +47,15 @@ const MobileNumberLogin: React.FC = () => {
   const input4 = useRef<any>();
   const input5 = useRef<any>();
   const input6 = useRef<any>();
-//   const [showError, setShowError] = useState(false);
-//   const [errorMessage, setErrorMessage] = useState("");
-const [errorProps, setErrorProps] = useState<ErrorProps>({} as ErrorProps);
+  //   const [showError, setShowError] = useState(false);
+  //   const [errorMessage, setErrorMessage] = useState("");
+  const [errorProps, setErrorProps] = useState<ErrorProps>({} as ErrorProps);
 
   function sendVerificationCode() {
     const appVerifier = new firebase.auth.RecaptchaVerifier("sign-in-button", {
       size: "invisible"
     });
-    const phoneNumberString ="+852" + mobileNumber as string;
+    const phoneNumberString = "+852" + mobileNumber as string;
     console.log(mobileNumber);
     firebase
       .auth()
@@ -70,17 +70,17 @@ const [errorProps, setErrorProps] = useState<ErrorProps>({} as ErrorProps);
         setIsNumberAdded(true);
         startInterval();
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.error("SMS not sent", error);
         // setErrorMessage("SMS not sent may be " + error);
         // setShowError(true);
         setErrorProps({
-            message: "SMS not sent may be " + error,
-            showError: true,
-            type: 1,
-            autoHide: true,
-            buttonText:""
-          })
+          message: "SMS not sent may be " + error,
+          showError: true,
+          type: 1,
+          autoHide: true,
+          buttonText: ""
+        })
       });
   }
 
@@ -330,7 +330,7 @@ const [errorProps, setErrorProps] = useState<ErrorProps>({} as ErrorProps);
         ) : null}
 
         <IonLoading isOpen={showLoading} message={"Please wait..."} />
-        <ErrorDisplay errorProps={errorProps} closeHandler={() => {setErrorProps({...errorProps, showError: false})}} eventHandler={()=>{}} />
+        <ErrorDisplay errorProps={errorProps} closeHandler={() => { setErrorProps({ ...errorProps, showError: false }) }} eventHandler={() => { }} />
 
       </IonContent>
     </IonPage>

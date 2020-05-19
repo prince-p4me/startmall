@@ -1,4 +1,4 @@
-import { ADD_ITEM, DEL_ITEM, DEL_ITEM_GROUP } from "./Cart";
+import { ADD_ITEM, DEL_ITEM, DEL_ITEM_GROUP, BLANK_CART } from "./Cart";
 import { ItemObj } from "../model/DomainModels";
 
 export function addCartAction(newItem: ItemObj) {
@@ -14,6 +14,7 @@ export function delCartAction(newItem: ItemObj) {
     payload: newItem
   };
 }
+
 export function delItemGroup(newItem: ItemObj) {
   return {
     type: DEL_ITEM_GROUP,
@@ -21,3 +22,9 @@ export function delItemGroup(newItem: ItemObj) {
   };
 }
 
+export function blankCart() {
+  return {
+    type: BLANK_CART,
+    payload: []
+  };
+}

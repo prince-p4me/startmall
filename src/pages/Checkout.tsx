@@ -1,37 +1,19 @@
-import {
-  IonContent,
-  IonPage,
-  IonButton,
-  IonToolbar,
-  IonButtons,
-  IonIcon,
-  IonLabel,
-  IonCheckbox,
-  IonItem,
-  IonImg,
-  IonLoading,
-  IonTitle
-} from "@ionic/react";
-import React, { useState } from "react";
-import { connect, useSelector } from "react-redux";
+import { IonContent, IonPage, IonButton, IonToolbar, IonButtons, IonIcon, IonLabel, IonCheckbox, IonItem, IonImg, IonLoading, IonTitle } from "@ionic/react";
+import React, { useState, useEffect } from "react";
+import { connect, useSelector, useDispatch } from "react-redux";
 import ItemList from "../components/ItemList";
 import { useHistory } from "react-router-dom";
 import { closeOutline } from "ionicons/icons";
+import { RootState, CartStateType, ShopStateType, ProfileData, AddressObj } from "../model/DomainModels";
 import { CheckoutProps, ErrorProps } from "../model/ComponentProps";
-import {
-  RootState,
-  CartStateType,
-  ShopStateType,
-  ProfileData,
-  AddressObj
-} from "../model/DomainModels";
 import ShopHeader from "../components/ShopHeader";
 import ShopConditionAndOperatingHours from "../components/ShopConditionAndOperatingHours";
 import { CartState } from "../services/FirebaseIniti";
-import { useFirebase, isEmpty } from "react-redux-firebase";
+import { useFirebase, isEmpty, isLoaded } from "react-redux-firebase";
 import AddressForm from "../components/Address";
 import CurrencyAmount from "../components/CurrencyAmount";
 import ErrorDisplay from "../components/ErrorDisplay";
+import { blankCart } from "../reducers/CartAction";
 
 interface MockInvoice {
   // TODO: Please fix the DomainModels > Invoice object same as below write invoice function
@@ -52,7 +34,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
   // const [showError, setShowError] = useState(false);
   // const [errorMessage, setErrorMessage] = useState("");
   const [errorProps, setErrorProps] = useState<ErrorProps>({} as ErrorProps);
-
+  const dispatch = useDispatch();
   let history = useHistory();
   // const [state] = useState<CartState>();
 
@@ -73,16 +55,16 @@ const Checkout: React.FC<CheckoutProps> = () => {
       store_address: "",
       support_postcodes: [],
       cut_off_terms: "",
-      delivery_terms:"",
+      delivery_terms: "",
       service_offering: ""
     }
   });
 
   function mapStateToProps(state: CartState) {
-    const { firebase, cart, shop, address } = state;
+    const { firebase, cart, shop } = state;
     setCartState(cart);
     setShop(shop);
-    return { firebase, cart, shop, address };
+    return { firebase, cart, shop };
   }
 
   const [CartItemList] = useState<React.ElementType>(connect(mapStateToProps)(ItemList));
@@ -140,6 +122,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
             invoice.id = res.id;
             setInvoice(invoice);
             history.push("/payment/" + res.id);
+            dispatch(blankCart());
             console.clear();
             console.log("Successfully inserted");
             setShowLoading(false);
@@ -164,7 +147,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
         showError: true,
         type: 1,
         autoHide: true,
-        buttonText:""
+        buttonText: ""
       })
       setAddress({ ...addressObj, isValidAddress1: false })
       setShowLoading(false);
@@ -179,7 +162,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
         showError: true,
         type: 1,
         autoHide: true,
-        buttonText:""
+        buttonText: ""
       })
       setAddress({ ...addressObj, isValidNumber: false })
       setShowLoading(false);
@@ -201,7 +184,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
         showError: true,
         type: 1,
         autoHide: true,
-        buttonText:""
+        buttonText: ""
       })
       setShowLoading(false);
       return;
@@ -216,7 +199,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
         showError: true,
         type: 1,
         autoHide: true,
-        buttonText:""
+        buttonText: ""
       })
       setShowLoading(false);
       return;
@@ -231,7 +214,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
         showError: true,
         type: 2,
         autoHide: false,
-        buttonText:"LOG IN"
+        buttonText: "LOG IN"
       })
       setShowLoading(false);
       return;
@@ -246,39 +229,54 @@ const Checkout: React.FC<CheckoutProps> = () => {
     }
   };
 
-  // function renderInvoice() {
+  async function fetchData() {
+    let json_auth = JSON.parse(JSON.stringify(auth));
+    var data = { address2: "", state: "", suburb: "", postcode: "", country: "" } as AddressObj;
+    const res = await db.collection("Users").doc(json_auth.uid).get()
+    if (res.exists) {
+      let user: any = res.data();
+      if (user.address && user.address.name) {
+        data.name = user.address.name;
+        if (user.address.address1) {
+          data.address1 = user.address.address1;
+          data.isValidAddress1 = true;
+        }
+        if (user.address.email) {
+          data.email = user.address.email;
+        }
+        if (user.address.phone) {
+          data.phone = user.address.phone;
+          data.isValidNumber = true;
+        }
+        setAddress(data);
+      } else {
+        if (json_auth.providerData[0].providerId === "phone") {
+          data.phone = json_auth.phoneNumber;
+          data.isValidNumber = true;
+        } else {
+          data.phone = json_auth.email;
+          data.isValidAddress1 = true;
+        }
+        setAddress(data);
+      }
+      console.clear();
+      console.log("user fetched:--" + JSON.stringify(addressObj));
+    } else if (isLoaded(auth) && !isEmpty(auth)) {
+      console.log("User Logged in");
+      if (json_auth.providerData[0].providerId === "phone") {
+        data.phone = json_auth.phoneNumber;
+        data.isValidNumber = true;
+      } else {
+        data.phone = json_auth.email;
+        data.isValidAddress1 = true;
+      }
+      setAddress(data);
+    }
+  }
 
-  // }
-
-  // const completePayment = async () => {
-  // This block is optional -- only if you need to update order items/shipping
-  // methods in response to shipping method selections
-  // try {
-  //   const applePayTransaction = await ApplePay.makePaymentRequest({
-  //     items,
-  //     shippingMethods,
-  //     merchantIdentifier,
-  //     currencyCode,
-  //     countryCode,
-  //     billingAddressRequirement: ['name', 'email', 'phone'],
-  //     shippingAddressRequirement: 'none',
-  //     shippingType: 'shipping'
-  //   });
-
-  //   const transactionStatus = await completeTransactionWithMerchant(applePayTransaction);
-  //   await this.applePay.completeLastTransaction(transactionStatus);
-  // } catch {
-  //   // handle payment request error
-  //   // Can also handle stop complete transaction but these should normally not occur
-  // }
-
-  // // only if you started listening before
-  // await ApplePay.stopListeningForShippingContactSelection();
-  // }
-
-  // useEffect(() => {
-  //   console.log("address is:-" + JSON.stringify(address));
-  // }, [auth, address]);
+  useEffect(() => {
+    fetchData();
+  }, [auth]);
 
   const closehandler = async () => {
     history.goBack();
@@ -341,13 +339,13 @@ const Checkout: React.FC<CheckoutProps> = () => {
             >
               Continue Shopping
             </IonButton>
-            <br/>
+            <br />
             <IonButton color="secondary" fill="solid" onClick={handleComplete}>
               Proceed to Payment
             </IonButton>
           </IonButtons>
 
-          <ErrorDisplay errorProps={errorProps} closeHandler={() => {setErrorProps({...errorProps, showError: false})}} eventHandler={() => { history.push("/login"); setErrorProps({...errorProps, showError: false}); }} />
+          <ErrorDisplay errorProps={errorProps} closeHandler={() => { setErrorProps({ ...errorProps, showError: false }) }} eventHandler={() => { history.push("/login"); setErrorProps({ ...errorProps, showError: false }); }} />
 
           <IonLoading
             isOpen={showLoading}
