@@ -1,5 +1,5 @@
-import React, { useState,useEffect } from "react";
-import { IonText, IonItem, IonButtons, IonButton, IonIcon, IonLabel, IonToast } from "@ionic/react";
+import React, { useEffect } from "react";
+import { IonToast } from "@ionic/react";
 import { ErrorDisplayProps } from "../model/ComponentProps";
 import { isLoaded } from "react-redux-firebase";
 import { closeOutline } from "ionicons/icons";
@@ -7,11 +7,9 @@ import { closeOutline } from "ionicons/icons";
 const ErrorDisplay: React.FC<ErrorDisplayProps> = ({ type, message, closehandler, showToast }) => {
 
 
-  var localType: any = -1
   var localMessage: any
 
   if (isLoaded(type)) {
-    localType = type;
     localMessage = message;
   }
 
@@ -21,7 +19,7 @@ const ErrorDisplay: React.FC<ErrorDisplayProps> = ({ type, message, closehandler
         closehandler()
       }, 5000);
     }
-  }, [showToast])
+  }, [showToast, closehandler])
 
   return (
     <IonToast

@@ -13,14 +13,13 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { closeOutline } from "ionicons/icons";
 import { useHistory, useParams } from "react-router-dom";
-import { Invoice, CartItem, RootState } from "../model/DomainModels";
+import { Invoice, RootState } from "../model/DomainModels";
 import { useFirestoreConnect, FirestoreReducer } from "react-redux-firebase";
 import StripePaymentContainer from "../components/StripePaymentContainer";
 
 const Payment: React.FC = () => {
 
   const { invoice_id } = useParams<{ invoice_id: string }>();
-  const cartItems: Array<CartItem> = [];
   let invoice: Invoice = {} as Invoice;
   const history = useHistory();
 

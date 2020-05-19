@@ -55,8 +55,7 @@
     "redux-devtools": "^3.5.0",
     "redux-devtools-extension": "^2.13.8",
     "redux-firestore": "^0.13.0",
-    "typescript": "^3.8.3",
-    "use-force-update": "^1.0.7"
+    "typescript": "^3.8.3"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -2,7 +2,6 @@ import { IonContent, IonPage, IonButton, IonToolbar, IonButtons, IonIcon, IonLab
 import React, { useState, useEffect } from "react";
 import { connect, useSelector } from "react-redux";
 import ItemList from "../components/ItemList";
-import Payment from "../components/Payment";
 import { useHistory } from "react-router-dom";
 import { closeOutline } from "ionicons/icons";
 import { CheckoutProps } from "../model/ComponentProps";
@@ -27,7 +26,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
   const auth = useSelector<RootState>(state => state.firebase.auth);
   const [addressObj, setAddress] = useState<AddressObj>({ isValidAddress1: true, isValidNumber: true } as AddressObj);
   const [aggreement, setAggreement] = useState<boolean>(false);
-  const [paymentType, setPaymentType] = useState<string>("none");
+  const [paymentType] = useState<string>("none");
   const [, setInvoiceId] = useState<string>("");
   const [, setInvoice] = useState<MockInvoice>({} as MockInvoice);
   const [showLoading, setShowLoading] = useState(false);

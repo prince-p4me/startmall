@@ -3,7 +3,6 @@ import { ShopSelectionListProps } from "../model/ComponentProps";
 import {
   IonList,
   IonCard,
-  IonImg,
   IonItem,
   IonText
 } from "@ionic/react";
