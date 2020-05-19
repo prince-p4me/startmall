@@ -33,6 +33,7 @@ import Login from "./pages/Login";
 import MobileNumberLogin from './pages/MobileNumberLogin';
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from '@stripe/stripe-js';
+import PostCodeSearch from "./pages/PostcodeSearch";
 
 const stripePromise = loadStripe('pk_test_YC0gcyGppNgDEzsD5FxBzPXJ00nUQJqCvw');
 
@@ -45,6 +46,7 @@ const App: React.FC = () => {
           <IonSplitPane contentId="main">
             <Menu />
             <IonRouterOutlet id="main">
+              <Route path="/page/postcode_search" component={PostCodeSearch} exact={true} />
               <Route path="/mobilelogin" component={MobileNumberLogin} exact={true} />
               {/* <ProtectedRoute  {...defaultProtectedRouteProps}  path="/page/checkout" component={Checkout} exact={true} /> */}
               <Route path="/page/checkout" component={Checkout} exact={true} />

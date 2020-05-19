@@ -31,7 +31,7 @@ const FavoriteMarkets: React.FC = () => {
     history.push("favoriteitems/" + obj.id);
   }
 
-  useFirestoreConnect([
+  useFirestoreConnect((json_auth.uid)?[
     {
       collection: "WishLists",
       doc: json_auth.uid,
@@ -42,7 +42,7 @@ const FavoriteMarkets: React.FC = () => {
       ],
       storeAs: "FavoritesMarkets"
     }
-  ]);
+  ]:[]);
 
   const dataStore = useSelector<RootState>(
     state => state.firestore

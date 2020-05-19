@@ -63,7 +63,8 @@ const Dashboard: React.FC = () => {
       <MainHeader />
 
       <IonContent fullscreen>
-        <IonImg className="dashboard_ad" src="/assets/icon/1x/cover.png" />
+        <IonImg className="dashboard_ad" src="/assets/icon/1x/cover.png" onClick={() => { history.push("/page/postcode_search") }} />
+
         <div className="dashboard_main">
           <IonItem>
             <IonInput
@@ -78,9 +79,9 @@ const Dashboard: React.FC = () => {
             ></IonInput>
             <IonButton onClick={handleSearch}> Search</IonButton>
           </IonItem>
-          <IonImg src="/assets/img/instructions.png" />
+          <IonImg src="/assets/img/instructions.png" onClick={() => { history.push("/page/postcode_search") }}/>
         </div>
-        <ErrorDisplay errorProps={errorProps} closeHandler={() => setErrorProps({...errorProps, showError: false})} eventHandler={()=>{}} />
+        <ErrorDisplay errorProps={errorProps} closeHandler={() => setErrorProps({ ...errorProps, showError: false })} eventHandler={() => { }} />
 
       </IonContent>
       <IonFooter>

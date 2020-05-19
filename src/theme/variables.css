@@ -431,3 +431,16 @@ img {
    /* --background: var(--ion-background-color, rgba(0, 0, 0, 0.2)) !important ;  */
    -background: var(--ion-background-color, black);
 }
+.postcode_search_input{
+  border: 1px solid #ccc;
+	border-radius: 10px;
+  outline: 0;
+}
+
+.postcode_search_input input {
+  padding: 10px;
+  margin-top: 0;
+  margin-bottom:0;
+  margin-left:10px;
+  box-shadow: none !important;
+} 
