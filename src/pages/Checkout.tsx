@@ -9,7 +9,7 @@ import { CheckoutProps, ErrorProps } from "../model/ComponentProps";
 import ShopHeader from "../components/ShopHeader";
 import ShopConditionAndOperatingHours from "../components/ShopConditionAndOperatingHours";
 import { CartState } from "../services/FirebaseIniti";
-import { useFirebase, isEmpty } from "react-redux-firebase";
+import { useFirebase, isEmpty, isLoaded } from "react-redux-firebase";
 import AddressForm from "../components/Address";
 import CurrencyAmount from "../components/CurrencyAmount";
 import ErrorDisplay from "../components/ErrorDisplay";
@@ -229,14 +229,12 @@ const Checkout: React.FC<CheckoutProps> = () => {
 
   async function fetchData() {
     let json_auth = JSON.parse(JSON.stringify(auth));
+    var data = { address2: "", state: "", suburb: "", postcode: "", country: "" } as AddressObj;
     const res = await db.collection("Users").doc(json_auth.uid).get()
     if (res.exists) {
       let user: any = res.data();
-      if (user.address) {
-        var data = { address2: "", state: "", suburb: "", postcode: "", country: "" } as AddressObj;
-        if (user.address.name) {
-          data.name = user.address.name;
-        }
+      if (user.address && user.address.name) {
+        data.name = user.address.name;
         if (user.address.address1) {
           data.address1 = user.address.address1;
           data.isValidAddress1 = true;
@@ -249,9 +247,28 @@ const Checkout: React.FC<CheckoutProps> = () => {
           data.isValidNumber = true;
         }
         setAddress(data);
+      } else {
+        if (json_auth.providerData[0].providerId === "phone") {
+          data.phone = json_auth.phoneNumber;
+          data.isValidNumber = true;
+        } else {
+          data.phone = json_auth.email;
+          data.isValidAddress1 = true;
+        }
+        setAddress(data);
       }
       console.clear();
       console.log("user fetched:--" + JSON.stringify(addressObj));
+    } else if (isLoaded(auth) && !isEmpty(auth)) {
+      console.log("User Logged in");
+      if (json_auth.providerData[0].providerId === "phone") {
+        data.phone = json_auth.phoneNumber;
+        data.isValidNumber = true;
+      } else {
+        data.phone = json_auth.email;
+        data.isValidAddress1 = true;
+      }
+      setAddress(data);
     }
   }
 
