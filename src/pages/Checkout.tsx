@@ -1,31 +1,12 @@
-import {
-  IonContent,
-  IonPage,
-  IonButton,
-  IonToolbar,
-  IonButtons,
-  IonIcon,
-  IonLabel,
-  IonCheckbox,
-  IonItem,
-  IonImg,
-  IonLoading,
-  IonTitle
-} from "@ionic/react";
-import React, { useState } from "react";
+import { IonContent, IonPage, IonButton, IonToolbar, IonButtons, IonIcon, IonLabel, IonCheckbox, IonItem, IonImg, IonLoading, IonTitle } from "@ionic/react";
+import React, { useState, useEffect } from "react";
 import { connect, useSelector } from "react-redux";
 import ItemList from "../components/ItemList";
 import Payment from "../components/Payment";
 import { useHistory } from "react-router-dom";
 import { closeOutline } from "ionicons/icons";
 import { CheckoutProps } from "../model/ComponentProps";
-import {
-  RootState,
-  CartStateType,
-  ShopStateType,
-  ProfileData,
-  AddressObj
-} from "../model/DomainModels";
+import { RootState, CartStateType, ShopStateType, ProfileData, AddressObj } from "../model/DomainModels";
 import ShopHeader from "../components/ShopHeader";
 import ShopConditionAndOperatingHours from "../components/ShopConditionAndOperatingHours";
 import { CartState } from "../services/FirebaseIniti";
@@ -73,7 +54,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
       store_address: "",
       support_postcodes: [],
       cut_off_terms: "",
-      delivery_terms:"",
+      delivery_terms: "",
       service_offering: ""
     }
   });
@@ -211,39 +192,37 @@ const Checkout: React.FC<CheckoutProps> = () => {
     }
   };
 
-  // function renderInvoice() {
+  async function fetchData() {
+    let json_auth = JSON.parse(JSON.stringify(auth));
+    const res = await db.collection("Users").doc(json_auth.uid).get()
+    if (res.exists) {
+      let user: any = res.data();
+      if (user.address) {
+        var data = { address2: "", state: "", suburb: "", postcode: "", country: "" } as AddressObj;
+        if (user.address.name) {
+          data.name = user.address.name;
+        }
+        if (user.address.address1) {
+          data.address1 = user.address.address1;
+          data.isValidAddress1 = true;
+        }
+        if (user.address.email) {
+          data.email = user.address.email;
+        }
+        if (user.address.phone) {
+          data.phone = user.address.phone;
+          data.isValidNumber = true;
+        }
+        setAddress(data);
+      }
+      console.clear();
+      console.log("user fetched:--" + JSON.stringify(addressObj));
+    }
+  }
 
-  // }
-
-  // const completePayment = async () => {
-  // This block is optional -- only if you need to update order items/shipping
-  // methods in response to shipping method selections
-  // try {
-  //   const applePayTransaction = await ApplePay.makePaymentRequest({
-  //     items,
-  //     shippingMethods,
-  //     merchantIdentifier,
-  //     currencyCode,
-  //     countryCode,
-  //     billingAddressRequirement: ['name', 'email', 'phone'],
-  //     shippingAddressRequirement: 'none',
-  //     shippingType: 'shipping'
-  //   });
-
-  //   const transactionStatus = await completeTransactionWithMerchant(applePayTransaction);
-  //   await this.applePay.completeLastTransaction(transactionStatus);
-  // } catch {
-  //   // handle payment request error
-  //   // Can also handle stop complete transaction but these should normally not occur
-  // }
-
-  // // only if you started listening before
-  // await ApplePay.stopListeningForShippingContactSelection();
-  // }
-
-  // useEffect(() => {
-  //   console.log("address is:-" + JSON.stringify(address));
-  // }, [auth, address]);
+  useEffect(() => {
+    fetchData();
+  }, [auth]);
 
   const closehandler = async () => {
     history.goBack();
@@ -306,7 +285,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
             >
               Continue Shopping
             </IonButton>
-            <br/>
+            <br />
             <IonButton color="secondary" fill="solid" onClick={handleComplete}>
               Proceed to Payment
             </IonButton>
