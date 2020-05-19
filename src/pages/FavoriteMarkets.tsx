@@ -55,7 +55,7 @@ const FavoriteMarkets: React.FC = () => {
       // console.log("User Logged in and user is:==" + JSON.stringify(auth));
       // history.push("/");
     }
-  }, []);
+  }, [auth]);
   // async function fetchData() {
   //   var data: Array<FavoriteMarket> = [];
   //   var markets = await db.collection("WishLists").doc(json_auth.uid).collection("Markets").get()
