@@ -20,6 +20,7 @@ import firebase, { UserInfo } from "firebase/app";
 import { useHistory } from "react-router-dom";
 import { VeriFyCode } from "../model/DomainModels";
 import ErrorDisplay from "../components/ErrorDisplay";
+import { ErrorProps } from "../model/ComponentProps";
 
 const MobileNumberLogin: React.FC = () => {
   const history = useHistory();
@@ -47,8 +48,9 @@ const MobileNumberLogin: React.FC = () => {
   const input4 = useRef<any>();
   const input5 = useRef<any>();
   const input6 = useRef<any>();
-  const [showError, setShowError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+//   const [showError, setShowError] = useState(false);
+//   const [errorMessage, setErrorMessage] = useState("");
+const [errorProps, setErrorProps] = useState<ErrorProps>({} as ErrorProps);
 
   function sendVerificationCode() {
     const appVerifier = new firebase.auth.RecaptchaVerifier("sign-in-button", {
@@ -71,8 +73,15 @@ const MobileNumberLogin: React.FC = () => {
       })
       .catch(function(error) {
         console.error("SMS not sent", error);
-        setErrorMessage("SMS not sent may be " + error);
-        setShowError(true);
+        // setErrorMessage("SMS not sent may be " + error);
+        // setShowError(true);
+        setErrorProps({
+            message: "SMS not sent may be " + error,
+            showError: true,
+            type: 1,
+            autoHide: true,
+            buttonText:""
+          })
       });
   }
 
@@ -322,12 +331,8 @@ const MobileNumberLogin: React.FC = () => {
         ) : null}
 
         <IonLoading isOpen={showLoading} message={"Please wait..."} />
-        <ErrorDisplay
-          type={1}
-          message={errorMessage}
-          showToast={showError}
-          closehandler={() => setShowError(false)}
-        />
+        <ErrorDisplay errorProps={errorProps} closeHandler={() => {setErrorProps({...errorProps, showError: false})}} eventHandler={()=>{}} />
+
       </IonContent>
     </IonPage>
   );
