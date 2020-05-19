@@ -4,8 +4,8 @@ import { connect, useSelector } from "react-redux";
 import ItemList from "../components/ItemList";
 import { useHistory } from "react-router-dom";
 import { closeOutline } from "ionicons/icons";
-import { CheckoutProps } from "../model/ComponentProps";
 import { RootState, CartStateType, ShopStateType, ProfileData, AddressObj } from "../model/DomainModels";
+import { CheckoutProps, ErrorProps } from "../model/ComponentProps";
 import ShopHeader from "../components/ShopHeader";
 import ShopConditionAndOperatingHours from "../components/ShopConditionAndOperatingHours";
 import { CartState } from "../services/FirebaseIniti";
@@ -30,8 +30,9 @@ const Checkout: React.FC<CheckoutProps> = () => {
   const [, setInvoiceId] = useState<string>("");
   const [, setInvoice] = useState<MockInvoice>({} as MockInvoice);
   const [showLoading, setShowLoading] = useState(false);
-  const [showError, setShowError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  // const [showError, setShowError] = useState(false);
+  // const [errorMessage, setErrorMessage] = useState("");
+  const [errorProps, setErrorProps] = useState<ErrorProps>({} as ErrorProps);
 
   let history = useHistory();
   // const [state] = useState<CartState>();
@@ -137,16 +138,30 @@ const Checkout: React.FC<CheckoutProps> = () => {
     setShowLoading(true);
     if (!addressObj.address1 || addressObj.address1 === "") {
       // alert("Please Type Address Line 1");
-      setErrorMessage("Please Type Address Line 1")
-      setShowError(true)
+      // setErrorMessage("Please Type Address Line 1")
+      // setShowError(true)
+      setErrorProps({
+        message: "Please Type Address Line 1",
+        showError: true,
+        type: 1,
+        autoHide: true,
+        buttonText: ""
+      })
       setAddress({ ...addressObj, isValidAddress1: false })
       setShowLoading(false);
       return;
     }
     if (!addressObj.phone || addressObj.phone === "") {
       // alert("Please Type the Contact person number");
-      setErrorMessage("Please Type the Contact person number")
-      setShowError(true)
+      // setErrorMessage("Please Type the Contact person number")
+      // setShowError(true)
+      setErrorProps({
+        message: "Please Type the Contact person number",
+        showError: true,
+        type: 1,
+        autoHide: true,
+        buttonText: ""
+      })
       setAddress({ ...addressObj, isValidNumber: false })
       setShowLoading(false);
       return;
@@ -160,24 +175,45 @@ const Checkout: React.FC<CheckoutProps> = () => {
     // }
     if (!aggreement) {
       // alert("Please check our aggreement");
-      setErrorMessage("Please check our aggreement")
-      setShowError(true)
+      // setErrorMessage("Please check our aggreement")
+      // setShowError(true)
+      setErrorProps({
+        message: "Please check our aggreement",
+        showError: true,
+        type: 1,
+        autoHide: true,
+        buttonText: ""
+      })
       setShowLoading(false);
       return;
     }
 
     if (cartState.cartItemList.length === 0) {
       // alert("Please add products in card");
-      setErrorMessage("Please add products in card")
-      setShowError(true)
+      // setErrorMessage("Please add products in card")
+      // setShowError(true)
+      setErrorProps({
+        message: "Please add products in card",
+        showError: true,
+        type: 1,
+        autoHide: true,
+        buttonText: ""
+      })
       setShowLoading(false);
       return;
     }
 
     if (isEmpty(auth)) {
       // alert("Please login to continue checkout");
-      setErrorMessage("Please login to continue checkout")
-      setShowError(true)
+      // setErrorMessage("Please login to continue checkout")
+      // setShowError(true)
+      setErrorProps({
+        message: "Please login to continue checkout",
+        showError: true,
+        type: 2,
+        autoHide: false,
+        buttonText: "LOG IN"
+      })
       setShowLoading(false);
       return;
     }
@@ -290,7 +326,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
             </IonButton>
           </IonButtons>
 
-          <ErrorDisplay type={1} message={errorMessage} showToast={showError} closehandler={() => setShowError(false)} />
+          <ErrorDisplay errorProps={errorProps} closeHandler={() => { setErrorProps({ ...errorProps, showError: false }) }} eventHandler={() => { history.push("/login"); setErrorProps({ ...errorProps, showError: false }); }} />
 
           <IonLoading
             isOpen={showLoading}

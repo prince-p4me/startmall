@@ -11,14 +11,17 @@ import React, { useState } from "react";
 import MainHeader from "../components/MainHeader";
 import { useHistory, useLocation } from "react-router";
 import ErrorDisplay from "../components/ErrorDisplay";
+import { ErrorProps } from "../model/ComponentProps";
 
 const Dashboard: React.FC = () => {
   console.log("entering Dashboard");
   const [postcode, setPostCode] = useState<string>("2000");
   const history = useHistory();
   const location = useLocation();
-  const [showError, setShowError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  // const [showError, setShowError] = useState(false);
+  // const [errorMessage, setErrorMessage] = useState("");
+  const [errorProps, setErrorProps] = useState<ErrorProps>({} as ErrorProps);
+
 
   // // SplashScreen.show({
   // //   showDuration: 2000,
@@ -41,9 +44,15 @@ const Dashboard: React.FC = () => {
 
   function handleSearch() {
     if (!postcode || postcode === "") {
-      // alert("Please enter postcode");
-      setErrorMessage("Please enter postcode")
-      setShowError(true)
+      setErrorProps({
+        message: "Please enter postcode",
+        showError: true,
+        type: 1,
+        autoHide: true,
+        buttonText:""
+      })
+      // setErrorMessage("Please enter postcode")
+      // setShowError(true)
       return;
     }
     history.push("/tabs/shop_selections/" + postcode)
@@ -71,7 +80,7 @@ const Dashboard: React.FC = () => {
           </IonItem>
           <IonImg src="/assets/img/instructions.png" />
         </div>
-        <ErrorDisplay type={1} message={errorMessage} showToast={showError} closehandler={() => setShowError(false)} />
+        <ErrorDisplay errorProps={errorProps} closeHandler={() => setErrorProps({...errorProps, showError: false})} eventHandler={()=>{}} />
 
       </IonContent>
       <IonFooter>

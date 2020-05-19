@@ -22,6 +22,8 @@ import { useHistory } from "react-router-dom";
 import { cfaSignIn, mapUserToUserInfo } from "capacitor-firebase-auth";
 import { UserInfo } from "firebase/app";
 import { isPlatform } from "@ionic/core";
+import ErrorDisplay from "../components/ErrorDisplay";
+import { ErrorProps } from "../model/ComponentProps";
 
 
 const Login: React.FC = () => {
@@ -31,6 +33,10 @@ const Login: React.FC = () => {
   const db = firebase.firestore();
   const [showLoading, setShowLoading] = useState(false);
   const [isMoved, setMoved] = useState(false)
+  // const [showError, setShowError] = useState(false);
+  // const [errorMessage, setErrorMessage] = useState("");
+  const [errorProps, setErrorProps] = useState<ErrorProps>({} as ErrorProps);
+
 
   firebase.auth().onAuthStateChanged(function (user) {
     console.log("Login State changes");
@@ -67,6 +73,10 @@ const Login: React.FC = () => {
   }, [auth, history, isMoved]);
 
   async function loginWithGoogle() {
+    setErrorProps({
+      ...errorProps,
+      showError:false
+    })
     setShowLoading(true);
     // await Plugins.GoogleAuth.signOut();
     console.log(
@@ -86,14 +96,24 @@ const Login: React.FC = () => {
         })
         .catch(data => {
           console.log("Something Wrong with Google login. Please try again later");
-          // alert("Something Wrong with Google login. Please try again later");
           console.log(data);
           // history.push("/");
-          history.goBack();
           setShowLoading(false);
-          setTimeout(() => {
-            alert("Something Wrong with Google login. Please try again later");
-          }, 200);
+          setErrorProps({
+            message: "Something Wrong with Google login. Please try again later",
+            showError: true,
+            type: 1,
+            autoHide: false,
+            buttonText:""
+          })
+          // setErrorMessage("Something Wrong with Google login. Please try again later")
+          // setShowError(true)
+
+
+          // setTimeout(() => {
+          //   // alert("Something Wrong with Google login. Please try again later");
+          // }, 2000);
+
         });
     } else {
       return cfaSignIn("google.com")
@@ -107,6 +127,10 @@ const Login: React.FC = () => {
   }
 
   function loginWithFacebook() {
+    setErrorProps({
+      ...errorProps,
+      showError:false
+    })
     setShowLoading(true);
 
     console.log(
@@ -125,14 +149,22 @@ const Login: React.FC = () => {
         })
         .catch(data => {
           console.log("Something Wrong with Facebook login. Please try again later");
-          // alert("Something Wrong with Facebook login. Please try again later");
           console.log(data);
           // history.push("/");
-          history.goBack();
+          // history.goBack();
           setShowLoading(false);
-          setTimeout(() => {
-            alert("Something Wrong with Facebook login. Please try again later");
-          }, 200);
+          // setTimeout(() => {
+          //   alert("Something Wrong with Facebook login. Please try again later");
+          // }, 200);
+          // setErrorMessage("Something Wrong with Facebook login. Please try again later")
+          // setShowError(true)
+          setErrorProps({
+            message: "Something Wrong with Facebook login. Please try again later",
+            showError: true,
+            type: 1,
+            autoHide: false,
+            buttonText:""
+          })
 
         });
     } else {
@@ -186,7 +218,7 @@ const Login: React.FC = () => {
               fill="solid"
               shape="round"
               className="wechat_button"
-              onClick={()=>history.push("/mobilelogin")}
+              onClick={() => { setErrorProps({...errorProps, showError: false}); history.push("/mobilelogin"); }}
             >
               Login with Mobile
             </IonButton>
@@ -198,6 +230,8 @@ const Login: React.FC = () => {
             </div>
           </IonCardContent>
         </IonCard>
+        {/* <ErrorDisplay type={1} message={errorMessage} autoHide={false} showToast={showError} closehandler={() => { setShowError(false); history.goBack(); }} eventHandler={() => {}} buttonText={""}  /> */}
+        <ErrorDisplay errorProps={errorProps} closeHandler={() => {setErrorProps({...errorProps, showError: false}); history.goBack();}} eventHandler={()=>{}} />
         <IonLoading isOpen={showLoading} message={"Please wait..."} />
       </IonContent>
     </IonPage>
