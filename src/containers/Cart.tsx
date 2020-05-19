@@ -27,8 +27,8 @@ const Cart: React.FC<CartProps> = ({ modal, closehandler }) => {
   const [errorProps, setErrorProps] = useState<ErrorProps>({} as ErrorProps);
 
   function mapStateToProps(state: CartState) {
-    const { firebase, cart, shop, address } = state;
-    return { firebase, cart, shop, address };
+    const { firebase, cart, shop } = state;
+    return { firebase, cart, shop };
   }
   function handleCheckOut() {
     // history.push("/page/checkout");
@@ -70,7 +70,7 @@ const Cart: React.FC<CartProps> = ({ modal, closehandler }) => {
       </IonHeader>
       <IonContent className="checkout_page">
         <CartItemList />
-        <ErrorDisplay errorProps={errorProps} closeHandler={() => setErrorProps({...errorProps, showError: false})} eventHandler={() => { history.push("/login"); setErrorProps({...errorProps, showError: false}); closehandler(); }}/>
+        <ErrorDisplay errorProps={errorProps} closeHandler={() => setErrorProps({ ...errorProps, showError: false })} eventHandler={() => { history.push("/login"); setErrorProps({ ...errorProps, showError: false }); closehandler(); }} />
       </IonContent>
       <IonFooter className="checkout_page_footer">
         <EnhancedCartTotal />

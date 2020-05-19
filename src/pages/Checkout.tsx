@@ -1,6 +1,6 @@
 import { IonContent, IonPage, IonButton, IonToolbar, IonButtons, IonIcon, IonLabel, IonCheckbox, IonItem, IonImg, IonLoading, IonTitle } from "@ionic/react";
 import React, { useState, useEffect } from "react";
-import { connect, useSelector } from "react-redux";
+import { connect, useSelector, useDispatch } from "react-redux";
 import ItemList from "../components/ItemList";
 import { useHistory } from "react-router-dom";
 import { closeOutline } from "ionicons/icons";
@@ -13,6 +13,7 @@ import { useFirebase, isEmpty, isLoaded } from "react-redux-firebase";
 import AddressForm from "../components/Address";
 import CurrencyAmount from "../components/CurrencyAmount";
 import ErrorDisplay from "../components/ErrorDisplay";
+import { blankCart } from "../reducers/CartAction";
 
 interface MockInvoice {
   // TODO: Please fix the DomainModels > Invoice object same as below write invoice function
@@ -33,7 +34,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
   // const [showError, setShowError] = useState(false);
   // const [errorMessage, setErrorMessage] = useState("");
   const [errorProps, setErrorProps] = useState<ErrorProps>({} as ErrorProps);
-
+  const dispatch = useDispatch();
   let history = useHistory();
   // const [state] = useState<CartState>();
 
@@ -60,10 +61,10 @@ const Checkout: React.FC<CheckoutProps> = () => {
   });
 
   function mapStateToProps(state: CartState) {
-    const { firebase, cart, shop, address } = state;
+    const { firebase, cart, shop } = state;
     setCartState(cart);
     setShop(shop);
-    return { firebase, cart, shop, address };
+    return { firebase, cart, shop };
   }
 
   const [CartItemList] = useState<React.ElementType>(connect(mapStateToProps)(ItemList));
@@ -121,6 +122,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
             invoice.id = res.id;
             setInvoice(invoice);
             history.push("/payment/" + res.id);
+            dispatch(blankCart());
             console.clear();
             console.log("Successfully inserted");
             setShowLoading(false);

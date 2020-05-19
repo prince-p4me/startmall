@@ -24,9 +24,10 @@ import {
 import "./Menu.css";
 import { AppPage, RootState } from "../model/DomainModels";
 import { useFirebase, isLoaded, isEmpty } from "react-redux-firebase";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { UserInfo } from "@firebase/auth-types";
 import { menuController } from "@ionic/core";
+import { blankCart } from "../reducers/CartAction";
 // import firebase from "firebase";
 
 const appPages: AppPage[] = [
@@ -93,6 +94,7 @@ const labels = ["#11321", "#21322", "#43211"];
 const Menu: React.FC = () => {
   const location = useLocation();
   const firebase = useFirebase();
+  const dispatch = useDispatch();
   const history = useHistory();
   const [userPhoto, setUserPhoto] = useState("");
   const auth: UserInfo = useSelector<RootState>(
@@ -111,6 +113,7 @@ const Menu: React.FC = () => {
 
   function handleSignOut() {
     setUserPhoto("");
+    dispatch(blankCart());
     firebase.logout().then(() => {
       history.push("/");
     });
@@ -135,7 +138,7 @@ const Menu: React.FC = () => {
                   }
                   routerLink={
                     appPage.url === "/page/checkout" ||
-                    appPage.url === "/wishlist"
+                      appPage.url === "/wishlist"
                       ? isLoaded(auth) && !isEmpty(auth)
                         ? appPage.url
                         : "/login"
@@ -172,10 +175,10 @@ const Menu: React.FC = () => {
           {isLoaded(auth) && !isEmpty(auth) ? (
             <IonItem onClick={handleSignOut}>Sign Out</IonItem>
           ) : (
-            <IonItem routerLink="/login" routerDirection="none" detail={false}>
-              Sign In
+              <IonItem routerLink="/login" routerDirection="none" detail={false}>
+                Sign In
             </IonItem>
-          )}
+            )}
         </IonFooter>
       </IonContent>
     </IonMenu>
