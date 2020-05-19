@@ -28,7 +28,7 @@ const ErrorDisplay: React.FC<ErrorDisplayProps> = ({ errorProps, closeHandler, e
         closeHandler()
       }, 5000);
     }
-  }, [showError])
+  }, [showError,closeHandler])
 
   return (
     <>

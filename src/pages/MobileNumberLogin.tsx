@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import {
   IonPage,
   IonContent,
@@ -15,8 +15,7 @@ import {
   IonCol
 } from "@ionic/react";
 import GoBack from "../components/GoBack";
-import { useFirebase, isLoaded, isEmpty } from "react-redux-firebase";
-import firebase, { UserInfo } from "firebase/app";
+import firebase from "firebase/app";
 import { useHistory } from "react-router-dom";
 import { VeriFyCode } from "../model/DomainModels";
 import ErrorDisplay from "../components/ErrorDisplay";
@@ -90,7 +89,7 @@ const [errorProps, setErrorProps] = useState<ErrorProps>({} as ErrorProps);
       // setIntervalId(interval);
       var timer1 = JSON.parse(JSON.stringify(timer--));
       setTime(timer1);
-      if (timer1 == 0) {
+      if (timer1 === 0) {
         setTime(60);
         setIsNumberAdded(false);
         clearInterval(interval);
@@ -101,12 +100,12 @@ const [errorProps, setErrorProps] = useState<ErrorProps>({} as ErrorProps);
   function verifyCode() {
     if (
       !verificationCode.first ||
-      verificationCode.first == "" ||
-      (!verificationCode.second || verificationCode.second == "") ||
-      (!verificationCode.third || verificationCode.third == "") ||
-      (!verificationCode.fourth || verificationCode.fourth == "") ||
-      (!verificationCode.fifth || verificationCode.fifth == "") ||
-      (!verificationCode.sixth || verificationCode.sixth == "")
+      verificationCode.first === "" ||
+      (!verificationCode.second || verificationCode.second === "") ||
+      (!verificationCode.third || verificationCode.third === "") ||
+      (!verificationCode.fourth || verificationCode.fourth === "") ||
+      (!verificationCode.fifth || verificationCode.fifth === "") ||
+      (!verificationCode.sixth || verificationCode.sixth === "")
     ) {
       alert("Enter verification code properly");
     }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   IonCard,
   IonCardContent,
@@ -80,7 +80,7 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
     dispatch(addCartAction(item));
   }
 
-  function checkFavorite(writing: boolean) {
+  const checkFavorite = useCallback((writing: boolean)  => {
     if (isLoaded(auth) && !isEmpty(auth)) {
       setFavorites(heart);
       setLogin(true);
@@ -123,14 +123,15 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
         // history.push("/login");
       }
     }
-  }
+    // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
-    if (favorites == heartOutline) {
+    if (favorites === heartOutline) {
       console.log("use Effect Set Favorites");
       checkFavorite(false);
     }
-  }, []);
+  }, [checkFavorite, favorites]);
 
   return (
     <IonCard>
