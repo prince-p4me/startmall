@@ -80,9 +80,11 @@ const Market: React.FC = () => {
             {stateStore.ordered.Categories &&
               stateStore.ordered.Categories.length > 0 ? (
                 stateStore.ordered.Categories.map(obj => {
+                  console.log(obj);
                   if (obj.is_deleted) {
                     return;
                   }
+                  console.log("Returned");
                   return (
                     <IonCol key={obj.id}>
                       <CategoryItem market_id={market_id} category={obj} shop={shop} />

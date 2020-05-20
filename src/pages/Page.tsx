@@ -189,14 +189,14 @@ const Page: React.FC = () => {
       {/* <FirestoreIonImg src="gs://slashiee.appspot.com/hifresh/categories/y2637HMBAxuFpC89igEL/organic_apple.png" /> */}
       <IonContent>
         {/* <Test doc={doc_id} market={market} /> */}
-        <IonButton onClick={CreateMarket}>Test Creat Market</IonButton>
-        <IonButton onClick={copyMarkets}>Copy HiFresh Market</IonButton>
+        {/* <IonButton onClick={CreateMarket}>Test Creat Market</IonButton> */}
+        {/* <IonButton onClick={copyMarkets}>Copy HiFresh Market</IonButton> */}
         <IonHeader collapse="condense">
           <IonToolbar>
             <IonTitle size="large">{name}</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonButton onClick={googleLoginHandler}> Google Login </IonButton>
+        {/* <IonButton onClick={googleLoginHandler}> Google Login </IonButton> */}
         <ExploreContainer name={name} />
       </IonContent>
     </IonPage>

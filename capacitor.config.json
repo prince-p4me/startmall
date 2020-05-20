@@ -4,29 +4,22 @@
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "build",
-  "cordova": {},
+  "cordova": {
+    "preferences": {
+      "DisableDeploy": "true"
+    }
+  },
   "plugins": {
     "CapacitorFirebaseAuth": {
-      "providers": [
-        "google.com",
-        "twitter.com",
-        "facebook.com",
-        "phone"
-      ],
+      "providers": ["google.com", "twitter.com", "facebook.com", "phone"],
       "languageCode": "en",
       "nativeAuth": true,
       "permissions": {
-        "google": [
-          "profile",
-          "https://www.googleapis.com/auth/drive"
-        ]
+        "google": ["profile", "https://www.googleapis.com/auth/drive"]
       }
     },
     "GoogleAuth": {
-      "scopes": [
-        "profile",
-        "email"
-      ],
+      "scopes": ["profile", "email"],
       "serverClientId": "326027994327-aqgbjblrpuujfljd9hokalkvdfd5nnbn.apps.googleusercontent.com"
     },
     "SplashScreen": {
