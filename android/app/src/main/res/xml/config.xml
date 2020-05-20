@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+  <access origin="*" />
+  
+  <feature name="BrowserTab">
+    <param name="android-package" value="com.google.cordova.plugin.browsertab.BrowserTab"/>
+  </feature>
+
+  <feature name="BuildInfo">
+    <param name="android-package" value="org.apache.cordova.buildinfo.BuildInfo"/>
+  </feature>
+
+  <feature name="LaunchMyApp">
+    <param name="android-package" value="nl.xservices.plugins.LaunchMyApp"/>
+  </feature>
+
+  <feature name="InAppBrowser">
+    <param name="android-package" value="org.apache.cordova.inappbrowser.InAppBrowser"/>
+  </feature>
+
+  <feature name="IonicCordovaCommon">
+    <param name="android-package" value="com.ionicframework.common.IonicCordovaCommon" onload="true"/>
+  </feature>
+
+  <feature name="CordovaStripe">
+    <param name="android-package" value="com.zyramedia.cordova.stripe.CordovaStripe"/>
+  </feature>
+
+  <feature name="Whitelist">
+    <param name="android-package" value="org.apache.cordova.whitelist.WhitelistPlugin"/>
+    <param name="onload" value="true"/>
+  </feature>
+
+  <feature name="UniversalLinks">
+    <param name="android-package" value="com.nordnetab.cordova.ul.UniversalLinksPlugin"/>
+    <param name="onload" value="true"/>
+  </feature>
+
+  
+  <preference name="DisableDeploy" value="true" />
+</widget>

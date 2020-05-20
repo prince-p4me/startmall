@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "326027994327",
+    "firebase_url": "https://slashiee.firebaseio.com",
+    "project_id": "slashiee",
+    "storage_bucket": "slashiee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:326027994327:android:7bff94965c719493523c92",
+        "android_client_info": {
+          "package_name": "com.startmall.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "326027994327-aqgbjblrpuujfljd9hokalkvdfd5nnbn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCs0dwqgMtzMgdp1lL4bSoI55VTvLOMiTs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "326027994327-fah8j14m3iij83v1to9paa19te19cg41.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "326027994327-bif3h9ps4ilb4necgdt1kdq1lk6ooek5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.startmall.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
