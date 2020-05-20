@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   IonCard,
   IonCardContent,
@@ -12,11 +12,12 @@ import { add, heart, heartOutline } from "ionicons/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { addCartAction } from "../reducers/CartAction";
 import { ItemObj, RootState, WishList } from "../model/DomainModels";
-import { ShopItemProps } from "../model/ComponentProps";
+import { ShopItemProps, ErrorProps } from "../model/ComponentProps";
 import { FirestoreIonImg } from "../services/FirebaseStorage";
 import { useFirebase, isLoaded, isEmpty } from "react-redux-firebase";
 import { useHistory } from "react-router-dom";
 import CurrencyAmount from "../components/CurrencyAmount";
+import ErrorDisplay from "../components/ErrorDisplay";
 
 const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => {
   const [, setLogin] = useState(false);
@@ -27,6 +28,8 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
   const auth = useSelector<RootState>(state => state.firebase.auth);
   const shop = useSelector<RootState>(state => state.shop);
   const history = useHistory();
+  const [errorProps, setErrorProps] = useState<ErrorProps>({} as ErrorProps);
+
 
   function addFavorites() {
     console.log("adding favorites");
@@ -77,7 +80,7 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
     dispatch(addCartAction(item));
   }
 
-  function checkFavorite(writing: boolean) {
+  const checkFavorite = useCallback((writing: boolean)  => {
     if (isLoaded(auth) && !isEmpty(auth)) {
       setFavorites(heart);
       setLogin(true);
@@ -110,17 +113,25 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
       });
     } else {
       if (writing) {
-        history.push("/login");
+        setErrorProps({
+          message: "Please login to add item in your wishlist",
+          showError: true,
+          type: 2,
+          autoHide: false,
+          buttonText:"LOG IN"
+        })
+        // history.push("/login");
       }
     }
-  }
+    // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
-    if (favorites == heartOutline) {
+    if (favorites === heartOutline) {
       console.log("use Effect Set Favorites");
       checkFavorite(false);
     }
-  }, []);
+  }, [checkFavorite, favorites]);
 
   return (
     <IonCard>
@@ -166,6 +177,7 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
           </IonCol>
         </IonRow>
       </IonCardContent>
+      <ErrorDisplay errorProps={errorProps} closeHandler={() => {setErrorProps({...errorProps, showError: false})}} eventHandler={() => { history.push("/login"); setErrorProps({...errorProps, showError: false}); }} />
     </IonCard>
   );
 };

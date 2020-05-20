@@ -106,7 +106,6 @@ export interface RootState {
   firestore: Reducer<FirestoreReducer.Reducer>;
   cart: CartStateType;
   shop: ShopStateType;
-  address: AddressObj
 }
 
 export interface Categories {
@@ -129,7 +128,7 @@ export interface Markets {
   support_postcodes: [];
   cut_off_terms: string;
   service_offering: string;
-  delivery_terms:string;
+  delivery_terms: string;
 }
 
 export interface FavoriteMarket {

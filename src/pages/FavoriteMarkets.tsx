@@ -31,7 +31,7 @@ const FavoriteMarkets: React.FC = () => {
     history.push("favoriteitems/" + obj.id);
   }
 
-  useFirestoreConnect([
+  useFirestoreConnect((json_auth.uid)?[
     {
       collection: "WishLists",
       doc: json_auth.uid,
@@ -42,7 +42,7 @@ const FavoriteMarkets: React.FC = () => {
       ],
       storeAs: "FavoritesMarkets"
     }
-  ]);
+  ]:[]);
 
   const dataStore = useSelector<RootState>(
     state => state.firestore
@@ -55,7 +55,7 @@ const FavoriteMarkets: React.FC = () => {
       // console.log("User Logged in and user is:==" + JSON.stringify(auth));
       // history.push("/");
     }
-  }, []);
+  }, [auth]);
   // async function fetchData() {
   //   var data: Array<FavoriteMarket> = [];
   //   var markets = await db.collection("WishLists").doc(json_auth.uid).collection("Markets").get()

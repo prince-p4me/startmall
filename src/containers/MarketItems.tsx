@@ -90,7 +90,7 @@ const MarketItems: React.FC<MarketItemsProps> = () => {
               dataStore.ordered.ItemList.length > 0 ? (
                 dataStore.ordered.ItemList.map(obj => {
                   if (obj.is_deleted) {
-                    return;
+                    return <></>;
                   }
                   return (
                     <IonCol key={obj.id}>

@@ -37,8 +37,8 @@ const ShopMain: React.FC = () => {
   };
 
   function mapStateToProps(state: CartState) {
-    const { firebase, cart, shop, address } = state;
-    return { firebase, cart, shop, address };
+    const { firebase, cart, shop } = state;
+    return { firebase, cart, shop };
   }
   const CartCounter = connect(mapStateToProps)(CartBadge);
   const ShopHeaderWithShop = connect(mapStateToProps)(ShopHeader);

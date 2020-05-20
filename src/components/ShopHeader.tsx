@@ -5,8 +5,7 @@ import {
   IonCol,
   IonRow,
   IonGrid,
-  IonText,
-  IonImg
+  IonText
 } from "@ionic/react";
 import { ShopHeaderProps } from "../model/ComponentProps";
 import { Markets } from "../model/DomainModels";

@@ -69,10 +69,17 @@ export interface CurrencyAmountProps {
   amount: any;
 }
 
-export interface ErrorDisplayProps {
+export interface ErrorProps {
   type: any;
   message: any;
-  closehandler: any;
-  showToast:boolean;
+  showError:boolean;
+  autoHide:boolean;
+  buttonText:any|null;
+}
+
+export interface ErrorDisplayProps {
+  errorProps: ErrorProps;
+  closeHandler: any;
+  eventHandler:any|null;
 }
 

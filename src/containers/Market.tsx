@@ -82,7 +82,7 @@ const Market: React.FC = () => {
                 stateStore.ordered.Categories.map(obj => {
                   console.log(obj);
                   if (obj.is_deleted) {
-                    return;
+                    return <></>;
                   }
                   console.log("Returned");
                   return (

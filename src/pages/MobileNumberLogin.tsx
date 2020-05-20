@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import {
   IonPage,
   IonContent,
@@ -15,11 +15,11 @@ import {
   IonCol
 } from "@ionic/react";
 import GoBack from "../components/GoBack";
-import { useFirebase, isLoaded, isEmpty } from "react-redux-firebase";
-import firebase, { UserInfo } from "firebase/app";
+import firebase from "firebase/app";
 import { useHistory } from "react-router-dom";
 import { VeriFyCode } from "../model/DomainModels";
 import ErrorDisplay from "../components/ErrorDisplay";
+import { ErrorProps } from "../model/ComponentProps";
 
 const MobileNumberLogin: React.FC = () => {
   const history = useHistory();
@@ -47,14 +47,15 @@ const MobileNumberLogin: React.FC = () => {
   const input4 = useRef<any>();
   const input5 = useRef<any>();
   const input6 = useRef<any>();
-  const [showError, setShowError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  //   const [showError, setShowError] = useState(false);
+  //   const [errorMessage, setErrorMessage] = useState("");
+  const [errorProps, setErrorProps] = useState<ErrorProps>({} as ErrorProps);
 
   function sendVerificationCode() {
     const appVerifier = new firebase.auth.RecaptchaVerifier("sign-in-button", {
       size: "invisible"
     });
-    const phoneNumberString ="+852" + mobileNumber as string;
+    const phoneNumberString = "+852" + mobileNumber as string;
     console.log(mobileNumber);
     firebase
       .auth()
@@ -69,10 +70,17 @@ const MobileNumberLogin: React.FC = () => {
         setIsNumberAdded(true);
         startInterval();
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.error("SMS not sent", error);
-        setErrorMessage("SMS not sent may be " + error);
-        setShowError(true);
+        // setErrorMessage("SMS not sent may be " + error);
+        // setShowError(true);
+        setErrorProps({
+          message: "SMS not sent may be " + error,
+          showError: true,
+          type: 1,
+          autoHide: true,
+          buttonText: ""
+        })
       });
   }
 
@@ -81,7 +89,7 @@ const MobileNumberLogin: React.FC = () => {
       // setIntervalId(interval);
       var timer1 = JSON.parse(JSON.stringify(timer--));
       setTime(timer1);
-      if (timer1 == 0) {
+      if (timer1 === 0) {
         setTime(60);
         setIsNumberAdded(false);
         clearInterval(interval);
@@ -92,12 +100,12 @@ const MobileNumberLogin: React.FC = () => {
   function verifyCode() {
     if (
       !verificationCode.first ||
-      verificationCode.first == "" ||
-      (!verificationCode.second || verificationCode.second == "") ||
-      (!verificationCode.third || verificationCode.third == "") ||
-      (!verificationCode.fourth || verificationCode.fourth == "") ||
-      (!verificationCode.fifth || verificationCode.fifth == "") ||
-      (!verificationCode.sixth || verificationCode.sixth == "")
+      verificationCode.first === "" ||
+      (!verificationCode.second || verificationCode.second === "") ||
+      (!verificationCode.third || verificationCode.third === "") ||
+      (!verificationCode.fourth || verificationCode.fourth === "") ||
+      (!verificationCode.fifth || verificationCode.fifth === "") ||
+      (!verificationCode.sixth || verificationCode.sixth === "")
     ) {
       alert("Enter verification code properly");
     }
@@ -322,12 +330,8 @@ const MobileNumberLogin: React.FC = () => {
         ) : null}
 
         <IonLoading isOpen={showLoading} message={"Please wait..."} />
-        <ErrorDisplay
-          type={1}
-          message={errorMessage}
-          showToast={showError}
-          closehandler={() => setShowError(false)}
-        />
+        <ErrorDisplay errorProps={errorProps} closeHandler={() => { setErrorProps({ ...errorProps, showError: false }) }} eventHandler={() => { }} />
+
       </IonContent>
     </IonPage>
   );
