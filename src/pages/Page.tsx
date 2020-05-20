@@ -112,7 +112,7 @@ const Page: React.FC = () => {
       firebase
         .firestore()
         .collection("Markets")
-        .doc("FtSvVlEa4G4xHduMnf2l")
+        .doc("")
         .collection("Categories")
         .add({
           img_url: "",
@@ -152,7 +152,7 @@ const Page: React.FC = () => {
 
   function copyMarkets() {
     const firebase = getFirebase();
-    const targetID = "FtSvVlEa4G4xHduMnf2l";
+    const targetID = "";
     const sourceID = "LX7x6b4dEkXvjRWb0rNK";
 
     firebase
