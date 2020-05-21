@@ -254,8 +254,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
           data.phone = json_auth.phoneNumber;
           data.isValidNumber = true;
         } else {
-          data.phone = json_auth.email;
-          data.isValidAddress1 = true;
+          data.email = json_auth.email;
         }
         setAddress(data);
       }
@@ -267,8 +266,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
         data.phone = json_auth.phoneNumber;
         data.isValidNumber = true;
       } else {
-        data.phone = json_auth.email;
-        data.isValidAddress1 = true;
+        data.email = json_auth.email;
       }
       setAddress(data);
     }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   IonHeader,
   IonToolbar,
@@ -10,7 +10,7 @@ const MainHeader: React.FC = () => {
   return (
     <IonHeader>
       <IonToolbar>
-          <IonMenuButton slot='end' />
+        <IonMenuButton slot='end' />
       </IonToolbar>
       <IonImg class="startmall_header " src="/assets/icon/1x/logo2.png" />
     </IonHeader>
