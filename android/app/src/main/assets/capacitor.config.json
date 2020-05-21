@@ -4,48 +4,14 @@
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "build",
-  "cordova": {
-    "preferences": {
-      "DisableDeploy": "true"
-    }
-  },
-  "plugins": {
-    "CapacitorFirebaseAuth": {
-      "providers": [
-        "google.com",
-        "twitter.com",
-        "facebook.com",
-        "phone"
-      ],
-      "languageCode": "en",
-      "nativeAuth": true,
-      "permissions": {
-        "google": [
-          "profile",
-          "https://www.googleapis.com/auth/drive"
-        ]
-      }
-    },
-    "GoogleAuth": {
-      "scopes": [
-        "profile",
-        "email"
-      ],
-      "serverClientId": "326027994327-aqgbjblrpuujfljd9hokalkvdfd5nnbn.apps.googleusercontent.com"
-    },
-    "SplashScreen": {
-      "launchShowDuration": 3000,
-      "launchAutoHide": true,
-      "androidSplashResourceName": "splash",
-      "androidScaleType": "CENTER_CROP",
-      "androidSpinnerStyle": "large",
-      "showSpinner": false,
-      "splashFullScreen": true,
-      "splashImmersive": false
-    }
-  },
-  "server": {
-    "url": "http://192.168.0.4:8100",
-    "cleartext": true
+  "SplashScreen": {
+    "launchShowDuration": 0,
+    "launchAutoHide": false,
+    "androidSplashResourceName": "splash",
+    "androidScaleType": "CENTER_CROP",
+    "androidSpinnerStyle": "large",
+    "showSpinner": false,
+    "splashFullScreen": true,
+    "splashImmersive": false
   }
 }

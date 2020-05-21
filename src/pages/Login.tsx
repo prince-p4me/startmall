@@ -19,11 +19,12 @@ import { useFirebase, isLoaded, isEmpty } from "react-redux-firebase";
 import { useSelector } from "react-redux";
 import { RootState } from "../model/DomainModels";
 import { useHistory } from "react-router-dom";
-import { cfaSignIn, mapUserToUserInfo } from "capacitor-firebase-auth";
-import { UserInfo } from "firebase/app";
+import { GooglePlus } from '@ionic-native/google-plus';
+import { Facebook } from '@ionic-native/facebook'
 import { isPlatform } from "@ionic/core";
 import ErrorDisplay from "../components/ErrorDisplay";
 import { ErrorProps } from "../model/ComponentProps";
+import * as firebaseInstace from "firebase";
 
 
 const Login: React.FC = () => {
@@ -88,16 +89,10 @@ const Login: React.FC = () => {
         .login({ provider: "google", type: "popup" })
         .then(data => {
           setMoved(true)
-          // console.log(data);
-          // // history.push("/");
-          // history.goBack()
-          // setShowLoading(false);
-
         })
         .catch(data => {
           console.log("Something Wrong with Google login. Please try again later");
           console.log(data);
-          // history.push("/");
           setShowLoading(false);
           setErrorProps({
             message: "Something Wrong with Google login. Please try again later",
@@ -105,24 +100,40 @@ const Login: React.FC = () => {
             type: 1,
             autoHide: false,
             buttonText:""
-          })
-          // setErrorMessage("Something Wrong with Google login. Please try again later")
-          // setShowError(true)
-
-
-          // setTimeout(() => {
-          //   // alert("Something Wrong with Google login. Please try again later");
-          // }, 2000);
+          });
 
         });
     } else {
-      return cfaSignIn("google.com")
-        .pipe(mapUserToUserInfo())
-        .subscribe((user: UserInfo) => {
-          setShowLoading(false);
-          console.log(user.displayName);
-        });
-      //TODO: what if error?
+      return GooglePlus.login({})
+          .then(res => {
+            firebase.auth().signInWithCredential(
+                firebaseInstace.auth.GoogleAuthProvider.credential(res.idToken)
+            ).then(success => {
+              setShowLoading(false);
+              setMoved(true);
+              console.log("Firebase success: " + JSON.stringify(success));
+            })
+            .catch(error => {
+              setShowLoading(false);
+              setErrorProps({
+                message: "Something Wrong with Google login. Please try again later",
+                showError: true,
+                type: 1,
+                autoHide: false,
+                buttonText:""
+              });
+            });
+          })
+          .catch(err => {
+            setShowLoading(false);
+            setErrorProps({
+              message: "Something Wrong with Google login. Please try again later",
+              showError: true,
+              type: 1,
+              autoHide: false,
+              buttonText:""
+            });
+          });
     }
   }
 
@@ -130,7 +141,7 @@ const Login: React.FC = () => {
     setErrorProps({
       ...errorProps,
       showError:false
-    })
+    });
     setShowLoading(true);
 
     console.log(
@@ -143,21 +154,11 @@ const Login: React.FC = () => {
         .then(data => {
           setMoved(true)
           console.log(data);
-          // history.push("/");
-          // history.goBack()
-          // setShowLoading(false);
         })
         .catch(data => {
           console.log("Something Wrong with Facebook login. Please try again later");
           console.log(data);
-          // history.push("/");
-          // history.goBack();
           setShowLoading(false);
-          // setTimeout(() => {
-          //   alert("Something Wrong with Facebook login. Please try again later");
-          // }, 200);
-          // setErrorMessage("Something Wrong with Facebook login. Please try again later")
-          // setShowError(true)
           setErrorProps({
             message: "Something Wrong with Facebook login. Please try again later",
             showError: true,
@@ -168,13 +169,38 @@ const Login: React.FC = () => {
 
         });
     } else {
-      return cfaSignIn("facebook.com")
-        .pipe(mapUserToUserInfo())
-        .subscribe((user: UserInfo) => {
-          console.log(user.displayName);
-          setShowLoading(false);
-        });
-      //TODO: what if error
+      return Facebook.login(['email'])
+          .then( response => {
+            const facebookCredential = firebaseInstace.auth.FacebookAuthProvider
+                .credential(response.authResponse.accessToken);
+
+            firebase.auth().signInWithCredential(facebookCredential)
+                .then( success => {
+                  setMoved(true);
+                  console.log("Firebase success: " + JSON.stringify(success));
+                })
+                .catch(error => {
+                  setShowLoading(false);
+                  setErrorProps({
+                    message: "Something Wrong with Google login. Please try again later",
+                    showError: true,
+                    type: 1,
+                    autoHide: false,
+                    buttonText:""
+                  });
+            });
+
+          })
+          .catch(err => {
+            setShowLoading(false);
+            setErrorProps({
+              message: "Something Wrong with Google login. Please try again later",
+              showError: true,
+              type: 1,
+              autoHide: false,
+              buttonText:""
+            });
+          });
     }
   }
 

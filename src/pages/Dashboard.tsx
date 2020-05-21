@@ -68,7 +68,7 @@ const Dashboard: React.FC = () => {
         <div className="dashboard_main">
           <IonItem>
             <IonInput
-              autofocus={true}
+              autofocus={false}
               className="postcode_input"
               inputMode="numeric"
               placeholder="Enter postcode to search"

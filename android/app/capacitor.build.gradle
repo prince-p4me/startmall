@@ -9,14 +9,13 @@ android {
 
 apply from: "../capacitor-cordova-android-plugins/cordova.variables.gradle"
 dependencies {
-    implementation project(':codetrix-studio-capacitor-google-auth')
-    implementation project(':capacitor-firebase-auth')
-    implementation "com.android.support:customtabs:23.3.0"
-    implementation "com.stripe:stripe-android:4.1.2"
+
+    implementation "com.facebook.android:facebook-android-sdk:5.13.0"
+    implementation "com.google.firebase:firebase-auth:19.3.+"
+    implementation "com.google.android.gms:play-services-auth:15.0.1"
+    implementation "com.google.android.gms:play-services-identity:15.0.1"
 }
-apply from: "../../node_modules/cordova-plugin-browsertab/src/android/BrowserTab.gradle"
-apply from: "../../node_modules/cordova-plugin-buildinfo/src/android/BuildInfo.gradle"
-apply from: "../../node_modules/cordova-plugin-ionic/src/android/cordovapluginionic.gradle"
+apply from: "../../node_modules/cordova-support-google-services/build.gradle"
 
 if (hasProperty('postBuildExtras')) {
   postBuildExtras()
