@@ -52,7 +52,7 @@ const App: React.FC = () => {
               <Route path="/page/checkout" component={Checkout} exact={true} />
               <Route path="/payment/:invoice_id" component={Payment} exact={true} />
               <Route path="/tabs" component={MainTabs} exact />
-              <Route path="/tabs/market/FtSvVlEa4G4xHduMnf2l" component={MainTabs} exact />
+              <Route path="/tabs/:tab(market)/:market_id" component={MainTabs} exact />
               <Route path="/landing" component={Dashboard} exact />
               {/* <ProtectedRoute {...defaultProtectedRouteProps}  path="/shop_selections" component={ShopSelection} exact /> */}
               <Route path="/login" component={Login} exact />
