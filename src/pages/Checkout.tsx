@@ -14,6 +14,7 @@ import AddressForm from "../components/Address";
 import CurrencyAmount from "../components/CurrencyAmount";
 import ErrorDisplay from "../components/ErrorDisplay";
 import { blankCart } from "../reducers/CartAction";
+import { StatusBar } from '@ionic-native/status-bar';
 
 interface MockInvoice {
   // TODO: Please fix the DomainModels > Invoice object same as below write invoice function
@@ -274,6 +275,8 @@ const Checkout: React.FC<CheckoutProps> = () => {
 
   useEffect(() => {
     fetchData();
+    StatusBar.overlaysWebView(false);
+    StatusBar.styleDefault();
   }, [auth]);
 
   const closehandler = async () => {
@@ -343,7 +346,12 @@ const Checkout: React.FC<CheckoutProps> = () => {
             </IonButton>
           </IonButtons>
 
-          <ErrorDisplay errorProps={errorProps} closeHandler={() => { setErrorProps({ ...errorProps, showError: false }) }} eventHandler={() => { history.push("/login"); setErrorProps({ ...errorProps, showError: false }); }} />
+          <ErrorDisplay errorProps={errorProps}
+            closeHandler={() => { setErrorProps({ ...errorProps, showError: false }) }}
+            eventHandler={() => {
+              history.push("/login");
+              setErrorProps({ ...errorProps, showError: false });
+            }} />
 
           <IonLoading
             isOpen={showLoading}

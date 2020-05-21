@@ -7,12 +7,12 @@ import {
   IonButton,
   IonFooter
 } from "@ionic/react";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import MainHeader from "../components/MainHeader";
 import { useHistory, useLocation } from "react-router";
 import ErrorDisplay from "../components/ErrorDisplay";
 import { ErrorProps } from "../model/ComponentProps";
-
+import { Keyboard } from '@ionic-native/keyboard';
 const Dashboard: React.FC = () => {
   console.log("entering Dashboard");
   const [postcode, setPostCode] = useState<string>("2000");
@@ -21,7 +21,7 @@ const Dashboard: React.FC = () => {
   // const [showError, setShowError] = useState(false);
   // const [errorMessage, setErrorMessage] = useState("");
   const [errorProps, setErrorProps] = useState<ErrorProps>({} as ErrorProps);
-
+  const inputElement = useRef<any>();
 
   // // SplashScreen.show({
   // //   showDuration: 2000,
@@ -49,7 +49,7 @@ const Dashboard: React.FC = () => {
         showError: true,
         type: 1,
         autoHide: true,
-        buttonText:""
+        buttonText: ""
       })
       // setErrorMessage("Please enter postcode")
       // setShowError(true)
@@ -57,6 +57,14 @@ const Dashboard: React.FC = () => {
     }
     history.push("/tabs/shop_selections/" + postcode)
   }
+
+  useEffect(() => {
+    inputElement.current.onfocus = () => {
+      // window.scrollTo(0, 0);
+      // document.body.scrollTop = 0;
+      // Keyboard.disableScroll(true);
+    };
+  }, []);
 
   return (
     <IonPage>
@@ -66,9 +74,11 @@ const Dashboard: React.FC = () => {
         <IonImg className="dashboard_ad" src="/assets/icon/1x/cover.png" onClick={() => { history.push("/page/postcode_search") }} />
 
         <div className="dashboard_main">
+
           <IonItem>
             <IonInput
-              autofocus={true}
+              ref={inputElement}
+              // autofocus={true}
               className="postcode_input"
               inputMode="numeric"
               placeholder="Enter postcode to search"
@@ -79,7 +89,7 @@ const Dashboard: React.FC = () => {
             ></IonInput>
             <IonButton onClick={handleSearch}> Search</IonButton>
           </IonItem>
-          <IonImg src="/assets/img/instructions.png" onClick={() => { history.push("/page/postcode_search") }}/>
+          <IonImg src="/assets/img/instructions.png" onClick={() => { history.push("/page/postcode_search") }} />
         </div>
         <ErrorDisplay errorProps={errorProps} closeHandler={() => setErrorProps({ ...errorProps, showError: false })} eventHandler={() => { }} />
 
