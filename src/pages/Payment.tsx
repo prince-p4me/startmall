@@ -6,7 +6,7 @@ import {
   IonButtons,
   IonIcon,
   IonLabel,
-  IonList,
+  IonList, IonHeader,
   IonItemDivider
 } from "@ionic/react";
 import React, { useEffect } from "react";
@@ -49,17 +49,20 @@ const Payment: React.FC = () => {
 
   return (
     <IonPage id="checkout">
-      <IonToolbar color="secondary">
-        <IonButtons slot="end">
-          <IonButton onClick={closehandler}>
-            <IonIcon
-              size="large"
-              slot="icon-only"
-              icon={closeOutline}
-            ></IonIcon>
-          </IonButton>
-        </IonButtons>
-      </IonToolbar>
+      <IonHeader>
+
+        <IonToolbar color="secondary">
+          <IonButtons slot="end">
+            <IonButton onClick={closehandler}>
+              <IonIcon
+                size="large"
+                slot="icon-only"
+                icon={closeOutline}
+              ></IonIcon>
+            </IonButton>
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
       <IonContent>
         <IonList>
           <IonItemDivider style={{ backgroundColor: "#f7f7f7", paddingTop: 10, paddingBottom: 10 }}>

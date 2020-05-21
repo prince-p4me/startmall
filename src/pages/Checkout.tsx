@@ -1,4 +1,4 @@
-import { IonContent, IonPage, IonButton, IonToolbar, IonButtons, IonIcon, IonLabel, IonCheckbox, IonItem, IonImg, IonLoading, IonTitle } from "@ionic/react";
+import { IonContent, IonPage, IonHeader, IonButton, IonToolbar, IonButtons, IonIcon, IonLabel, IonCheckbox, IonItem, IonImg, IonLoading, IonTitle } from "@ionic/react";
 import React, { useState, useEffect } from "react";
 import { connect, useSelector, useDispatch } from "react-redux";
 import ItemList from "../components/ItemList";
@@ -285,20 +285,23 @@ const Checkout: React.FC<CheckoutProps> = () => {
 
   return (
     <IonPage id="checkout" className="checkout_page">
-      <IonToolbar color="secondary">
-        <IonButtons slot="end">
-          <IonButton onClick={closehandler}>
-            <IonIcon
-              size="large"
-              slot="icon-only"
-              icon={closeOutline}
-            ></IonIcon>
-          </IonButton>
-        </IonButtons>
-        <IonTitle text-center>
-          <b>CHECK OUT</b>
-        </IonTitle>
-      </IonToolbar>
+      <IonHeader>
+        <IonToolbar color="secondary">
+          <IonButtons slot="end">
+            <IonButton onClick={closehandler}>
+              <IonIcon
+                size="large"
+                slot="icon-only"
+                icon={closeOutline}
+              ></IonIcon>
+            </IonButton>
+          </IonButtons>
+          <IonTitle text-center>
+            <b>CHECK OUT</b>
+          </IonTitle>
+        </IonToolbar>
+
+      </IonHeader>
       <IonContent>
         <ShopHeaderWithShop />
         <CartItemList />
