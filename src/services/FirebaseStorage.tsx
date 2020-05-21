@@ -9,9 +9,8 @@ interface GetURLProps {
 export const FirestoreIonImg: React.FC<GetURLProps> = ({ className, src }) => {
   var [downloadUrl, setDownloadUrl] = useState(src);
   var storage = useFirebase().storage();
-  // console.log(src);
 
-  if (src.startsWith("gs")) {
+  if (src && src.startsWith("gs")) {
     var imgref = storage.refFromURL(src);
     // console.log("Image Ref");
     // console.log(imgref);
