@@ -31,7 +31,7 @@ const FavoriteMarkets: React.FC = () => {
     history.push("favoriteitems/" + obj.id);
   }
 
-  useFirestoreConnect((json_auth.uid)?[
+  useFirestoreConnect((json_auth.uid) ? [
     {
       collection: "WishLists",
       doc: json_auth.uid,
@@ -42,7 +42,7 @@ const FavoriteMarkets: React.FC = () => {
       ],
       storeAs: "FavoritesMarkets"
     }
-  ]:[]);
+  ] : []);
 
   const dataStore = useSelector<RootState>(
     state => state.firestore
@@ -56,32 +56,6 @@ const FavoriteMarkets: React.FC = () => {
       // history.push("/");
     }
   }, [auth]);
-  // async function fetchData() {
-  //   var data: Array<FavoriteMarket> = [];
-  //   var markets = await db.collection("WishLists").doc(json_auth.uid).collection("Markets").get()
-  //   if (!markets.empty) {
-  //     markets.forEach(async doc => {
-  //       var doc1 = doc.data();
-  //       doc1.items = [];
-  //       var items = await db.collection("WishLists").doc(json_auth.uid).collection("Markets").doc(doc1.id).collection("Items").get();
-  //       if (!items.empty) {
-  //         items.forEach(item => {
-  //           var item1 = item.data();
-  //           doc1.items.push(item1);
-  //         });
-  //       }
-  //       data.push(doc1 as FavoriteMarket);
-  //       setMarktList(data);
-  //       console.log("markets:==" + marketList.length);
-  //     })
-  //   }
-  //   // console.clear();
-  //   // console.log("markets:--" + JSON.stringify(marketList));
-  // }
-
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
 
   return (
     <IonPage>

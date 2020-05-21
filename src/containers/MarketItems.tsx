@@ -93,7 +93,7 @@ const MarketItems: React.FC<MarketItemsProps> = () => {
                     return <></>;
                   }
                   return (
-                    <IonCol key={obj.id}>
+                    <IonCol key={obj.id} size="12">
                       <ShopItem item={obj} market_id={market_id} category_id={category_id} />
                     </IonCol>
                   );
