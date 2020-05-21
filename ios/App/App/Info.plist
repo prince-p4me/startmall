@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.0</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -40,11 +40,23 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>FacebookAppID</key>
 	<string>255334572519961</string>
 	<key>FacebookDisplayName</key>
 	<string>StartMall</string>
+	<key>IonApi</key>
+	<string>https://api.ionicjs.com</string>
+	<key>IonAppId</key>
+	<string>1b69d23d</string>
+	<key>IonChannelName</key>
+	<string>Master</string>
+	<key>IonMaxVersions</key>
+	<string>2</string>
+	<key>IonMinBackgroundDuration</key>
+	<string>30</string>
+	<key>IonUpdateMethod</key>
+	<string>background</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>
@@ -63,18 +75,6 @@
 		<string>fbauth2</string>
 		<string>fbshareextension</string>
 	</array>
-	<key>IonApi</key>
-	<string>https://api.ionicjs.com</string>
-	<key>IonAppId</key>
-	<string>1b69d23d</string>
-	<key>IonChannelName</key>
-	<string>Master</string>
-	<key>IonMaxVersions</key>
-	<string>2</string>
-	<key>IonMinBackgroundDuration</key>
-	<string>30</string>
-	<key>IonUpdateMethod</key>
-	<string>background</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
