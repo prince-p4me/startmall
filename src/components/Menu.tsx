@@ -29,6 +29,7 @@ import { UserInfo } from "@firebase/auth-types";
 import { menuController } from "@ionic/core";
 import { blankCart } from "../reducers/CartAction";
 // import firebase from "firebase";
+import { StatusBar } from '@ionic-native/status-bar';
 
 const appPages: AppPage[] = [
   {
@@ -109,6 +110,8 @@ const Menu: React.FC = () => {
       // history.push("/");
     }
     setUserPhoto(auth.photoURL as string);
+    StatusBar.overlaysWebView(false);
+    StatusBar.styleDefault();
   }, [auth, auth.photoURL]);
 
   function handleSignOut() {

@@ -1,6 +1,6 @@
 import Menu from "./components/Menu";
 import Page from "./pages/Page";
-import React from "react";
+import React, { useEffect } from "react";
 import { IonApp, IonRouterOutlet, IonSplitPane } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { Redirect, Route } from "react-router-dom";
@@ -34,10 +34,15 @@ import MobileNumberLogin from './pages/MobileNumberLogin';
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from '@stripe/stripe-js';
 import PostCodeSearch from "./pages/PostcodeSearch";
-
+import { StatusBar } from '@ionic-native/status-bar';
 const stripePromise = loadStripe('pk_test_YC0gcyGppNgDEzsD5FxBzPXJ00nUQJqCvw');
 
 const App: React.FC = () => {
+  useEffect(() => {
+    StatusBar.overlaysWebView(false);
+    StatusBar.styleDefault();
+  }, []);
+
   console.log("entering app");
   return (
     <IonApp>
@@ -52,7 +57,7 @@ const App: React.FC = () => {
               <Route path="/page/checkout" component={Checkout} exact={true} />
               <Route path="/payment/:invoice_id" component={Payment} exact={true} />
               <Route path="/tabs" component={MainTabs} exact />
-              <Route path="/tabs/market/FtSvVlEa4G4xHduMnf2l" component={MainTabs} exact />
+              {/* <Route path="/tabs/market/FtSvVlEa4G4xHduMnf2l" component={MainTabs} exact /> */}
               <Route path="/landing" component={Dashboard} exact />
               {/* <ProtectedRoute {...defaultProtectedRouteProps}  path="/shop_selections" component={ShopSelection} exact /> */}
               <Route path="/login" component={Login} exact />
