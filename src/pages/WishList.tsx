@@ -40,31 +40,6 @@ const WishListPage: React.FC = () => {
   }
   const CartCounter = connect(mapStateToProps)(CartBadge);
 
-  // function fetchData() {
-  //   db.collection("WishLists")
-  //     .doc(json_auth.uid)
-  //     .collection("Markets")
-  //     .doc(market_id).get().then(res => {
-  //       var shop1: any = res.data();
-  //       setShop(shop1 as Markets);
-  //     });
-  //   db.collection("WishLists")
-  //     .doc(json_auth.uid)
-  //     .collection("Markets")
-  //     .doc(market_id)
-  //     .collection("Items")
-  //     .get().then((snapshot) => {
-  //       var data: Array<WishList> = [];
-  //       if (!snapshot.empty) {
-  //         snapshot.forEach(doc => {
-  //           var item = doc.data();
-  //           data.push(item as WishList);
-  //         });
-  //       }
-  //       setItems(data);
-  //     })
-  // }
-
   useFirestoreConnect([
     {
       collection: "WishLists",
@@ -116,7 +91,7 @@ const WishListPage: React.FC = () => {
               items.length > 0 ? (
                 items.map((obj, index) => {
                   return (
-                    <IonCol key={index}>
+                    <IonCol key={index} size="12">
                       <ShopItem item={obj.item} market_id={obj.market_id} category_id={obj.category_id} />
                     </IonCol>
                   );

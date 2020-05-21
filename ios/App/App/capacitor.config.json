@@ -4,7 +4,11 @@
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "build",
-  "cordova": {},
+  "cordova": {
+    "preferences": {
+      "DisableDeploy": "true"
+    }
+  },
   "plugins": {
     "CapacitorFirebaseAuth": {
       "providers": [

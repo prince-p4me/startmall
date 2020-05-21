@@ -80,9 +80,9 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
     dispatch(addCartAction(item));
   }
 
-  const checkFavorite = useCallback((writing: boolean)  => {
+  const checkFavorite = (writing: boolean) => {
     if (isLoaded(auth) && !isEmpty(auth)) {
-      setFavorites(heart);
+      // setFavorites(heart);
       setLogin(true);
       console.log("updating favorite");
       const json_auth = JSON.parse(JSON.stringify(auth));
@@ -90,10 +90,13 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
 
       docRef.where('item_id', '==', item.id).get().then(function (snapshot) {
         if (snapshot.empty) {
+          setFavorites(heartOutline);
           console.log("No such document!");
           if (writing) {
             addFavorites();
-          } else setFavorites(heartOutline);
+          } else {
+            setFavorites(heartOutline);
+          }
         } else {
           console.log("market found");
           if (writing) {
@@ -105,7 +108,9 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
               })
             });
             setFavorites(heartOutline);
-          } else setFavorites(heart);
+          } else {
+            setFavorites(heart);
+          }
         }
       }).catch(function (error) {
         setFavorites(heartOutline);
@@ -118,20 +123,20 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
           showError: true,
           type: 2,
           autoHide: false,
-          buttonText:"LOG IN"
+          buttonText: "LOG IN"
         })
         // history.push("/login");
       }
     }
     // eslint-disable-next-line
-  }, []);
+  };
 
   useEffect(() => {
     if (favorites === heartOutline) {
       console.log("use Effect Set Favorites");
       checkFavorite(false);
     }
-  }, [checkFavorite, favorites]);
+  }, [auth]);
 
   return (
     <IonCard>
@@ -177,7 +182,7 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
           </IonCol>
         </IonRow>
       </IonCardContent>
-      <ErrorDisplay errorProps={errorProps} closeHandler={() => {setErrorProps({...errorProps, showError: false})}} eventHandler={() => { history.push("/login"); setErrorProps({...errorProps, showError: false}); }} />
+      <ErrorDisplay errorProps={errorProps} closeHandler={() => { setErrorProps({ ...errorProps, showError: false }) }} eventHandler={() => { history.push("/login"); setErrorProps({ ...errorProps, showError: false }); }} />
     </IonCard>
   );
 };
