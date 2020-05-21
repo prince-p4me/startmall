@@ -63,6 +63,7 @@
 <platform name="android">
 <preference name="SplashMaintainAspectRatio" value="true"/>
 <preference name="SplashShowOnlyFirstTime" value="true"/>
+<preference name="KeyboardResize" value="false" />
 <icon density="ldpi" src="assets/gen_40_icon/res/icon/android/ldpi.png"/>
 <icon density="mdpi" src="assets/gen_40_icon/res/icon/android/mdpi.png"/>
 <icon density="hdpi" src="assets/gen_40_icon/res/icon/android/hdpi.png"/>

@@ -9,13 +9,14 @@ import {
   IonList,
   IonItemDivider
 } from "@ionic/react";
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { closeOutline } from "ionicons/icons";
 import { useHistory, useParams } from "react-router-dom";
 import { Invoice, RootState } from "../model/DomainModels";
 import { useFirestoreConnect, FirestoreReducer } from "react-redux-firebase";
 import StripePaymentContainer from "../components/StripePaymentContainer";
+import { StatusBar } from '@ionic-native/status-bar';
 
 const Payment: React.FC = () => {
 
@@ -36,6 +37,11 @@ const Payment: React.FC = () => {
   const onPaymentInit = async () => {
     history.push("/orders/" + invoice_id);
   }
+
+  useEffect(() => {
+    StatusBar.overlaysWebView(false);
+    StatusBar.styleDefault();
+  }, []);
 
   if (invoiceStore.ordered.Invoice && invoiceStore.ordered.Invoice.length > 0) {
     invoice = invoiceStore.ordered.Invoice[0]
@@ -61,7 +67,7 @@ const Payment: React.FC = () => {
             <IonLabel color="primary" style={{ paddingLeft: 10 }}>Payment Detail</IonLabel>
           </IonItemDivider>
           <StripePaymentContainer
-            paymentMode={'visaCard'}
+            paymentMode={'applePay'}
             completeHandler={onPaymentInit}
             invoice={invoice}
           >

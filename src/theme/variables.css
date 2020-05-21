@@ -79,6 +79,10 @@ http://ionicframework.com/docs/theming/ */
   --fontsize-small: 12px;
 }
 
+ion-menu.ios ion-content {
+  --padding-bottom: 20px !important;
+}
+
 ion-menu {
   background-color: var(--ion-color-primary-shade);
   opacity: 0.9;
