@@ -119,14 +119,12 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
           name,
           phone,
           email,
-          address: {
-            country,
-            state,
-            line1: address1,
-            line2: address2,
-            postal_code: postcode,
-            city: suburb
-          }
+          // address: {
+          //   line1: address1,
+          //   line2: address2,
+          //   postal_code: postcode,
+          //   city: suburb
+          // }
         },
       }
     });
