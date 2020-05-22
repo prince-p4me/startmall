@@ -39,11 +39,11 @@ import ShopSelection from "./pages/ShopSelection";
 import FavoriteMarkets from "./pages/FavoriteMarkets";
 import MarketItems from "./containers/MarketItems";
 import Market from "./containers/Market";
-import {cartSharp, happy, heartCircle, informationCircle} from "ionicons/icons";
-import {isEmpty, isLoaded} from "react-redux-firebase";
-import {UserInfo} from "firebase";
-import {useSelector} from "react-redux";
-import {RootState} from "./model/DomainModels";
+import { cartSharp, happy, heartCircle, informationCircle } from "ionicons/icons";
+import { isEmpty, isLoaded }  from "react-redux-firebase";
+import { UserInfo } from "firebase";
+import { useSelector } from "react-redux";
+import { RootState } from "./model/DomainModels";
 
 const { App: CapApp } = Plugins;
 const stripePromise = loadStripe('pk_test_YC0gcyGppNgDEzsD5FxBzPXJ00nUQJqCvw');
