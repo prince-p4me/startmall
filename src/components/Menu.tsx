@@ -166,13 +166,13 @@ const Menu: React.FC = () => {
           <IonItem lines="none">
             <IonIcon icon={nutritionOutline}></IonIcon>
             <IonLabel>
-              <a href="applinks:startmall.web.app/tabs/market/FtSvVlEa4G4xHduMnf2l">applinks deeplink </a>
+              <a href="applinks://startmall.web.app/tabs/market/FtSvVlEa4G4xHduMnf2l">applinks deeplink </a>
             </IonLabel>
           </IonItem>
           <IonItem lines="none">
             <IonIcon icon={nutritionOutline}></IonIcon>
             <IonLabel>
-              <a href="startmall:startmall.web.app/tabs/market/FtSvVlEa4G4xHduMnf2l">smartmall deeplink </a>
+              <a href="startmall://startmall.web.app/tabs/market/FtSvVlEa4G4xHduMnf2l">smartmall deeplink </a>
             </IonLabel>
           </IonItem>
         </IonList>
