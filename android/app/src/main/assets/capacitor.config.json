@@ -5,8 +5,8 @@
   "npmClient": "npm",
   "webDir": "build",
   "SplashScreen": {
-    "launchShowDuration": 0,
-    "launchAutoHide": false,
+    "launchShowDuration": 3000,
+    "launchAutoHide": true,
     "androidSplashResourceName": "splash",
     "androidScaleType": "CENTER_CROP",
     "androidSpinnerStyle": "large",
