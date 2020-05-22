@@ -15,6 +15,7 @@ import CurrencyAmount from "../components/CurrencyAmount";
 import ErrorDisplay from "../components/ErrorDisplay";
 import { blankCart } from "../reducers/CartAction";
 import { StatusBar } from '@ionic-native/status-bar';
+import moment from "moment";
 
 interface MockInvoice {
   // TODO: Please fix the DomainModels > Invoice object same as below write invoice function
@@ -77,6 +78,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
   // const AddressComponent = connect(mapStateToProps)(Address);
 
   function writeUserData(my_auth: any): Promise<void> {
+    let today = new Date();
     let json_auth = JSON.parse(JSON.stringify(my_auth));
     let user: ProfileData = {
       providerId: json_auth.providerData[0].providerId,
@@ -99,7 +101,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
       cut_off_terms: shopState.shop.cutoff_terms,
       // delivery_terms: shopState.shop.delivery_terms,
       delivery_date: "22 May 2020",
-      order_date: "12 May 2020",
+      order_date: moment(today).format("DD MMM YYYY"),
       status: "open",
       payment_status: "pending",
       cart_total_cost_inc_GST: cartState.cart.total,
