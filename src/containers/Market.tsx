@@ -1,11 +1,4 @@
-import {
-  IonContent,
-  IonPage,
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonBadge
-} from "@ionic/react";
+import { IonContent, IonPage, IonGrid, IonRow, IonCol, IonBadge } from "@ionic/react";
 import React, { useState } from "react";
 import "./Market.css";
 import Cart from "./Cart";
@@ -78,14 +71,14 @@ const Market: React.FC = () => {
           <IonRow>
             {stateStore.ordered.Categories &&
               stateStore.ordered.Categories.length > 0 ? (
-                stateStore.ordered.Categories.map(obj => {
+                stateStore.ordered.Categories.map((obj, index) => {
                   console.log(obj);
                   if (obj.is_deleted) {
-                    return <></>;
+                    return <span key={index}></span>;
                   }
                   console.log("Returned");
                   return (
-                    <IonCol key={obj.id}>
+                    <IonCol key={index}>
                       <CategoryItem market_id={market_id} category={obj} shop={shop} />
                     </IonCol>
                   );
