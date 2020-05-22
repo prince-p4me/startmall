@@ -31,7 +31,7 @@ export interface CheckoutProps {
 }
 
 export interface StripePaymentProps {
-  paymentMode: 'applePay' | 'visaCard',
+  paymentMode: 'applePay' | 'visaCard' | 'all',
   completeHandler: any;
   invoice: Invoice
 }

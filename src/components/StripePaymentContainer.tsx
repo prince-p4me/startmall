@@ -60,8 +60,8 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
       const applePayTransaction = await ApplePay.makePaymentRequest({
         items: [
           {
-            label: '3 x Basket Items',
-            amount: 49.99
+            label: 'Product basket',
+            amount: invoice.total_amount
           }
         ],
         shippingMethods: [
@@ -69,7 +69,7 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
             identifier: 'NextDay',
             label: 'NextDay',
             detail: 'Arrives tomorrow by 5pm.',
-            amount: 3.99
+            amount: 0
           }
         ],
         supportedNetworks: ['visa', 'masterCard', 'discover'],
@@ -107,14 +107,16 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
     // Get a reference to a mounted CardElement. Elements knows how
     // to find your CardElement because there can only ever be one of
     // each type of element.
-    const element: any = elements.getElement(CardNumberElement);
+    const cardNumberElement: any = elements.getElement(CardNumberElement);
+    const cardExpiryElement: any = elements.getElement(CardExpiryElement);
+    const cardCvcElement: any = elements.getElement(CardCvcElement);
 
     const { name, email, phone, country, state, address1, address2, postcode, suburb } = invoice.address as AddressObj;
 
     // Use your card Element with other Stripe.js APIs
     const result: any = await stripe.confirmCardPayment(clientSecret, {
       payment_method: {
-        card: element,
+        card: cardNumberElement,
         billing_details: {
           name,
           phone,
@@ -129,6 +131,10 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
       }
     });
     setLoading(false);
+    cardNumberElement.clear();
+    cardExpiryElement.clear();
+    cardCvcElement.clear();
+    setCardValidation({ number: false, date: false, cvc: false, isCompleted: false });
     if (result.error) {
       // Show error to your customer (e.g., insufficient funds)
       console.log(result.error.message);
@@ -154,7 +160,7 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
   return (
     <div className="ion-padding-start ion-padding-end">
       {
-        paymentMode === 'visaCard' &&
+        (paymentMode === 'visaCard' || paymentMode === 'all') &&
         <form onSubmit={handleSubmit}>
           <div className="ion-margin-top">
             <IonLabel color="medium">
@@ -186,21 +192,30 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
                 <IonSpinner name={'dots'}></IonSpinner>
             }
           </IonButton>
-          <IonLabel>* by hitting Pay you are confirming your order with us.</IonLabel>
         </form>
       }
-      {
-        paymentMode === 'applePay' &&
-        <IonButton class="ion-margin-top apple-pay-btn" color={'dark'} onClick={applePay} size={'large'} expand={'block'}>
-          <IonIcon
-            size={'large'}
-            slot="icon-only"
-            className="apple-icon"
-            icon={logoApple}
-          ></IonIcon>
-          Pay
-        </IonButton>
-      }
+      <div className={'ion-margin-top ion-margin-bottom ion-text-center'}>
+        {
+          paymentMode === 'all' && <IonLabel color={'primary'}>Or</IonLabel>
+        }
+      </div>
+      <div>
+        {
+          (paymentMode === 'applePay' || paymentMode === 'all') &&
+          <IonButton class="ion-margin-top apple-pay-btn" color={'dark'} onClick={applePay} size={'large'} expand={'block'}>
+            <IonIcon
+              size={'large'}
+              slot="icon-only"
+              className="apple-icon"
+              icon={logoApple}
+            ></IonIcon>
+            Pay
+          </IonButton>
+        }
+      </div>
+      <div className={'ion-margin-top ion-margin-bottom'}>
+        <IonLabel>* By hitting Pay you are confirming your order with us.</IonLabel>
+      </div>
     </div>
   );
 }

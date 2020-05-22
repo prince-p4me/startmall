@@ -30,7 +30,7 @@ const Payment: React.FC = () => {
     state => state.firestore
   ) as FirestoreReducer.Reducer;
 
-  const closehandler = async () => {
+  const closeHandler = async () => {
     history.goBack();
   };
 
@@ -50,10 +50,9 @@ const Payment: React.FC = () => {
   return (
     <IonPage id="checkout">
       <IonHeader>
-
-        <IonToolbar color="secondary">
+        <IonToolbar color="primary">
           <IonButtons slot="end">
-            <IonButton onClick={closehandler}>
+            <IonButton onClick={closeHandler}>
               <IonIcon
                 size="large"
                 slot="icon-only"
@@ -70,7 +69,7 @@ const Payment: React.FC = () => {
             <IonLabel color="primary" style={{ paddingLeft: 10 }}>Payment Detail</IonLabel>
           </IonItemDivider>
           <StripePaymentContainer
-            paymentMode={'visaCard'}
+            paymentMode={'all'}
             completeHandler={onPaymentInit}
             invoice={invoice}
           >
