@@ -70,7 +70,7 @@ const Payment: React.FC = () => {
             <IonLabel color="primary" style={{ paddingLeft: 10 }}>Payment Detail</IonLabel>
           </IonItemDivider>
           <StripePaymentContainer
-            paymentMode={'applePay'}
+            paymentMode={'visaCard'}
             completeHandler={onPaymentInit}
             invoice={invoice}
           >

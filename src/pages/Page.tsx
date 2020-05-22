@@ -21,7 +21,6 @@ import { useSelector } from "react-redux";
 import "firebase/firestore";
 import hifreshdata from "../data/hmarketitems.json";
 import { Categories, Markets, RootState } from "../model/DomainModels";
-import { cfaSignIn } from "capacitor-firebase-auth";
 import { User } from "@firebase/auth-types";
 
 interface testprop {
@@ -76,9 +75,6 @@ const Page: React.FC = () => {
   }
 
   function googleLoginHandler() {
-    cfaSignIn("google.com").subscribe((user: User) =>
-      console.log(user.displayName)
-    );
     return "";
   }
   // const TestComponent = compose(
@@ -112,7 +108,7 @@ const Page: React.FC = () => {
       firebase
         .firestore()
         .collection("Markets")
-        .doc("")
+        .doc("FtSvVlEa4G4xHduMnf2l")
         .collection("Categories")
         .add({
           img_url: "",
@@ -152,7 +148,7 @@ const Page: React.FC = () => {
 
   function copyMarkets() {
     const firebase = getFirebase();
-    const targetID = "";
+    const targetID = "FtSvVlEa4G4xHduMnf2l";
     const sourceID = "LX7x6b4dEkXvjRWb0rNK";
 
     firebase
@@ -189,14 +185,14 @@ const Page: React.FC = () => {
       {/* <FirestoreIonImg src="gs://slashiee.appspot.com/hifresh/categories/y2637HMBAxuFpC89igEL/organic_apple.png" /> */}
       <IonContent>
         {/* <Test doc={doc_id} market={market} /> */}
-        {/* <IonButton onClick={CreateMarket}>Test Creat Market</IonButton> */}
-        {/* <IonButton onClick={copyMarkets}>Copy HiFresh Market</IonButton> */}
+        <IonButton onClick={CreateMarket}>Test Creat Market</IonButton>
+        <IonButton onClick={copyMarkets}>Copy HiFresh Market</IonButton>
         <IonHeader collapse="condense">
           <IonToolbar>
             <IonTitle size="large">{name}</IonTitle>
           </IonToolbar>
         </IonHeader>
-        {/* <IonButton onClick={googleLoginHandler}> Google Login </IonButton> */}
+        <IonButton onClick={googleLoginHandler}> Google Login </IonButton>
         <ExploreContainer name={name} />
       </IonContent>
     </IonPage>

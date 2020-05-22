@@ -97,7 +97,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
       total_amount: cartState.cart.total,
       platform_charges: 135.0,
       cut_off_terms: shopState.shop.cutoff_terms,
-      delivery_terms: shopState.shop.delivery_terms,
+      // delivery_terms: shopState.shop.delivery_terms,
       delivery_date: "22 May 2020",
       order_date: "12 May 2020",
       status: "open",
@@ -132,8 +132,8 @@ const Checkout: React.FC<CheckoutProps> = () => {
             console.log("Not inserted+==" + JSON.stringify(err));
           });
       })
-      .catch(() => {
-        console.error("User not found");
+      .catch((err) => {
+        console.error("User not found", err, json_auth.uid);
       });
   }
 
