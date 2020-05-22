@@ -22,5 +22,10 @@
     <param name="onload" value="true"/>
   </feature>
 
+  <feature name="IonicDeeplinkPlugin">
+    <param name="android-package" value="io.ionic.links.IonicDeeplink"/>
+    <param name="onload" value="true"/>
+  </feature>
+
   
 </widget>

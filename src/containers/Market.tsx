@@ -73,8 +73,7 @@ const Market: React.FC = () => {
       <MarketHeader setShowModal={setShowModal} shop={shop} CartCounter={CartCounter} />
 
       <IonContent className="category" fullscreen>
-        <ShopHeaderWithShop
-        />
+        <ShopHeaderWithShop />
         <IonGrid>
           <IonRow>
             {stateStore.ordered.Categories &&

@@ -3,7 +3,7 @@ import Page from "./pages/Page";
 import React, { useEffect } from "react";
 import {IonApp, IonIcon, IonLabel, IonRouterOutlet, IonSplitPane, IonTabBar, IonTabButton, IonTabs} from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-import { Redirect, Route } from "react-router-dom";
+import { Redirect, Route, useHistory } from "react-router-dom";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -48,6 +48,25 @@ import {RootState} from "./model/DomainModels";
 const { App: CapApp } = Plugins;
 const stripePromise = loadStripe('pk_test_YC0gcyGppNgDEzsD5FxBzPXJ00nUQJqCvw');
 
+const AppUrlListener: React.FC<any> = () => {
+  let history = useHistory();
+  useEffect(() => {
+    CapApp.addListener('appUrlOpen', (data: any) => {
+      // Example url: https://beerswift.app/tabs/tab2
+      // slug = /tabs/tab2
+      const slug = data.url.split(".app").pop();
+      if (slug) {
+        history.push(slug);
+      }
+      // If no match, do nothing - let regular routing
+      // logic take over
+    });
+  }, []);
+
+  return null;
+};
+
+
 const App: React.FC = () => {
   useEffect(() => {
     StatusBar.overlaysWebView(false);
@@ -63,6 +82,7 @@ const App: React.FC = () => {
     <IonApp>
       <IonReactRouter>
         <Elements stripe={stripePromise}>
+          <AppUrlListener />
           <IonSplitPane contentId="main">
             <Menu />
             <IonRouterOutlet id="main">
