@@ -10,6 +10,7 @@
     "@firebase/app": "^0.6.2",
     "@ionic-native/apple-pay": "^5.25.0",
     "@ionic-native/core": "^5.25.0",
+    "@ionic-native/deeplinks": "^5.26.0",
     "@ionic-native/in-app-browser": "^5.24.0",
     "@ionic-native/keyboard": "^5.26.0",
     "@ionic-native/status-bar": "^5.26.0",
@@ -46,6 +47,7 @@
     "firebase": "^7.14.2",
     "firebase-admin": "^8.11.0",
     "googlemaps": "^1.12.0",
+    "ionic-plugin-deeplinks": "^1.0.20",
     "ionicons": "^5.0.0",
     "patch-package": "^6.2.2",
     "react": "^16.13.0",
@@ -68,6 +70,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "postinstall": "patch-package",
+    "run-ios-npx-sync": "npx cap copy && npx cap sync",
+    "run-ios": "ionic capacitor run ios -l",
     "build-fb": "react-scripts build --platform=web && cp -Rv build/* fbhost/public && cd fbhost && firebase deploy --only hosting:startmall "
   },
   "eslintConfig": {
