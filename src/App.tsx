@@ -110,7 +110,7 @@ const App: React.FC = () => {
                   />
                   <Route path="/tabs/:tab(shop_selections)/:postcode" render={() => <ShopSelection />} exact={true} />
                   <Route path="/wishlist" component={FavoriteMarkets} exact />
-                  {/* <Route path="/favoriteitems/:market_id" component={WishList} exact /> */}
+
                 </IonRouterOutlet>
                 <IonTabBar slot="bottom">
                   <IonTabButton tab="today" href="/tabs">
