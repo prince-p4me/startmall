@@ -15,6 +15,7 @@ import CurrencyAmount from "../components/CurrencyAmount";
 import ErrorDisplay from "../components/ErrorDisplay";
 import { blankCart } from "../reducers/CartAction";
 import { StatusBar } from '@ionic-native/status-bar';
+import moment from "moment";
 
 interface MockInvoice {
   // TODO: Please fix the DomainModels > Invoice object same as below write invoice function
@@ -32,8 +33,6 @@ const Checkout: React.FC<CheckoutProps> = () => {
   const [, setInvoiceId] = useState<string>("");
   const [, setInvoice] = useState<MockInvoice>({} as MockInvoice);
   const [showLoading, setShowLoading] = useState(false);
-  // const [showError, setShowError] = useState(false);
-  // const [errorMessage, setErrorMessage] = useState("");
   const [errorProps, setErrorProps] = useState<ErrorProps>({} as ErrorProps);
   const dispatch = useDispatch();
   let history = useHistory();
@@ -77,6 +76,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
   // const AddressComponent = connect(mapStateToProps)(Address);
 
   function writeUserData(my_auth: any): Promise<void> {
+    let today = new Date();
     let json_auth = JSON.parse(JSON.stringify(my_auth));
     let user: ProfileData = {
       providerId: json_auth.providerData[0].providerId,
@@ -99,7 +99,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
       cut_off_terms: shopState.shop.cutoff_terms,
       // delivery_terms: shopState.shop.delivery_terms,
       delivery_date: "22 May 2020",
-      order_date: "12 May 2020",
+      order_date: moment(today).format("DD MMM YYYY"),
       status: "open",
       payment_status: "pending",
       cart_total_cost_inc_GST: cartState.cart.total,
@@ -140,9 +140,6 @@ const Checkout: React.FC<CheckoutProps> = () => {
   const handleComplete = async () => {
     setShowLoading(true);
     if (!addressObj.address1 || addressObj.address1 === "") {
-      // alert("Please Type Address Line 1");
-      // setErrorMessage("Please Type Address Line 1")
-      // setShowError(true)
       setErrorProps({
         message: "Please Type Address Line 1",
         showError: true,
@@ -155,9 +152,6 @@ const Checkout: React.FC<CheckoutProps> = () => {
       return;
     }
     if (!addressObj.phone || addressObj.phone === "") {
-      // alert("Please Type the Contact person number");
-      // setErrorMessage("Please Type the Contact person number")
-      // setShowError(true)
       setErrorProps({
         message: "Please Type the Contact person number",
         showError: true,
@@ -169,17 +163,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
       setShowLoading(false);
       return;
     }
-    // if (paymentType === "" || paymentType === "none") {
-    //   // alert("Please select any payment option");
-    //   setErrorMessage("Please select any payment option")
-    //   setShowError(true)
-    //   setShowLoading(false);
-    //   return;
-    // }
     if (!aggreement) {
-      // alert("Please check our aggreement");
-      // setErrorMessage("Please check our aggreement")
-      // setShowError(true)
       setErrorProps({
         message: "Please check our aggreement",
         showError: true,
@@ -192,9 +176,6 @@ const Checkout: React.FC<CheckoutProps> = () => {
     }
 
     if (cartState.cartItemList.length === 0) {
-      // alert("Please add products in card");
-      // setErrorMessage("Please add products in card")
-      // setShowError(true)
       setErrorProps({
         message: "Please add products in card",
         showError: true,
@@ -207,9 +188,6 @@ const Checkout: React.FC<CheckoutProps> = () => {
     }
 
     if (isEmpty(auth)) {
-      // alert("Please login to continue checkout");
-      // setErrorMessage("Please login to continue checkout")
-      // setShowError(true)
       setErrorProps({
         message: "Please login to continue checkout",
         showError: true,
