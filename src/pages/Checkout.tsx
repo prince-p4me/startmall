@@ -137,6 +137,10 @@ const Checkout: React.FC<CheckoutProps> = () => {
       });
   }
 
+  const handleContinueShopping = () => {
+    history.push("/");
+  };
+
   const handleComplete = async () => {
     setShowLoading(true);
     if (!addressObj.address1 || addressObj.address1 === "") {
@@ -317,7 +321,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
             <IonButton
               color="secondary"
               fill="outline"
-              onClick={handleComplete}
+              onClick={handleContinueShopping}
             >
               Continue Shopping
             </IonButton>

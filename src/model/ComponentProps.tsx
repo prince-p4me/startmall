@@ -48,7 +48,7 @@ export interface MarketItemsProps {
 
 export interface CartProps {
   modal: boolean;
-  closehandler: any;
+  closeHandler: any;
 }
 
 export interface OrderDayShopHeaderProps {

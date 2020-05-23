@@ -86,8 +86,7 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
       setLogin(true);
       console.log("updating favorite");
       const json_auth = JSON.parse(JSON.stringify(auth));
-      var docRef = db.collection("WishLists").doc(json_auth.uid).collection("Markets").doc(market_id).collection("Items");
-
+      const docRef = db.collection("WishLists").doc(json_auth.uid).collection("Markets").doc(market_id).collection("Items");
       docRef.where('item_id', '==', item.id).get().then(function (snapshot) {
         if (snapshot.empty) {
           setFavorites(heartOutline);

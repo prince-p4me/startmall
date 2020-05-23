@@ -58,8 +58,8 @@ const Market: React.FC = () => {
     const { firebase, cart, shop } = state;
     return { firebase, cart, shop };
   }
-  const CartCounter = connect(mapStateToProps)(CartBadge);
-  const ShopHeaderWithShop = connect(mapStateToProps)(ShopHeader);
+  const [ CartCounter ] = useState<React.ElementType>(connect(mapStateToProps)(CartBadge));
+  const [ ShopHeaderWithShop ] = useState<React.ElementType>(connect(mapStateToProps)(ShopHeader));
 
   return (
     <IonPage>
@@ -88,7 +88,7 @@ const Market: React.FC = () => {
               )}
           </IonRow>
         </IonGrid>
-        <Cart modal={showModal} closehandler={() => setShowModal(false)} />
+        <Cart modal={showModal} closeHandler={() => setShowModal(false)} />
       </IonContent>
     </IonPage>
   );

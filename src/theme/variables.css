@@ -115,15 +115,14 @@ ion-card-content {
   min-height: 90px;
 }
 
-ion-header p {
-  padding-top: 3px;
-  padding-left: 40px;
+ion-header .terms{
   font-size: var(--fontsize-small);
   display: block;
   margin-block-end: 0em;
-  margin:0;
-  width: 75%;
-  white-space: pre-wrap;
+  margin: 0;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 ion-button {
@@ -138,7 +137,7 @@ ion-button {
 
 .orderDayShopHeader {
   background-color: var(--ion-color-secondary);
-  font-size: 12zpx;
+  font-size: 12px;
 }
 .category_name {
   text-align: center;
@@ -183,7 +182,7 @@ ion-button {
   font-size: var(--fontsize-medium);
 }
 .category ion-card-header {
-  padding: 10 0 0 0;
+  padding: 10px 0 0 0;
 }
 
 .category ion-img {
@@ -247,7 +246,6 @@ img {
 .shop_header_condition {
   text-align: left;
   padding-left: 3px;
-  width: 70%;
 }
 
 .shope_item_listing {
@@ -363,6 +361,9 @@ img {
 }
 .postcode_input {
   outline-color: var(--ion-color-danger);
+  --border-radius: 25px;
+  --padding-start: 18px !important;
+  margin-right: 10px;
 }
 .blinking-cursor {
   /* font-weight: 100; */
@@ -392,8 +393,8 @@ img {
 
 .order_complete_border {
   border: thin solid black;
-  padding: 2;
-  margin-left: 20;
+  padding: 2px;
+  margin-left: 20px;
 }
 
 .no_data_found {

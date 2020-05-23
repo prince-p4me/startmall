@@ -73,8 +73,7 @@ const Dashboard: React.FC = () => {
       <IonContent fullscreen>
         <IonImg className="dashboard_ad" src="/assets/icon/1x/cover.png" onClick={() => { history.push("/page/postcode_search") }} />
 
-        <div className="dashboard_main">
-
+        <div>
           <IonItem>
             <IonInput
               ref={inputElement}
@@ -86,8 +85,8 @@ const Dashboard: React.FC = () => {
               onIonChange={e => {
                 setPostCode(e.detail.value + "");
               }}
-            ></IonInput>
-            <IonButton onClick={handleSearch}> Search</IonButton>
+             />
+            <IonButton slot={'end'} className={'postcode-search'} onClick={handleSearch} shape="round"> Search</IonButton>
           </IonItem>
           <IonImg src="/assets/img/instructions.png" onClick={() => { history.push("/page/postcode_search") }} />
         </div>

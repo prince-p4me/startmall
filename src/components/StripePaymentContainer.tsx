@@ -22,6 +22,9 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
   const [clientSecret, setClientSecret] = useState('');
   const [cardValidation, setCardValidation] = useState({ number: false, date: false, cvc: false, isCompleted: false })
   const [loading, setLoading] = useState(false);
+  const [ refNumberEle, setRefNumberEle ] = useState(null);
+  const [ refDateEle, setRefDateEle ] = useState(null);
+  const [ refCVCEle, setRefCVCEle ] = useState(null);
   const options = useMemo(
     () => ({
       style: {
@@ -49,6 +52,7 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
       getPaymentSecret({ amount: invoice.total_amount }).then((res: any) => {
         setClientSecret(res.data.data);
         setLoading(false);
+        setCardValidation({ number: false, date: false, cvc: false, isCompleted: false });
       })
     }
 
@@ -155,7 +159,7 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
     } else {
       setCardValidation({ ...cardValidation, [elementType]: false, isCompleted: obj.complete })
     }
-  }
+  };
 
   return (
     <div className="ion-padding-start ion-padding-end">
@@ -166,7 +170,7 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
             <IonLabel color="medium">
               Card number
             </IonLabel>
-            <CardNumberElement options={options} onChange={(obj) => validateStripe(obj, 'number')} />
+            <CardNumberElement  options={options} onChange={(obj) => validateStripe(obj, 'number')} />
           </div>
           <div className="ion-margin-top">
             <IonLabel color="medium">
@@ -180,6 +184,7 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
             </IonLabel>
             <CardCvcElement options={options} onChange={(obj) => validateStripe(obj, 'cvc')} />
           </div>
+          {console.log(cardValidation)}
           <IonButton
             type={'submit'}
             disabled={!stripe || !cardValidation.number || !cardValidation.date || !cardValidation.cvc || !cardValidation.isCompleted || loading}

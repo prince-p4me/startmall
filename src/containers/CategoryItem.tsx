@@ -1,5 +1,5 @@
 import React from "react";
-import { IonCard, IonCardHeader, IonCardSubtitle } from "@ionic/react";
+import { IonCard, IonCardContent, IonCardSubtitle } from "@ionic/react";
 import { CategoryProps } from "../model/ComponentProps";
 import { FirestoreIonImg } from "../services/FirebaseStorage";
 
@@ -9,11 +9,11 @@ const CategoryItem: React.FC<CategoryProps> = ({ market_id, category, shop }) =>
       routerLink={"/tabs/market/" + market_id + "/item_list/" + category.id}
       class="category"
     >
-      <IonCardHeader>
+      <IonCardContent>
         <FirestoreIonImg src={category.img_url as string} />
         {/* <IonImg src={category.img_url as string}></IonImg> */}
-        <IonCardSubtitle className="category_name">{category.name}</IonCardSubtitle>
-      </IonCardHeader>
+        <IonCardSubtitle className="category_name ion-text-capitalize">{category.name}</IonCardSubtitle>
+      </IonCardContent>
     </IonCard>
   );
 };

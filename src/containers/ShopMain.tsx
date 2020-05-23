@@ -85,7 +85,7 @@ const ShopMain: React.FC = () => {
           </IonRow>
         </IonGrid>
         <IonItem hidden={showModal}>
-          <Cart modal={showModal} closehandler={() => setShowModal(false)} />
+          <Cart modal={showModal} closeHandler={() => setShowModal(false)} />
         </IonItem>
       </IonContent>
     </IonPage>
