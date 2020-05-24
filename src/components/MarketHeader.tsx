@@ -47,8 +47,8 @@ const MarketHeader: React.FC<MarketHeaderProps> = ({
           <GoBack />
         </IonButtons>
         <IonTitle class="shop_header_condition" size="large">
-          <IonLabel className={'terms'}>{shop.cut_off_terms}</IonLabel>
-          <IonLabel className={'terms'}>{shop.delivery_terms}</IonLabel>
+          <p className={'terms'}>Cut Off : {shop.cut_off_terms}</p>
+          <p className={'terms'}>Delivery : {shop.delivery_terms}</p>
         </IonTitle>
       </IonToolbar>
     </IonHeader>

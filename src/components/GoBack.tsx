@@ -4,8 +4,8 @@ import { IonButton, IonIcon } from "@ionic/react";
 import { chevronBackOutline } from "ionicons/icons";
 
 const GoBack = () => {
-  var history = useHistory();
-  return (
+    const history = useHistory();
+    return (
     <IonButton fill="clear" class="back_button" onClick={() => history.goBack()}>
       <IonIcon
         size="small"

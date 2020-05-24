@@ -26,7 +26,7 @@ import { AppPage, RootState } from "../model/DomainModels";
 import { useFirebase, isLoaded, isEmpty } from "react-redux-firebase";
 import { useSelector, useDispatch } from "react-redux";
 import { UserInfo } from "@firebase/auth-types";
-import { menuController } from "@ionic/core";
+import { isPlatform, menuController } from "@ionic/core";
 import { blankCart } from "../reducers/CartAction";
 // import firebase from "firebase";
 import { StatusBar } from '@ionic-native/status-bar';
@@ -103,6 +103,8 @@ const Menu: React.FC = () => {
   ) as UserInfo;
   console.log(auth);
 
+  const isWeb = !isPlatform("ios") || isPlatform("mobileweb");
+
   useEffect(() => {
     if (isLoaded(auth) && !isEmpty(auth)) {
       console.clear();
@@ -158,23 +160,20 @@ const Menu: React.FC = () => {
             );
           })}
           <IonItem lines="none">
-            <IonIcon icon={nutritionOutline}></IonIcon>
+            <IonIcon slot="start" icon={nutritionOutline}></IonIcon>
             <IonLabel>
               <a href="https://startmall-admin.web.app">Owner App </a>
             </IonLabel>
           </IonItem>
-          <IonItem lines="none">
-            <IonIcon icon={nutritionOutline}></IonIcon>
-            <IonLabel>
-              <a href="applinks://startmall.web.app/tabs/market/FtSvVlEa4G4xHduMnf2l">applinks deeplink </a>
-            </IonLabel>
-          </IonItem>
-          <IonItem lines="none">
-            <IonIcon icon={nutritionOutline}></IonIcon>
-            <IonLabel>
-              <a href="startmall://startmall.web.app/tabs/market/FtSvVlEa4G4xHduMnf2l">smartmall deeplink </a>
-            </IonLabel>
-          </IonItem>
+          {
+            isWeb &&
+            <IonItem lines="none">
+              <IonIcon slot="start" icon={nutritionOutline}></IonIcon>
+              <IonLabel>
+                <a href="startmall://startmall.web.app/tabs/market/FtSvVlEa4G4xHduMnf2l">smartmall deeplink </a>
+              </IonLabel>
+            </IonItem>
+          }
         </IonList>
 
         <IonList id="labels-list">

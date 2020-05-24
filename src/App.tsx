@@ -54,8 +54,8 @@ import { isEmpty, isLoaded }  from "react-redux-firebase";
 import { UserInfo } from "firebase";
 import {connect, useSelector} from "react-redux";
 import { RootState } from "./model/DomainModels";
-import Cart from "./containers/Cart";
-import {CartState} from "./services/FirebaseIniti";
+import { CartState } from "./services/FirebaseIniti";
+import Cart from "./pages/Cart";
 
 const { App: CapApp } = Plugins;
 const stripePromise = loadStripe('pk_test_YC0gcyGppNgDEzsD5FxBzPXJ00nUQJqCvw');
@@ -80,8 +80,6 @@ const AppUrlListener: React.FC<any> = () => {
 
 
 const App: React.FC = () => {
-
-  const [showModal , setShowModal] = useState(false);
 
   useEffect(() => {
     StatusBar.overlaysWebView(false);
@@ -118,6 +116,7 @@ const App: React.FC = () => {
             <IonRouterOutlet id="main">
               <Route path="/page/postcode_search" component={PostCodeSearch} exact={true} />
               <Route path="/mobilelogin" component={MobileNumberLogin} exact={true} />
+              <Route path="/page/cart" component={Cart} exact={true} />
               <Route path="/page/checkout" component={Checkout} exact={true} />
               <Route path="/payment/:invoice_id" component={Payment} exact={true} />
               <IonTabs>
@@ -146,7 +145,7 @@ const App: React.FC = () => {
                     <IonLabel>Today</IonLabel>
                   </IonTabButton>
 
-                  <IonTabButton onClick={() => setShowModal(true)}>
+                  <IonTabButton tab="cart" href="/page/cart">
                     <IonIcon icon={cartSharp} />
                     <IonLabel>Cart</IonLabel>
                     <CartCounter></CartCounter>
@@ -171,12 +170,10 @@ const App: React.FC = () => {
               <Route path="/page/:name" component={Page} exact />
               <Redirect from="/" to="/tabs/dashboard" exact />
               <Redirect from="/tabs" to="/tabs/dashboard" exact />
-
             </IonRouterOutlet>
           </IonSplitPane>
         </Elements>
       </IonReactRouter>
-      <Cart modal={showModal} closeHandler={() => setShowModal(false)} />
     </IonApp>
   );
 }

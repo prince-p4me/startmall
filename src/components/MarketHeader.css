@@ -1,3 +1,26 @@
 .cart-button {
     width: 100% !important;
 }
+
+.shop_header_condition {
+    text-align: left;
+    padding-left: 3px;
+}
+
+ion-header .terms{
+    font-size: var(--fontsize-small);
+    margin-block-end: 0em;
+    margin: 0;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    line-height: 20px;
+    text-overflow: ellipsis;
+}
+
+.ios ion-header .terms{
+    width: 75%;
+    padding-left: 40px;
+    text-overflow: ellipsis;
+}
+

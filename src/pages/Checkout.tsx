@@ -13,7 +13,6 @@ import { useFirebase, isEmpty, isLoaded } from "react-redux-firebase";
 import AddressForm from "../components/Address";
 import CurrencyAmount from "../components/CurrencyAmount";
 import ErrorDisplay from "../components/ErrorDisplay";
-import { blankCart } from "../reducers/CartAction";
 import { StatusBar } from '@ionic-native/status-bar';
 import moment from "moment";
 
@@ -123,7 +122,6 @@ const Checkout: React.FC<CheckoutProps> = () => {
             invoice.id = res.id;
             setInvoice(invoice);
             history.push("/payment/" + res.id);
-            dispatch(blankCart());
             console.clear();
             console.log("Successfully inserted");
             setShowLoading(false);
