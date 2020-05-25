@@ -101,7 +101,7 @@ const WishListPage: React.FC = () => {
               )}
           </IonRow>
         </IonGrid>
-        <Cart modal={showModal} closehandler={() => setShowModal(!showModal)} />
+        <Cart modal={showModal} closeHandler={() => setShowModal(!showModal)} />
       </IonContent>
     </IonPage >
   );

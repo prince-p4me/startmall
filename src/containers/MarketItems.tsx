@@ -75,15 +75,14 @@ const MarketItems: React.FC<MarketItemsProps> = () => {
     const { firebase, cart, shop } = state;
     return { firebase, cart, shop };
   }
-  const CartCounter = connect(mapStateToProps)(CartBadge);
-  const ShopHeaderWithShop = connect(mapStateToProps)(ShopHeader);
+  const [ CartCounter ] = useState<React.ElementType>(connect(mapStateToProps)(CartBadge));
+  const [ ShopHeaderWithShop ] = useState<React.ElementType>(connect(mapStateToProps)(ShopHeader));
 
   return (
     <IonPage>
       <MarketHeader setShowModal={setShowModal} shop={shop} CartCounter={CartCounter} />
       <IonContent className="shope_item_listing" fullscreen>
-        <ShopHeaderWithShop
-        />
+        <ShopHeaderWithShop/>
         <IonGrid>
           <IonRow>
             {dataStore.ordered.ItemList &&
@@ -103,7 +102,7 @@ const MarketItems: React.FC<MarketItemsProps> = () => {
               )}
           </IonRow>
         </IonGrid>
-        <Cart modal={showModal} closehandler={() => setShowModal(false)} />
+        <Cart modal={showModal} closeHandler={() => setShowModal(false)} />
       </IonContent>
     </IonPage>
   );

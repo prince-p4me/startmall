@@ -5,6 +5,7 @@ import {
   IonButton,
   IonIcon,
   IonTitle,
+  IonLabel,
   IonMenuToggle
 } from "@ionic/react";
 
@@ -14,6 +15,8 @@ import { basket } from "ionicons/icons";
 
 import GoBack from "./GoBack";
 import { Markets } from "../model/DomainModels";
+
+import './MarketHeader.css'
 
 interface MarketHeaderProps {
   setShowModal: any;
@@ -30,13 +33,12 @@ const MarketHeader: React.FC<MarketHeaderProps> = ({
     <IonHeader>
       <IonToolbar color="secondary">
         <IonButtons slot="end">
-          <IonButton onClick={() => setShowModal(true)} slot="start">
-            <IonIcon size="large" slot="icon-only" icon={basket}></IonIcon>
+          <IonButton onClick={() => setShowModal(true)} slot="start" className={'cart-button'}>
+            <IonIcon size="medium" slot="icon-only" icon={basket}></IonIcon>
             <CartCounter />
           </IonButton>
           <IonMenuToggle>
             <IonButton>
-
               <IonIcon slot="start" src="assets/icon/logo_small.svg"></IonIcon>
             </IonButton>
           </IonMenuToggle>
@@ -45,8 +47,8 @@ const MarketHeader: React.FC<MarketHeaderProps> = ({
           <GoBack />
         </IonButtons>
         <IonTitle class="shop_header_condition" size="large">
-        <p>{shop.cut_off_terms}</p>
-        <p>{shop.delivery_terms}</p>
+          <p className={'terms'}>Cut Off : {shop.cut_off_terms}</p>
+          <p className={'terms'}>Delivery : {shop.delivery_terms}</p>
         </IonTitle>
       </IonToolbar>
     </IonHeader>

@@ -1,7 +1,6 @@
 import { IonContent, IonPage, IonGrid, IonRow, IonCol, IonBadge } from "@ionic/react";
 import React, { useState } from "react";
 import "./Market.css";
-import Cart from "./Cart";
 import { connect, useSelector } from "react-redux";
 import CategoryItem from "./CategoryItem";
 import ShopHeader from "../components/ShopHeader";
@@ -10,6 +9,7 @@ import { useParams } from "react-router";
 import { RootState, Markets } from "../model/DomainModels";
 import { CartState } from "../services/FirebaseIniti";
 import MarketHeader from "../components/MarketHeader";
+import CartModal from "./Cart";
 
 const Market: React.FC = () => {
   const profile = useSelector<RootState>(state => state.firebase.profile)
@@ -58,8 +58,8 @@ const Market: React.FC = () => {
     const { firebase, cart, shop } = state;
     return { firebase, cart, shop };
   }
-  const CartCounter = connect(mapStateToProps)(CartBadge);
-  const ShopHeaderWithShop = connect(mapStateToProps)(ShopHeader);
+  const [ CartCounter ] = useState<React.ElementType>(connect(mapStateToProps)(CartBadge));
+  const [ ShopHeaderWithShop ] = useState<React.ElementType>(connect(mapStateToProps)(ShopHeader));
 
   return (
     <IonPage>
@@ -88,7 +88,7 @@ const Market: React.FC = () => {
               )}
           </IonRow>
         </IonGrid>
-        <Cart modal={showModal} closehandler={() => setShowModal(false)} />
+        <CartModal modal={showModal} closeHandler={() => setShowModal(false)} />
       </IonContent>
     </IonPage>
   );

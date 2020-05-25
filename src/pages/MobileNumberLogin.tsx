@@ -85,9 +85,9 @@ const MobileNumberLogin: React.FC = () => {
   }
 
   function startInterval() {
-    var interval = setInterval(() => {
+    const interval = setInterval(() => {
       // setIntervalId(interval);
-      var timer1 = JSON.parse(JSON.stringify(timer--));
+      const timer1 = JSON.parse(JSON.stringify(timer--));
       setTime(timer1);
       if (timer1 === 0) {
         setTime(60);

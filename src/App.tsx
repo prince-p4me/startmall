@@ -1,7 +1,17 @@
 import Menu from "./components/Menu";
 import Page from "./pages/Page";
-import React, { useEffect } from "react";
-import {IonApp, IonIcon, IonLabel, IonRouterOutlet, IonSplitPane, IonTabBar, IonTabButton, IonTabs} from "@ionic/react";
+import React, {useEffect, useState} from "react";
+import {
+  IonApp,
+  IonBadge,
+  IonIcon,
+  IonLabel,
+  IonRouterOutlet,
+  IonSplitPane,
+  IonTabBar,
+  IonTabButton,
+  IonTabs
+} from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { Redirect, Route, useHistory } from "react-router-dom";
 
@@ -42,8 +52,10 @@ import Market from "./containers/Market";
 import { cartSharp, happy, heartCircle, informationCircle } from "ionicons/icons";
 import { isEmpty, isLoaded }  from "react-redux-firebase";
 import { UserInfo } from "firebase";
-import { useSelector } from "react-redux";
+import {connect, useSelector} from "react-redux";
 import { RootState } from "./model/DomainModels";
+import { CartState } from "./services/FirebaseIniti";
+import Cart from "./pages/Cart";
 
 const { App: CapApp } = Plugins;
 const stripePromise = loadStripe('pk_test_YC0gcyGppNgDEzsD5FxBzPXJ00nUQJqCvw');
@@ -68,6 +80,7 @@ const AppUrlListener: React.FC<any> = () => {
 
 
 const App: React.FC = () => {
+
   useEffect(() => {
     StatusBar.overlaysWebView(false);
     StatusBar.styleDefault();
@@ -76,6 +89,21 @@ const App: React.FC = () => {
   const auth: UserInfo = useSelector<RootState>(
       state => state.firebase.auth
   ) as UserInfo;
+
+  const CartBadge: React.FC<CartState> = ({ cart }) => {
+    const cartSize = cart.cartItemList.length;
+    if (cartSize > 0) {
+      return <IonBadge color="danger">{cart.cartItemList.length}</IonBadge>;
+    } else {
+      return <></>;
+    }
+  };
+
+  function mapStateToProps(state: CartState) {
+    const { firebase, cart, shop } = state;
+    return { firebase, cart, shop };
+  }
+  const [ CartCounter ] = useState<React.ElementType>(connect(mapStateToProps)(CartBadge));
 
   console.log("entering app");
   return (
@@ -88,7 +116,7 @@ const App: React.FC = () => {
             <IonRouterOutlet id="main">
               <Route path="/page/postcode_search" component={PostCodeSearch} exact={true} />
               <Route path="/mobilelogin" component={MobileNumberLogin} exact={true} />
-              {/* <ProtectedRoute  {...defaultProtectedRouteProps}  path="/page/checkout" component={Checkout} exact={true} /> */}
+              <Route path="/page/cart" component={Cart} exact={true} />
               <Route path="/page/checkout" component={Checkout} exact={true} />
               <Route path="/payment/:invoice_id" component={Payment} exact={true} />
               <IonTabs>
@@ -110,7 +138,6 @@ const App: React.FC = () => {
                   />
                   <Route path="/tabs/:tab(shop_selections)/:postcode" render={() => <ShopSelection />} exact={true} />
                   <Route path="/wishlist" component={FavoriteMarkets} exact />
-                  {/* <Route path="/favoriteitems/:market_id" component={WishList} exact /> */}
                 </IonRouterOutlet>
                 <IonTabBar slot="bottom">
                   <IonTabButton tab="today" href="/tabs">
@@ -118,9 +145,10 @@ const App: React.FC = () => {
                     <IonLabel>Today</IonLabel>
                   </IonTabButton>
 
-                  <IonTabButton tab="market" href="/tabs/shop_selections">
+                  <IonTabButton tab="cart" href="/page/cart">
                     <IonIcon icon={cartSharp} />
-                    <IonLabel>Market</IonLabel>
+                    <IonLabel>Cart</IonLabel>
+                    <CartCounter></CartCounter>
                   </IonTabButton>
 
                   <IonTabButton tab="my list" href={(isLoaded(auth) && !isEmpty(auth))?"/wishlist":"/login"}>
@@ -135,16 +163,13 @@ const App: React.FC = () => {
                 </IonTabBar>
               </IonTabs>
               <Route path="/landing" component={Dashboard} exact />
-              {/* <ProtectedRoute {...defaultProtectedRouteProps}  path="/shop_selections" component={ShopSelection} exact /> */}
               <Route path="/login" component={Login} exact />
-              {/* <Route path="/wishlist/" component={FavoriteMarkets} exact /> */}
               <Route path="/favoriteitems/:market_id" component={WishList} exact />
               <Route path="/orders/:invoice_id" component={OrderComplete} exact />
               <Route path="/shop/:name/categories" component={ShopMain} exact />
               <Route path="/page/:name" component={Page} exact />
               <Redirect from="/" to="/tabs/dashboard" exact />
               <Redirect from="/tabs" to="/tabs/dashboard" exact />
-
             </IonRouterOutlet>
           </IonSplitPane>
         </Elements>

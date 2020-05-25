@@ -10,16 +10,18 @@ import {
   IonItemDivider
 } from "@ionic/react";
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { closeOutline } from "ionicons/icons";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { Invoice, RootState } from "../model/DomainModels";
 import { useFirestoreConnect, FirestoreReducer } from "react-redux-firebase";
 import StripePaymentContainer from "../components/StripePaymentContainer";
 import { StatusBar } from '@ionic-native/status-bar';
+import { blankCart } from '../reducers/CartAction';
+import GoBack from "../components/GoBack";
 
 const Payment: React.FC = () => {
 
+  const dispatch = useDispatch();
   const { invoice_id } = useParams<{ invoice_id: string }>();
   let invoice: Invoice = {} as Invoice;
   const history = useHistory();
@@ -30,13 +32,10 @@ const Payment: React.FC = () => {
     state => state.firestore
   ) as FirestoreReducer.Reducer;
 
-  const closeHandler = async () => {
-    history.goBack();
-  };
-
   const onPaymentInit = async () => {
+    dispatch(blankCart());
     history.push("/orders/" + invoice_id);
-  }
+  };
 
   useEffect(() => {
     StatusBar.overlaysWebView(false);
@@ -50,15 +49,9 @@ const Payment: React.FC = () => {
   return (
     <IonPage id="checkout">
       <IonHeader>
-        <IonToolbar color="primary">
-          <IonButtons slot="end">
-            <IonButton onClick={closeHandler}>
-              <IonIcon
-                size="large"
-                slot="icon-only"
-                icon={closeOutline}
-              ></IonIcon>
-            </IonButton>
+        <IonToolbar color="secondary">
+          <IonButtons slot="start">
+            <GoBack />
           </IonButtons>
         </IonToolbar>
       </IonHeader>

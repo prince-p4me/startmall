@@ -8,20 +8,21 @@ import {
 } from "@ionic/react";
 import { logoApple } from "ionicons/icons";
 
-import { StripePaymentProps } from "../model/ComponentProps";
+import { ErrorProps, StripePaymentProps } from "../model/ComponentProps";
 import { CardExpiryElement, CardNumberElement, CardCvcElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { ApplePay } from '@ionic-native/apple-pay';
 import { getPaymentSecret } from '../services/StripeService';
 import { AddressObj } from "../model/DomainModels";
 import { StripeCardNumberElementChangeEvent, StripeCardExpiryElementChangeEvent, StripeCardCvcElementChangeEvent } from "@stripe/stripe-js";
+import ErrorDisplay from "./ErrorDisplay";
 
 const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, completeHandler, invoice }) => {
 
   const stripe = useStripe();
   const elements = useElements();
-  const [clientSecret, setClientSecret] = useState('');
-  const [cardValidation, setCardValidation] = useState({ number: false, date: false, cvc: false, isCompleted: false })
+  const [cardValidation, setCardValidation] = useState({ number: false, date: false, isCompleted: false })
   const [loading, setLoading] = useState(false);
+  const [errorProps, setErrorProps] = useState<ErrorProps>({} as ErrorProps);
   const options = useMemo(
     () => ({
       style: {
@@ -41,18 +42,6 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
     }),
     []
   );
-
-  useEffect(() => {
-
-    if (invoice.total_amount != null) {
-      setLoading(true)
-      getPaymentSecret({ amount: invoice.total_amount }).then((res: any) => {
-        setClientSecret(res.data.data);
-        setLoading(false);
-      })
-    }
-
-  }, [invoice.total_amount]);
 
   const applePay = async () => {
 
@@ -104,6 +93,8 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
 
     setLoading(true);
 
+    const resPayment = await getPaymentSecret({ amount: invoice.total_amount });
+
     // Get a reference to a mounted CardElement. Elements knows how
     // to find your CardElement because there can only ever be one of
     // each type of element.
@@ -114,7 +105,7 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
     const { name, email, phone, country, state, address1, address2, postcode, suburb } = invoice.address as AddressObj;
 
     // Use your card Element with other Stripe.js APIs
-    const result: any = await stripe.confirmCardPayment(clientSecret, {
+    const result: any = await stripe.confirmCardPayment(resPayment.data.data, {
       payment_method: {
         card: cardNumberElement,
         billing_details: {
@@ -131,16 +122,22 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
       }
     });
     setLoading(false);
-    cardNumberElement.clear();
-    cardExpiryElement.clear();
-    cardCvcElement.clear();
-    setCardValidation({ number: false, date: false, cvc: false, isCompleted: false });
     if (result.error) {
       // Show error to your customer (e.g., insufficient funds)
-      console.log(result.error.message);
+      setErrorProps({
+        message: result.error.message,
+        showError: true,
+        type: 1,
+        autoHide: true,
+        buttonText: ""
+      })
     } else {
       // The payment has been processed!
       if (result.paymentIntent.status === 'succeeded') {
+        cardNumberElement.clear();
+        cardExpiryElement.clear();
+        cardCvcElement.clear();
+        setCardValidation({ number: false, date: false, isCompleted: false });
         completeHandler();
       }
     }
@@ -155,7 +152,7 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
     } else {
       setCardValidation({ ...cardValidation, [elementType]: false, isCompleted: obj.complete })
     }
-  }
+  };
 
   return (
     <div className="ion-padding-start ion-padding-end">
@@ -166,7 +163,7 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
             <IonLabel color="medium">
               Card number
             </IonLabel>
-            <CardNumberElement options={options} onChange={(obj) => validateStripe(obj, 'number')} />
+            <CardNumberElement  options={options} onChange={(obj) => validateStripe(obj, 'number')} />
           </div>
           <div className="ion-margin-top">
             <IonLabel color="medium">
@@ -182,7 +179,7 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
           </div>
           <IonButton
             type={'submit'}
-            disabled={!stripe || !cardValidation.number || !cardValidation.date || !cardValidation.cvc || !cardValidation.isCompleted || loading}
+            disabled={!stripe || !cardValidation.number || !cardValidation.date || !cardValidation.isCompleted || loading}
             expand={'block'}
             className="ion-margin-top card-pay-btn"
             size={'large'}>
@@ -216,6 +213,12 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
       <div className={'ion-margin-top ion-margin-bottom'}>
         <IonLabel>* By hitting Pay you are confirming your order with us.</IonLabel>
       </div>
+      <ErrorDisplay errorProps={errorProps}
+        closeHandler={() => { setErrorProps({ ...errorProps, showError: false }) }}
+        eventHandler={() => {
+          setErrorProps({ ...errorProps, showError: false });
+        }}
+      />
     </div>
   );
 }

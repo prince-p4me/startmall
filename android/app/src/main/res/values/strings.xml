@@ -1,10 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
     <string name="app_name">StartMall</string>
-    <string name="facebook_app_id">255334572519961</string>
+    <string name="fb_app_name">StartMall</string>
+    <string name="fb_app_id">255334572519961</string>
     <string name="fb_login_protocol_scheme">fb[255334572519961]://authorize</string>
     <string name="title_activity_main">StartMall</string>
     <string name="package_name">com.startmall.app</string>
-    <string name="custom_url_scheme">com.startmall.app</string>
+    <string name="custom_url_scheme">startmall</string>
     <string name="server_client_id">326027994327-aqgbjblrpuujfljd9hokalkvdfd5nnbn.apps.googleusercontent.com</string>
 </resources>

@@ -1,6 +1,7 @@
 import 'firebase/auth'
 import 'firebase/firestore' // <- needed if using firestore
 import { createStore, combineReducers } from 'redux'
+import { composeWithDevTools } from 'redux-devtools-extension';
 import { firebaseReducer } from 'react-redux-firebase'
 import { createFirestoreInstance, firestoreReducer } from 'redux-firestore' // <- needed if using firestore
 import firebase from 'firebase';
@@ -52,7 +53,7 @@ const localReducer = combineReducers({
 
 // Create store with reducers and initial state
 const initialState = {}
-export const firebaseStore = createStore(rootReducer, initialState)
+export const firebaseStore = createStore(rootReducer, initialState, composeWithDevTools())
 
 export type CartState = ReturnType<typeof localReducer>;
 

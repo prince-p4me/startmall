@@ -17,24 +17,26 @@ import { useHistory } from "react-router-dom";
 import { CartProps, ErrorProps } from "../model/ComponentProps";
 import { CartState } from "../services/FirebaseIniti";
 import CartTotal from "../components/CartTotal";
-import { isLoaded, isEmpty } from "react-redux-firebase";
-import { RootState } from "../model/DomainModels";
+import {isLoaded, isEmpty, FirestoreReducer} from "react-redux-firebase";
+import { CartStateType, RootState } from "../model/DomainModels";
 import ErrorDisplay from "../components/ErrorDisplay";
 
-const Cart: React.FC<CartProps> = ({ modal, closehandler }) => {
+const CartModal: React.FC<CartProps> = ({ modal, closeHandler }) => {
   let history = useHistory();
   const auth = useSelector<RootState>(state => state.firebase.auth);
+  const cartStore = useSelector<RootState>(state => state.cart) as CartStateType;
   const [errorProps, setErrorProps] = useState<ErrorProps>({} as ErrorProps);
 
   function mapStateToProps(state: CartState) {
     const { firebase, cart, shop } = state;
     return { firebase, cart, shop };
   }
-  function handleCheckOut() {
+
+  const handleCheckOut = () => {
     // history.push("/page/checkout");
     if (isLoaded(auth) && !isEmpty(auth)) {
       history.push("/page/checkout");
-      closehandler();
+      closeHandler(false);
     } else {
       setErrorProps({
         autoHide: false,
@@ -53,9 +55,9 @@ const Cart: React.FC<CartProps> = ({ modal, closehandler }) => {
   return (
     <IonModal isOpen={modal}>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar color="secondary">
           <IonButtons slot="end">
-            <IonButton onClick={closehandler}>
+            <IonButton onClick={() => closeHandler(true)}>
               <IonIcon
                 size="large"
                 slot="icon-only"
@@ -70,16 +72,25 @@ const Cart: React.FC<CartProps> = ({ modal, closehandler }) => {
       </IonHeader>
       <IonContent className="checkout_page">
         <CartItemList />
-        <ErrorDisplay errorProps={errorProps} closeHandler={() => setErrorProps({ ...errorProps, showError: false })} eventHandler={() => { history.push("/login"); setErrorProps({ ...errorProps, showError: false }); closehandler(); }} />
+        <ErrorDisplay
+            errorProps={errorProps}
+            closeHandler={() =>
+                setErrorProps({ ...errorProps, showError: false })}
+                eventHandler={() => {
+                  history.push("/login");
+                  setErrorProps({ ...errorProps, showError: false });
+                  closeHandler(true);
+                }}
+        />
       </IonContent>
       <IonFooter className="checkout_page_footer">
         <EnhancedCartTotal />
-        <IonButton expand="full" onClick={handleCheckOut}>
+        <IonButton expand="full" onClick={handleCheckOut} disabled={cartStore.cartItemList.length === 0}>
           Check Out
-          </IonButton>
+        </IonButton>
       </IonFooter>
     </IonModal>
   );
 };
 
-export default Cart;
+export default CartModal;
