@@ -7,8 +7,17 @@ import {
   IonToolbar,
   IonImg,
   IonText,
+  IonItem,
+  IonAvatar,
+  IonLabel,
+  IonSkeletonText,
+  IonListHeader,
+  IonIcon,
+  IonThumbnail,
+  IonList,
+  IonCard
 } from "@ionic/react";
-import React from "react";
+import React, {useState} from "react";
 import "./Dashboard.css";
 import { useHistory } from "react-router";
 import { useParams } from "react-router-dom";
@@ -18,10 +27,13 @@ import ShopSelectionList from "../containers/ShopSelectionList";
 import { RootState, Markets } from "../model/DomainModels";
 import { setCurrentShop } from "../reducers/ShopAction";
 
+import './skeleton.css'
+
 const ShopSelection: React.FC = () => {
   console.log("entering Dashboard");
   const history = useHistory();
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
   const { postcode } = useParams<{ postcode: string }>();
   const marketList: Array<Markets> = [];
 
@@ -32,6 +44,12 @@ const ShopSelection: React.FC = () => {
 
   useFirestoreConnect([{ collection: "Markets" }]);
 
+
+  const doneLoading = () => {
+    setTimeout(()=>{
+      setLoading(false)
+    }, 2000)
+  }
   const markets = useSelector<RootState>(
     state => state.firestore
   ) as FirestoreReducer.Reducer;
@@ -48,7 +66,12 @@ const ShopSelection: React.FC = () => {
         // marketList.push(market)
       }
     });
+    doneLoading()
   }
+  else {
+    doneLoading()
+  }
+
 
 
 
@@ -64,14 +87,63 @@ const ShopSelection: React.FC = () => {
       </IonHeader>
       <IonText slot="right">SHOP CAN DELIVERY TO YOUR AREA</IonText>
       <IonContent fullscreen>
-        {marketList.length > 0 ? (
-          <ShopSelectionList
-            handleShopClick={handleShopClick}
-            shops={marketList}
-          />
-        ) : (
-            <p className="no_data_found">We are coming soon in your area.</p>
-          )}
+
+        {
+          loading ?
+              <IonList className="shop_selection">
+
+                <IonCard class="shop_card">
+                  <IonThumbnail class="skeleton-image" >
+                    <IonSkeletonText animated />
+                  </IonThumbnail>
+                  <IonLabel class={"skeleton-label"}>
+                    <h3>
+                      <IonSkeletonText animated />
+                    </h3>
+                    <p>
+                      <IonSkeletonText animated/>
+                    </p>
+                    <p>
+                      <IonSkeletonText animated />
+                    </p>
+                    <p>
+                      <IonSkeletonText animated />
+                    </p>
+                  </IonLabel>
+                </IonCard>
+                <IonCard class="shop_card">
+                  <IonThumbnail class="skeleton-image">
+                    <IonSkeletonText animated />
+                  </IonThumbnail>
+                  <IonLabel class={"skeleton-label"}>
+                    <h3>
+                      <IonSkeletonText animated />
+                    </h3>
+                    <p>
+                      <IonSkeletonText animated />
+                    </p>
+                    <p>
+                      <IonSkeletonText animated />
+                    </p>
+                    <p>
+                      <IonSkeletonText animated />
+                    </p>
+                  </IonLabel>
+                </IonCard>
+              </IonList>
+              :
+              <>
+                {marketList.length > 0 ? (
+                    <ShopSelectionList
+                        handleShopClick={handleShopClick}
+                        shops={marketList}
+                    />
+                ) : (
+                    <p className="no_data_found">We are coming soon in your area.</p>
+                )}
+                </>
+        }
+
       </IonContent>
     </IonPage>
   );
