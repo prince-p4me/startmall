@@ -31,6 +31,8 @@ import { blankCart } from "../reducers/CartAction";
 // import firebase from "firebase";
 import { StatusBar } from '@ionic-native/status-bar';
 
+import FeedbackComponent from './FeedbackComponent'
+
 const appPages: AppPage[] = [
   {
     title: "My Profile",
@@ -186,6 +188,7 @@ const Menu: React.FC = () => {
           ))}
         </IonList>
         <IonFooter onClick={async () => await menuController.toggle()}>
+
           {isLoaded(auth) && !isEmpty(auth) ? (
             <IonItem onClick={handleSignOut}>Sign Out</IonItem>
           ) : (
@@ -193,6 +196,11 @@ const Menu: React.FC = () => {
                 Sign In
             </IonItem>
             )}
+          <IonItem>
+            <IonLabel>
+              <FeedbackComponent />
+            </IonLabel>
+          </IonItem>
         </IonFooter>
       </IonContent>
     </IonMenu>

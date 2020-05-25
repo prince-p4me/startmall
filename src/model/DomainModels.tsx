@@ -189,6 +189,14 @@ export interface WishList {
   item: {} | any | null
 }
 
+export interface Feedback {
+  [key: string]: string | number | [] | any | null;
+  id: string;
+  name: string;
+  userName: string | null;
+  feedback: string;
+}
+
 export interface VeriFyCode {
   [key: string]: string | number | [] | any | null;
   first: string | number | any | null;
