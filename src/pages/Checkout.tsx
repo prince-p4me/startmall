@@ -75,7 +75,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
 
   // const AddressComponent = connect(mapStateToProps)(Address);
 
-  function writeUserData(my_auth: any): Promise<void> {
+  async function writeUserData(my_auth: any): Promise<void> {
     let today = new Date();
     let json_auth = JSON.parse(JSON.stringify(my_auth));
     let user: ProfileData = {
@@ -109,32 +109,32 @@ const Checkout: React.FC<CheckoutProps> = () => {
       payment_type: paymentType
     };
     setInvoice(invoice);
-    return db
-      .collection("Users")
-      .doc(json_auth.uid)
-      .set(user)
-      .then(response => {
-        console.error("user updated:--" + JSON.stringify(response));
-        return db
+    try {
+      const response = await db
+        .collection("Users")
+        .doc(json_auth.uid)
+        .set(user);
+      console.log("user updated:--" + JSON.stringify(response));
+      try {
+        const res = await db
           .collection("Invoices")
-          .add(invoice)
-          .then(res => {
-            setInvoiceId(res.id);
-            invoice.id = res.id;
-            setInvoice(invoice);
-            history.push("/payment/" + res.id);
-            dispatch(blankCart());
-            console.clear();
-            console.log("Successfully inserted");
-            setShowLoading(false);
-          })
-          .catch(err => {
-            console.log("Not inserted+==" + JSON.stringify(err));
-          });
-      })
-      .catch((err) => {
-        console.error("User not found", err, json_auth.uid);
-      });
+          .add(invoice);
+        setInvoiceId(res.id);
+        invoice.id = res.id;
+        setInvoice(invoice);
+        history.push("/payment/" + res.id);
+        dispatch(blankCart());
+        console.clear();
+        console.log("Successfully inserted");
+        setShowLoading(false);
+      }
+      catch (err) {
+        console.log("Not inserted+==" + JSON.stringify(err));
+      }
+    }
+    catch (err_1) {
+      console.error("User not found", err_1, json_auth.uid);
+    }
   }
 
   const handleComplete = async () => {
@@ -278,7 +278,6 @@ const Checkout: React.FC<CheckoutProps> = () => {
             <b>CHECK OUT</b>
           </IonTitle>
         </IonToolbar>
-
       </IonHeader>
       <IonContent>
         <ShopHeaderWithShop />
@@ -341,7 +340,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
             duration={5000}
           />
         </IonItem>
-        <br></br>
+        <br></br><br></br>
 
       </IonContent>
     </IonPage>
