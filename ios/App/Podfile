@@ -19,5 +19,8 @@ target 'App' do
   capacitor_pods
   # Add your Pods here
   pod 'Firebase/Auth'
-  pod 'GoogleSignIn'
+  pod 'GoogleSignIn' #google login
+  pod 'FBSDKCoreKit' # fb login
+  pod 'FacebookCore' #fb login
+  pod 'FacebookLogin' #fb login
 end

@@ -24,7 +24,7 @@ import { Facebook } from '@ionic-native/facebook'
 import { isPlatform } from "@ionic/core";
 import ErrorDisplay from "../components/ErrorDisplay";
 import { ErrorProps } from "../model/ComponentProps";
-import * as firebaseInstace from "firebase";
+import firebaseInstace from "firebase";
 
 
 const Login: React.FC = () => {
@@ -69,14 +69,14 @@ const Login: React.FC = () => {
       console.log("User Logged in");
       // history.push("/");
       setShowLoading(false);
-      history.goBack()
+      history.goBack();
     }
   }, [auth, history, isMoved]);
 
   async function loginWithGoogle() {
     setErrorProps({
       ...errorProps,
-      showError:false
+      showError: false
     })
     setShowLoading(true);
     // await Plugins.GoogleAuth.signOut();
@@ -99,20 +99,20 @@ const Login: React.FC = () => {
             showError: true,
             type: 1,
             autoHide: false,
-            buttonText:""
+            buttonText: ""
           });
 
         });
     } else {
       return GooglePlus.login({})
-          .then(res => {
-            firebase.auth().signInWithCredential(
-                firebaseInstace.auth.GoogleAuthProvider.credential(res.idToken)
-            ).then(success => {
-              setShowLoading(false);
-              setMoved(true);
-              console.log("Firebase success: " + JSON.stringify(success));
-            })
+        .then(res => {
+          firebase.auth().signInWithCredential(
+            firebaseInstace.auth.GoogleAuthProvider.credential(res.idToken)
+          ).then(success => {
+            setShowLoading(false);
+            setMoved(true);
+            console.log("Firebase success: " + JSON.stringify(success));
+          })
             .catch(error => {
               setShowLoading(false);
               setErrorProps({
@@ -120,27 +120,27 @@ const Login: React.FC = () => {
                 showError: true,
                 type: 1,
                 autoHide: false,
-                buttonText:""
+                buttonText: ""
               });
             });
-          })
-          .catch(err => {
-            setShowLoading(false);
-            setErrorProps({
-              message: "Something Wrong with Google login. Please try again later",
-              showError: true,
-              type: 1,
-              autoHide: false,
-              buttonText:""
-            });
+        })
+        .catch(err => {
+          setShowLoading(false);
+          setErrorProps({
+            message: "Something Wrong with Google login. Please try again later",
+            showError: true,
+            type: 1,
+            autoHide: false,
+            buttonText: ""
           });
+        });
     }
   }
 
   function loginWithFacebook() {
     setErrorProps({
       ...errorProps,
-      showError:false
+      showError: false
     });
     setShowLoading(true);
 
@@ -157,50 +157,51 @@ const Login: React.FC = () => {
         })
         .catch(data => {
           console.log("Something Wrong with Facebook login. Please try again later");
-          console.log(data);
+          console.log(JSON.stringify(data));
           setShowLoading(false);
           setErrorProps({
-            message: "Something Wrong with Facebook login. Please try again later",
+            message: (data && data.message) ? data.message : "Something Wrong with Facebook login. Please try again later",
             showError: true,
             type: 1,
             autoHide: false,
-            buttonText:""
+            buttonText: ""
           })
 
         });
     } else {
       return Facebook.login(['email'])
-          .then( response => {
-            const facebookCredential = firebaseInstace.auth.FacebookAuthProvider
-                .credential(response.authResponse.accessToken);
-
-            firebase.auth().signInWithCredential(facebookCredential)
-                .then( success => {
-                  setMoved(true);
-                  console.log("Firebase success: " + JSON.stringify(success));
-                })
-                .catch(error => {
-                  setShowLoading(false);
-                  setErrorProps({
-                    message: "Something Wrong with Google login. Please try again later",
-                    showError: true,
-                    type: 1,
-                    autoHide: false,
-                    buttonText:""
-                  });
+        .then(response => {
+          const facebookCredential = firebaseInstace.auth.FacebookAuthProvider
+            .credential(response.authResponse.accessToken);
+          console.log("login result:--" + JSON.stringify(response));
+          firebase.auth().signInWithCredential(facebookCredential)
+            .then(success => {
+              setMoved(true);
+              console.log("Firebase success: " + JSON.stringify(success));
+            })
+            .catch(data => {
+              setShowLoading(false);
+              console.clear();
+              console.log("error:==" + JSON.stringify(data));
+              setErrorProps({
+                message: (data && data.message) ? data.message : "Something Wrong with Facebook login. Please try again later",
+                showError: true,
+                type: 1,
+                autoHide: false,
+                buttonText: ""
+              });
             });
-
-          })
-          .catch(err => {
-            setShowLoading(false);
-            setErrorProps({
-              message: "Something Wrong with Google login. Please try again later",
-              showError: true,
-              type: 1,
-              autoHide: false,
-              buttonText:""
-            });
+        })
+        .catch(data => {
+          setShowLoading(false);
+          setErrorProps({
+            message: (data && data.message) ? data.message : "Something Wrong with Facebook login. Please try again later",
+            showError: true,
+            type: 1,
+            autoHide: false,
+            buttonText: ""
           });
+        });
     }
   }
 
@@ -228,6 +229,8 @@ const Login: React.FC = () => {
               <IonIcon icon={logoFacebook}></IonIcon>
               Sign up / Sign in with Facebook
             </IonButton>
+            <br></br>
+            <br></br>
             <IonButton
               color="google"
               fill="solid"
@@ -244,7 +247,7 @@ const Login: React.FC = () => {
               fill="solid"
               shape="round"
               className="wechat_button"
-              onClick={() => { setErrorProps({...errorProps, showError: false}); history.push("/mobilelogin"); }}
+              onClick={() => { setErrorProps({ ...errorProps, showError: false }); history.push("/mobilelogin"); }}
             >
               Login with Mobile
             </IonButton>
@@ -257,7 +260,7 @@ const Login: React.FC = () => {
           </IonCardContent>
         </IonCard>
         {/* <ErrorDisplay type={1} message={errorMessage} autoHide={false} showToast={showError} closehandler={() => { setShowError(false); history.goBack(); }} eventHandler={() => {}} buttonText={""}  /> */}
-        <ErrorDisplay errorProps={errorProps} closeHandler={() => {setErrorProps({...errorProps, showError: false}); history.goBack();}} eventHandler={()=>{}} />
+        <ErrorDisplay errorProps={errorProps} closeHandler={() => { setErrorProps({ ...errorProps, showError: false }); history.goBack(); }} eventHandler={() => { }} />
         <IonLoading isOpen={showLoading} message={"Please wait..."} />
       </IonContent>
     </IonPage>
