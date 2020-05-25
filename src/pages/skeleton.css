@@ -1,0 +1,13 @@
+.skeleton-image{
+    width: auto;
+    height: 250px;
+    margin: 15px;
+}
+.skeleton-label h3{
+    width: 80%;
+    margin: 15px;
+}
+.skeleton-label p{
+    width: 80%;
+    margin: 15px;
+}
