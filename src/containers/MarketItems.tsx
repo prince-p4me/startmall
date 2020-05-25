@@ -4,7 +4,9 @@ import {
   IonGrid,
   IonRow,
   IonCol,
-  IonBadge
+  IonBadge,
+  IonSkeletonText,
+  IonThumbnail, IonCard, IonCardContent, IonCardSubtitle,
 } from "@ionic/react";
 import React, { useState } from "react";
 import "./Market.css";
@@ -18,6 +20,7 @@ import { useFirestoreConnect, FirestoreReducer } from "react-redux-firebase";
 import { RootState, Markets } from "../model/DomainModels";
 import { CartState } from "../services/FirebaseIniti";
 import MarketHeader from "../components/MarketHeader";
+import {FirestoreIonImg} from "../services/FirebaseStorage";
 
 // interface ItemJson {
 //   产品: string;
@@ -34,6 +37,7 @@ const MarketItems: React.FC<MarketItemsProps> = () => {
   var shop = {} as Markets;
   // const { categoryName } = useParams<{ categoryName: string }>();
   const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useFirestoreConnect([
     { collection: "Markets", doc: market_id, storeAs: "Market" },
@@ -50,6 +54,13 @@ const MarketItems: React.FC<MarketItemsProps> = () => {
       storeAs: "ItemList"
     }
   ]);
+
+  const doneLoading = () => {
+    setTimeout(() => {
+      setLoading(false)
+    }, 2000)
+  }
+
   const dataStore = useSelector<RootState>(
     state => state.firestore
   ) as FirestoreReducer.Reducer;
@@ -60,6 +71,10 @@ const MarketItems: React.FC<MarketItemsProps> = () => {
       shop = tmarket;
       return shop;
     });
+    doneLoading()
+  }
+  else {
+    doneLoading()
   }
 
   const CartBadge: React.FC<CartState> = ({ cart }) => {
@@ -85,21 +100,65 @@ const MarketItems: React.FC<MarketItemsProps> = () => {
         <ShopHeaderWithShop/>
         <IonGrid>
           <IonRow>
-            {dataStore.ordered.ItemList &&
-              dataStore.ordered.ItemList.length > 0 ? (
-                dataStore.ordered.ItemList.map(obj => {
-                  if (obj.is_deleted) {
-                    return <></>;
-                  }
-                  return (
-                    <IonCol key={obj.id} size="12">
-                      <ShopItem item={obj} market_id={market_id} category_id={category_id} />
+            {
+              loading ?
+                  <>
+                    <IonCol size="12">
+                      <IonCard class="market-item-skeleton-image" >
+                        <IonCardContent style={{ padding: 10 }}>
+                          <IonRow>
+                            <IonCol size="4">
+                              <IonThumbnail class="skeleton-image" >
+                                <IonSkeletonText animated />
+                              </IonThumbnail>
+                            </IonCol>
+                            <IonCol size="7.8">
+                              <IonCardSubtitle className="category_name ion-text-capitalize"><IonSkeletonText animated/></IonCardSubtitle>
+                              <br />
+                              <IonCardSubtitle className="category_name ion-text-capitalize"><IonSkeletonText animated/></IonCardSubtitle>
+                            </IonCol>
+                          </IonRow>
+
+                        </IonCardContent>
+                      </IonCard>
+                      <IonCard class="market-item-skeleton-image" >
+                        <IonCardContent style={{ padding: 10 }}>
+                          <IonRow>
+                            <IonCol size="4">
+                              <IonThumbnail class="skeleton-image" >
+                                <IonSkeletonText animated />
+                              </IonThumbnail>
+                            </IonCol>
+                            <IonCol size="7.8">
+                              <IonCardSubtitle className="category_name ion-text-capitalize"><IonSkeletonText animated/></IonCardSubtitle>
+                              <br />
+                              <IonCardSubtitle className="category_name ion-text-capitalize"><IonSkeletonText animated/></IonCardSubtitle>
+                            </IonCol>
+                          </IonRow>
+
+                        </IonCardContent>
+                      </IonCard>
                     </IonCol>
-                  );
-                })
-              ) : (
-                <p></p>
-              )}
+                  </>
+                  :
+                  <>
+                    {dataStore.ordered.ItemList &&
+                    dataStore.ordered.ItemList.length > 0 ? (
+                        dataStore.ordered.ItemList.map(obj => {
+                          if (obj.is_deleted) {
+                            return <></>;
+                          }
+                          return (
+                              <IonCol key={obj.id} size="12">
+                                <ShopItem item={obj} market_id={market_id} category_id={category_id} />
+                              </IonCol>
+                          );
+                        })
+                    ) : (
+                        <p></p>
+                    )}</>
+            }
+
           </IonRow>
         </IonGrid>
         <Cart modal={showModal} closeHandler={() => setShowModal(false)} />

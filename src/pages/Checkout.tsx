@@ -237,7 +237,6 @@ const Checkout: React.FC<CheckoutProps> = () => {
         }
         setAddress(data);
       }
-      console.clear();
       console.log("user fetched:--" + JSON.stringify(addressObj));
     } else if (isLoaded(auth) && !isEmpty(auth)) {
       console.log("User Logged in");

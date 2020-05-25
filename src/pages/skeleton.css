@@ -11,3 +11,13 @@
     width: 80%;
     margin: 15px;
 }
+.category-skeleton-image .skeleton-image{
+    height: 80px;
+}
+.category-skeleton-image ion-card{
+    max-width: 150px;
+}
+.market-item-skeleton-image .skeleton-image{
+    height: 80px;
+    width: 80px;
+}
