@@ -20,6 +20,9 @@ import { useHistory } from "react-router-dom";
 import { VeriFyCode } from "../model/DomainModels";
 import ErrorDisplay from "../components/ErrorDisplay";
 import { ErrorProps } from "../model/ComponentProps";
+import { isPlatform } from "@ionic/core";
+import { FirebaseAuthentication } from '@ionic-native/firebase-authentication';
+
 
 const MobileNumberLogin: React.FC = () => {
   const history = useHistory();
@@ -29,9 +32,10 @@ const MobileNumberLogin: React.FC = () => {
   const [mobileNumber, setMobileNumber] = useState<string | null | undefined>(
     "62335535" as string
   );
+  const [verificationId, setVerificationId] = useState('');
   const [isNumberAdded, setIsNumberAdded] = useState(false);
   const [confirmationCode, setConfirmationCode] = useState<any>();
-  var [timer, setTime] = useState<number>(60);
+  let [timer, setTime] = useState<number>(60);
   // var [interval_id, setIntervalId] = useState<NodeJS.Timeout>();
   const [verificationCode, setVerificationCode] = useState<VeriFyCode>({
     first: "",
@@ -52,28 +56,45 @@ const MobileNumberLogin: React.FC = () => {
   const [errorProps, setErrorProps] = useState<ErrorProps>({} as ErrorProps);
 
   function sendVerificationCode() {
-    const appVerifier = new firebase.auth.RecaptchaVerifier("sign-in-button", {
-      size: "invisible"
-    });
     const phoneNumberString = "+852" + mobileNumber as string;
-    console.log(mobileNumber);
-    firebase
-      .auth()
-      .signInWithPhoneNumber(phoneNumberString, appVerifier)
-      .then((confirmationResult: any) => {
-        // SMS sent. Prompt user to type the code from the message, then sign the
-        // user in with confirmationResult.confirm(code).
-        appVerifier.clear();
-        console.log("confirmationResult" + confirmationResult);
-        setConfirmationCode(confirmationResult);
+    if (!isPlatform("ios") || isPlatform("mobileweb")) {
+      const appVerifier = new firebase.auth.RecaptchaVerifier("sign-in-button", {
+        size: "invisible"
+      });
+      console.log(mobileNumber);
+      firebase
+          .auth()
+          .signInWithPhoneNumber(phoneNumberString, appVerifier)
+          .then((confirmationResult: any) => {
+            // SMS sent. Prompt user to type the code from the message, then sign the
+            // user in with confirmationResult.confirm(code).
+            appVerifier.clear();
+            console.log("confirmationResult" + confirmationResult);
+            setConfirmationCode(confirmationResult);
+            setTime(60);
+            setIsNumberAdded(true);
+            startInterval();
+          })
+          .catch(function (error) {
+            console.error("SMS not sent", error);
+            // setErrorMessage("SMS not sent may be " + error);
+            // setShowError(true);
+            setErrorProps({
+              message: "SMS not sent may be " + error,
+              showError: true,
+              type: 1,
+              autoHide: true,
+              buttonText: ""
+            })
+          });
+    } else {
+      FirebaseAuthentication.verifyPhoneNumber(phoneNumberString, 60000).then(verificationId => {
+        setVerificationId(verificationId);
         setTime(60);
         setIsNumberAdded(true);
         startInterval();
-      })
-      .catch(function (error) {
+      }).catch(error => {
         console.error("SMS not sent", error);
-        // setErrorMessage("SMS not sent may be " + error);
-        // setShowError(true);
         setErrorProps({
           message: "SMS not sent may be " + error,
           showError: true,
@@ -82,6 +103,7 @@ const MobileNumberLogin: React.FC = () => {
           buttonText: ""
         })
       });
+    }
   }
 
   function startInterval() {
@@ -117,15 +139,24 @@ const MobileNumberLogin: React.FC = () => {
       verificationCode.fifth +
       verificationCode.sixth;
     console.log("code is:==" + code);
-    confirmationCode
-      .confirm(code)
-      .then((res: any) => {
+    if (!isPlatform("ios") || isPlatform("mobileweb")) {
+      confirmationCode
+          .confirm(code)
+          .then((res: any) => {
+            console.log("verification success:--" + JSON.stringify(res));
+            history.push("/");
+          })
+          .catch((err: any) => {
+            console.log("Error in verification");
+          });
+    } else {
+      FirebaseAuthentication.signInWithVerificationId(verificationId, code).then(res => {
         console.log("verification success:--" + JSON.stringify(res));
         history.push("/");
-      })
-      .catch((err: any) => {
+      }).catch((err: any) => {
         console.log("Error in verification");
       });
+    }
   }
 
   return (

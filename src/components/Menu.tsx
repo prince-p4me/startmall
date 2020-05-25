@@ -127,8 +127,8 @@ const Menu: React.FC = () => {
   }
   return (
     <IonMenu contentId="main" type="overlay" side="end">
-      <IonContent>
-        <IonList id="inbox-list">
+      <IonContent className={'ion-margin-top'}>
+        <IonList id="inbox-list" className={'ion-margin-top'}>
           <IonListHeader>
             <IonItem lines="none">{auth.displayName}</IonItem>
             <IonAvatar>

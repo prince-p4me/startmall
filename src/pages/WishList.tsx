@@ -82,7 +82,7 @@ const WishListPage: React.FC = () => {
 
   return (
     <IonPage>
-      <MarketHeader setShowModal={setShowModal} shop={shop} CartCounter={CartCounter} />
+      <MarketHeader showTearms={false} setShowModal={setShowModal} shop={shop} CartCounter={CartCounter} />
       <IonContent className="shope_item_listing" fullscreen>
         {/* <ShopHeaderWithShop /> */}
         <IonGrid>

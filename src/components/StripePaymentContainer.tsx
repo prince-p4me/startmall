@@ -53,14 +53,6 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
             amount: invoice.total_amount
           }
         ],
-        shippingMethods: [
-          {
-            identifier: 'NextDay',
-            label: 'NextDay',
-            detail: 'Arrives tomorrow by 5pm.',
-            amount: 0
-          }
-        ],
         supportedNetworks: ['visa', 'masterCard', 'discover'],
         merchantCapabilities: ['3ds', 'debit', 'credit'],
         merchantIdentifier: 'merchant.com.startmall.app',
@@ -72,11 +64,19 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
       });
 
       console.log(applePayTransaction);
-
+      await ApplePay.completeLastTransaction('success');
+      completeHandler();
     } catch (e) {
       // handle payment request error
       // Can also handle stop complete transaction but these should normally not occur
-      console.log(e)
+      console.log(e);
+      setErrorProps({
+        message: 'Something is wrong while requesting payment via apple pay',
+        showError: true,
+        type: 1,
+        autoHide: true,
+        buttonText: ""
+      })
     }
   };
 

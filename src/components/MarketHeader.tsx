@@ -22,12 +22,14 @@ interface MarketHeaderProps {
   setShowModal: any;
   shop: Markets | any;
   CartCounter: any;
+  showTearms?: boolean;
 }
 
 const MarketHeader: React.FC<MarketHeaderProps> = ({
   setShowModal,
   shop,
-  CartCounter
+  CartCounter,
+  showTearms = true
 }) => {
   return (
     <IonHeader>
@@ -46,10 +48,13 @@ const MarketHeader: React.FC<MarketHeaderProps> = ({
         <IonButtons slot="start">
           <GoBack />
         </IonButtons>
-        <IonTitle class="shop_header_condition" size="large">
-          <p className={'terms'}>Cut Off : {shop.cut_off_terms}</p>
-          <p className={'terms'}>Delivery : {shop.delivery_terms}</p>
-        </IonTitle>
+        {
+          showTearms &&
+          <IonTitle class="shop_header_condition" size="large">
+            <p className={'terms'}>Cut Off : {shop.cut_off_terms}</p>
+            <p className={'terms'}>Delivery : {shop.delivery_terms}</p>
+          </IonTitle>
+        }
       </IonToolbar>
     </IonHeader>
   );
