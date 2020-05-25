@@ -58,7 +58,7 @@ const MarketItems: React.FC<MarketItemsProps> = () => {
   const doneLoading = () => {
     setTimeout(() => {
       setLoading(false)
-    }, 2000)
+    }, 1000)
   }
 
   const dataStore = useSelector<RootState>(
@@ -66,11 +66,7 @@ const MarketItems: React.FC<MarketItemsProps> = () => {
   ) as FirestoreReducer.Reducer;
 
   if (dataStore.ordered.Market && dataStore.ordered.Market.length > 0) {
-    dataStore.ordered.Market.map(tmarket => {
-      console.log(tmarket.name);
-      shop = tmarket;
-      return shop;
-    });
+
     doneLoading()
   }
   else {

@@ -30,7 +30,6 @@ import { setCurrentShop } from "../reducers/ShopAction";
 import './skeleton.css'
 
 const ShopSelection: React.FC = () => {
-  console.log("entering Dashboard");
   const history = useHistory();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
@@ -48,7 +47,7 @@ const ShopSelection: React.FC = () => {
   const doneLoading = () => {
     setTimeout(()=>{
       setLoading(false)
-    }, 2000)
+    }, 1000)
   }
   const markets = useSelector<RootState>(
     state => state.firestore

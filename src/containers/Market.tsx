@@ -24,9 +24,6 @@ import {FirestoreIonImg} from "../services/FirebaseStorage";
 
 const Market: React.FC = () => {
 
-    const profile = useSelector<RootState>(state => state.firebase.profile)
-    console.log("User Profile:");
-    console.log(profile);
     const {market_id} = useParams<{ market_id: string }>();
     var shop = {} as Markets;
     const [showModal, setShowModal] = useState(false);
@@ -57,7 +54,7 @@ const Market: React.FC = () => {
     const doneLoading = () => {
         setTimeout(() => {
             setLoading(false)
-        }, 2000)
+        }, 1000)
     }
 
     const stateStore = useSelector<RootState>(
@@ -65,11 +62,7 @@ const Market: React.FC = () => {
     ) as FirestoreReducer.Reducer;
 
     if (stateStore.ordered.Market && stateStore.ordered.Market.length > 0) {
-        stateStore.ordered.Market.map(tmarket => {
-            console.log(tmarket.name);
-            shop = tmarket;
-            return shop;
-        });
+
         doneLoading()
     } else {
         doneLoading()
@@ -144,11 +137,9 @@ const Market: React.FC = () => {
                                     {stateStore.ordered.Categories &&
                                     stateStore.ordered.Categories.length > 0 ? (
                                         stateStore.ordered.Categories.map((obj, index) => {
-                                            console.log(obj);
                                             if (obj.is_deleted) {
                                                 return <span key={index}></span>;
                                             }
-                                            console.log("Returned");
                                             return (
                                                 <IonCol key={index}>
                                                     <CategoryItem market_id={market_id} category={obj} shop={shop}/>
@@ -169,3 +160,5 @@ const Market: React.FC = () => {
 };
 
 export default Market;
+
+//export default React.memo(Market);

@@ -13,7 +13,7 @@ import {
   IonFooter
 } from "@ionic/react";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import {
   bookmarkOutline,
@@ -103,7 +103,6 @@ const Menu: React.FC = () => {
   const auth: UserInfo = useSelector<RootState>(
     state => state.firebase.auth
   ) as UserInfo;
-  console.log(auth);
 
   const isWeb = !isPlatform("ios") || isPlatform("mobileweb");
 

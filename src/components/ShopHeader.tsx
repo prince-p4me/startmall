@@ -19,8 +19,6 @@ const ShopHeader: React.FC<ShopHeaderProps> = ({ shop }) => {
     loadedShop = shop.shop;
   }
 
-  console.log(loadedShop);
-
   return (
     <IonGrid>
       <IonRow>

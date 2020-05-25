@@ -20,7 +20,9 @@ import CurrencyAmount from "../components/CurrencyAmount";
 import ErrorDisplay from "../components/ErrorDisplay";
 
 const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => {
-  const [, setLogin] = useState(false);
+  console.log({
+    item
+  })
   const [favorites, setFavorites] = useState(heartOutline);
   // const [] = useState<WishList>({} as WishList);
   const dispatch = useDispatch();
@@ -32,7 +34,6 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
 
 
   function addFavorites() {
-    console.log("adding favorites");
     const json_auth = JSON.parse(JSON.stringify(auth));
     let obj: WishList = {
       item_id: item.id,
@@ -83,24 +84,17 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
   const checkFavorite = (writing: boolean) => {
     if (isLoaded(auth) && !isEmpty(auth)) {
       // setFavorites(heart);
-      setLogin(true);
-      console.log("updating favorite");
       const json_auth = JSON.parse(JSON.stringify(auth));
       const docRef = db.collection("WishLists").doc(json_auth.uid).collection("Markets").doc(market_id).collection("Items");
       docRef.where('item_id', '==', item.id).get().then(function (snapshot) {
         if (snapshot.empty) {
           setFavorites(heartOutline);
-          console.log("No such document!");
           if (writing) {
             addFavorites();
-          } else {
-            setFavorites(heartOutline);
           }
         } else {
-          console.log("market found");
           if (writing) {
             snapshot.forEach(doc => {
-              console.log(doc.id, '=>', doc.data());
               // deleteFavorite(doc.id, docRef);
               docRef.doc(doc.id).delete().then(() => {
                 console.log(doc.id + " deleted");
@@ -135,7 +129,7 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
       console.log("use Effect Set Favorites");
       checkFavorite(false);
     }
-  }, [auth]);
+  }, []);
 
   return (
     <IonCard>
