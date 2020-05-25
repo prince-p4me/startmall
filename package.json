@@ -62,7 +62,8 @@
     "run-ios-npx-sync": "npx cap copy && npx cap sync",
     "run-ios": "ionic capacitor run ios -l",
     "run-android": "ionic capacitor run android -l --emulator --host=0.0.0.0",
-    "build-fb": "react-scripts build --platform=web && cp -Rv build/* fbhost/public && cd fbhost && firebase deploy --only hosting:startmall "
+    "build-fb": "react-scripts build --platform=web && cp -Rv build/* fbhost/public && cd fbhost && firebase deploy --only hosting:startmall ",
+    "build-privacy-page": "cd privacy-page && firebase deploy --only hosting:slashiee-privacy "
   },
   "eslintConfig": {
     "extends": "react-app"
