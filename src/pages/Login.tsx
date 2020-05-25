@@ -24,7 +24,7 @@ import { Facebook } from '@ionic-native/facebook'
 import { isPlatform } from "@ionic/core";
 import ErrorDisplay from "../components/ErrorDisplay";
 import { ErrorProps } from "../model/ComponentProps";
-import * as firebaseInstace from "firebase";
+import firebaseInstace from "firebase";
 
 
 const Login: React.FC = () => {
@@ -69,7 +69,7 @@ const Login: React.FC = () => {
       console.log("User Logged in");
       // history.push("/");
       setShowLoading(false);
-      history.goBack()
+      history.goBack();
     }
   }, [auth, history, isMoved]);
 
@@ -173,28 +173,29 @@ const Login: React.FC = () => {
         .then(response => {
           const facebookCredential = firebaseInstace.auth.FacebookAuthProvider
             .credential(response.authResponse.accessToken);
-
+          console.log("login result:--" + JSON.stringify(response));
           firebase.auth().signInWithCredential(facebookCredential)
             .then(success => {
               setMoved(true);
               console.log("Firebase success: " + JSON.stringify(success));
             })
-            .catch(error => {
+            .catch(data => {
               setShowLoading(false);
+              console.clear();
+              console.log("error:==" + JSON.stringify(data));
               setErrorProps({
-                message: "Something Wrong with Google login. Please try again later",
+                message: (data && data.message) ? data.message : "Something Wrong with Facebook login. Please try again later",
                 showError: true,
                 type: 1,
                 autoHide: false,
                 buttonText: ""
               });
             });
-
         })
-        .catch(err => {
+        .catch(data => {
           setShowLoading(false);
           setErrorProps({
-            message: "Something Wrong with Google login. Please try again later",
+            message: (data && data.message) ? data.message : "Something Wrong with Facebook login. Please try again later",
             showError: true,
             type: 1,
             autoHide: false,
