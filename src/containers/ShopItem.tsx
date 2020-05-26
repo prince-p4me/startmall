@@ -1,13 +1,5 @@
-import React, { useState, useEffect, useCallback } from "react";
-import {
-  IonCard,
-  IonCardContent,
-  IonButton,
-  IonIcon,
-  IonRow, IonCol,
-  IonItem,
-  IonLabel
-} from "@ionic/react";
+import React, { useState, useEffect } from "react";
+import { IonCard, IonCardContent, IonButton, IonIcon, IonRow, IonCol, IonItem, IonLabel } from "@ionic/react";
 import { add, heart, heartOutline } from "ionicons/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { addCartAction } from "../reducers/CartAction";
@@ -20,9 +12,7 @@ import CurrencyAmount from "../components/CurrencyAmount";
 import ErrorDisplay from "../components/ErrorDisplay";
 
 const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => {
-  console.log({
-    item
-  })
+  console.log(item);
   const [favorites, setFavorites] = useState(heartOutline);
   // const [] = useState<WishList>({} as WishList);
   const dispatch = useDispatch();
@@ -45,7 +35,7 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
 
   async function writeData(data: WishList, user_id: string) {
     var json_shop = JSON.parse(JSON.stringify(shop));
-    console.log(JSON.stringify(shop));
+    // console.log(JSON.stringify(shop));
     var items = await db.collection("WishLists")
       .doc(user_id)
       .collection("Markets")
