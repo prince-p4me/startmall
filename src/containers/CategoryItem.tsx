@@ -4,6 +4,10 @@ import { CategoryProps } from "../model/ComponentProps";
 import { FirestoreIonImg } from "../services/FirebaseStorage";
 
 const CategoryItem: React.FC<CategoryProps> = ({ market_id, category, shop }) => {
+  // console.log("category is:==" + JSON.stringify(category));
+  if (category.is_deleted || category.name == "" || category.name == null) {
+    return <span></span>
+  }
   return (
     <IonCard
       routerLink={"/tabs/market/" + market_id + "/item_list/" + category.id}

@@ -32,7 +32,6 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
   const history = useHistory();
   const [errorProps, setErrorProps] = useState<ErrorProps>({} as ErrorProps);
 
-
   function addFavorites() {
     const json_auth = JSON.parse(JSON.stringify(auth));
     let obj: WishList = {
@@ -130,6 +129,11 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
       checkFavorite(false);
     }
   }, []);
+
+  if (!item.unit_price || item.unit_price == "" || item.unit_price == null ||
+    !item.unit || item.unit == "" || item.unit == null) {
+    return null
+  }
 
   return (
     <IonCard>
