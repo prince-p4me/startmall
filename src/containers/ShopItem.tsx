@@ -131,7 +131,7 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
   }, []);
 
   if (!item.unit_price || item.unit_price == "" || item.unit_price == null ||
-    !item.unit || item.unit == "" || item.unit == null) {
+    !item.unit || item.unit == "" || item.unit == null || item.is_deleted) {
     return null
   }
 
