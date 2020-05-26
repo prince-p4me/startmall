@@ -47,7 +47,7 @@ const ShopSelection: React.FC = () => {
   const doneLoading = () => {
     setTimeout(()=>{
       setLoading(false)
-    }, 1000)
+    }, 1500)
   }
   const markets = useSelector<RootState>(
     state => state.firestore

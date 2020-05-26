@@ -182,6 +182,11 @@ ion-button {
 .category ion-img img {
   max-height: 109px;
 }
+.category .skeleton-image-preview {
+  height: 100px !important;
+  width: 100px !important;
+  margin: 0 auto;
+}
 .category .category_payments {
   height: 25px;
 }
@@ -254,6 +259,12 @@ img {
 .shope_item_listing ion-img img {
   max-height: 109px;
 }
+.shope_item_listing .skeleton-image-preview {
+  height: 100px !important;
+  width: 100px !important;
+  margin: 0 auto;
+}
+
 .shope_item_listing .category_payments {
   height: 25px;
 }
