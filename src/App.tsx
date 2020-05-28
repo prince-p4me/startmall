@@ -60,6 +60,9 @@ import Cart from "./pages/Cart";
 const { App: CapApp } = Plugins;
 const stripePromise = loadStripe('pk_test_YC0gcyGppNgDEzsD5FxBzPXJ00nUQJqCvw');
 
+const { Stripe } = Plugins;
+Stripe.setPublishableKey({ key: 'pk_test_YC0gcyGppNgDEzsD5FxBzPXJ00nUQJqCvw' });
+
 const AppUrlListener: React.FC<any> = () => {
   let history = useHistory();
   useEffect(() => {
@@ -74,7 +77,6 @@ const AppUrlListener: React.FC<any> = () => {
       // logic take over
     });
   }, []);
-
   return null;
 };
 

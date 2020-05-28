@@ -9,12 +9,72 @@ import {
 import { logoApple } from "ionicons/icons";
 
 import { ErrorProps, StripePaymentProps } from "../model/ComponentProps";
-import { CardExpiryElement, CardNumberElement, CardCvcElement, useElements, useStripe } from '@stripe/react-stripe-js';
-import { ApplePay } from '@ionic-native/apple-pay';
+import { CardExpiryElement, CardNumberElement, CardCvcElement, useElements, useStripe, PaymentRequestButtonElement } from '@stripe/react-stripe-js';
 import { getPaymentSecret } from '../services/StripeService';
 import { AddressObj } from "../model/DomainModels";
 import { StripeCardNumberElementChangeEvent, StripeCardExpiryElementChangeEvent, StripeCardCvcElementChangeEvent } from "@stripe/stripe-js";
 import ErrorDisplay from "./ErrorDisplay";
+import { Plugins } from '@capacitor/core';
+const { Stripe } = Plugins;
+
+const useOptions = (paymentRequest: any) => {
+  const options = useMemo<any>(
+    () => ({
+      paymentRequest,
+      style: {
+        paymentRequestButton: {
+          theme: "dark",
+          height: "48px"
+        }
+      }
+    }),
+    [paymentRequest]
+  );
+
+  return options;
+};
+
+const usePaymentRequest = ({ options, onPaymentMethod }: any) => {
+  const stripe = useStripe();
+  const [paymentRequest, setPaymentRequest] = useState<any>(null);
+  const [canMakePayment, setCanMakePayment] = useState(false);
+
+  useEffect(() => {
+    if (stripe && paymentRequest === null) {
+      const pr: any = stripe.paymentRequest(options);
+      setPaymentRequest(pr);
+    }
+  }, [stripe, options, paymentRequest]);
+
+  useEffect(() => {
+    let subscribed = true;
+    if (paymentRequest) {
+      paymentRequest.canMakePayment().then((res: any) => {
+        console.log('RES=>>>>>>>>>>>>', res);
+        if (res && subscribed) {
+          setCanMakePayment(true);
+        }
+      });
+    }
+
+    return () => {
+      subscribed = false;
+    };
+  }, [paymentRequest]);
+
+  useEffect(() => {
+    if (paymentRequest) {
+      paymentRequest.on("paymentmethod", onPaymentMethod);
+    }
+    return () => {
+      if (paymentRequest) {
+        paymentRequest.off("paymentmethod", onPaymentMethod);
+      }
+    };
+  }, [paymentRequest, onPaymentMethod]);
+
+  return canMakePayment ? paymentRequest : null;
+};
 
 const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, completeHandler, invoice }) => {
 
@@ -22,7 +82,24 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
   const elements = useElements();
   const [cardValidation, setCardValidation] = useState({ number: false, date: false, isCompleted: false })
   const [loading, setLoading] = useState(false);
+  const [applePayLoading, setApplePayLoading] = useState(false);
   const [errorProps, setErrorProps] = useState<ErrorProps>({} as ErrorProps);
+  const paymentRequest = usePaymentRequest({
+    options: {
+      country: "US",
+      currency: "usd",
+      total: {
+        label: "Demo total",
+        amount: 1000
+      }
+    },
+    onPaymentMethod: ({ complete, paymentMethod, ...data }: any) => {
+      console.log("[PaymentMethod]", paymentMethod);
+      console.log("[Customer Data]", data);
+      complete("success");
+    }
+  });
+  const payoptions = useOptions(paymentRequest);
   const options = useMemo(
     () => ({
       style: {
@@ -46,37 +123,44 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
   const applePay = async () => {
 
     try {
-      const applePayTransaction = await ApplePay.makePaymentRequest({
-        items: [
-          {
-            label: 'Product basket',
-            amount: invoice.total_amount
-          }
-        ],
-        supportedNetworks: ['visa', 'masterCard', 'discover'],
-        merchantCapabilities: ['3ds', 'debit', 'credit'],
-        merchantIdentifier: 'merchant.com.startmall.app',
-        currencyCode: 'AUD',
-        countryCode: 'AU',
-        billingAddressRequirement: 'none',
-        shippingAddressRequirement: 'none',
-        shippingType: 'shipping'
-      });
 
-      console.log(applePayTransaction);
-      await ApplePay.completeLastTransaction('success');
+      setApplePayLoading(true);
+      const resPayment = await getPaymentSecret({ amount: invoice.total_amount });
+
+      await Stripe.confirmPaymentIntent({
+        clientSecret: resPayment.data.data,
+        applePayOptions: {
+          merchantIdentifier: 'merchant.com.startmall.app', // apple merchant id
+          country: 'AU',
+          currency: 'AUD',
+          items: [
+            {
+              label: 'Product basket',
+              amount: Number.parseInt(invoice.total_amount.toString())
+            }
+          ],
+          billingAddressRequirement: 'none',
+          shippingAddressRequirement: 'none',
+        }
+      })
+
+      await Stripe.finalizeApplePayTransaction({ success: true });
+      setApplePayLoading(false);
       completeHandler();
     } catch (e) {
       // handle payment request error
       // Can also handle stop complete transaction but these should normally not occur
-      console.log(e);
-      setErrorProps({
-        message: 'Something is wrong while requesting payment via apple pay',
-        showError: true,
-        type: 1,
-        autoHide: true,
-        buttonText: ""
-      })
+      console.log('e', e);
+      setApplePayLoading(false);
+      if (!e.message.includes('payment timeout or user cancelled')) {
+        setErrorProps({
+          message: 'Something is wrong while requesting payment via apple pay',
+          showError: true,
+          type: 1,
+          autoHide: true,
+          buttonText: ""
+        })
+      }
     }
   };
 
@@ -163,7 +247,7 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
             <IonLabel color="medium">
               Card number
             </IonLabel>
-            <CardNumberElement  options={options} onChange={(obj) => validateStripe(obj, 'number')} />
+            <CardNumberElement options={options} onChange={(obj) => validateStripe(obj, 'number')} />
           </div>
           <div className="ion-margin-top">
             <IonLabel color="medium">
@@ -200,14 +284,41 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
         {
           (paymentMode === 'applePay' || paymentMode === 'all') &&
           <IonButton class="ion-margin-top apple-pay-btn" color={'dark'} onClick={applePay} size={'large'} expand={'block'}>
-            <IonIcon
-              size={'large'}
-              slot="icon-only"
-              className="apple-icon"
-              icon={logoApple}
-            ></IonIcon>
-            Pay
+            {
+              !applePayLoading ?
+                <>
+                  <IonIcon
+                    size={'large'}
+                    slot="icon-only"
+                    className="apple-icon"
+                    icon={logoApple}
+                  ></IonIcon>
+                Pay
+              </> :
+                <IonSpinner name={'dots'}></IonSpinner>
+            }
           </IonButton>
+        }
+      </div>
+      <div>
+        {
+          paymentRequest &&
+          <PaymentRequestButtonElement
+            className="PaymentRequestButton"
+            options={payoptions}
+            onReady={() => {
+              console.log("PaymentRequestButton [ready]");
+            }}
+            onClick={event => {
+              console.log("PaymentRequestButton [click]", event);
+            }}
+            onBlur={() => {
+              console.log("PaymentRequestButton [blur]");
+            }}
+            onFocus={() => {
+              console.log("PaymentRequestButton [focus]");
+            }}
+          />
         }
       </div>
       <div className={'ion-margin-top ion-margin-bottom'}>
