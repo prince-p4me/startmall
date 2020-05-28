@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { useFirebase } from "react-redux-firebase";
-import { IonImg, IonSkeletonText, IonThumbnail } from "@ionic/react";
+import {IonImg, IonModal, IonSkeletonText, IonThumbnail} from "@ionic/react";
 
 interface GetURLProps {
   src: string;
   className?:string;
+  showModal?: boolean
 }
-export const FirestoreIonImg: React.FC<GetURLProps> = ({ className, src }) => {
+export const FirestoreIonImg: React.FC<GetURLProps> = ({ className, src, showModal }) => {
   const [downloadUrl, setDownloadUrl] = useState(src);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const storage = useFirebase().storage();
   const [loading, setLoading] = useState(src && src.startsWith("gs"));
 
@@ -53,6 +55,12 @@ export const FirestoreIonImg: React.FC<GetURLProps> = ({ className, src }) => {
       });
   }
 
+  const onImgClick = () => {
+    if(showModal){
+      setIsModalOpen(true)
+    }
+  }
+
   if(loading){
     return (
         <IonThumbnail class="skeleton-image-preview" style={{width: '100%', height: '100%'}} >
@@ -60,5 +68,12 @@ export const FirestoreIonImg: React.FC<GetURLProps> = ({ className, src }) => {
         </IonThumbnail>
     )
   }
-  return <IonImg src={downloadUrl} />;
+  return(
+      <>
+        <IonImg src={downloadUrl} onClick={onImgClick} />
+        <IonModal cssClass="image-preview-popup" backdropDismiss={true} isOpen={isModalOpen} swipeToClose={true} onDidDismiss={() => setIsModalOpen(false)}>
+          <IonImg src={downloadUrl} onClick={() => setIsModalOpen(false)} />
+        </IonModal>
+      </>
+      );
 };

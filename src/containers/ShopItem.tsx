@@ -130,7 +130,7 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
       <IonCardContent style={{ padding: 10 }}>
         <IonRow>
           <IonCol size="4">
-            <FirestoreIonImg src={item.img_url as string} />
+            <FirestoreIonImg src={item.img_url as string} showModal />
           </IonCol>
           <IonCol size="7.8">
             <IonLabel >

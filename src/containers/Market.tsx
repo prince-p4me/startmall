@@ -13,7 +13,7 @@ import React, {useState} from "react";
 import "./Market.css";
 import {connect, useSelector} from "react-redux";
 import CategoryItem from "./CategoryItem";
-import ShopHeader from "../components/ShopHeader";
+import ShopHeaderWithProps from "../components/ShopHeaderWithProps";
 import {useFirestoreConnect, FirestoreReducer} from "react-redux-firebase";
 import {useParams} from "react-router";
 import {RootState, Markets} from "../model/DomainModels";
@@ -74,14 +74,13 @@ const Market: React.FC = () => {
     }
 
     const [CartCounter] = useState<React.ElementType>(connect(mapStateToProps)(CartBadge));
-    const [ShopHeaderWithShop] = useState<React.ElementType>(connect(mapStateToProps)(ShopHeader));
-
+    let Market: any = useSelector<any>((state: any) => (state.firestore.data.Market))
     return (
         <IonPage>
             <MarketHeader setShowModal={setShowModal} shop={shop} CartCounter={CartCounter}/>
 
             <IonContent className="category" fullscreen>
-                <ShopHeaderWithShop/>
+                <ShopHeaderWithProps Market={Market}/>
                 <IonGrid>
                     <IonRow>
                         {

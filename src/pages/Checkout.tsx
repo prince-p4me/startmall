@@ -6,7 +6,6 @@ import { useHistory } from "react-router-dom";
 import { closeOutline } from "ionicons/icons";
 import { RootState, CartStateType, ShopStateType, ProfileData, AddressObj } from "../model/DomainModels";
 import { CheckoutProps, ErrorProps } from "../model/ComponentProps";
-import ShopHeader from "../components/ShopHeader";
 import ShopConditionAndOperatingHours from "../components/ShopConditionAndOperatingHours";
 import { CartState } from "../services/FirebaseIniti";
 import { useFirebase, isEmpty, isLoaded } from "react-redux-firebase";
@@ -15,6 +14,7 @@ import CurrencyAmount from "../components/CurrencyAmount";
 import ErrorDisplay from "../components/ErrorDisplay";
 import { StatusBar } from '@ionic-native/status-bar';
 import moment from "moment";
+import ShopHeaderWithProps from "../components/ShopHeaderWithProps";
 
 interface MockInvoice {
   // TODO: Please fix the DomainModels > Invoice object same as below write invoice function
@@ -66,7 +66,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
   }
 
   const [CartItemList] = useState<React.ElementType>(connect(mapStateToProps)(ItemList));
-  const [ShopHeaderWithShop] = useState<React.ElementType>(connect(mapStateToProps)(ShopHeader));
+  let Market: any = useSelector<any>((state: any) => (state.firestore.data.Market))
   const [EnhancedCondition] = useState<React.ElementType>(connect(mapStateToProps)(
     ShopConditionAndOperatingHours
   ));
@@ -206,6 +206,10 @@ const Checkout: React.FC<CheckoutProps> = () => {
 
   async function fetchData() {
     let json_auth = JSON.parse(JSON.stringify(auth));
+    if(!json_auth.uid){
+      return
+    }
+    console.log({json_auth})
     var data = { address2: "", state: "", suburb: "", postcode: "", country: "" } as AddressObj;
     const res = await db.collection("Users").doc(json_auth.uid).get()
     if (res.exists) {
@@ -275,7 +279,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <ShopHeaderWithShop />
+        <ShopHeaderWithProps Market={Market}/>
         <CartItemList />
         <IonItem lines="none">
           <IonLabel color="primary" style={{ textAlign: "right" }}>
@@ -291,7 +295,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
           <IonImg
             class="footer_pay"
             slot="start"
-            src="/assets/icon/1x/payment.png"
+            src="/assets/icon/payment-method.png"
           ></IonImg>
         </IonItem>
         <IonItem lines="none">
@@ -301,6 +305,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
             onIonChange={e => {
               setAggreement(e.detail.checked);
             }}
+            style={{marginRight: 10}}
           ></IonCheckbox>
           <IonLabel>
             <p>I read and agree on our Terms and Conditions</p>
@@ -308,14 +313,6 @@ const Checkout: React.FC<CheckoutProps> = () => {
         </IonItem>
         <IonItem lines="none">
           <IonButtons slot="end">
-            <IonButton
-              color="secondary"
-              fill="outline"
-              onClick={handleComplete}
-            >
-              Continue Shopping
-            </IonButton>
-            <br />
             <IonButton color="secondary" fill="solid" onClick={handleComplete}>
               Proceed to Payment
             </IonButton>

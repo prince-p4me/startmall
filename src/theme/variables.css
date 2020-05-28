@@ -449,3 +449,37 @@ img {
 ion-toolbar, ion-header {
   --min-height: 50px;
 }
+.image-preview-popup .modal-wrapper{
+  height: auto;
+  width: 90%;
+}
+.image-preview-popup .ion-page{
+  contain: content;
+  position: relative;
+  top: auto;
+  left: auto;
+  padding:1px;
+}
+.image-preview-popup{
+  padding-top: 10% ;
+}
+.shop-header-title{
+  font-size: 33px;
+  display: inline-block;
+  text-align: right;
+  width: 100%;
+  margin-bottom: 15px;
+}
+.info-light-text{
+  font-size: 12px;
+  color: #b3b3b3;
+}
+.help-icon{
+
+  position: relative;
+  top: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #83cd07;
+
+}

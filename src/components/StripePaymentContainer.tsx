@@ -4,9 +4,10 @@ import {
   IonLabel,
   IonIcon,
   IonButton,
-  IonSpinner
+  IonSpinner,
+  IonText
 } from "@ionic/react";
-import { logoApple } from "ionicons/icons";
+import { logoApple, helpCircleOutline } from "ionicons/icons";
 
 import { ErrorProps, StripePaymentProps } from "../model/ComponentProps";
 import { CardExpiryElement, CardNumberElement, CardCvcElement, useElements, useStripe, PaymentRequestButtonElement } from '@stripe/react-stripe-js';
@@ -258,8 +259,18 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
           <div className="ion-margin-top">
             <IonLabel color="medium">
               CVC
+              <IonIcon
+                  size={'small'}
+                  slot="icon-only"
+                  className="help-icon"
+                  icon={helpCircleOutline}
+              />
+              <IonText className="info-light-text">(3 Digit on back of your card)</IonText>
             </IonLabel>
             <CardCvcElement options={options} onChange={(obj) => validateStripe(obj, 'cvc')} />
+          </div>
+          <div className={'ion-margin-top ion-margin-bottom info-light-text'}>
+            <IonLabel>* By hitting Pay you are confirming your order with us.</IonLabel>
           </div>
           <IonButton
             type={'submit'}

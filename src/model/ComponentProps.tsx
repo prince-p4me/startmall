@@ -58,6 +58,7 @@ export interface OrderDayShopHeaderProps {
 
 export interface ShopHeaderProps {
   shop: ShopStateType;
+  marketId?: string
 }
 
 export interface ShopSelectionListProps {

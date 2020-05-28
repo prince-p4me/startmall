@@ -7,13 +7,15 @@ import {
   IonButton,
   IonButtons,
   IonRow,
-  IonCol
+  IonCol, IonLabel
 } from "@ionic/react";
 import React, { useState } from "react";
 import MainHeader from "../components/MainHeader";
 import { useHistory, useLocation } from "react-router";
 import ErrorDisplay from "../components/ErrorDisplay";
 import { ErrorProps } from "../model/ComponentProps";
+
+import './ProductSearch.css'
 
 const PostCodeSearch: React.FC = () => {
   const [postcode, setPostCode] = useState<string>("2000");
@@ -62,7 +64,10 @@ const PostCodeSearch: React.FC = () => {
       <MainHeader />
 
       <IonContent>
-        <div style={{ marginTop: "80%",marginLeft: 10,marginRight:10 }}>
+        <div style={{ marginTop: "50%",marginLeft: 10,marginRight:10 }}>
+          <IonLabel className="ion-text-postcode" color="secondary">
+            Please start with your Postcode
+          </IonLabel>
           <IonInput
             className="postcode_search_input"
             autofocus={true}
