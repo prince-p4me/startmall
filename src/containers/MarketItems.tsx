@@ -14,13 +14,13 @@ import ShopItem from "./ShopItem";
 import Cart from "./Cart";
 import { connect, useSelector } from "react-redux";
 import { MarketItemsProps } from "../model/ComponentProps";
-import ShopHeader from "../components/ShopHeader";
 import { useParams } from "react-router";
 import { useFirestoreConnect, FirestoreReducer } from "react-redux-firebase";
 import { RootState, Markets } from "../model/DomainModels";
 import { CartState } from "../services/FirebaseIniti";
 import MarketHeader from "../components/MarketHeader";
 import {FirestoreIonImg} from "../services/FirebaseStorage";
+import ShopHeaderWithProps from "../components/ShopHeaderWithProps";
 
 // interface ItemJson {
 //   产品: string;
@@ -87,13 +87,13 @@ const MarketItems: React.FC<MarketItemsProps> = () => {
     return { firebase, cart, shop };
   }
   const [ CartCounter ] = useState<React.ElementType>(connect(mapStateToProps)(CartBadge));
-  const [ ShopHeaderWithShop ] = useState<React.ElementType>(connect(mapStateToProps)(ShopHeader));
+  let Market: any = useSelector<any>((state: any) => (state.firestore.data.Market))
 
   return (
     <IonPage>
       <MarketHeader setShowModal={setShowModal} shop={shop} CartCounter={CartCounter} />
       <IonContent className="shope_item_listing" fullscreen>
-        <ShopHeaderWithShop/>
+        <ShopHeaderWithProps Market={Market}/>
         <IonGrid>
           <IonRow>
             {

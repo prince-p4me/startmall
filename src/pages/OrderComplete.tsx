@@ -55,7 +55,7 @@ const OrderComplete: React.FC<CartState> = () => {
       let ele = { ...element, qty: 1, img_url: "" }
       // ele.map((updateItem:CartItem) => ({
       //   ...updateItem,
-      //   qty: 1       
+      //   qty: 1
       // }));
       // let ele:CartItem = {} as CartItem
       // ele.name = element.name;
@@ -97,7 +97,7 @@ const OrderComplete: React.FC<CartState> = () => {
                 size="large"
                 slot="icon-only"
                 icon={closeOutline}
-              ></IonIcon>
+              />
             </IonButton>
           </IonButtons>
           <IonButtons slot="start"></IonButtons>

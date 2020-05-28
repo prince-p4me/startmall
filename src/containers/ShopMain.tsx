@@ -15,13 +15,13 @@ import { basket } from "ionicons/icons";
 import React, { useState } from "react";
 import "./Market.css";
 import Cart from "./Cart";
-import { connect } from "react-redux";
+import {connect, useSelector} from "react-redux";
 import data from "../data/hmarketitems.json";
 import CategoryItem from "./CategoryItem";
 import { CategoryObj } from "../model/DomainModels";
 import OrderDayShopHeader from "../components/OrderDayShopHeader";
-import ShopHeader from "../components/ShopHeader";
 import { CartState } from "../services/FirebaseIniti";
+import ShopHeaderWithProps from "../components/ShopHeaderWithProps";
 
 const ShopMain: React.FC = () => {
   console.log("entering market");
@@ -41,7 +41,7 @@ const ShopMain: React.FC = () => {
     return { firebase, cart, shop };
   }
   const CartCounter = connect(mapStateToProps)(CartBadge);
-  const ShopHeaderWithShop = connect(mapStateToProps)(ShopHeader);
+  let Market: any = useSelector<any>((state: any) => (state.firestore.data.Market))
 
 
   var index = 0;
@@ -71,8 +71,7 @@ const ShopMain: React.FC = () => {
       </IonToolbar>
       <OrderDayShopHeader />
       <IonContent fullscreen>
-        <ShopHeaderWithShop
-        />
+        <ShopHeaderWithProps Market={Market}/>
         <IonGrid>
           <IonRow>
             {Categories.map(obj => {

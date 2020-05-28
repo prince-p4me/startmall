@@ -29,8 +29,8 @@ const AddressForm: React.FC<AddressProps> = ({ address, onAddressChange }) => {
   return (
     <IonList>
       <IonItemDivider style={{ backgroundColor: "#f7f7f7", paddingTop: 10, paddingBottom: 10 }}>
-        <IonIcon slot="start" src="assets/icon/1x/SVG/delivery.svg"></IonIcon>
-        <IonLabel color="primary" style={{ paddingLeft: 10 }}>WHERE TO?</IonLabel>
+        <IonIcon slot="start" src="assets/icon/1x/SVG/delivery.svg" style={{marginRight: 0}}></IonIcon>
+        <IonLabel color="primary" style={{ paddingLeft: 10 }}>DELIVERY ADDRESS</IonLabel>
       </IonItemDivider>
       <IonItem style={{ paddingRight: 16 }}>
         <IonLabel id="contact_name" color="medium" position="floating">
