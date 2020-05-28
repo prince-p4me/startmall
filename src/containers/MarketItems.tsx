@@ -91,7 +91,7 @@ const MarketItems: React.FC<MarketItemsProps> = () => {
 
   return (
     <IonPage>
-      <MarketHeader setShowModal={setShowModal} shop={shop} CartCounter={CartCounter} />
+      <MarketHeader setShowModal={setShowModal} shop={Market || {}} CartCounter={CartCounter} />
       <IonContent className="shope_item_listing" fullscreen>
         <ShopHeaderWithProps Market={Market}/>
         <IonGrid>

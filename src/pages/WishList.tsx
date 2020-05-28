@@ -25,6 +25,10 @@ const WishListPage: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [shop, setShop] = useState({} as Markets);
 
+  useFirestoreConnect([
+    {collection: "Markets", doc: market_id, storeAs: "Market"},
+  ]);
+
   const CartBadge: React.FC<CartState> = ({ cart }) => {
     const cartSize = cart.cartItemList.length;
     if (cartSize > 0) {
@@ -80,9 +84,11 @@ const WishListPage: React.FC = () => {
       })
   }, [db, json_auth.uid, market_id]);
 
+  let Market: any = useSelector<any>((state: any) => (state.firestore.data.Market))
+
   return (
     <IonPage>
-      <MarketHeader showTearms={false} setShowModal={setShowModal} shop={shop} CartCounter={CartCounter} />
+      <MarketHeader showTearms={false} setShowModal={setShowModal} shop={Market || {}} CartCounter={CartCounter} />
       <IonContent className="shope_item_listing" fullscreen>
         {/* <ShopHeaderWithShop /> */}
         <IonGrid>

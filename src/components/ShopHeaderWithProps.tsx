@@ -42,7 +42,7 @@ const ShopHeader: React.FC<any> = ({ Market }) => {
         <IonCol size="7.8" style={{}}>
           <IonLabel className="shop-header-title" color="secondary">{Market.name || ''}</IonLabel>
           <IonItem className="shop-header-free_delivery_conditions" lines="none">
-            <IonText style={{ textAlign: "right" }}>{Market.free_delivery_conditions}</IonText>
+            <IonText style={{ textAlign: "right", display: 'block', width: '100%' }}>{Market.free_delivery_conditions}</IonText>
           </IonItem>
         </IonCol>
       </IonRow>

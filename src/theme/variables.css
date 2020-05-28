@@ -237,6 +237,11 @@ img {
   font-size: var(--fontsize-medium);
   height: 30px;
 }
+.shop_selection .skeleton-image, .shop_selection .skeleton-image-preview {
+  width: auto !important;
+  height: 250px !important;
+  margin: 15px;
+}
 
 .shope_item_listing {
   height: 80px;
@@ -464,11 +469,15 @@ ion-toolbar, ion-header {
   padding-top: 10% ;
 }
 .shop-header-title{
-  font-size: 33px;
   display: inline-block;
   text-align: right;
   width: 100%;
   margin-bottom: 15px;
+  font-size: 28px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 5.7vw;
 }
 .info-light-text{
   font-size: 12px;

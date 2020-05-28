@@ -77,7 +77,7 @@ const Market: React.FC = () => {
     let Market: any = useSelector<any>((state: any) => (state.firestore.data.Market))
     return (
         <IonPage>
-            <MarketHeader setShowModal={setShowModal} shop={shop} CartCounter={CartCounter}/>
+            <MarketHeader setShowModal={setShowModal} shop={Market || {}} CartCounter={CartCounter}/>
 
             <IonContent className="category" fullscreen>
                 <ShopHeaderWithProps Market={Market}/>
