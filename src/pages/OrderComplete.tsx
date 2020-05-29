@@ -1,5 +1,5 @@
 import React from "react";
-import { RootState, Invoice, CartItem } from "../model/DomainModels";
+import {RootState, Invoice, CartItem, Market} from "../model/DomainModels";
 import {
     IonPage,
     IonHeader,
@@ -21,16 +21,15 @@ import { closeOutline, readerOutline } from "ionicons/icons";
 import { useHistory, useParams, useLocation } from "react-router-dom";
 import { useFirestoreConnect, FirestoreReducer, isEmpty, isLoaded } from "react-redux-firebase";
 import CurrencyAmount from "../components/CurrencyAmount";
-import {GreenTick} from "../components/tick/GreenTick";
+import {GreenTick, DispatchIcon, DeliveryIcon} from "../components/tick/GreenTick";
+import {FirestoreIonImg} from "../services/FirebaseStorage";
 
 
 const OrderComplete: React.FC<CartState> = () => {
 
   const payment  = useLocation();
   const isPaymentSuccess = payment.search.indexOf("payment=success") > -1;
-  console.log({
-      isPaymentSuccess
-  })
+
   const { invoice_id } = useParams<{ invoice_id: string }>();
   const cartItems: Array<CartItem> = [];
   let invoice: Invoice = {} as Invoice;
@@ -39,10 +38,14 @@ const OrderComplete: React.FC<CartState> = () => {
     history.push("/");
   }
 
-  useFirestoreConnect([{ collection: "Invoices", doc: invoice_id, storeAs: "Invoice" }]);
-    let Invoice: any = useSelector<any>((state: any) => (state.firestore.data.Invoice))
-    let isLoading = true
-
+  useFirestoreConnect([
+      { collection: "Invoices", doc: invoice_id, storeAs: "Invoice" },
+      {collection: "Markets"}
+  ]);
+    let Invoice: any = useSelector<any>((state: any) => (state.firestore.data.Invoice));
+    let Markets: any = useSelector<any>((state: any) => (state.firestore.data.Markets));
+    let isLoading = true;
+    let market = {} as Market
 
   if (Invoice ) {
     isLoading = false
@@ -62,10 +65,16 @@ const OrderComplete: React.FC<CartState> = () => {
         cartItems.push(ele);
       }
     });
+    if(Markets){
+        market = Markets[Invoice.market_id];
+        // let Market: any = useSelector<any>((state: any) => (state.firestore.data.Markets[Invoice.market_id]));
+    }
+
   }
 
-  const address: any = invoice.address
+  const address: any = invoice.address;
 
+    console.log({Markets, market})
 
   return (
     <IonPage>
@@ -77,7 +86,7 @@ const OrderComplete: React.FC<CartState> = () => {
               isPaymentSuccess ? 'Order Completed' : 'View Order'
             }
           </IonTitle>
-          <IonButtons slot="end">
+          <IonButtons slot="end" className="toolbar-x">
             <IonButton onClick={closehandler}>
               <IonIcon
                 size="large"
@@ -116,7 +125,34 @@ const OrderComplete: React.FC<CartState> = () => {
                 </IonItem>
               </>
               :
-              <></>
+              <>
+                  <ul className="list-unstyled multi-steps">
+                      <li className="active">
+                          <GreenTick />
+                          <IonLabel color="primary"><p className='margin-0'>Confirmed</p></IonLabel>
+                      </li>
+                      <li className="active">
+                          <DispatchIcon />
+                          <IonLabel color="primary"><p className='margin-0'>Dispatched</p></IonLabel>
+                      </li>
+                      <li>
+                          <DeliveryIcon />
+                          <IonLabel ><p className='margin-0'>Delivered</p></IonLabel>
+                      </li>
+                  </ul>
+
+                  <IonItem lines="none">
+                      <IonButton className="btn-track-delivery" expand="block" onClick={() => history.push("/")}>Track Delivery</IonButton>
+                  </IonItem>
+                  <IonItem className="order_address m-t-10 text-center" lines="none">
+                      <IonText class="margin-0">Estimated Arrival:  {invoice.delivery_date}</IonText>
+                  </IonItem>
+                  <IonItem className="m-t-10" lines="none">
+                      <IonImg src={market.img_url} style={{width: 50}} />
+                      <IonLabel className="shop-header-title" color="secondary" style={{'text-align': 'left', 'margin-left': '15px','font-size': '28px'}}>{market.name || ''}</IonLabel>
+                  </IonItem>
+                  <IonItem className="m-t-10"></IonItem>
+              </>
         }
         <IonItem className="order_completed" lines="none">
           <IonLabel color="primary">
