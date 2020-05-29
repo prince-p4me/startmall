@@ -34,7 +34,7 @@ const Payment: React.FC = () => {
 
   const onPaymentInit = async () => {
     dispatch(blankCart());
-    history.push("/orders/" + invoice_id);
+    history.push(`/orders/${invoice_id}?payment=success`);
   };
 
   useEffect(() => {

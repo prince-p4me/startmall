@@ -98,6 +98,7 @@ export interface Schema {
 export interface Market {
   id: string;
   name: string;
+  [key: string]: string | number | [] | any | null;
 }
 
 // with both reducer types

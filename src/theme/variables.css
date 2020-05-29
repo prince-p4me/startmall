@@ -237,6 +237,11 @@ img {
   font-size: var(--fontsize-medium);
   height: 30px;
 }
+.shop_selection .skeleton-image, .shop_selection .skeleton-image-preview {
+  width: auto !important;
+  height: 250px !important;
+  margin: 15px;
+}
 
 .shope_item_listing {
   height: 80px;
@@ -464,11 +469,15 @@ ion-toolbar, ion-header {
   padding-top: 10% ;
 }
 .shop-header-title{
-  font-size: 33px;
   display: inline-block;
   text-align: right;
   width: 100%;
   margin-bottom: 15px;
+  font-size: 28px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 5.7vw;
 }
 .info-light-text{
   font-size: 12px;
@@ -482,4 +491,125 @@ ion-toolbar, ion-header {
   padding-right: 5px;
   color: #83cd07;
 
+}
+.margin-0{
+  margin: 0 !important;
+}
+.m-l-10{
+  margin-left: 10px;
+}
+.svg-img-icon{
+  width: 25px;
+  display: inline-block;
+  margin-right: 10px;
+}
+.m-r-10{margin-right: 10px;}
+.m-r-5{margin-right: 5px;}
+.m-t-10{margin-top: 10px;}
+.m-t-5{margin-top: 5px;}
+
+.green-tick-success{
+  text-align: center;
+  width: 50px;
+  display: inline-block;
+  background: #83cd0726;
+  border-radius: 50px;
+}
+.green-tick-success ion-img{
+  width: 20px;
+  margin: 15px auto;
+}
+.order_address ion-text{
+  width: 100%;
+}
+.btn-continue-shopping{
+  width: 90%;
+  margin: 40px auto;
+}
+.order-title{
+  width: 100%;
+  text-transform: uppercase;
+  text-align: center;
+}
+.toolbar-x{
+  display: inline-block;
+  position: absolute;
+  right: 0;
+}
+
+.btn-track-delivery{
+  width: 70%;
+  margin: 40px auto 0;
+  font-size: 17px;
+  height: 40px;
+  text-transform: none;
+}
+
+.multi-steps > li.is-active:before, .multi-steps > li.is-active ~ li:before {
+  font-family: inherit;
+  font-weight: 700;
+}
+.multi-steps > li.is-active:after, .multi-steps > li.is-active ~ li:after {
+  background-color: #ededed;
+}
+
+.multi-steps {
+  display: table;
+  table-layout: fixed;
+  width: 320px;
+  margin: 20px auto;
+  padding: 0;
+}
+.multi-steps > li {
+  text-align: center;
+  display: table-cell;
+  position: relative;
+  color: gray
+}
+
+.multi-steps > li:before {
+  content: '';
+  height: 0px;
+  width: 50%;
+  position: absolute;
+  top: 23px;
+  right: 73%;
+  border-bottom: 2px dashed #949393;
+}
+.multi-steps > li:first-child:after {
+  display: none;
+}
+
+.multi-steps .green-tick-success{
+  position: relative;
+  /*top: -53px;*/
+}
+
+.multi-steps > li:first-child:before {
+  display: none;
+}
+.multi-steps > li .green-tick-success {
+  background: #0a0a0a26;
+  filter: grayscale(100%);
+}
+.multi-steps > li.active .green-tick-success {
+  background: #83cd0726;
+  filter: grayscale(0%);
+}
+.multi-steps > li.active:before {
+  border-color: #1e974a;
+}
+.multi-steps > li.is-active:before {
+  background-color: #fff;
+}
+.multi-steps > li.is-active ~ li {
+  color: #808080;
+}
+.multi-steps > li.is-active ~ li:before {
+  background-color: #ededed;
+  border-color: #ededed;
+}
+
+.text-center{
+  text-align: center;
 }

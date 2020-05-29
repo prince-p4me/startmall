@@ -48,7 +48,7 @@ const Market: React.FC = () => {
                     collection: "Categories"
                 }
             ],
-            storeAs: "Categories"
+            storeAs: "Category"
         }
     ]);
     const doneLoading = () => {
@@ -75,9 +75,21 @@ const Market: React.FC = () => {
 
     const [CartCounter] = useState<React.ElementType>(connect(mapStateToProps)(CartBadge));
     let Market: any = useSelector<any>((state: any) => (state.firestore.data.Market))
+    let CategoryTmp: any = useSelector<any>((state: any) => (state.firestore.data.Category))
+
+    const Categories: any = []
+    for(const k in CategoryTmp) {
+        if(CategoryTmp[k] && !CategoryTmp[k].is_deleted){
+            Categories.push({
+                id: k,
+                ...CategoryTmp[k]
+            })
+        }
+
+    }
     return (
         <IonPage>
-            <MarketHeader setShowModal={setShowModal} shop={shop} CartCounter={CartCounter}/>
+            <MarketHeader setShowModal={setShowModal} shop={Market || {}} CartCounter={CartCounter}/>
 
             <IonContent className="category" fullscreen>
                 <ShopHeaderWithProps Market={Market}/>
@@ -133,14 +145,11 @@ const Market: React.FC = () => {
                                 </>
                                 :
                                 <>
-                                    {stateStore.ordered.Categories &&
-                                    stateStore.ordered.Categories.length > 0 ? (
-                                        stateStore.ordered.Categories.map((obj, index) => {
-                                            if (obj.is_deleted) {
-                                                return <span key={index}></span>;
-                                            }
+                                    {Categories &&
+                                    Categories.length > 0 ? (
+                                        Categories.map((obj: any) => {
                                             return (
-                                                <IonCol key={index}>
+                                                <IonCol key={obj.id}>
                                                     <CategoryItem market_id={market_id} category={obj} shop={shop}/>
                                                 </IonCol>
                                             );

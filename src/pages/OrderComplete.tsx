@@ -1,69 +1,57 @@
 import React from "react";
-import { RootState, Invoice, CartItem } from "../model/DomainModels";
+import {RootState, Invoice, CartItem, Market} from "../model/DomainModels";
 import {
-  IonPage,
-  IonHeader,
-  IonContent,
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonLabel,
-  IonItem,
-  IonToolbar,
-  IonButtons,
-  IonButton,
-  IonIcon,
-  IonFooter,
+    IonPage,
+    IonHeader,
+    IonContent,
+    IonGrid,
+    IonRow,
+    IonCol,
+    IonLabel,
+    IonItem,
+    IonToolbar,
+    IonButtons,
+    IonButton,
+    IonIcon,
+    IonImg, IonText, IonTitle, IonLoading
 } from "@ionic/react";
 import { CartState } from "../services/FirebaseIniti";
 import { connect, useSelector } from "react-redux";
-import { closeOutline } from "ionicons/icons";
-import { useHistory, useParams } from "react-router-dom";
-import { useFirestoreConnect, FirestoreReducer } from "react-redux-firebase";
+import { closeOutline, readerOutline } from "ionicons/icons";
+import { useHistory, useParams, useLocation } from "react-router-dom";
+import { useFirestoreConnect, FirestoreReducer, isEmpty, isLoaded } from "react-redux-firebase";
 import CurrencyAmount from "../components/CurrencyAmount";
+import {GreenTick, DispatchIcon, DeliveryIcon} from "../components/tick/GreenTick";
+import {FirestoreIonImg} from "../services/FirebaseStorage";
 
 
 const OrderComplete: React.FC<CartState> = () => {
+
+  const payment  = useLocation();
+  const isPaymentSuccess = payment.search.indexOf("payment=success") > -1;
 
   const { invoice_id } = useParams<{ invoice_id: string }>();
   const cartItems: Array<CartItem> = [];
   let invoice: Invoice = {} as Invoice;
   let history = useHistory();
-  // for (var cartlistitemqty in cartListWithQty) {
-  //   cartListArray.push(cartListWithQty[cartlistitemqty]);
-  //   console.log(cartlistitemqty);
-  // }
   function closehandler() {
     history.push("/");
   }
 
-  useFirestoreConnect([{ collection: "Invoices", doc: invoice_id, storeAs: "Invoice" }]);
+  useFirestoreConnect([
+      { collection: "Invoices", doc: invoice_id, storeAs: "Invoice" },
+      {collection: "Markets"}
+  ]);
+    let Invoice: any = useSelector<any>((state: any) => (state.firestore.data.Invoice));
+    let Markets: any = useSelector<any>((state: any) => (state.firestore.data.Markets));
+    let isLoading = true;
+    let market = {} as Market
 
-  const invoiceStore = useSelector<RootState>(
-    state => state.firestore
-  ) as FirestoreReducer.Reducer;
-
-
-  // setInvoice(invoice.ordered.Invoice[0])
-  console.log("INVOICE: " + invoice_id);
-  // console.log(JSON.stringify(invoice.ordered.Invoice[0]));
-
-  if (invoiceStore.ordered.Invoice && invoiceStore.ordered.Invoice.length > 0) {
-    // setInvoice(invoiceStore.ordered.Invoice[0])
-    invoice = invoiceStore.ordered.Invoice[0]
+  if (Invoice ) {
+    isLoading = false
+    invoice = Invoice
     invoice.cart_items.forEach(element => {
-      let ele = { ...element, qty: 1, img_url: "" }
-      // ele.map((updateItem:CartItem) => ({
-      //   ...updateItem,
-      //   qty: 1
-      // }));
-      // let ele:CartItem = {} as CartItem
-      // ele.name = element.name;
-      // ele.qty = 1;
-      // ele.unit_price = element.unit_price;
-      // ele.img_url = element.img_url;
-      // ele.unit = element.unit;
-      // ele.id = element.id;
+      let ele = { img_url: "", ...element, qty: 1 }
 
       let item = cartItems.filter(function (item: CartItem) {
         return item.id === element.id;
@@ -77,21 +65,28 @@ const OrderComplete: React.FC<CartState> = () => {
         cartItems.push(ele);
       }
     });
-    console.log("ITEMS:" + JSON.stringify(cartItems));
+    if(Markets){
+        market = Markets[Invoice.market_id];
+        // let Market: any = useSelector<any>((state: any) => (state.firestore.data.Markets[Invoice.market_id]));
+    }
 
-    // for (var item in invoice.cart_items) {
-
-    //   cartItems.push(invoice.cart_items[item]);
-    //   console.log(cartItems);
-    // }
   }
 
+  const address: any = invoice.address;
+
+    console.log({Markets, market})
 
   return (
     <IonPage>
+        <IonLoading isOpen={isLoading} message={"Please wait..."} />
       <IonHeader>
         <IonToolbar>
-          <IonButtons slot="end">
+          <IonTitle size="large" class="order-title">
+            {
+              isPaymentSuccess ? 'Order Completed' : 'View Order'
+            }
+          </IonTitle>
+          <IonButtons slot="end" className="toolbar-x">
             <IonButton onClick={closehandler}>
               <IonIcon
                 size="large"
@@ -105,52 +100,79 @@ const OrderComplete: React.FC<CartState> = () => {
       </IonHeader>
 
       <IonContent>
-        <IonItem className="order_cutoff" lines="none" >
-        <span >
-          {invoice.delivery_terms}
-          </span>
-        </IonItem>
+
+        {
+          isPaymentSuccess ?
+              <>
+                <IonItem className="order_cutoff" lines="none" >
+                    <span >{invoice.delivery_terms}</span>
+                </IonItem>
+                <IonItem className="order_completed" lines="none">
+                  <IonLabel>
+                    <GreenTick />
+                  </IonLabel>
+                </IonItem>
+                <IonItem className="order_cutoff" lines="none">
+                  <IonLabel>
+                    <b>{"INV: " + invoice_id}</b>
+                  </IonLabel>
+                </IonItem>
+                <IonItem className="order_completed">
+                  <p>
+                    We are processing your order at the moment. You will receieve the
+                    order confirmation from us shortly.
+                  </p>
+                </IonItem>
+              </>
+              :
+              <>
+                  <ul className="list-unstyled multi-steps">
+                      <li className="active">
+                          <GreenTick />
+                          <IonLabel color="primary"><p className='margin-0'>Confirmed</p></IonLabel>
+                      </li>
+                      <li className="active">
+                          <DispatchIcon />
+                          <IonLabel color="primary"><p className='margin-0'>Dispatched</p></IonLabel>
+                      </li>
+                      <li>
+                          <DeliveryIcon />
+                          <IonLabel ><p className='margin-0'>Delivered</p></IonLabel>
+                      </li>
+                  </ul>
+
+                  <IonItem lines="none">
+                      <IonButton className="btn-track-delivery" expand="block" onClick={() => history.push("/")}>Track Delivery</IonButton>
+                  </IonItem>
+                  <IonItem className="order_address m-t-10 text-center" lines="none">
+                      <IonText class="margin-0">Estimated Arrival:  {invoice.delivery_date}</IonText>
+                  </IonItem>
+                  <IonItem className="m-t-10" lines="none">
+                      <IonImg src={market.img_url} style={{width: 50}} />
+                      <IonLabel className="shop-header-title" color="secondary" style={{'text-align': 'left', 'margin-left': '15px','font-size': '28px'}}>{market.name || ''}</IonLabel>
+                  </IonItem>
+                  <IonItem className="m-t-10"></IonItem>
+              </>
+        }
         <IonItem className="order_completed" lines="none">
-          <IonLabel>
-            <b>Order Completed</b>
+          <IonLabel color="primary">
+            <IonIcon
+                className="m-r-5"
+                slot="start"
+                icon={readerOutline}
+            />
+            Order Summary
           </IonLabel>
         </IonItem>
-        <IonItem className="order_cutoff" lines="none">
-          {/* {invoice.cut_off_terms} */}
-          <IonLabel>
-            <b>{"Inv: " + invoice_id}</b>
-          </IonLabel>
-        </IonItem>
-        <IonItem className="order_completed">
-          <p>
-            We are processing your order at the moment. You will receieve the
-            order confirmation from us shortly.
-          </p>
-        </IonItem>
-        {/* <IonCard className="complete_order_card">
-          <IonCardContent> */}
         <IonGrid >
           <IonRow>
             <IonCol size="5" ><IonItem lines="none"></IonItem></IonCol>
             <IonCol size="2.5" ><IonItem text-center lines="none">Qty</IonItem></IonCol>
             <IonCol size="3.5" text-center><IonItem text-center lines="none">Total</IonItem></IonCol>
           </IonRow>
-          {/* {cartListArray.map(cartWithQty => {
-            return (
-              <IonRow>
-                <IonCol size="4">
-                  <IonItem lines="none">{cartWithQty.item.name}</IonItem>
-                </IonCol>
-                <IonCol size="3">{cartWithQty.count}</IonCol>
-                <IonCol size="2">
-                  <IonItem lines="none">${cartWithQty.item.unit_price}</IonItem>
-                </IonCol>
-              </IonRow>
-            );
-          })} */}
           {cartItems.map(item => {
             return (
-              <IonRow>
+              <IonRow key={item.id}>
                 <IonCol size="5" >
                   <IonItem lines="none">{item.name}</IonItem>
                 </IonCol>
@@ -162,14 +184,56 @@ const OrderComplete: React.FC<CartState> = () => {
             );
           })}
         </IonGrid>
-        {/* </IonCardContent>
-        </IonCard> */}
-        <IonItem></IonItem>
-        <IonItem className="total_cart" lines="none">Total incl GST <CurrencyAmount amount={invoice.total_amount} /></IonItem>
+        <IonItem />
+        <IonRow >
+          <IonCol size="7.5" >
+            <IonItem lines="none"><IonLabel class="ion-text-right">Total incl GST</IonLabel></IonItem>
+          </IonCol>
+          <IonCol size="3.5" >
+            <IonItem lines="none"><IonLabel><CurrencyAmount amount={invoice.total_amount} /></IonLabel></IonItem>
+          </IonCol>
+        </IonRow>
+
+        {
+          address ?
+              <>
+                <IonItem className="order_completed" lines="none">
+
+                  <IonLabel color="primary">
+                    <IonImg src="/assets/icon/1x/SVG/delivery.svg" class="svg-img-icon" />
+                    Delivery Details
+                  </IonLabel>
+                </IonItem>
+                <IonItem className="order_address" lines="none">
+                  <IonText class="margin-0">{address.name}</IonText> <br />
+                </IonItem>
+                <IonItem className="order_address" lines="none">
+                  <IonText class="margin-0">{address.address1}</IonText>
+                </IonItem>
+                { address.address2? <IonItem className="order_address" lines="none"><IonLabel class="margin-0">{}</IonLabel></IonItem>: <></> }
+                <IonItem className="order_address" lines="none">
+                  <IonText class="margin-0">{address.state}   {address.postcode}</IonText>
+                </IonItem>
+                <IonItem className="order_address" lines="none">
+                  <IonText class="margin-0">Mobile:  {address.phone}</IonText>
+                </IonItem>
+
+                <IonItem className="order_address" lines="none" />
+                <IonItem className="order_address" lines="none">
+                  <IonText class="margin-0">Order Date:  {invoice.order_date}</IonText>
+                </IonItem>
+                <IonItem className="order_address" lines="none">
+                  <IonText class="margin-0">Estimated Arrival:  {invoice.delivery_date}</IonText>
+                </IonItem>
+              </>
+              :
+              <></>
+        }
+
+        <IonButton className="btn-continue-shopping" expand="block" onClick={() => history.push("/")}>Continue Shopping</IonButton>
       </IonContent>
-      <IonFooter>
-        <IonButton expand="full" onClick={() => history.push("/")}>Continue Shopping</IonButton>
-      </IonFooter>
+
+
     </IonPage>
   );
 };
