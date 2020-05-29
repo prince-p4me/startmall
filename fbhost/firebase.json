@@ -21,6 +21,10 @@
       {
         "source": "/.well-known/apple-app-site-association",
         "headers": [{"key": "Content-Type", "value": "application/json"}]
+      },
+      {
+        "source": "/.well-known/apple-developer-merchantid-domain-association",
+        "headers": [{"key": "Content-Disposition", "value": "attachment"}]
       }
     ],
     "appAssociation": "NONE"

@@ -108,7 +108,7 @@ const Menu: React.FC = () => {
 
   useEffect(() => {
     if (isLoaded(auth) && !isEmpty(auth)) {
-      console.clear();
+      // console.clear();
       // console.log("User Logged in and user is:==" + JSON.stringify(auth));
       // history.push("/");
     }

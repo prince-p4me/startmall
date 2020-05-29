@@ -38,15 +38,16 @@ const Login: React.FC = () => {
   // const [errorMessage, setErrorMessage] = useState("");
   const [errorProps, setErrorProps] = useState<ErrorProps>({} as ErrorProps);
 
-
-  firebase.auth().onAuthStateChanged(function (user) {
-    console.log("Login State changes");
-    console.log(user);
-    if (isLoaded(auth) && !isEmpty(auth)) {
-      console.log("User Logged in");
-      writeUserData(auth);
-    }
-  });
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged(function (user) {
+      console.log("Login State changes");
+      console.log(user);
+      if (isLoaded(auth) && !isEmpty(auth)) {
+        console.log("User Logged in");
+        writeUserData(auth);
+      }
+    });
+  }, []);
 
   function writeUserData(auth1: any) {
     let auth2 = JSON.parse(JSON.stringify(auth1));
@@ -83,7 +84,7 @@ const Login: React.FC = () => {
     console.log(
       "platfprms " + getPlatforms() + " platform is" + isPlatform("ios")
     );
-    if (!isPlatform("ios") || isPlatform("mobileweb")) {
+    if (isPlatform("mobileweb")) {
       console.log("Google Web login start");
       return firebase
         .login({ provider: "google", type: "popup" })
@@ -104,7 +105,18 @@ const Login: React.FC = () => {
 
         });
     } else {
-      return GooglePlus.login({})
+      let params;
+      if (isPlatform('android')) {
+        params = {
+          'webClientId': '326027994327-2nsvt882h4uvqasghfopj5iivd22fj2s.apps.googleusercontent.com',
+          'offline': true
+        }
+      }
+      else {
+        params = {}
+      }
+      console.log(params);
+      return GooglePlus.login(params)
         .then(res => {
           firebase.auth().signInWithCredential(
             firebaseInstace.auth.GoogleAuthProvider.credential(res.idToken)
@@ -114,6 +126,7 @@ const Login: React.FC = () => {
             console.log("Firebase success: " + JSON.stringify(success));
           })
             .catch(error => {
+              console.log('mobile google login error =====', error)
               setShowLoading(false);
               setErrorProps({
                 message: "Something Wrong with Google login. Please try again later",
@@ -125,6 +138,7 @@ const Login: React.FC = () => {
             });
         })
         .catch(err => {
+          console.log('mobile google login err =====', err.message);
           setShowLoading(false);
           setErrorProps({
             message: "Something Wrong with Google login. Please try again later",
@@ -147,7 +161,7 @@ const Login: React.FC = () => {
     console.log(
       "platfprms " + getPlatforms() + " platform is" + isPlatform("ios")
     );
-    if (!isPlatform("ios") || isPlatform("mobileweb")) {
+    if (isPlatform("mobileweb")) {
       console.log("Facebook Web login start");
       return firebase
         .login({ provider: "facebook", type: "popup" })
