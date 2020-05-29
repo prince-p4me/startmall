@@ -23,7 +23,7 @@ import {
 } from "ionicons/icons";
 import "./Menu.css";
 import { AppPage, RootState } from "../model/DomainModels";
-import { useFirebase, isLoaded, isEmpty } from "react-redux-firebase";
+import { useFirebase, isLoaded, isEmpty, useFirestoreConnect, FirestoreReducer } from "react-redux-firebase";
 import { useSelector, useDispatch } from "react-redux";
 import { UserInfo } from "@firebase/auth-types";
 import { isPlatform, menuController } from "@ionic/core";
@@ -38,19 +38,22 @@ const appPages: AppPage[] = [
     title: "My Profile",
     url: "/page/MyProfile",
     iosIcon: rocketOutline,
-    mdIcon: rocketOutline
+    mdIcon: rocketOutline,
+    slug : 'my-profile'
   },
   {
     title: "WishList",
     url: "/wishlist",
     iosIcon: heartOutline,
-    mdIcon: heartOutline
+    mdIcon: heartOutline,
+    slug : 'wishList'
   },
   {
     title: "Check Out",
     url: "/page/checkout",
     iosIcon: rocketOutline,
-    mdIcon: rocketOutline
+    mdIcon: rocketOutline,
+    slug : 'checkout'
   }
 
   // {
@@ -106,6 +109,14 @@ const Menu: React.FC = () => {
 
   const isWeb = !isPlatform("ios") || isPlatform("mobileweb");
 
+  useFirestoreConnect([
+    { collection: 'Users', doc: auth.uid }
+  ]);
+
+  const stateStore = useSelector<RootState>(
+      state => state.firestore
+  ) as FirestoreReducer.Reducer;
+
   useEffect(() => {
     if (isLoaded(auth) && !isEmpty(auth)) {
       // console.clear();
@@ -117,13 +128,28 @@ const Menu: React.FC = () => {
     StatusBar.styleDefault();
   }, [auth, auth.photoURL]);
 
-  function handleSignOut() {
+  const handleSignOut = () => {
     setUserPhoto("");
     dispatch(blankCart());
     firebase.logout().then(() => {
       history.push("/");
     });
   }
+
+  const isPageHasPermission = (appPage : AppPage) => {
+    if(appPage.slug === 'my-profile') {
+      if(isLoaded(auth) && !isEmpty(auth)) {
+        if(stateStore.ordered.Users && stateStore.ordered?.Users[0]?.roles?.indexOf('admin') === -1) {
+          return true;
+        }
+        return false;
+      } else {
+        return true;
+      }
+    }
+    return false;
+  };
+
   return (
     <IonMenu contentId="main" type="overlay" side="end">
       <IonContent className={'ion-margin-top'}>
@@ -137,6 +163,7 @@ const Menu: React.FC = () => {
           <IonNote>{auth.email}</IonNote>
           {appPages.map((appPage, index) => {
             return (
+                isPageHasPermission(appPage) ? <div key={index}></div> :
               <IonMenuToggle key={index} autoHide={false}>
                 <IonItem
                   className={
@@ -163,7 +190,7 @@ const Menu: React.FC = () => {
           <IonItem lines="none">
             <IonIcon slot="start" icon={nutritionOutline}></IonIcon>
             <IonLabel>
-              <a href="https://startmall-admin.web.app">Owner App </a>
+              <a className={'router-link'} href="https://startmall-admin.web.app">Owner App </a>
             </IonLabel>
           </IonItem>
           {
@@ -171,7 +198,7 @@ const Menu: React.FC = () => {
             <IonItem lines="none">
               <IonIcon slot="start" icon={nutritionOutline}></IonIcon>
               <IonLabel>
-                <a href="startmall://startmall.web.app/tabs/market/FtSvVlEa4G4xHduMnf2l">smartmall deeplink </a>
+                <a className={'router-link'} href="startmall://startmall.web.app/tabs/market/FtSvVlEa4G4xHduMnf2l">smartmall deeplink </a>
               </IonLabel>
             </IonItem>
           }

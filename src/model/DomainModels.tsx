@@ -25,6 +25,7 @@ export interface AppPage {
   iosIcon: string;
   mdIcon: string;
   title: string;
+  slug?: string;
 }
 
 export interface IFeed {

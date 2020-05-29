@@ -98,7 +98,7 @@ const Dashboard: React.FC = () => {
           <IonImg
             class="footer_pay"
             slot="start"
-            src="/assets/icon/1x/payment.png"
+            src="/assets/icon/payment-method.png"
           ></IonImg>
           <IonButton slot="end"> Order now </IonButton>
         </IonItem>

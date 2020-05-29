@@ -111,3 +111,8 @@ ion-note {
 ion-item.selected {
   --color: var(--ion-color-primary);
 } 
+
+.router-link {
+  color: #000;
+  text-decoration: none;
+}

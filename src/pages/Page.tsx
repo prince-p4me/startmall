@@ -163,7 +163,7 @@ const Page: React.FC = () => {
           .firestore()
           .collection("Markets")
           .doc(targetID)
-          .update({ ...snapshot.data() })
+          .update({ ...snapshot.data(), id: targetID })
           .then(result => {
             console.log("update successfully");
             console.log(result);
@@ -176,7 +176,7 @@ const Page: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonButtons slot="start">
+          <IonButtons slot="end">
             <IonMenuButton />
           </IonButtons>
           <IonTitle>{name}</IonTitle>
@@ -185,15 +185,11 @@ const Page: React.FC = () => {
       {/* <FirestoreIonImg src="gs://slashiee.appspot.com/hifresh/categories/y2637HMBAxuFpC89igEL/organic_apple.png" /> */}
       <IonContent>
         {/* <Test doc={doc_id} market={market} /> */}
-        <IonButton onClick={CreateMarket}>Test Creat Market</IonButton>
-        <IonButton onClick={copyMarkets}>Copy HiFresh Market</IonButton>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">{name}</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <IonButton onClick={googleLoginHandler}> Google Login </IonButton>
-        <ExploreContainer name={name} />
+        <div className={'page-container'}>
+          <IonButton expand="block" size="large" onClick={CreateMarket}>Test Creat Market</IonButton>
+          <br/>
+          <IonButton expand="block" size="large" onClick={copyMarkets}>Copy HiFresh Market</IonButton>
+        </div>
       </IonContent>
     </IonPage>
   );

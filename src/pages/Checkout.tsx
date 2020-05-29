@@ -1,4 +1,4 @@
-import { IonContent, IonPage, IonHeader, IonButton, IonToolbar, IonButtons, IonIcon, IonLabel, IonCheckbox, IonItem, IonImg, IonLoading, IonTitle } from "@ionic/react";
+import { IonContent, IonPage, IonHeader, IonButton, IonToolbar, IonButtons, IonIcon, IonLabel, IonCheckbox, IonItem, IonImg, IonLoading, IonTitle, useIonViewDidEnter } from "@ionic/react";
 import React, { useState, useEffect } from "react";
 import { connect, useSelector, useDispatch } from "react-redux";
 import ItemList from "../components/ItemList";
@@ -43,6 +43,10 @@ const Checkout: React.FC<CheckoutProps> = () => {
     }
   });
 
+  useIonViewDidEnter(() => {
+    setAggreement(false);
+  });
+
   const [shopState, setShop] = useState<ShopStateType>({
     shop: {
       id: "",
@@ -58,7 +62,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
     }
   });
 
-  function mapStateToProps(state: CartState) {
+  const mapStateToProps = (state: CartState) => {
     const { firebase, cart, shop } = state;
     setCartState(cart);
     setShop(shop);
@@ -73,7 +77,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
 
   // const AddressComponent = connect(mapStateToProps)(Address);
 
-  async function writeUserData(my_auth: any): Promise<void> {
+  const writeUserData = async (my_auth: any) => {
     let today = new Date();
     let json_auth = JSON.parse(JSON.stringify(my_auth));
     let user: ProfileData = {
@@ -204,7 +208,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
     }
   };
 
-  async function fetchData() {
+  const fetchData = async () => {
     let json_auth = JSON.parse(JSON.stringify(auth));
     if(!json_auth.uid){
       return
@@ -226,6 +230,12 @@ const Checkout: React.FC<CheckoutProps> = () => {
         if (user.address.phone) {
           data.phone = user.address.phone;
           data.isValidNumber = true;
+        }
+        if (user.address.suburb) {
+          data.suburb = user.address.suburb;
+        }
+        if (user.address.postcode) {
+          data.postcode = user.address.postcode;
         }
         setAddress(data);
       } else {
@@ -256,7 +266,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
     StatusBar.styleDefault();
   }, [auth]);
 
-  const closehandler = async () => {
+  const closeHandler = async () => {
     history.goBack();
   };
 
@@ -265,7 +275,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
       <IonHeader>
         <IonToolbar color="secondary">
           <IonButtons slot="end">
-            <IonButton onClick={closehandler}>
+            <IonButton onClick={closeHandler}>
               <IonIcon
                 size="large"
                 slot="icon-only"
@@ -313,7 +323,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
         </IonItem>
         <IonItem lines="none">
           <IonButtons slot="end">
-            <IonButton color="secondary" fill="solid" onClick={handleComplete}>
+            <IonButton color="secondary" fill="solid" onClick={handleComplete} disabled={cartState.cartItemList.length === 0}>
               Proceed to Payment
             </IonButton>
           </IonButtons>

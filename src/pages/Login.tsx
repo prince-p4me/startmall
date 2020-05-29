@@ -49,7 +49,7 @@ const Login: React.FC = () => {
     });
   }, []);
 
-  function writeUserData(auth1: any) {
+  const writeUserData = (auth1: any) => {
     let auth2 = JSON.parse(JSON.stringify(auth1));
     db.collection("Users")
       .doc(auth2.uid)
@@ -61,7 +61,8 @@ const Login: React.FC = () => {
         address: {},
         photo_url: auth2.photoURL, //photoURL we get from firebase.auth() when sign in completed
         user_id: auth2.uid, // uid  we get from firebase.auth() when sign in completed
-        email: auth2.email
+        email: auth2.email,
+        role:['user']
       });
   }
 
