@@ -7,6 +7,7 @@ import { createFirestoreInstance, firestoreReducer } from 'redux-firestore' // <
 import firebase from 'firebase';
 import { RootState } from '../model/DomainModels';
 import { cartReducer, shopReducer } from '../reducers/Cart';
+import { invoiceReducer } from '../reducers/Invoices';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCQyvVWaa4R-FxZ05zGSktssnKtwGtRLa8",
@@ -42,7 +43,8 @@ const rootReducer = combineReducers<RootState>({
   firebase: firebaseReducer,
   firestore: firestoreReducer as any,
   cart: cartReducer,
-  shop: shopReducer
+  shop: shopReducer,
+  invoice: invoiceReducer
 })
 
 const localReducer = combineReducers({

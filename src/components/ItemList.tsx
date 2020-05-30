@@ -47,10 +47,10 @@ const ItemList: React.FC<CartState> = ({ cart }) => {
     console.log(cartlistitemqty);
   }
   function addCart(cartItem: ItemObj) {
-    dispatch(addCartAction(cartItem));
+    dispatch(addCartAction(cartItem, cart.cart.marketId));
   }
   function delCart(cartItem: ItemObj) {
-    dispatch(delCartAction(cartItem));
+    dispatch(delCartAction(cartItem, cart.cart.marketId), );
   }
 
   return (
@@ -69,7 +69,7 @@ const ItemList: React.FC<CartState> = ({ cart }) => {
                 size="small"
                 fill="clear"
                 onClick={() => {
-                  dispatch(delItemGroup(cartWithQty.item));
+                  dispatch(delItemGroup(cartWithQty.item, cart.cart.marketId));
                 }}
               >
                 <IonIcon slot="icon-only" color="danger" icon={closeOutline} />

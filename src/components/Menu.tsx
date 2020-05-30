@@ -117,6 +117,10 @@ const Menu: React.FC = () => {
       state => state.firestore
   ) as FirestoreReducer.Reducer;
 
+  const Invoices = useSelector<RootState>(
+      state => state.invoice.Invoices
+  ) as []
+
   useEffect(() => {
     if (isLoaded(auth) && !isEmpty(auth)) {
       // console.clear();
@@ -149,6 +153,11 @@ const Menu: React.FC = () => {
     }
     return false;
   };
+
+  const redirectToOrder = (order: any) => {
+    //routerLink={`/orders/${label.id}`}
+    history.push(`/orders/${order.id}`);
+  }
 
   return (
     <IonMenu contentId="main" type="overlay" side="end">
@@ -206,11 +215,13 @@ const Menu: React.FC = () => {
 
         <IonList id="labels-list">
           <IonListHeader>Previous Orders</IonListHeader>
-          {labels.map((label, index) => (
-            <IonItem lines="none" key={index}>
-              <IonIcon slot="start" icon={bookmarkOutline} />
-              <IonLabel>{label}</IonLabel>
-            </IonItem>
+          {Invoices.map((invoice: any) => (
+              <IonMenuToggle key={invoice.id}>
+                <IonItem lines="none" routerLink={`/orders/${invoice.id}`} routerDirection="none" detail={false}>
+                  <IonIcon slot="start" icon={bookmarkOutline} />
+                  <IonLabel>{invoice.id}</IonLabel>
+                </IonItem>
+              </IonMenuToggle>
           ))}
         </IonList>
         <IonFooter onClick={async () => await menuController.toggle()}>

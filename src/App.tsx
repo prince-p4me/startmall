@@ -49,13 +49,15 @@ import ShopSelection from "./pages/ShopSelection";
 import FavoriteMarkets from "./pages/FavoriteMarkets";
 import MarketItems from "./containers/MarketItems";
 import Market from "./containers/Market";
-import { cartSharp, happy, heartCircle, informationCircle } from "ionicons/icons";
-import { isEmpty, isLoaded }  from "react-redux-firebase";
+import {cartSharp, happy, heart, heartCircle, heartOutline, informationCircle} from "ionicons/icons";
+import {isEmpty, isLoaded, useFirebase} from "react-redux-firebase";
 import { UserInfo } from "firebase";
-import {connect, useSelector} from "react-redux";
+import {connect, useDispatch, useSelector} from "react-redux";
 import { RootState } from "./model/DomainModels";
 import { CartState } from "./services/FirebaseIniti";
 import Cart from "./pages/Cart";
+
+import {listInvoices} from './reducers/InvoicesAction'
 
 const { App: CapApp } = Plugins;
 const stripePromise = loadStripe('pk_test_YC0gcyGppNgDEzsD5FxBzPXJ00nUQJqCvw');
@@ -88,6 +90,8 @@ const App: React.FC = () => {
     StatusBar.styleDefault();
   }, []);
 
+  const db = useFirebase().firestore();
+  const dispatch = useDispatch();
   const auth: UserInfo = useSelector<RootState>(
       state => state.firebase.auth
   ) as UserInfo;
@@ -106,6 +110,23 @@ const App: React.FC = () => {
     return { firebase, cart, shop };
   }
   const [ CartCounter ] = useState<React.ElementType>(connect(mapStateToProps)(CartBadge));
+
+  if(auth && auth.uid){
+    const docRef = db.collection("Invoices");
+    docRef.where('user_id', '==', auth.uid).get().then(function (snapshot) {
+      if (snapshot.size < 0) {
+        dispatch(listInvoices([]))
+      } else {
+        const tmp: any = []
+        snapshot.forEach(doc => {
+          tmp.push({ ...doc.data(), id: doc.id,})
+        })
+        dispatch(listInvoices(tmp))
+      }
+    }).catch(function (error) {
+      console.log("Error getting document:", error);
+    });
+  }
 
   console.log("entering app");
   return (

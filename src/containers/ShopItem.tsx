@@ -67,7 +67,7 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
   }
 
   function addCart(item: ItemObj) {
-    dispatch(addCartAction(item));
+    dispatch(addCartAction(item, market_id));
   }
 
   const checkFavorite = (writing: boolean) => {
