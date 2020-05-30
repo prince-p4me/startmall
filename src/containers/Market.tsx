@@ -14,7 +14,7 @@ import "./Market.css";
 import {connect, useSelector} from "react-redux";
 import CategoryItem from "./CategoryItem";
 import ShopHeaderWithProps from "../components/ShopHeaderWithProps";
-import {useFirestoreConnect, FirestoreReducer} from "react-redux-firebase";
+import {useFirestoreConnect, FirestoreReducer, isLoaded, isEmpty} from "react-redux-firebase";
 import {useParams} from "react-router";
 import {RootState, Markets} from "../model/DomainModels";
 import {CartState} from "../services/FirebaseIniti";
@@ -27,7 +27,7 @@ const Market: React.FC = () => {
     const {market_id} = useParams<{ market_id: string }>();
     var shop = {} as Markets;
     const [showModal, setShowModal] = useState(false);
-    const [loading, setLoading] = useState(true);
+    let [loading, setLoading] = useState(true);
 
     const CartBadge: React.FC<CartState> = ({cart}) => {
         const cartSize = cart.cartItemList.length;
@@ -86,6 +86,10 @@ const Market: React.FC = () => {
             })
         }
 
+    }
+    if (!isLoaded(Market) || loading) {
+        loading = true;
+        Market = null;
     }
     return (
         <IonPage>

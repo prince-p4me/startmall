@@ -13,5 +13,9 @@
     "showSpinner": false,
     "splashFullScreen": true,
     "splashImmersive": false
+  },
+  "server": {
+    "url": "http://localhost:8100",
+    "cleartext": true
   }
 }
