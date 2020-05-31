@@ -86,6 +86,51 @@ const Page: React.FC = () => {
   //   }))
   // )(Test);
 
+  function UpdateShopAttributes() {
+    firebase
+      .firestore()
+      .collection("Markets")
+      .doc("0YlPeyyRPpZaMtI1aNOx")
+      .collection("Categories")
+      // .where("img_url", "<=", "")
+      .get()
+      .then(snapshot => {
+        if (!snapshot) {
+          console.log("there are no data for your query");
+        }
+        console.log(snapshot);
+        snapshot.forEach(doc => {
+          console.log(doc.data());
+          var category_id = doc.id;
+          firebase
+            .firestore()
+            .collection("Markets")
+            .doc("0YlPeyyRPpZaMtI1aNOx")
+            .collection("Categories")
+            .doc(doc.id)
+            .collection("Items")
+            .get()
+            .then(items => {
+              console.log(items);
+              items.forEach(doc => {
+                console.log(doc.data());
+                firebase
+                  .firestore()
+                  .collection("Markets")
+                  .doc("0YlPeyyRPpZaMtI1aNOx")
+                  .collection("Categories")
+                  .doc(category_id)
+                  .collection("Items")
+                  .doc(doc.id)
+                  .update({ unit: "each", is_deleted: false })
+                  .then(result =>console.log("Update successfully:" + result) );
+              });
+            })
+            .catch(error => console.log("Erro while data patching : " + error));
+        });
+      });
+  }
+
   function CleanMarket() {
     console.log("YOU HAVE DONE SOMETHING VERY BAD. PLEASE TALK TO GARY.");
 
@@ -210,8 +255,12 @@ const Page: React.FC = () => {
       <IonContent>
         {/* <Test doc={doc_id} market={market} /> */}
         <div className={"page-container"}>
-          <IonButton expand="block" size="large" onClick={CleanMarket}>
+        <IonButton expand="block" size="large" onClick={CleanMarket}>
             Clean up test data
+          </IonButton>  
+          
+          <IonButton expand="block" size="large" onClick={UpdateShopAttributes}>
+            Update Desi Item attributes
           </IonButton>
           <br />
           <IonButton expand="block" size="large" onClick={copyMarkets}>
