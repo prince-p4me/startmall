@@ -85,90 +85,93 @@ const Page: React.FC = () => {
   // )(Test);
 
   function CreateMarket() {
-    const firebase = getFirebase();
-    // const firestore = getFirestore(firebase);
-    // firebase
-    //   .firestore()
-    //   .collection("Markets")
-    //   .add(test_market)
-    //   .then(() => {
-    //     console.log("Add Completed");
-    //   });
+    console.log ("YOU HAVE DONE SOMETHING VERY BAD. PLEASE TALK TO GARY.");
+    // const firebase = getFirebase();
+    // // const firestore = getFirestore(firebase);
+    // // firebase
+    // //   .firestore()
+    // //   .collection("Markets")
+    // //   .add(test_market)
+    // //   .then(() => {
+    // //     console.log("Add Completed");
+    // //   });
 
-    // keys.forEach((key, index) => {
-    //   upload_categories.push({
-    //     id: i,
-    //     img_url: "",
-    //     name: key
-    //   });
-    //   i++;
+    // // keys.forEach((key, index) => {
+    // //   upload_categories.push({
+    // //     id: i,
+    // //     img_url: "",
+    // //     name: key
+    // //   });
+    // //   i++;
+    // // });
+    // var i = 0;
+    // keys.forEach(key => {
+    //   firebase
+    //     .firestore()
+    //     .collection("Markets")
+    //     .doc("FtSvVlEa4G4xHduMnf2l")
+    //     .collection("Categories")
+    //     .add({
+    //       img_url: "",
+    //       name: key,
+    //       load_order: i
+    //     })
+    //     .then(docRef => {
+    //       console.log(docRef);
+    //       var new_category_id = docRef.id;
+    //       console.log("Add Categories Completed");
+
+    //       values[i].forEach(item => {
+    //         firebase
+    //           .firestore()
+    //           .collection("Markets")
+    //           .doc("FtSvVlEa4G4xHduMnf2l")
+    //           .collection("Categories")
+    //           .doc(new_category_id)
+    //           .collection("Items")
+    //           .add({
+    //             name: item.产品,
+    //             unit_price: item.售出单价,
+    //             unit: item.规格,
+    //             img_url: "",
+    //             store_name: "",
+    //             category_id: new_category_id,
+    //             category_name: key
+    //           })
+    //           .then(() => {
+    //             console.log("Added Items to category");
+    //           });
+    //       });
+    //       i++;
+    //     });
     // });
-    var i = 0;
-    keys.forEach(key => {
-      firebase
-        .firestore()
-        .collection("Markets")
-        .doc("FtSvVlEa4G4xHduMnf2l")
-        .collection("Categories")
-        .add({
-          img_url: "",
-          name: key,
-          load_order: i
-        })
-        .then(docRef => {
-          console.log(docRef);
-          var new_category_id = docRef.id;
-          console.log("Add Categories Completed");
-
-          values[i].forEach(item => {
-            firebase
-              .firestore()
-              .collection("Markets")
-              .doc("FtSvVlEa4G4xHduMnf2l")
-              .collection("Categories")
-              .doc(new_category_id)
-              .collection("Items")
-              .add({
-                name: item.产品,
-                unit_price: item.售出单价,
-                unit: item.规格,
-                img_url: "",
-                store_name: "",
-                category_id: new_category_id,
-                category_name: key
-              })
-              .then(() => {
-                console.log("Added Items to category");
-              });
-          });
-          i++;
-        });
-    });
   }
 
   function copyMarkets() {
-    const firebase = getFirebase();
-    const targetID = "FtSvVlEa4G4xHduMnf2l";
-    const sourceID = "LX7x6b4dEkXvjRWb0rNK";
+    console.log ("YOU HAVE DONE SOMETHING VERY BAD. PLEASE TALK TO GARY.");
 
-    firebase
-      .firestore()
-      .collection("Markets")
-      .doc(sourceID)
-      .get()
-      .then(snapshot => {
+    // const firebase = getFirebase();
+    // const targetID = "FtSvVlEa4G4xHduMnf2l";
+    // const sourceID = "LX7x6b4dEkXvjRWb0rNK";
 
-        console.log(snapshot.data());
-        firebase
-          .firestore()
-          .collection("Markets")
-          .doc(targetID)
-          .update({ ...snapshot.data(), id: targetID })
-          .then(result => {
-            console.log("update successfully");
-            console.log(result);
-          });
-      });
+    // firebase
+    //   .firestore()
+    //   .collection("Markets")
+    //   .doc(sourceID)
+    //   .get()
+    //   .then(snapshot => {
+
+    //     console.log(snapshot.data());
+    //     firebase
+    //       .firestore()
+    //       .collection("Markets")
+    //       .doc(targetID)
+    //       .update({ ...snapshot.data(), id: targetID })
+    //       .then(result => {
+    //         console.log("update successfully");
+    //         console.log(result);
+    //       });
+    //   });
   }
 
   console.log("entering page");
