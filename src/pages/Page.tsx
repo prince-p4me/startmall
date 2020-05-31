@@ -22,6 +22,8 @@ import "firebase/firestore";
 import hifreshdata from "../data/hmarketitems.json";
 import { Categories, Markets, RootState } from "../model/DomainModels";
 import { User } from "@firebase/auth-types";
+import { getFirestore } from "redux-firestore";
+import firebase from "firebase";
 
 interface testprop {
   market: Markets;
@@ -31,48 +33,48 @@ interface testprop {
 const Page: React.FC = () => {
   const { name } = useParams<{ name: string }>();
 
-  console.log(hifreshdata);
-  var keys = Object.keys(hifreshdata);
-  var values = Object.values(hifreshdata);
+  // console.log(hifreshdata);
+  // var keys = Object.keys(hifreshdata);
+  // var values = Object.values(hifreshdata);
 
-  console.log(keys);
+  // console.log(keys);
 
-  var upload_categories = [] as Categories[];
+  // var upload_categories = [] as Categories[];
 
-  var i = 0;
-  keys.forEach(key => {
-    upload_categories.push({
-      id: i,
-      img_url: "",
-      name: key,
+  // var i = 0;
+  // keys.forEach(key => {
+  //   upload_categories.push({
+  //     id: i,
+  //     img_url: "",
+  //     name: key,
 
-      load_order: 0
-    });
-    i++;
-  });
+  //     load_order: 0
+  //   });
+  //   i++;
+  // });
 
-  console.log(values[0]);
-  values[0].forEach(obj => {
-    console.log(obj);
-  });
-  useFirestoreConnect([{ collection: "Markets" }]);
+  // console.log(values[0]);
+  // values[0].forEach(obj => {
+  //   console.log(obj);
+  // });
+  // useFirestoreConnect([{ collection: "Markets" }]);
 
-  const markets = useSelector<RootState>(
-    state => state.firestore
-  ) as FirestoreReducer.Reducer;
+  // const markets = useSelector<RootState>(
+  //   state => state.firestore
+  // ) as FirestoreReducer.Reducer;
 
-  console.log(markets.data);
+  // console.log(markets.data);
 
-  var market = {} as Markets;
-  console.log("Categories");
-  console.log(markets.data);
-  if (markets.ordered.Markets && markets.ordered.Markets.length > 0) {
-    markets.ordered.Markets.map(tmarket => {
-      console.log(tmarket.name);
-      market = tmarket;
-      return market;
-    });
-  }
+  // var market = {} as Markets;
+  // console.log("Categories");
+  // console.log(markets.data);
+  // if (markets.ordered.Markets && markets.ordered.Markets.length > 0) {
+  //   markets.ordered.Markets.map(tmarket => {
+  //     console.log(tmarket.name);
+  //     market = tmarket;
+  //     return market;
+  //   });
+  // }
 
   function googleLoginHandler() {
     return "";
@@ -84,17 +86,36 @@ const Page: React.FC = () => {
   //   }))
   // )(Test);
 
-  function CreateMarket() {
-    console.log ("YOU HAVE DONE SOMETHING VERY BAD. PLEASE TALK TO GARY.");
+  function CleanMarket() {
+    console.log("YOU HAVE DONE SOMETHING VERY BAD. PLEASE TALK TO GARY.");
+
     // const firebase = getFirebase();
-    // // const firestore = getFirestore(firebase);
-    // // firebase
-    // //   .firestore()
-    // //   .collection("Markets")
-    // //   .add(test_market)
-    // //   .then(() => {
-    // //     console.log("Add Completed");
-    // //   });
+    // const firestore = getFirestore(firebase);
+
+    // // Delete all Duplicate entires
+    // firebase
+    //   .firestore()
+    //   .collection("Markets")
+    //   .doc("FtSvVlEa4G4xHduMnf2l")
+    //   .collection("Categories")
+    //   .where("img_url", "<=", "")
+    //   .get()
+    //   .then(snapshot => {
+    //     if (!snapshot) {
+    //       console.log("there are no data for your query");
+    //     }
+    //     snapshot.forEach(doc => {
+    //       console.log(doc.data());
+    //       firebase
+    //         .firestore()
+    //         .collection("Markets")
+    //         .doc("FtSvVlEa4G4xHduMnf2l")
+    //         .collection("Categories")
+    //         .doc(doc.id)
+    //         .delete().then(result => console.log ("Deleted succcessfully"))
+    //         .catch(error => console.log("Erro while delete : " + error));
+    //     });
+    //   });
 
     // // keys.forEach((key, index) => {
     // //   upload_categories.push({
@@ -148,7 +169,7 @@ const Page: React.FC = () => {
   }
 
   function copyMarkets() {
-    console.log ("YOU HAVE DONE SOMETHING VERY BAD. PLEASE TALK TO GARY.");
+    console.log("YOU HAVE DONE SOMETHING VERY BAD. PLEASE TALK TO GARY.");
 
     // const firebase = getFirebase();
     // const targetID = "FtSvVlEa4G4xHduMnf2l";
@@ -188,10 +209,14 @@ const Page: React.FC = () => {
       {/* <FirestoreIonImg src="gs://slashiee.appspot.com/hifresh/categories/y2637HMBAxuFpC89igEL/organic_apple.png" /> */}
       <IonContent>
         {/* <Test doc={doc_id} market={market} /> */}
-        <div className={'page-container'}>
-          <IonButton expand="block" size="large" onClick={CreateMarket}>Test Creat Market</IonButton>
-          <br/>
-          <IonButton expand="block" size="large" onClick={copyMarkets}>Copy HiFresh Market</IonButton>
+        <div className={"page-container"}>
+          <IonButton expand="block" size="large" onClick={CleanMarket}>
+            Clean up test data
+          </IonButton>
+          <br />
+          <IonButton expand="block" size="large" onClick={copyMarkets}>
+            Copy HiFresh Market
+          </IonButton>
         </div>
       </IonContent>
     </IonPage>
