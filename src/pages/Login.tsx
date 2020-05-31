@@ -109,7 +109,7 @@ const Login: React.FC = () => {
       let params;
       if (isPlatform('android')) {
         params = {
-          'webClientId': '326027994327-2nsvt882h4uvqasghfopj5iivd22fj2s.apps.googleusercontent.com',
+          'webClientId': process.env.REACT_APP_GOOGLE_AUTH_CLIENT_URL,
           'offline': true
         }
       }

@@ -30,7 +30,7 @@ const MobileNumberLogin: React.FC = () => {
   const [showLoading] = useState(false);
   // const [] = useState(true);
   const [mobileNumber, setMobileNumber] = useState<string | null | undefined>(
-    "62335535" as string
+    (process.env.REACT_APP_ENV === 'dev' ? "62335535" as string : '')
   );
   const [verificationId, setVerificationId] = useState('');
   const [isNumberAdded, setIsNumberAdded] = useState(false);

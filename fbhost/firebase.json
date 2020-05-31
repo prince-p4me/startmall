@@ -2,7 +2,7 @@
   "hosting": [
     {
       "target" : "development",
-      "site": "startmall",
+      "site": "startmall-dev",
       "public": "public",
       "ignore": [
         "firebase.json",
@@ -47,7 +47,7 @@
     },
     {
       "target" : "production",
-      "site": "startmall-app",
+      "site": "startmall",
       "public": "public",
       "ignore": [
         "firebase.json",

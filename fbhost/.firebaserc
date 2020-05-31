@@ -1,20 +1,20 @@
 {
   "projects": {
-    "development": "slashiee",
+    "development": "slashiee-sandbox",
     "production": "slashiee"
   },
   "targets": {
     "slashiee": {
       "hosting": {
-        "development": [
+        "production": [
           "startmall"
         ]
       }
     },
-    "slashiee-prod-r8ui9": {
+    "slashiee-sandbox": {
       "hosting": {
-        "production": [
-          "startmall-app"
+        "development": [
+          "startmall-dev"
         ]
       }
     }
