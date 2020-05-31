@@ -1,24 +1,27 @@
 import { ADD_ITEM, DEL_ITEM, DEL_ITEM_GROUP, BLANK_CART } from "./Cart";
 import { ItemObj } from "../model/DomainModels";
 
-export function addCartAction(newItem: ItemObj) {
+export function addCartAction(newItem: ItemObj, market_id: string) {
   return {
     type: ADD_ITEM,
-    payload: newItem
+    payload: newItem,
+    market_id
   };
 }
 
-export function delCartAction(newItem: ItemObj) {
+export function delCartAction(newItem: ItemObj, market_id: string) {
   return {
     type: DEL_ITEM,
-    payload: newItem
+    payload: newItem,
+    market_id
   };
 }
 
-export function delItemGroup(newItem: ItemObj) {
+export function delItemGroup(newItem: ItemObj, market_id: string) {
   return {
     type: DEL_ITEM_GROUP,
-    payload: newItem
+    payload: newItem,
+    market_id
   };
 }
 

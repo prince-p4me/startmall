@@ -39,7 +39,8 @@ const Checkout: React.FC<CheckoutProps> = () => {
   const [cartState, setCartState] = useState<CartStateType>({
     cartItemList: [],
     cart: {
-      total: 0.0
+      total: 0.0,
+      marketId: ''
     }
   });
 

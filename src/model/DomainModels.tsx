@@ -59,7 +59,11 @@ export interface CartStateType {
   cartItemList: ItemObj[];
   cart: {
     total: number;
+    marketId: string;
   };
+}
+export interface InvoiceStateType {
+  [key: string]: string | number | [] | any | null;
 }
 
 export interface ShopStateType {
@@ -108,6 +112,7 @@ export interface RootState {
   firestore: Reducer<FirestoreReducer.Reducer>;
   cart: CartStateType;
   shop: ShopStateType;
+  invoice: InvoiceStateType;
 }
 
 export interface Categories {

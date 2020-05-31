@@ -5,7 +5,9 @@ import { CartStateType, ShopStateType } from "../model/DomainModels";
 export const INITIAL_STATE = {
   cartItemList: [],
   cart: {
-    total: 0.0
+    total: 0.0,
+    marketId: ''
+
   }
 } as CartStateType;
 
@@ -20,11 +22,16 @@ const format = (num: any, minDecimals: number, maxDecimals: number) => num.toLoc
   maximumFractionDigits: maxDecimals,
 });
 
+const predefineAction = [ADD_ITEM, DEL_ITEM, SET_CURRENT_SHOP, DEL_ITEM_GROUP, SET_CURRENT_SHOP]
+
 export const cartReducer = (state = INITIAL_STATE, action: any) => {
   var x = 0;
   // export default function cartReducer(state = INITIAL_STATE, action: any) {
   switch (action.type) {
     case ADD_ITEM:
+      if(action.market_id !== state.cart.marketId){
+        state = INITIAL_STATE;
+      }
       return {
         cartItemList: [...state.cartItemList, action.payload],
         cart: {
@@ -32,10 +39,14 @@ export const cartReducer = (state = INITIAL_STATE, action: any) => {
             parseFloat(action.payload.unit_price ? action.payload.unit_price : 0)),
             // (format((parseFloat(state.cart.total.toString()) + parseFloat(action.payload.unit_price)),0,2) % 1>0)?2:0,
             2,
-            2))
+            2)),
+          marketId: action.market_id
         }
       };
     case DEL_ITEM:
+      if(action.market_id !== state.cart.marketId){
+        state = INITIAL_STATE;
+      }
       return {
         cartItemList: [
           ...state.cartItemList
@@ -53,13 +64,17 @@ export const cartReducer = (state = INITIAL_STATE, action: any) => {
             parseFloat(action.payload.unit_price ? action.payload.unit_price : 0)),
             // (format((parseFloat(state.cart.total.toString()) - parseFloat(action.payload.unit_price)),0,2) % 1>0)?2:0,
             2,
-            2))
+            2)),
+          marketId: action.market_id
         }
       };
     case DEL_ITEM_GROUP:
+      if(action.market_id !== state.cart.marketId){
+        state = INITIAL_STATE;
+      }
       var total = 0;
-      var newlist = state.cartItemList
-        .map(obj => {
+      var newlist = state.cartItemList || []
+        .map((obj: any) => {
           if (obj.id === action.payload.id) {
             return null;
           }
@@ -75,14 +90,16 @@ export const cartReducer = (state = INITIAL_STATE, action: any) => {
       return {
         cartItemList: [...newlist],
         cart: {
-          total: total
+          total: total,
+          marketId: action.market_id
         }
       };
     case BLANK_CART:
       return {
         cartItemList: [],
         cart: {
-          total: 0
+          total: 0,
+          marketId: action.market_id
         }
       };
     default:

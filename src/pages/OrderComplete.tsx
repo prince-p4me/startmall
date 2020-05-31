@@ -74,14 +74,13 @@ const OrderComplete: React.FC<CartState> = () => {
 
   const address: any = invoice.address;
 
-    console.log({Markets, market})
 
   return (
     <IonPage>
         <IonLoading isOpen={isLoading} message={"Please wait..."} />
       <IonHeader>
         <IonToolbar>
-          <IonTitle size="large" class="order-title">
+          <IonTitle class="order-title">
             {
               isPaymentSuccess ? 'Order Completed' : 'View Order'
             }
@@ -149,7 +148,7 @@ const OrderComplete: React.FC<CartState> = () => {
                   </IonItem>
                   <IonItem className="m-t-10" lines="none">
                       <IonImg src={market.img_url} style={{width: 50}} />
-                      <IonLabel className="shop-header-title" color="secondary" style={{'text-align': 'left', 'margin-left': '15px','font-size': '28px'}}>{market.name || ''}</IonLabel>
+                      <IonLabel className="shop-header-title" color="secondary" style={{'textAlign': 'left', 'marginLeft': '15px','fontSize': '28px'}}>{market.name || ''}</IonLabel>
                   </IonItem>
                   <IonItem className="m-t-10"></IonItem>
               </>

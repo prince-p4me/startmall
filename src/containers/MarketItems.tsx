@@ -89,6 +89,7 @@ const MarketItems: React.FC<MarketItemsProps> = () => {
   const [ CartCounter ] = useState<React.ElementType>(connect(mapStateToProps)(CartBadge));
   let Market: any = useSelector<any>((state: any) => (state.firestore.data.Market))
 
+
   return (
     <IonPage>
       <MarketHeader setShowModal={setShowModal} shop={Market || {}} CartCounter={CartCounter} />
