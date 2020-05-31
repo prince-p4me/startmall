@@ -1,5 +1,22 @@
 {
   "projects": {
-    "default": "slashiee"
+    "development": "slashiee",
+    "production": "slashiee-prod-r8ui9"
+  },
+  "targets": {
+    "slashiee": {
+      "hosting": {
+        "development": [
+          "startmall"
+        ]
+      }
+    },
+    "slashiee-prod-r8ui9": {
+      "hosting": {
+        "production": [
+          "startmall-app"
+        ]
+      }
+    }
   }
 }

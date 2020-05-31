@@ -60,7 +60,8 @@
     "run-ios-npx-sync": "npx cap copy && npx cap sync",
     "run-ios": "ionic capacitor run ios -l",
     "run-android": "ionic capacitor run android -l --emulator --host=0.0.0.0",
-    "build-fb": "react-scripts build --platform=web && cp -Rv build/* fbhost/public && cd fbhost && firebase deploy --only hosting:startmall ",
+    "deploy:dev": "react-scripts build --platform=web && cp -Rv build/* fbhost/public && cd fbhost && firebase deploy -P development --only hosting:development ",
+    "deploy:prod": "react-scripts build --platform=web && cp -Rv build/* fbhost/public && cd fbhost && firebase deploy -P production --only hosting:production ",
     "build-privacy-page": "cd privacy-page && firebase deploy --only hosting:slashiee-privacy ",
     "build-chat-page": "cd slashiee-chat && firebase deploy --only hosting:slashiee-chat "
   },
