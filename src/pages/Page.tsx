@@ -186,9 +186,7 @@ const Page: React.FC = () => {
       <IonContent>
         {/* <Test doc={doc_id} market={market} /> */}
         <div className={'page-container'}>
-          <IonButton expand="block" size="large" onClick={CreateMarket}>Test Creat Market</IonButton>
-          <br/>
-          <IonButton expand="block" size="large" onClick={copyMarkets}>Copy HiFresh Market</IonButton>
+
         </div>
       </IonContent>
     </IonPage>
