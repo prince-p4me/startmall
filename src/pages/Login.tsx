@@ -34,8 +34,6 @@ const Login: React.FC = () => {
   const db = firebase.firestore();
   const [showLoading, setShowLoading] = useState(false);
   const [isMoved, setMoved] = useState(false)
-  // const [showError, setShowError] = useState(false);
-  // const [errorMessage, setErrorMessage] = useState("");
   const [errorProps, setErrorProps] = useState<ErrorProps>({} as ErrorProps);
 
   useEffect(() => {
@@ -63,9 +61,9 @@ const Login: React.FC = () => {
           photo_url: auth2.photoURL, //photoURL we get from firebase.auth() when sign in completed
           user_id: auth2.uid, // uid  we get from firebase.auth() when sign in completed
           email: auth2.email,
-          role:['user']
+          role: ['user']
         });
-    } catch(e) {
+    } catch (e) {
       console.log(e);
     }
   }
@@ -73,19 +71,17 @@ const Login: React.FC = () => {
   useEffect(() => {
     if (isLoaded(auth) && !isEmpty(auth) && isMoved) {
       console.log("User Logged in");
-      // history.push("/");
       setShowLoading(false);
       history.goBack();
     }
   }, [auth, history, isMoved]);
 
-  async function loginWithGoogle() {
+  const loginWithGoogle = () => {
     setErrorProps({
       ...errorProps,
       showError: false
     })
     setShowLoading(true);
-    // await Plugins.GoogleAuth.signOut();
     console.log(
       "platfprms " + getPlatforms() + " platform is" + isPlatform("ios")
     );
@@ -95,6 +91,7 @@ const Login: React.FC = () => {
         .login({ provider: "google", type: "popup" })
         .then(data => {
           setMoved(true)
+          console.log(data);
         })
         .catch(data => {
           console.log("Something Wrong with Google login. Please try again later");
@@ -107,7 +104,6 @@ const Login: React.FC = () => {
             autoHide: false,
             buttonText: ""
           });
-
         });
     } else {
       let params;
@@ -156,7 +152,7 @@ const Login: React.FC = () => {
     }
   }
 
-  function loginWithFacebook() {
+  const loginWithFacebook = () => {
     setErrorProps({
       ...errorProps,
       showError: false
@@ -278,7 +274,6 @@ const Login: React.FC = () => {
             </div>
           </IonCardContent>
         </IonCard>
-        {/* <ErrorDisplay type={1} message={errorMessage} autoHide={false} showToast={showError} closehandler={() => { setShowError(false); history.goBack(); }} eventHandler={() => {}} buttonText={""}  /> */}
         <ErrorDisplay errorProps={errorProps} closeHandler={() => { setErrorProps({ ...errorProps, showError: false }); history.goBack(); }} eventHandler={() => { }} />
         <IonLoading isOpen={showLoading} message={"Please wait..."} />
       </IonContent>
