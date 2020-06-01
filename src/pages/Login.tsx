@@ -50,20 +50,24 @@ const Login: React.FC = () => {
   }, []);
 
   const writeUserData = (auth1: any) => {
-    let auth2 = JSON.parse(JSON.stringify(auth1));
-    db.collection("Users")
-      .doc(auth2.uid)
-      .set({
-        providerId: auth2.providerData[0].providerId,
-        display_name: auth2.displayName, //displayName
-        payment_detail: "", //
-        contact_mobile: auth2.phoneNumber,
-        address: {},
-        photo_url: auth2.photoURL, //photoURL we get from firebase.auth() when sign in completed
-        user_id: auth2.uid, // uid  we get from firebase.auth() when sign in completed
-        email: auth2.email,
-        role:['user']
-      });
+    try {
+      let auth2 = JSON.parse(JSON.stringify(auth1));
+      db.collection("Users")
+        .doc(auth2.uid)
+        .set({
+          providerId: auth2.providerData[0].providerId,
+          display_name: auth2.displayName, //displayName
+          payment_detail: "", //
+          contact_mobile: auth2.phoneNumber,
+          address: {},
+          photo_url: auth2.photoURL, //photoURL we get from firebase.auth() when sign in completed
+          user_id: auth2.uid, // uid  we get from firebase.auth() when sign in completed
+          email: auth2.email,
+          role:['user']
+        });
+    } catch(e) {
+      console.log(e);
+    }
   }
 
   useEffect(() => {
