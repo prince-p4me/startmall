@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { IonCard, IonCardContent, IonButton, IonIcon, IonRow, IonCol, IonItem, IonLabel } from "@ionic/react";
+import {
+  IonCard,
+  IonCardContent,
+  IonButton,
+  IonIcon,
+  IonRow,
+  IonCol,
+  IonItem,
+  IonLabel
+} from "@ionic/react";
 import { add, heart, heartOutline } from "ionicons/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { addCartAction } from "../reducers/CartAction";
@@ -11,7 +20,11 @@ import { useHistory } from "react-router-dom";
 import CurrencyAmount from "../components/CurrencyAmount";
 import ErrorDisplay from "../components/ErrorDisplay";
 
-const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => {
+const ShopItem: React.FC<ShopItemProps> = ({
+  item,
+  market_id,
+  category_id
+}) => {
   console.log(item);
   const [favorites, setFavorites] = useState(heartOutline);
   // const [] = useState<WishList>({} as WishList);
@@ -36,16 +49,22 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
   async function writeData(data: WishList, user_id: string) {
     var json_shop = JSON.parse(JSON.stringify(shop));
     // console.log(JSON.stringify(shop));
-    var items = await db.collection("WishLists")
+    var items = await db
+      .collection("WishLists")
       .doc(user_id)
       .collection("Markets")
-      .doc(market_id).collection("Items").get();
+      .doc(market_id)
+      .collection("Items")
+      .get();
     if (items.empty) {
-      await db.collection("WishLists")
+      await db
+        .collection("WishLists")
         .doc(user_id)
         .collection("Markets")
-        .doc(market_id).set(json_shop.shop);
-      await db.collection("WishLists")
+        .doc(market_id)
+        .set(json_shop.shop);
+      await db
+        .collection("WishLists")
         .doc(user_id)
         .collection("Markets")
         .doc(market_id)
@@ -57,11 +76,15 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
       items.forEach(doc => {
         var doc1 = doc.data();
         itemList.push(doc1);
-      })
-      await db.collection("WishLists")
+      });
+      await db
+        .collection("WishLists")
         .doc(user_id)
         .collection("Markets")
-        .doc(market_id).collection("Items").doc(data.item_id).set(data);
+        .doc(market_id)
+        .collection("Items")
+        .doc(data.item_id)
+        .set(data);
     }
     setFavorites(heart);
   }
@@ -74,30 +97,42 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
     if (isLoaded(auth) && !isEmpty(auth)) {
       // setFavorites(heart);
       const json_auth = JSON.parse(JSON.stringify(auth));
-      const docRef = db.collection("WishLists").doc(json_auth.uid).collection("Markets").doc(market_id).collection("Items");
-      docRef.where('item_id', '==', item.id).get().then(function (snapshot) {
-        if (snapshot.empty) {
-          setFavorites(heartOutline);
-          if (writing) {
-            addFavorites();
-          }
-        } else {
-          if (writing) {
-            snapshot.forEach(doc => {
-              // deleteFavorite(doc.id, docRef);
-              docRef.doc(doc.id).delete().then(() => {
-                console.log(doc.id + " deleted");
-              })
-            });
+      const docRef = db
+        .collection("WishLists")
+        .doc(json_auth.uid)
+        .collection("Markets")
+        .doc(market_id)
+        .collection("Items");
+      docRef
+        .where("item_id", "==", item.id)
+        .get()
+        .then(function(snapshot) {
+          if (snapshot.empty) {
             setFavorites(heartOutline);
+            if (writing) {
+              addFavorites();
+            }
           } else {
-            setFavorites(heart);
+            if (writing) {
+              snapshot.forEach(doc => {
+                // deleteFavorite(doc.id, docRef);
+                docRef
+                  .doc(doc.id)
+                  .delete()
+                  .then(() => {
+                    console.log(doc.id + " deleted");
+                  });
+              });
+              setFavorites(heartOutline);
+            } else {
+              setFavorites(heart);
+            }
           }
-        }
-      }).catch(function (error) {
-        setFavorites(heartOutline);
-        console.log("Error getting document:", error);
-      });
+        })
+        .catch(function(error) {
+          setFavorites(heartOutline);
+          console.log("Error getting document:", error);
+        });
     } else {
       if (writing) {
         setErrorProps({
@@ -106,7 +141,7 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
           type: 2,
           autoHide: false,
           buttonText: "LOG IN"
-        })
+        });
         // history.push("/login");
       }
     }
@@ -120,9 +155,18 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
     }
   }, []);
 
-  if (!item.unit_price || item.unit_price == "" || item.unit_price == null ||
-    !item.unit || item.unit == "" || item.unit == null || item.is_deleted) {
-    return null
+  if (
+    !item.unit_price ||
+    item.unit_price == "" ||
+    item.unit_price == null ||
+    !item.unit ||
+    item.unit == "" ||
+    item.unit == null ||
+    item.is_deleted
+  ) {
+    console.log("Hiding Item because following reason:");
+    console.log(item);
+    return null;
   }
 
   return (
@@ -133,7 +177,7 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
             <FirestoreIonImg src={item.img_url as string} showModal />
           </IonCol>
           <IonCol size="7.8">
-            <IonLabel >
+            <IonLabel>
               <p>{item.name}</p>
               <br />
               <p className="currency">
@@ -142,7 +186,7 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
               </p>
             </IonLabel>
             <br />
-            <IonItem lines="none" style={{ float: "right" }} >
+            <IonItem lines="none" style={{ float: "right" }}>
               <IonButton
                 color="tertiary"
                 fill="outline"
@@ -151,7 +195,7 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
               >
                 <IonIcon slot="start" icon={add} />
                 Add to Cart
-                </IonButton>
+              </IonButton>
               <IonButton
                 color="secondary"
                 fill="clear"
@@ -163,13 +207,26 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
                 <IonIcon icon={favorites} />
               </IonButton>
             </IonItem>
-            <IonItem lines="none" style={{ float: "right" }} className="shop_item_min_order" >
+            <IonItem
+              lines="none"
+              style={{ float: "right" }}
+              className="shop_item_min_order"
+            >
               <IonLabel>Minimum order: Nil</IonLabel>
             </IonItem>
           </IonCol>
         </IonRow>
       </IonCardContent>
-      <ErrorDisplay errorProps={errorProps} closeHandler={() => { setErrorProps({ ...errorProps, showError: false }) }} eventHandler={() => { history.push("/login"); setErrorProps({ ...errorProps, showError: false }); }} />
+      <ErrorDisplay
+        errorProps={errorProps}
+        closeHandler={() => {
+          setErrorProps({ ...errorProps, showError: false });
+        }}
+        eventHandler={() => {
+          history.push("/login");
+          setErrorProps({ ...errorProps, showError: false });
+        }}
+      />
     </IonCard>
   );
 };
