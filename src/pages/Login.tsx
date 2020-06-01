@@ -45,24 +45,25 @@ const Login: React.FC = () => {
         writeUserData(auth);
       }
     });
-  }, []);
+  });
 
-  const writeUserData = (auth1: any) => {
+  const writeUserData = (authObj : any) => {
     try {
-      let auth2 = JSON.parse(JSON.stringify(auth1));
-      db.collection("Users")
-        .doc(auth2.uid)
-        .set({
-          providerId: auth2.providerData[0].providerId,
-          display_name: auth2.displayName, //displayName
-          payment_detail: "", //
-          contact_mobile: auth2.phoneNumber,
-          address: {},
-          photo_url: auth2.photoURL, //photoURL we get from firebase.auth() when sign in completed
-          user_id: auth2.uid, // uid  we get from firebase.auth() when sign in completed
-          email: auth2.email,
-          role: ['user']
-        });
+      if(authObj.uid) {
+        db.collection("Users")
+          .doc(authObj.uid)
+          .set({
+            providerId: authObj.providerData[0].providerId,
+            display_name: authObj.displayName, //displayName
+            payment_detail: "", //
+            contact_mobile: authObj.phoneNumber,
+            address: {},
+            photo_url: authObj.photoURL, //photoURL we get from firebase.auth() when sign in completed
+            user_id: authObj.uid, // uid  we get from firebase.auth() when sign in completed
+            email: authObj.email,
+            role: ['user']
+          });
+      }
     } catch (e) {
       console.log(e);
     }
@@ -90,7 +91,8 @@ const Login: React.FC = () => {
       return firebase
         .login({ provider: "google", type: "popup" })
         .then(data => {
-          setMoved(true)
+          setMoved(true);
+          setShowLoading(false);
           console.log(data);
         })
         .catch(data => {
