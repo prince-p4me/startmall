@@ -8,6 +8,7 @@ import {
   IonText
 } from "@ionic/react";
 import { logoApple, helpCircleOutline } from "ionicons/icons";
+import { isPlatform } from "@ionic/core";
 
 import { ErrorProps, StripePaymentProps } from "../model/ComponentProps";
 import { CardExpiryElement, CardNumberElement, CardCvcElement, useElements, useStripe, PaymentRequestButtonElement } from '@stripe/react-stripe-js';
@@ -95,9 +96,7 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
       }
     },
     onPaymentMethod: ({ complete, paymentMethod, ...data }: any) => {
-      console.log("[PaymentMethod]", paymentMethod);
-      console.log("[Customer Data]", data);
-      complete("success");
+      completeHandler();
     }
   });
   const payoptions = useOptions(paymentRequest);
@@ -197,12 +196,11 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
           name,
           phone,
           email,
-          // address: {
-          //   line1: address1,
-          //   line2: address2,
-          //   postal_code: postcode,
-          //   city: suburb
-          // }
+          address: {
+            line1: address1,
+            postal_code: postcode,
+            city: suburb
+          }
         },
       }
     });
@@ -260,10 +258,10 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
             <IonLabel color="medium">
               CVC
               <IonIcon
-                  size={'small'}
-                  slot="icon-only"
-                  className="help-icon"
-                  icon={helpCircleOutline}
+                size={'small'}
+                slot="icon-only"
+                className="help-icon"
+                icon={helpCircleOutline}
               />
               <IonText className="info-light-text">(3 Digit on back of your card)</IonText>
             </IonLabel>
@@ -286,50 +284,43 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
           </IonButton>
         </form>
       }
-      <div className={'ion-margin-top ion-margin-bottom ion-text-center'}>
-        {
-          paymentMode === 'all' && <IonLabel color={'primary'}>Or</IonLabel>
-        }
-      </div>
       <div>
         {
-          (paymentMode === 'applePay' || paymentMode === 'all') &&
-          <IonButton class="ion-margin-top apple-pay-btn" color={'dark'} onClick={applePay} size={'large'} expand={'block'}>
-            {
-              !applePayLoading ?
-                <>
-                  <IonIcon
-                    size={'large'}
-                    slot="icon-only"
-                    className="apple-icon"
-                    icon={logoApple}
-                  ></IonIcon>
+          ((paymentMode === 'applePay' || paymentMode === 'all') && isPlatform("ios")) &&
+          <>
+            <div className={'ion-margin-top ion-margin-bottom ion-text-center'}>
+              <IonLabel color={'primary'}>Or</IonLabel>
+            </div>
+            <IonButton class="ion-margin-top apple-pay-btn" color={'dark'} onClick={applePay} size={'large'} expand={'block'}>
+              {
+                !applePayLoading ?
+                  <>
+                    <IonIcon
+                      size={'large'}
+                      slot="icon-only"
+                      className="apple-icon"
+                      icon={logoApple}
+                    ></IonIcon>
                 Pay
               </> :
-                <IonSpinner name={'dots'}></IonSpinner>
-            }
-          </IonButton>
+                  <IonSpinner name={'dots'}></IonSpinner>
+              }
+            </IonButton>
+          </>
         }
       </div>
       <div>
         {
-          paymentRequest &&
-          <PaymentRequestButtonElement
-            className="PaymentRequestButton"
-            options={payoptions}
-            onReady={() => {
-              console.log("PaymentRequestButton [ready]");
-            }}
-            onClick={event => {
-              console.log("PaymentRequestButton [click]", event);
-            }}
-            onBlur={() => {
-              console.log("PaymentRequestButton [blur]");
-            }}
-            onFocus={() => {
-              console.log("PaymentRequestButton [focus]");
-            }}
-          />
+          (paymentRequest && isPlatform("mobileweb")) &&
+          <>
+            <div className={'ion-margin-top ion-margin-bottom ion-text-center'}>
+              <IonLabel color={'primary'}>Or</IonLabel>
+            </div>
+            <PaymentRequestButtonElement
+              className="PaymentRequestButton"
+              options={payoptions}
+            />
+          </>
         }
       </div>
       <div className={'ion-margin-top ion-margin-bottom'}>

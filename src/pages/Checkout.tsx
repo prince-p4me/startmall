@@ -91,16 +91,13 @@ const Checkout: React.FC<CheckoutProps> = () => {
       id: json_auth.uid, // uid  we get from firebase.auth() when sign in completed
       email: json_auth.email
     };
-    let invoice = {
+    let invoice : any = {
       id: "",
       user_id: my_auth.uid,
-      market_id: shopState.shop.id,
-      market_name: shopState.shop.name,
       address: addressObj,
       total_amount: cartState.cart.total,
       platform_charges: 135.0,
       cut_off_terms: shopState.shop.cutoff_terms,
-      // delivery_terms: shopState.shop.delivery_terms,
       delivery_date: "22 May 2020",
       order_date: moment(today).format("DD MMM YYYY"),
       status: "open",
@@ -111,6 +108,19 @@ const Checkout: React.FC<CheckoutProps> = () => {
       user: user,
       payment_type: paymentType
     };
+
+    if(shopState.shop.id) {
+      invoice.market_id = shopState.shop.id;
+    }
+
+    if(shopState.shop.id) {
+      invoice.market_name = shopState.shop.name;
+    }
+
+    if(shopState.shop.delivery_terms) {
+      invoice.delivery_terms = shopState.shop.delivery_terms;
+    }
+
     setInvoice(invoice);
     try {
       const response = await db

@@ -60,10 +60,10 @@ import Cart from "./pages/Cart";
 import {listInvoices} from './reducers/InvoicesAction'
 
 const { App: CapApp } = Plugins;
-const stripePromise = loadStripe('pk_test_YC0gcyGppNgDEzsD5FxBzPXJ00nUQJqCvw');
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY as string);
 
 const { Stripe } = Plugins;
-Stripe.setPublishableKey({ key: 'pk_test_YC0gcyGppNgDEzsD5FxBzPXJ00nUQJqCvw' });
+Stripe.setPublishableKey({ key: process.env.REACT_APP_STRIPE_KEY });
 
 const AppUrlListener: React.FC<any> = () => {
   let history = useHistory();

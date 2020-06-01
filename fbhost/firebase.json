@@ -1,32 +1,94 @@
 {
-  "hosting": {
-    "site": "startmall",
-    "public": "public",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
-    "rewrites": [ {
-      "source": "**",
-      "destination": "/index.html"
-    }, {
-      "source": "/foo{,/**}",
-      "destination": "/index.html"
-    }, {
-      "source": "!/@(js|css)/**",
-      "destination": "/index.html"
-    } ],
-    "headers": [
-      {
-        "source": "/.well-known/apple-app-site-association",
-        "headers": [{"key": "Content-Type", "value": "application/json"}]
-      },
-      {
-        "source": "/.well-known/apple-developer-merchantid-domain-association",
-        "headers": [{"key": "Content-Disposition", "value": "attachment"}]
-      }
-    ],
-    "appAssociation": "NONE"
-  }
+  "hosting": [
+    {
+      "target" : "development",
+      "site": "startmall-dev",
+      "public": "public",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        },
+        {
+          "source": "/foo{,/**}",
+          "destination": "/index.html"
+        },
+        {
+          "source": "!/@(js|css)/**",
+          "destination": "/index.html"
+        }
+      ],
+      "headers": [
+        {
+          "source": "/.well-known/apple-app-site-association",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        {
+          "source": "/.well-known/apple-developer-merchantid-domain-association",
+          "headers": [
+            {
+              "key": "Content-Disposition",
+              "value": "attachment"
+            }
+          ]
+        }
+      ],
+      "appAssociation": "NONE"
+    },
+    {
+      "target" : "production",
+      "site": "startmall",
+      "public": "public",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        },
+        {
+          "source": "/foo{,/**}",
+          "destination": "/index.html"
+        },
+        {
+          "source": "!/@(js|css)/**",
+          "destination": "/index.html"
+        }
+      ],
+      "headers": [
+        {
+          "source": "/.well-known/apple-app-site-association",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        {
+          "source": "/.well-known/apple-developer-merchantid-domain-association",
+          "headers": [
+            {
+              "key": "Content-Disposition",
+              "value": "attachment"
+            }
+          ]
+        }
+      ],
+      "appAssociation": "NONE"
+    }
+  ]
 }
