@@ -88,14 +88,15 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
   const [errorProps, setErrorProps] = useState<ErrorProps>({} as ErrorProps);
   const paymentRequest = usePaymentRequest({
     options: {
-      country: "US",
-      currency: "usd",
+      country: "AU",
+      currency: "AUD",
       total: {
         label: "Demo total",
         amount: 1000
       }
     },
     onPaymentMethod: ({ complete, paymentMethod, ...data }: any) => {
+      complete();
       completeHandler();
     }
   });
@@ -286,7 +287,7 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
       }
       <div>
         {
-          ((paymentMode === 'applePay' || paymentMode === 'all') && isPlatform("ios")) &&
+          ((paymentMode === 'applePay' || paymentMode === 'all') && isPlatform("ios") && !isPlatform("mobileweb")) &&
           <>
             <div className={'ion-margin-top ion-margin-bottom ion-text-center'}>
               <IonLabel color={'primary'}>Or</IonLabel>
