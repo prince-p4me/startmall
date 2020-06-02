@@ -20,7 +20,6 @@ import {RootState, Markets} from "../model/DomainModels";
 import {CartState} from "../services/FirebaseIniti";
 import MarketHeader from "../components/MarketHeader";
 import CartModal from "./Cart";
-import {FirestoreIonImg} from "../services/FirebaseStorage";
 
 const Market: React.FC = () => {
 
