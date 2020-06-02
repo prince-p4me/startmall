@@ -89,7 +89,7 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
   const paymentRequest = usePaymentRequest({
     options: {
       country: "AU",
-      currency: "AUD",
+      currency: "aud",
       total: {
         label: "Demo total",
         amount: 1000
@@ -268,9 +268,6 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
             </IonLabel>
             <CardCvcElement options={options} onChange={(obj) => validateStripe(obj, 'cvc')} />
           </div>
-          <div className={'ion-margin-top ion-margin-bottom info-light-text'}>
-            <IonLabel>* By hitting Pay you are confirming your order with us.</IonLabel>
-          </div>
           <IonButton
             type={'submit'}
             disabled={!stripe || !cardValidation.number || !cardValidation.date || !cardValidation.isCompleted || loading}
@@ -324,7 +321,7 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
           </>
         }
       </div>
-      <div className={'ion-margin-top ion-margin-bottom'}>
+      <div className={'ion-margin-top ion-margin-bottom info-light-text'}>
         <IonLabel>* By hitting Pay you are confirming your order with us.</IonLabel>
       </div>
       <ErrorDisplay errorProps={errorProps}

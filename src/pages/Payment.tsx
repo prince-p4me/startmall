@@ -56,7 +56,7 @@ const Payment: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <IonList>
+        <IonList style={{ paddingTop : 0 , paddingBottom: 0 }}>
           <IonItemDivider style={{ backgroundColor: "#f7f7f7", paddingTop: 10, paddingBottom: 10 }}>
             <IonIcon slot="start" src="assets/icon/1x/SVG/credit-card.svg"></IonIcon>
             <IonLabel color="primary" style={{ paddingLeft: 10 }}>Payment Detail</IonLabel>

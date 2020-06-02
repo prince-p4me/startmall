@@ -43,7 +43,6 @@ const ShopSelection: React.FC = () => {
 
   useFirestoreConnect([{ collection: "Markets" }]);
 
-
   const doneLoading = () => {
     setTimeout(()=>{
       setLoading(false)
@@ -70,9 +69,6 @@ const ShopSelection: React.FC = () => {
   else {
     doneLoading()
   }
-
-
-
 
   return (
     <IonPage>

@@ -49,8 +49,8 @@ const CartModal: React.FC<CartProps> = ({ modal, closeHandler }) => {
 
   }
 
-  const CartItemList = connect(mapStateToProps)(ItemList);
-  const EnhancedCartTotal = connect(mapStateToProps)(CartTotal);
+  const [CartItemList] = useState<React.ElementType>(connect(mapStateToProps)(ItemList));
+  const [EnhancedCartTotal] = useState<React.ElementType>(connect(mapStateToProps)(CartTotal));
 
   return (
     <IonModal isOpen={modal}>

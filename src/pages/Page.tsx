@@ -10,7 +10,6 @@ import {
 } from "@ionic/react";
 import React from "react";
 import { useParams } from "react-router";
-import ExploreContainer from "../components/ExploreContainer";
 import "./Page.css";
 import {
   useFirestoreConnect,

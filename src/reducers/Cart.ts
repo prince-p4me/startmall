@@ -1,13 +1,13 @@
 import { FirebaseReducer, firebaseReducer } from "react-redux-firebase";
 import { combineReducers, Reducer } from "redux";
 import { CartStateType, ShopStateType } from "../model/DomainModels";
+import { filter, sumBy } from 'lodash';
 
 export const INITIAL_STATE = {
   cartItemList: [],
   cart: {
     total: 0.0,
     marketId: ''
-
   }
 } as CartStateType;
 
@@ -29,7 +29,7 @@ export const cartReducer = (state = INITIAL_STATE, action: any) => {
   // export default function cartReducer(state = INITIAL_STATE, action: any) {
   switch (action.type) {
     case ADD_ITEM:
-      if(action.market_id !== state.cart.marketId){
+      if (action.market_id !== state.cart.marketId) {
         state = INITIAL_STATE;
       }
       return {
@@ -37,14 +37,13 @@ export const cartReducer = (state = INITIAL_STATE, action: any) => {
         cart: {
           total: (format((parseFloat(state.cart.total.toString()) +
             parseFloat(action.payload.unit_price ? action.payload.unit_price : 0)),
-            // (format((parseFloat(state.cart.total.toString()) + parseFloat(action.payload.unit_price)),0,2) % 1>0)?2:0,
             2,
             2)),
           marketId: action.market_id
         }
       };
     case DEL_ITEM:
-      if(action.market_id !== state.cart.marketId){
+      if (action.market_id !== state.cart.marketId) {
         state = INITIAL_STATE;
       }
       return {
@@ -62,31 +61,17 @@ export const cartReducer = (state = INITIAL_STATE, action: any) => {
         cart: {
           total: (format((parseFloat(state.cart.total.toString()) -
             parseFloat(action.payload.unit_price ? action.payload.unit_price : 0)),
-            // (format((parseFloat(state.cart.total.toString()) - parseFloat(action.payload.unit_price)),0,2) % 1>0)?2:0,
             2,
             2)),
           marketId: action.market_id
         }
       };
     case DEL_ITEM_GROUP:
-      if(action.market_id !== state.cart.marketId){
+      if (action.market_id !== state.cart.marketId) {
         state = INITIAL_STATE;
       }
-      var total = 0;
-      var newlist = state.cartItemList || []
-        .map((obj: any) => {
-          if (obj.id === action.payload.id) {
-            return null;
-          }
-          total = format(total + (obj.unit_price ? (parseFloat(obj.unit_price.toString())) : 0), 2, 2);
-          // if(total %1>0){
-          //   format(total,2,2);
-          // }else{
-          //   format(total,0,2);
-          // }
-          return obj;
-        })
-        .filter(obj => obj != null);
+      const newlist = filter(state.cartItemList || [], i => i.id !== action.payload.id);
+      const total = sumBy(newlist, 'unit_price');
       return {
         cartItemList: [...newlist],
         cart: {

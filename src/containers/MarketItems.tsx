@@ -88,7 +88,6 @@ const MarketItems: React.FC<MarketItemsProps> = () => {
   ) as FirestoreReducer.Reducer;
 
   if (dataStore.ordered.Market && dataStore.ordered.Market.length > 0) {
-
     doneLoading()
   }
   else {

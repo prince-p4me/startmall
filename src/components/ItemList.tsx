@@ -46,10 +46,12 @@ const ItemList: React.FC<CartState> = ({ cart }) => {
     cartListArray.push(cartListWithQty[cartlistitemqty]);
     console.log(cartlistitemqty);
   }
-  function addCart(cartItem: ItemObj) {
+  
+  const addCart = (cartItem: ItemObj) => {
     dispatch(addCartAction(cartItem, cart.cart.marketId));
   }
-  function delCart(cartItem: ItemObj) {
+
+  const delCart = (cartItem: ItemObj) => {
     dispatch(delCartAction(cartItem, cart.cart.marketId), );
   }
 
