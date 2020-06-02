@@ -65,6 +65,9 @@ export interface CartStateType {
 export interface InvoiceStateType {
   [key: string]: string | number | [] | any | null;
 }
+export interface WishListStateType {
+  [key: string]: string | number | [] | any | null;
+}
 
 export interface ShopStateType {
   shop: Markets;
@@ -113,6 +116,7 @@ export interface RootState {
   cart: CartStateType;
   shop: ShopStateType;
   invoice: InvoiceStateType;
+  wishList: WishListStateType;
 }
 
 export interface Categories {

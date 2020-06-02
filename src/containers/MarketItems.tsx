@@ -8,36 +8,35 @@ import {
   IonSkeletonText,
   IonThumbnail, IonCard, IonCardContent, IonCardSubtitle,
 } from "@ionic/react";
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import "./Market.css";
 import ShopItem from "./ShopItem";
 import Cart from "./Cart";
-import { connect, useSelector } from "react-redux";
+import {connect, useDispatch, useSelector} from "react-redux";
 import { MarketItemsProps } from "../model/ComponentProps";
 import { useParams } from "react-router";
-import { useFirestoreConnect, FirestoreReducer } from "react-redux-firebase";
+import { useFirestoreConnect, FirestoreReducer, useFirestore } from "react-redux-firebase";
 import { RootState, Markets } from "../model/DomainModels";
 import { CartState } from "../services/FirebaseIniti";
+import { loadWishList } from "../reducers/WishListAction";
 import MarketHeader from "../components/MarketHeader";
-import {FirestoreIonImg} from "../services/FirebaseStorage";
 import ShopHeaderWithProps from "../components/ShopHeaderWithProps";
 
-// interface ItemJson {
-//   产品: string;
-//   售出单价: number;
-//   规格: string;
 
-//   [key: string]: string | number | null;
-// }
 
 const MarketItems: React.FC<MarketItemsProps> = () => {
-  console.log("entering MarketItems");
+
   const { market_id } = useParams<{ market_id: string }>();
   const { category_id } = useParams<{ category_id: string }>();
-  var shop = {} as Markets;
-  // const { categoryName } = useParams<{ categoryName: string }>();
+  const firestore = useFirestore();
+
+  const dispatch = useDispatch();
+
+  const auth = useSelector<RootState>(state => state.firebase.auth) as any;
+
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(true);
+
 
   useFirestoreConnect([
     { collection: "Markets", doc: market_id, storeAs: "Market" },
@@ -54,6 +53,29 @@ const MarketItems: React.FC<MarketItemsProps> = () => {
       storeAs: "ItemList"
     }
   ]);
+
+  const getWishList = () => {
+    firestore
+        .collection("WishLists")
+        .doc(auth.uid)
+        .collection("Markets")
+        .doc(market_id)
+        .collection("Items").get()
+        .then(function(snapshot) {
+          if (snapshot.empty) {
+            dispatch(loadWishList([]))
+          } else {
+            const tmp: any = []
+            snapshot.forEach(doc => {
+              tmp.push({ ...doc.data(), id: doc.id,})
+            })
+            dispatch(loadWishList(tmp))
+          }
+        })
+        .catch(function() {
+          dispatch(loadWishList([]))
+        });
+  }
 
   const doneLoading = () => {
     setTimeout(() => {
@@ -89,6 +111,11 @@ const MarketItems: React.FC<MarketItemsProps> = () => {
   const [ CartCounter ] = useState<React.ElementType>(connect(mapStateToProps)(CartBadge));
   let Market: any = useSelector<any>((state: any) => (state.firestore.data.Market))
 
+  useEffect(()=>{
+    if(auth && auth.uid){
+      getWishList()
+    }
+  }, [auth])
 
   return (
     <IonPage>

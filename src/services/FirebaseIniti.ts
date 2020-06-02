@@ -8,6 +8,7 @@ import firebase from 'firebase';
 import { RootState } from '../model/DomainModels';
 import { cartReducer, shopReducer } from '../reducers/Cart';
 import { invoiceReducer } from '../reducers/Invoices';
+import { wishListReducer } from '../reducers/WishList';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -44,7 +45,8 @@ const rootReducer = combineReducers<RootState>({
   firestore: firestoreReducer as any,
   cart: cartReducer,
   shop: shopReducer,
-  invoice: invoiceReducer
+  invoice: invoiceReducer,
+  wishList: wishListReducer,
 })
 
 const localReducer = combineReducers({

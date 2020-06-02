@@ -15,23 +15,25 @@ import { addCartAction } from "../reducers/CartAction";
 import { ItemObj, RootState, WishList } from "../model/DomainModels";
 import { ShopItemProps, ErrorProps } from "../model/ComponentProps";
 import { FirestoreIonImg } from "../services/FirebaseStorage";
-import { useFirebase, isLoaded, isEmpty } from "react-redux-firebase";
+import { useFirebase, useFirestore } from "react-redux-firebase";
 import { useHistory } from "react-router-dom";
+import { loadWishList } from "../reducers/WishListAction";
 import CurrencyAmount from "../components/CurrencyAmount";
 import ErrorDisplay from "../components/ErrorDisplay";
+import {remove} from 'lodash';
 
 const ShopItem: React.FC<ShopItemProps> = ({
   item,
   market_id,
   category_id
 }) => {
-  console.log(item);
   const [favorites, setFavorites] = useState(heartOutline);
   // const [] = useState<WishList>({} as WishList);
   const dispatch = useDispatch();
-  const db = useFirebase().firestore();
-  const auth = useSelector<RootState>(state => state.firebase.auth);
+  const db = useFirestore();
+  const auth = useSelector<RootState>(state => state.firebase.auth) as any;
   const shop = useSelector<RootState>(state => state.shop);
+  const WishLists = useSelector<RootState>(state => state.wishList.data) as any;
   const history = useHistory();
   const [errorProps, setErrorProps] = useState<ErrorProps>({} as ErrorProps);
 
@@ -49,6 +51,7 @@ const ShopItem: React.FC<ShopItemProps> = ({
   async function writeData(data: WishList, user_id: string) {
     var json_shop = JSON.parse(JSON.stringify(shop));
     // console.log(JSON.stringify(shop));
+    setFavorites(heart);
     var items = await db
       .collection("WishLists")
       .doc(user_id)
@@ -72,7 +75,7 @@ const ShopItem: React.FC<ShopItemProps> = ({
         .add(data);
       // updateFavorite();
     } else {
-      var itemList: any = [];
+      let itemList: any = [];
       items.forEach(doc => {
         var doc1 = doc.data();
         itemList.push(doc1);
@@ -86,66 +89,65 @@ const ShopItem: React.FC<ShopItemProps> = ({
         .doc(data.item_id)
         .set(data);
     }
-    setFavorites(heart);
+    getWishList()
   }
+
+  const getWishList = () => {
+    db
+        .collection("WishLists")
+        .doc(auth.uid)
+        .collection("Markets")
+        .doc(market_id)
+        .collection("Items").get()
+        .then(function(snapshot) {
+          if (snapshot.empty) {
+            dispatch(loadWishList([]))
+          } else {
+            const tmp: any = [];
+            snapshot.forEach(doc => {
+              tmp.push({ ...doc.data(), id: doc.id,})
+            });
+            dispatch(loadWishList(tmp))
+          }
+        })
+        .catch(function() {
+          dispatch(loadWishList([]))
+        });
+  };
 
   function addCart(item: ItemObj) {
     dispatch(addCartAction(item, market_id));
   }
 
   const checkFavorite = (writing: boolean) => {
-    if (isLoaded(auth) && !isEmpty(auth)) {
-      // setFavorites(heart);
-      const json_auth = JSON.parse(JSON.stringify(auth));
-      const docRef = db
+    const json_auth = JSON.parse(JSON.stringify(auth));
+    const docRef = db
         .collection("WishLists")
         .doc(json_auth.uid)
         .collection("Markets")
         .doc(market_id)
         .collection("Items");
-      docRef
-        .where("item_id", "==", item.id)
-        .get()
-        .then(function(snapshot) {
-          if (snapshot.empty) {
-            setFavorites(heartOutline);
-            if (writing) {
-              addFavorites();
-            }
-          } else {
-            if (writing) {
-              snapshot.forEach(doc => {
-                // deleteFavorite(doc.id, docRef);
-                docRef
-                  .doc(doc.id)
-                  .delete()
-                  .then(() => {
-                    console.log(doc.id + " deleted");
-                  });
-              });
-              setFavorites(heartOutline);
-            } else {
-              setFavorites(heart);
-            }
-          }
-        })
-        .catch(function(error) {
-          setFavorites(heartOutline);
-          console.log("Error getting document:", error);
-        });
-    } else {
+    const isExists = WishLists.find((wItem: any) => wItem.item_id == item.id ) as any;
+    if(isExists){
       if (writing) {
-        setErrorProps({
-          message: "Please login to add item in your wishlist",
-          showError: true,
-          type: 2,
-          autoHide: false,
-          buttonText: "LOG IN"
-        });
-        // history.push("/login");
+        remove(WishLists, {'item_id': 'item'})
+        docRef
+            .doc(isExists.id)
+            .delete()
+            .then(() => {
+              getWishList()
+              console.log(isExists.id + " deleted");
+            });
+        setFavorites(heartOutline);
+      } else {
+        setFavorites(heart);
       }
     }
-    // eslint-disable-next-line
+    else {
+      if (writing) {
+        addFavorites();
+      }
+    }
   };
 
   useEffect(() => {
@@ -153,7 +155,7 @@ const ShopItem: React.FC<ShopItemProps> = ({
       console.log("use Effect Set Favorites");
       checkFavorite(false);
     }
-  }, []);
+  }, [WishLists]);
 
   if (
     !item.unit_price ||
@@ -164,8 +166,6 @@ const ShopItem: React.FC<ShopItemProps> = ({
     item.unit == null ||
     item.is_deleted
   ) {
-    console.log("Hiding Item because following reason:");
-    console.log(item);
     return null;
   }
 
