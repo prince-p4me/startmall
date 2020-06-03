@@ -1,28 +1,31 @@
 import React from "react";
-import {RootState, Invoice, CartItem, Market} from "../model/DomainModels";
+import {CartItem, Invoice, Market} from "../model/DomainModels";
 import {
-    IonPage,
-    IonHeader,
+    IonButton,
+    IonButtons,
+    IonCol,
     IonContent,
     IonGrid,
-    IonRow,
-    IonCol,
-    IonLabel,
-    IonItem,
-    IonToolbar,
-    IonButtons,
-    IonButton,
+    IonHeader,
     IonIcon,
-    IonImg, IonText, IonTitle, IonLoading
+    IonImg,
+    IonItem,
+    IonLabel,
+    IonLoading,
+    IonPage,
+    IonRow,
+    IonText,
+    IonTitle,
+    IonToolbar
 } from "@ionic/react";
-import { CartState } from "../services/FirebaseIniti";
-import { connect, useSelector } from "react-redux";
-import { closeOutline, readerOutline } from "ionicons/icons";
-import { useHistory, useParams, useLocation } from "react-router-dom";
-import { useFirestoreConnect, FirestoreReducer, isEmpty, isLoaded } from "react-redux-firebase";
+import {CartState} from "../services/FirebaseIniti";
+import {connect, useSelector} from "react-redux";
+import {closeOutline, readerOutline} from "ionicons/icons";
+import {useHistory, useLocation, useParams} from "react-router-dom";
+import {useFirestoreConnect} from "react-redux-firebase";
 import CurrencyAmount from "../components/CurrencyAmount";
-import {GreenTick, DispatchIcon, DeliveryIcon} from "../components/tick/GreenTick";
-import {FirestoreIonImg} from "../services/FirebaseStorage";
+import {DeliveryIcon, DispatchIcon, GreenTick} from "../components/tick/GreenTick";
+import moment from "moment";
 
 
 const OrderComplete: React.FC<CartState> = () => {
@@ -218,12 +221,18 @@ const OrderComplete: React.FC<CartState> = () => {
                 </IonItem>
 
                 <IonItem className="order_address" lines="none" />
-                <IonItem className="order_address" lines="none">
-                  <IonText class="margin-0">Order Date:  {invoice.order_date}</IonText>
-                </IonItem>
-                <IonItem className="order_address" lines="none">
-                  <IonText class="margin-0">Estimated Arrival:  {invoice.delivery_date}</IonText>
-                </IonItem>
+                  {
+                      invoice.order_date &&
+                      <IonItem className="order_address" lines="none">
+                        <IonText class="margin-0">Order Date: {moment((invoice.order_date as any).toDate()).format('DD MMM YYYY')}</IonText>
+                      </IonItem>
+                  }
+                  {
+                      invoice.delivery_date &&
+                        <IonItem className="order_address" lines="none">
+                          <IonText class="margin-0">Estimated Arrival: {moment((invoice.delivery_date as any).toDate()).format('DD MMM YYYY')}</IonText>
+                        </IonItem>
+                  }
               </>
               :
               <></>

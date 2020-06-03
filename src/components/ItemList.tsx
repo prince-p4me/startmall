@@ -42,18 +42,18 @@ const ItemList: React.FC<CartState> = ({ cart }) => {
   });
   console.log(cartListWithQty);
 
-  for (var cartlistitemqty in cartListWithQty) {
-    cartListArray.push(cartListWithQty[cartlistitemqty]);
-    console.log(cartlistitemqty);
+  for (const cartItemQty in cartListWithQty) {
+    cartListArray.push(cartListWithQty[cartItemQty]);
+    console.log(cartItemQty);
   }
-  
+
   const addCart = (cartItem: ItemObj) => {
     dispatch(addCartAction(cartItem, cart.cart.marketId));
-  }
+  };
 
   const delCart = (cartItem: ItemObj) => {
     dispatch(delCartAction(cartItem, cart.cart.marketId), );
-  }
+  };
 
   return (
     <IonGrid>

@@ -66,6 +66,7 @@
     "run-android": "env-cmd -f .env ionic capacitor run android -l --emulator --host=0.0.0.0",
     "deploy:dev": "env-cmd -f .env react-scripts build --platform=web && cp -Rv build/* fbhost/public && cd fbhost && firebase deploy -P development --only hosting:development ",
     "deploy:prod": "env-cmd -f .env.production react-scripts build --platform=web && cp -Rv build/* fbhost/public && cd fbhost && firebase deploy -P production --only hosting:production ",
+    "deploy" : "npm run deploy:dev && npm run deploy:prod",
     "build-privacy-page": "cd privacy-page && firebase deploy --only hosting:slashiee-privacy ",
     "build-chat-page": "cd slashiee-chat && firebase deploy --only hosting:slashiee-chat "
   },

@@ -40,8 +40,6 @@ const ShopItem: React.FC<ShopItemProps> = ({
   const [errorProps, setErrorProps] = useState<ErrorProps>({} as ErrorProps);
   const totalItemInCard = filter(cartStore, (i: ItemObj) => i.id === item.id).length;
 
-  console.log('cartStore', totalItemInCard);
-
   const addFavorites = () => {
     const json_auth = JSON.parse(JSON.stringify(auth));
     let obj: WishList = {
@@ -51,19 +49,19 @@ const ShopItem: React.FC<ShopItemProps> = ({
       item: item
     };
     writeData(obj, json_auth.uid);
-  }
+  };
 
   const writeData = async (data: WishList, user_id: string) => {
-    var json_shop = JSON.parse(JSON.stringify(shop));
+    const json_shop = JSON.parse(JSON.stringify(shop));
     // console.log(JSON.stringify(shop));
     setFavorites(heart);
-    var items = await db
-      .collection("WishLists")
-      .doc(user_id)
-      .collection("Markets")
-      .doc(market_id)
-      .collection("Items")
-      .get();
+    const items = await db
+        .collection("WishLists")
+        .doc(user_id)
+        .collection("Markets")
+        .doc(market_id)
+        .collection("Items")
+        .get();
     if (items.empty) {
       await db
         .collection("WishLists")
@@ -95,7 +93,7 @@ const ShopItem: React.FC<ShopItemProps> = ({
         .set(data);
     }
     getWishList()
-  }
+  };
 
   const getWishList = () => {
     db
@@ -122,39 +120,41 @@ const ShopItem: React.FC<ShopItemProps> = ({
 
   const addCart = (item: ItemObj) => {
     dispatch(addCartAction(item, market_id));
-  }
+  };
 
   const delCart = (item: ItemObj) => {
     dispatch(delCartAction(item, market_id));
-  }
+  };
 
   const checkFavorite = (writing: boolean) => {
-    const json_auth = JSON.parse(JSON.stringify(auth));
-    const docRef = db
-      .collection("WishLists")
-      .doc(json_auth.uid)
-      .collection("Markets")
-      .doc(market_id)
-      .collection("Items");
-    const isExists = WishLists.find((wItem: any) => wItem.item_id == item.id) as any;
-    if (isExists) {
-      if (writing) {
-        remove(WishLists, { 'item_id': 'item' })
-        docRef
-          .doc(isExists.id)
-          .delete()
-          .then(() => {
-            getWishList()
-            console.log(isExists.id + " deleted");
-          });
-        setFavorites(heartOutline);
-      } else {
-        setFavorites(heart);
+    const json_auth = auth;
+    if(json_auth && json_auth.uid) {
+      const docRef = db
+        .collection("WishLists")
+        .doc(json_auth.uid)
+        .collection("Markets")
+        .doc(market_id)
+        .collection("Items");
+      const isExists = WishLists.find((wItem: any) => wItem.item_id == item.id) as any;
+      if (isExists) {
+        if (writing) {
+          remove(WishLists, { 'item_id': 'item' });
+          docRef
+            .doc(isExists.id)
+            .delete()
+            .then(() => {
+              getWishList();
+              console.log(isExists.id + " deleted");
+            });
+          setFavorites(heartOutline);
+        } else {
+          setFavorites(heart);
+        }
       }
-    }
-    else {
-      if (writing) {
-        addFavorites();
+      else {
+        if (writing) {
+          addFavorites();
+        }
       }
     }
   };

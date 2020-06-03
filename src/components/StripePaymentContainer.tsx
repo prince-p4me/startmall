@@ -91,13 +91,41 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
       country: "AU",
       currency: "aud",
       total: {
-        label: "Demo total",
+        label: "Product items",
         amount: 1000
       }
     },
-    onPaymentMethod: ({ complete, paymentMethod, ...data }: any) => {
-      complete();
-      completeHandler();
+    onPaymentMethod: async (ev: any) => {
+
+      if (!stripe || !elements) {
+        return;
+      }
+
+      const resPayment = await getPaymentSecret({ amount: invoice.total_amount });
+
+      // Use your card Element with other Stripe.js APIs
+      const { error: confirmError } = await stripe.confirmCardPayment(resPayment.data.data,
+        { payment_method: ev.paymentMethod.id },
+        { handleActions: false }
+      );
+
+      if (confirmError) {
+        ev.complete('fail');
+      } else {
+        ev.complete('success');
+        const { error } = await stripe.confirmCardPayment(resPayment.data.data);
+        if (error) {
+          setErrorProps({
+            message: error.message,
+            showError: true,
+            type: 1,
+            autoHide: true,
+            buttonText: ""
+          })
+        } else {
+          completeHandler();
+        }
+      }
     }
   });
   const payoptions = useOptions(paymentRequest);
@@ -143,7 +171,7 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
           billingAddressRequirement: 'none',
           shippingAddressRequirement: 'none',
         }
-      })
+      });
 
       await Stripe.finalizeApplePayTransaction({ success: true });
       setApplePayLoading(false);
@@ -332,6 +360,6 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
       />
     </div>
   );
-}
+};
 
 export default StripePaymentContainer;

@@ -80,8 +80,10 @@ const Checkout: React.FC<CheckoutProps> = () => {
 
   const writeUserData = async (my_auth: any) => {
     let today = new Date();
+    let deliveryDate = new Date();
+    deliveryDate.setDate(deliveryDate.getDate() + 1);
     let json_auth = JSON.parse(JSON.stringify(my_auth));
-    let user: ProfileData = {
+    const user: ProfileData = {
       providerId: json_auth.providerData[0].providerId,
       display_name: json_auth.displayName, //displayName
       payment_detail: "", //
@@ -91,15 +93,14 @@ const Checkout: React.FC<CheckoutProps> = () => {
       id: json_auth.uid, // uid  we get from firebase.auth() when sign in completed
       email: json_auth.email
     };
-    let invoice : any = {
+    const invoice: any = {
       id: "",
       user_id: my_auth.uid,
       address: addressObj,
       total_amount: cartState.cart.total,
       platform_charges: 135.0,
-      cut_off_terms: shopState.shop.cutoff_terms,
-      delivery_date: "22 May 2020",
-      order_date: moment(today).format("DD MMM YYYY"),
+      delivery_date: deliveryDate,
+      order_date: today,
       status: "open",
       payment_status: "pending",
       cart_total_cost_inc_GST: cartState.cart.total,
@@ -109,29 +110,28 @@ const Checkout: React.FC<CheckoutProps> = () => {
       payment_type: paymentType
     };
 
-    if(shopState.shop.id) {
+    if (shopState.shop.cutoff_terms) {
+      invoice.cut_off_terms = shopState.shop.cutoff_terms;
+    }
+
+    if (shopState.shop.id) {
       invoice.market_id = shopState.shop.id;
     }
 
-    if(shopState.shop.id) {
+    if (shopState.shop.id) {
       invoice.market_name = shopState.shop.name;
     }
 
-    if(shopState.shop.delivery_terms) {
+    if (shopState.shop.delivery_terms) {
       invoice.delivery_terms = shopState.shop.delivery_terms;
     }
 
     setInvoice(invoice);
     try {
-      const response = await db
-        .collection("Users")
-        .doc(json_auth.uid)
-        .set(user);
+      const response = await db.collection("Users").doc(json_auth.uid).set(user);
       console.log("user updated:--" + JSON.stringify(response));
       try {
-        const res = await db
-          .collection("Invoices")
-          .add(invoice);
+        const res = await db.collection("Invoices").add(invoice);
         setInvoiceId(res.id);
         invoice.id = res.id;
         setInvoice(invoice);
@@ -221,10 +221,10 @@ const Checkout: React.FC<CheckoutProps> = () => {
 
   const fetchData = async () => {
     let json_auth = JSON.parse(JSON.stringify(auth));
-    if(!json_auth.uid){
+    if (!json_auth.uid) {
       return
     }
-    console.log({json_auth})
+    console.log({ json_auth })
     var data = { address2: "", state: "", suburb: "", postcode: "", country: "" } as AddressObj;
     const res = await db.collection("Users").doc(json_auth.uid).get()
     if (res.exists) {
@@ -300,7 +300,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <ShopHeaderWithProps Market={Market}/>
+        <ShopHeaderWithProps Market={Market} />
         <CartItemList />
         <IonItem lines="none">
           <IonLabel color="primary" style={{ textAlign: "right" }}>
@@ -326,7 +326,7 @@ const Checkout: React.FC<CheckoutProps> = () => {
             onIonChange={e => {
               setAggreement(e.detail.checked);
             }}
-            style={{marginRight: 10}}
+            style={{ marginRight: 10 }}
           ></IonCheckbox>
           <IonLabel>
             <p>I read and agree on our Terms and Conditions</p>

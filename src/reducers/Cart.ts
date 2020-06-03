@@ -25,7 +25,7 @@ const format = (num: any, minDecimals: number, maxDecimals: number) => num.toLoc
 const predefineAction = [ADD_ITEM, DEL_ITEM, SET_CURRENT_SHOP, DEL_ITEM_GROUP, SET_CURRENT_SHOP]
 
 export const cartReducer = (state = INITIAL_STATE, action: any) => {
-  var x = 0;
+  let x = 0;
   // export default function cartReducer(state = INITIAL_STATE, action: any) {
   switch (action.type) {
     case ADD_ITEM:
@@ -70,10 +70,10 @@ export const cartReducer = (state = INITIAL_STATE, action: any) => {
       if (action.market_id !== state.cart.marketId) {
         state = INITIAL_STATE;
       }
-      const newlist = filter(state.cartItemList || [], i => i.id !== action.payload.id);
-      const total = sumBy(newlist, 'unit_price');
+      const newList = filter(state.cartItemList || [], i => i.id !== action.payload.id);
+      const total = sumBy(newList,  i => parseFloat(i.unit_price as string));
       return {
-        cartItemList: [...newlist],
+        cartItemList: [...newList],
         cart: {
           total: total,
           marketId: action.market_id
