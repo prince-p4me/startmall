@@ -1,37 +1,39 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import {
-  IonPage,
-  IonContent,
+  getPlatforms,
+  IonButton,
   IonCard,
   IonCardContent,
-  IonButton,
-  IonLabel,
-  IonIcon,
-  IonItem,
+  IonContent,
   IonHeader,
-  IonToolbar,
+  IonIcon,
   IonImg,
-  getPlatforms,
-  IonLoading
+  IonItem,
+  IonLabel,
+  IonLoading,
+  IonPage,
+  IonToolbar
 } from "@ionic/react";
-import { logoFacebook, logoGoogle } from "ionicons/icons";
-import { useFirebase, isLoaded, isEmpty } from "react-redux-firebase";
-import { useSelector } from "react-redux";
-import { RootState } from "../model/DomainModels";
-import { useHistory } from "react-router-dom";
-import { GooglePlus } from '@ionic-native/google-plus';
-import { Facebook } from '@ionic-native/facebook'
-import { isPlatform } from "@ionic/core";
+import {logoFacebook, logoGoogle} from "ionicons/icons";
+import {isEmpty, isLoaded, useFirebase} from "react-redux-firebase";
+import {useSelector} from "react-redux";
+import {RootState} from "../model/DomainModels";
+import {useHistory} from "react-router-dom";
+import {GooglePlus} from '@ionic-native/google-plus';
+import {Facebook} from '@ionic-native/facebook'
+import {isPlatform} from "@ionic/core";
 import ErrorDisplay from "../components/ErrorDisplay";
-import { ErrorProps } from "../model/ComponentProps";
+import {ErrorProps} from "../model/ComponentProps";
 import firebaseInstace from "firebase";
-
+import {useTranslation} from "react-i18next";
+import  ReactHtmlParser from 'react-html-parser';
 
 const Login: React.FC = () => {
   const firebase = useFirebase();
   const auth = useSelector<RootState>(state => state.firebase.auth);
   const history = useHistory();
   const db = firebase.firestore();
+  const {t} = useTranslation();
   const [showLoading, setShowLoading] = useState(false);
   const [isMoved, setMoved] = useState(false)
   const [errorProps, setErrorProps] = useState<ErrorProps>({} as ErrorProps);
@@ -47,9 +49,9 @@ const Login: React.FC = () => {
     });
   });
 
-  const writeUserData = (authObj : any) => {
+  const writeUserData = (authObj: any) => {
     try {
-      if(authObj.uid) {
+      if (authObj.uid) {
         db.collection("Users")
           .doc(authObj.uid)
           .set({
@@ -67,7 +69,7 @@ const Login: React.FC = () => {
     } catch (e) {
       console.log(e);
     }
-  }
+  };
 
   useEffect(() => {
     if (isLoaded(auth) && !isEmpty(auth) && isMoved) {
@@ -81,7 +83,7 @@ const Login: React.FC = () => {
     setErrorProps({
       ...errorProps,
       showError: false
-    })
+    });
     setShowLoading(true);
     console.log(
       "platfprms " + getPlatforms() + " platform is" + isPlatform("ios")
@@ -89,7 +91,7 @@ const Login: React.FC = () => {
     if (isPlatform("mobileweb")) {
       console.log("Google Web login start");
       return firebase
-        .login({ provider: "google", type: "popup" })
+        .login({provider: "google", type: "popup"})
         .then(data => {
           setMoved(true);
           setShowLoading(false);
@@ -100,7 +102,7 @@ const Login: React.FC = () => {
           console.log(data);
           setShowLoading(false);
           setErrorProps({
-            message: "Something Wrong with Google login. Please try again later",
+            message: t('providerLoginFail', {provider: 'Google'}),
             showError: true,
             type: 1,
             autoHide: false,
@@ -114,8 +116,7 @@ const Login: React.FC = () => {
           'webClientId': process.env.REACT_APP_GOOGLE_AUTH_CLIENT_URL,
           'offline': true
         }
-      }
-      else {
+      } else {
         params = {}
       }
       console.log(params);
@@ -132,7 +133,7 @@ const Login: React.FC = () => {
               console.log('mobile google login error =====', error)
               setShowLoading(false);
               setErrorProps({
-                message: "Something Wrong with Google login. Please try again later",
+                message: t('providerLoginFail', {provider: 'Google'}),
                 showError: true,
                 type: 1,
                 autoHide: false,
@@ -144,7 +145,7 @@ const Login: React.FC = () => {
           console.log('mobile google login err =====', err.message);
           setShowLoading(false);
           setErrorProps({
-            message: "Something Wrong with Google login. Please try again later",
+            message: t('providerLoginFail', {provider: 'Google'}),
             showError: true,
             type: 1,
             autoHide: false,
@@ -152,7 +153,7 @@ const Login: React.FC = () => {
           });
         });
     }
-  }
+  };
 
   const loginWithFacebook = () => {
     setErrorProps({
@@ -167,7 +168,7 @@ const Login: React.FC = () => {
     if (isPlatform("mobileweb")) {
       console.log("Facebook Web login start");
       return firebase
-        .login({ provider: "facebook", type: "popup" })
+        .login({provider: "facebook", type: "popup"})
         .then(data => {
           setMoved(true)
           console.log(data);
@@ -177,7 +178,7 @@ const Login: React.FC = () => {
           console.log(JSON.stringify(data));
           setShowLoading(false);
           setErrorProps({
-            message: (data && data.message) ? data.message : "Something Wrong with Facebook login. Please try again later",
+            message: (data && data.message) ? data.message : t('providerLoginFail', {provider: 'Facebook'}),
             showError: true,
             type: 1,
             autoHide: false,
@@ -201,7 +202,7 @@ const Login: React.FC = () => {
               console.clear();
               console.log("error:==" + JSON.stringify(data));
               setErrorProps({
-                message: (data && data.message) ? data.message : "Something Wrong with Facebook login. Please try again later",
+                message: (data && data.message) ? data.message : t('providerLoginFail', {provider: 'Facebook'}),
                 showError: true,
                 type: 1,
                 autoHide: false,
@@ -212,7 +213,7 @@ const Login: React.FC = () => {
         .catch(data => {
           setShowLoading(false);
           setErrorProps({
-            message: (data && data.message) ? data.message : "Something Wrong with Facebook login. Please try again later",
+            message: (data && data.message) ? data.message : t('providerLoginFail', {provider: 'Facebook'}),
             showError: true,
             type: 1,
             autoHide: false,
@@ -220,13 +221,13 @@ const Login: React.FC = () => {
           });
         });
     }
-  }
+  };
 
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar></IonToolbar>
-        <IonImg class="startmall_header " src="/assets/icon/1x/logo2.png" />
+        <IonImg class="startmall_header " src="/assets/icon/1x/logo2.png"/>
       </IonHeader>
       <IonIcon
         className="login_icon"
@@ -244,7 +245,7 @@ const Login: React.FC = () => {
               onClick={loginWithFacebook}
             >
               <IonIcon icon={logoFacebook}></IonIcon>
-              Sign up / Sign in with Facebook
+              {t('signUpInWithProvider', {provider: 'Facebook'})}
             </IonButton>
             <br></br>
             <br></br>
@@ -254,30 +255,39 @@ const Login: React.FC = () => {
               className="google_button"
               onClick={loginWithGoogle}
             >
-              <IonIcon icon={logoGoogle}></IonIcon>Sign up / Sign in with Google
+              <IonIcon icon={logoGoogle}></IonIcon>
+              {t('signUpInWithProvider', {provider: 'Google'})}
             </IonButton>
             <IonItem lines="none">
-              <IonLabel>- or -</IonLabel>
+              <IonLabel>- {t('or')} -</IonLabel>
             </IonItem>
             <IonButton
               color="google"
               fill="solid"
               shape="round"
               className="wechat_button"
-              onClick={() => { setErrorProps({ ...errorProps, showError: false }); history.push("/mobilelogin"); }}
+              onClick={() => {
+                setErrorProps({...errorProps, showError: false});
+                history.push("/mobilelogin");
+              }}
             >
-              Login with Mobile
+              {t('loginWithMobile')}
             </IonButton>
             <div>
               <IonLabel>
-                By signing up, you agree to StartMall's <u>Terms of Use</u> and{" "}
-                <u>Privacy Policy</u>.
+                {ReactHtmlParser(t('signUpPolicy'))}
               </IonLabel>
             </div>
           </IonCardContent>
         </IonCard>
-        <ErrorDisplay errorProps={errorProps} closeHandler={() => { setErrorProps({ ...errorProps, showError: false }); history.goBack(); }} eventHandler={() => { }} />
-        <IonLoading isOpen={showLoading} message={"Please wait..."} />
+        <ErrorDisplay
+          errorProps={errorProps}
+          closeHandler={() => {
+            setErrorProps({...errorProps, showError: false});
+            history.goBack();
+          }} eventHandler={() => {
+        }}/>
+        <IonLoading isOpen={showLoading} message={t('pleaseWait')}/>
       </IonContent>
     </IonPage>
   );

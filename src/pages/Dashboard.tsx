@@ -1,32 +1,21 @@
-import {
-  IonContent,
-  IonPage,
-  IonImg,
-  IonItem,
-  IonInput,
-  IonButton,
-  IonFooter
-} from "@ionic/react";
-import React, { useState, useEffect, useRef } from "react";
+import {IonButton, IonContent, IonFooter, IonImg, IonInput, IonItem, IonPage} from "@ionic/react";
+import React, {useEffect, useRef, useState} from "react";
 import MainHeader from "../components/MainHeader";
-import { useHistory, useLocation } from "react-router";
+import {useHistory, useLocation} from "react-router";
 import ErrorDisplay from "../components/ErrorDisplay";
-import { ErrorProps } from "../model/ComponentProps";
-import { Keyboard } from '@ionic-native/keyboard';
+import {ErrorProps} from "../model/ComponentProps";
+import {useTranslation} from "react-i18next";
+
 const Dashboard: React.FC = () => {
   console.log("entering Dashboard");
   const [postcode, setPostCode] = useState<string>("2000");
   const history = useHistory();
   const location = useLocation();
-  // const [showError, setShowError] = useState(false);
-  // const [errorMessage, setErrorMessage] = useState("");
   const [errorProps, setErrorProps] = useState<ErrorProps>({} as ErrorProps);
   const inputElement = useRef<any>();
+  const {t} = useTranslation();
 
-  // // SplashScreen.show({
-  // //   showDuration: 2000,
-  // //   autoHide: true
-  // // });
+
   let elements = document.querySelectorAll("ion-tab-bar");
 
   if (elements != null && location.pathname.endsWith("dashboard")) {
@@ -50,9 +39,7 @@ const Dashboard: React.FC = () => {
         type: 1,
         autoHide: true,
         buttonText: ""
-      })
-      // setErrorMessage("Please enter postcode")
-      // setShowError(true)
+      });
       return;
     }
     history.push("/tabs/shop_selections/" + postcode)
@@ -60,18 +47,16 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     inputElement.current.onfocus = () => {
-      // window.scrollTo(0, 0);
-      // document.body.scrollTop = 0;
-      // Keyboard.disableScroll(true);
     };
   }, []);
 
   return (
     <IonPage>
-      <MainHeader />
-
+      <MainHeader/>
       <IonContent fullscreen>
-        <IonImg className="dashboard_ad" src="/assets/icon/1x/cover.png" onClick={() => { history.push("/page/postcode_search") }} />
+        <IonImg className="dashboard_ad" src="/assets/icon/1x/cover.png" onClick={() => {
+          history.push("/page/postcode_search")
+        }}/>
 
         <div>
           <IonItem>
@@ -85,12 +70,26 @@ const Dashboard: React.FC = () => {
               onIonChange={e => {
                 setPostCode(e.detail.value + "");
               }}
-             />
-            <IonButton slot={'end'} className={'postcode-search'} onClick={handleSearch} shape="round"> Search</IonButton>
+            />
+            <IonButton
+              slot={'end'}
+              className={'postcode-search'}
+              onClick={handleSearch}
+              shape="round"
+            >
+              {t('search')}
+            </IonButton>
           </IonItem>
-          <IonImg src="/assets/img/instructions.png" onClick={() => { history.push("/page/postcode_search") }} />
+          <IonImg src="/assets/img/instructions.png" onClick={() => {
+            history.push("/page/postcode_search")
+          }}/>
         </div>
-        <ErrorDisplay errorProps={errorProps} closeHandler={() => setErrorProps({ ...errorProps, showError: false })} eventHandler={() => { }} />
+        <ErrorDisplay
+          errorProps={errorProps}
+          closeHandler={() => setErrorProps({...errorProps, showError: false})}
+          eventHandler={() => {
+          }}
+        />
 
       </IonContent>
       <IonFooter>
@@ -100,7 +99,7 @@ const Dashboard: React.FC = () => {
             slot="start"
             src="/assets/icon/payment-method.png"
           ></IonImg>
-          <IonButton slot="end"> Order now </IonButton>
+          <IonButton slot="end">{t('orderNow')}</IonButton>
         </IonItem>
       </IonFooter>
     </IonPage>
