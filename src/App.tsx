@@ -1,5 +1,4 @@
 import Menu from "./components/Menu";
-import Page from "./pages/Page";
 import React, {Suspense, useEffect, useState} from "react";
 import {
   IonApp,
@@ -189,7 +188,6 @@ const App: React.FC = () => {
                 <Route path="/favoriteitems/:market_id" component={WishList} exact/>
                 <Route path="/orders/:invoice_id" component={OrderComplete} exact/>
                 <Route path="/shop/:name/categories" component={ShopMain} exact/>
-                <Route path="/page/:name" component={Page} exact/>
                 <Redirect from="/" to="/tabs/dashboard" exact/>
                 <Redirect from="/tabs" to="/tabs/dashboard" exact/>
               </IonRouterOutlet>

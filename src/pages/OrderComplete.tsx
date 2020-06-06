@@ -26,11 +26,13 @@ import {useFirestoreConnect} from "react-redux-firebase";
 import CurrencyAmount from "../components/CurrencyAmount";
 import {DeliveryIcon, DispatchIcon, GreenTick} from "../components/tick/GreenTick";
 import moment from "moment";
+import {useTranslation} from "react-i18next";
 
 
 const OrderComplete: React.FC<CartState> = () => {
 
   const payment = useLocation();
+  const {t} = useTranslation();
   const isPaymentSuccess = payment.search.indexOf("payment=success") > -1;
 
   const {invoice_id} = useParams<{ invoice_id: string }>();
@@ -63,8 +65,6 @@ const OrderComplete: React.FC<CartState> = () => {
       if (item.length > 0) {
         let existedItem = item[0];
         existedItem.qty = existedItem.qty + 1;
-        // let newList = cartItems;
-        // cartItems = [...newList,existedItem]
       } else {
         cartItems.push(ele);
       }
@@ -80,12 +80,12 @@ const OrderComplete: React.FC<CartState> = () => {
 
   return (
     <IonPage>
-      <IonLoading isOpen={isLoading} message={"Please wait..."}/>
+      <IonLoading isOpen={isLoading} message={t('pleaseWait')}/>
       <IonHeader>
         <IonToolbar>
           <IonTitle class="order-title">
             {
-              isPaymentSuccess ? 'Order Completed' : 'View Order'
+              isPaymentSuccess ? t('orderCompleted') : t('viewOrder')
             }
           </IonTitle>
           <IonButtons slot="end" className="toolbar-x">
@@ -116,14 +116,11 @@ const OrderComplete: React.FC<CartState> = () => {
               </IonItem>
               <IonItem className="order_cutoff" lines="none">
                 <IonLabel>
-                  <b>{"INV: " + invoice_id}</b>
+                  <b>{t('inv')} : {invoice_id}</b>
                 </IonLabel>
               </IonItem>
               <IonItem className="order_completed">
-                <p>
-                  We are processing your order at the moment. You will receieve the
-                  order confirmation from us shortly.
-                </p>
+                <p>{t('orderConfirmationMsg')}</p>
               </IonItem>
             </>
             :
@@ -131,24 +128,25 @@ const OrderComplete: React.FC<CartState> = () => {
               <ul className="list-unstyled multi-steps">
                 <li className="active">
                   <GreenTick/>
-                  <IonLabel color="primary"><p className='margin-0'>Confirmed</p></IonLabel>
+                  <IonLabel color="primary"><p className='margin-0'>{t('confirmed')}</p></IonLabel>
                 </li>
                 <li className="active">
                   <DispatchIcon/>
-                  <IonLabel color="primary"><p className='margin-0'>Dispatched</p></IonLabel>
+                  <IonLabel color="primary"><p className='margin-0'>{t('dispatched')}</p></IonLabel>
                 </li>
                 <li>
                   <DeliveryIcon/>
-                  <IonLabel><p className='margin-0'>Delivered</p></IonLabel>
+                  <IonLabel><p className='margin-0'>{t('delivered')}</p></IonLabel>
                 </li>
               </ul>
 
               <IonItem lines="none">
                 <IonButton className="btn-track-delivery" expand="block"
-                           onClick={closeHandler}>Track Delivery</IonButton>
+                           onClick={closeHandler}>{t('trackDelivery')}</IonButton>
               </IonItem>
               <IonItem className="order_address m-t-10 text-center" lines="none">
-                <IonText class="margin-0">Estimated Arrival: {moment((invoice?.delivery_date as any).toDate()).format('DD MMM YYYY')}</IonText>
+                <IonText class="margin-0">Estimated
+                  {t('arrival')}: {moment((invoice?.delivery_date as any).toDate()).format('DD MMM YYYY')}</IonText>
               </IonItem>
               <IonItem className="m-t-10" lines="none">
                 <IonImg src={market?.img_url} style={{width: 50}}/>
@@ -168,14 +166,14 @@ const OrderComplete: React.FC<CartState> = () => {
               slot="start"
               icon={readerOutline}
             />
-            Order Summary
+            {t('orderSummary')}
           </IonLabel>
         </IonItem>
         <IonGrid>
           <IonRow>
             <IonCol size="5"><IonItem lines="none"></IonItem></IonCol>
-            <IonCol size="2.5"><IonItem text-center lines="none">Qty</IonItem></IonCol>
-            <IonCol size="3.5" text-center><IonItem text-center lines="none">Total</IonItem></IonCol>
+            <IonCol size="2.5"><IonItem text-center lines="none">{t('qty')}</IonItem></IonCol>
+            <IonCol size="3.5" text-center><IonItem text-center lines="none">{t('total')}</IonItem></IonCol>
           </IonRow>
           {cartItems.map(item => {
             return (
@@ -194,7 +192,7 @@ const OrderComplete: React.FC<CartState> = () => {
         <IonItem/>
         <IonRow>
           <IonCol size="7.5">
-            <IonItem lines="none"><IonLabel class="ion-text-right">Total incl GST</IonLabel></IonItem>
+            <IonItem lines="none"><IonLabel class="ion-text-right">{t('totalInclGST')}</IonLabel></IonItem>
           </IonCol>
           <IonCol size="3.5">
             <IonItem lines="none"><IonLabel><CurrencyAmount
@@ -206,10 +204,9 @@ const OrderComplete: React.FC<CartState> = () => {
           address ?
             <>
               <IonItem className="order_completed" lines="none">
-
                 <IonLabel color="primary">
                   <IonImg src="/assets/icon/1x/SVG/delivery.svg" class="svg-img-icon"/>
-                  Delivery Details
+                  {t('deliveryDetails')}
                 </IonLabel>
               </IonItem>
               <IonItem className="order_address" lines="none">
@@ -219,12 +216,14 @@ const OrderComplete: React.FC<CartState> = () => {
                 <IonText class="margin-0">{address.address1}</IonText>
               </IonItem>
               {address.address2 ?
-                <IonItem className="order_address" lines="none"><IonLabel class="margin-0">{}</IonLabel></IonItem> : <></>}
+                <IonItem className="order_address" lines="none">
+                  <IonLabel class="margin-0">{}</IonLabel>
+                </IonItem> : <></>}
               <IonItem className="order_address" lines="none">
                 <IonText class="margin-0">{address.state} {address.postcode}</IonText>
               </IonItem>
               <IonItem className="order_address" lines="none">
-                <IonText class="margin-0">Mobile: {address.phone}</IonText>
+                <IonText class="margin-0">{t('mobile')}: {address.phone}</IonText>
               </IonItem>
 
               <IonItem className="order_address" lines="none"/>
@@ -232,14 +231,14 @@ const OrderComplete: React.FC<CartState> = () => {
                 invoice.order_date &&
                 <IonItem className="order_address" lines="none">
                   <IonText class="margin-0">Order
-                    Date: {moment((invoice?.order_date as any).toDate()).format('DD MMM YYYY')}</IonText>
+                    {t('date')}: {moment((invoice?.order_date as any).toDate()).format('DD MMM YYYY')}</IonText>
                 </IonItem>
               }
               {
                 invoice.delivery_date &&
                 <IonItem className="order_address" lines="none">
                   <IonText class="margin-0">Estimated
-                    Arrival: {moment((invoice?.delivery_date as any).toDate()).format('DD MMM YYYY')}</IonText>
+                    {t('arrival')}: {moment((invoice?.delivery_date as any).toDate()).format('DD MMM YYYY')}</IonText>
                 </IonItem>
               }
             </>
@@ -247,8 +246,9 @@ const OrderComplete: React.FC<CartState> = () => {
             <></>
         }
 
-        <IonButton className="btn-continue-shopping" expand="block" onClick={closeHandler}>Continue
-          Shopping</IonButton>
+        <IonButton className="btn-continue-shopping" expand="block" onClick={closeHandler}>
+          {t('continueShopping')}
+        </IonButton>
       </IonContent>
 
 

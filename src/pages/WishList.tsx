@@ -1,25 +1,21 @@
-import React, { useEffect, useState } from "react";
-import {
-  IonRow, IonCol,
-  IonPage,
-  IonBadge,
-  IonGrid,
-  IonContent
-} from "@ionic/react";
+import React, {useEffect, useState} from "react";
+import {IonBadge, IonCol, IonContent, IonGrid, IonPage, IonRow} from "@ionic/react";
 import ShopItem from "../containers/ShopItem";
-import { useSelector, connect } from "react-redux";
-import { useFirestoreConnect, useFirebase } from "react-redux-firebase";
-import { RootState, WishList, Markets, } from "../model/DomainModels";
-import { useParams } from "react-router";
-import { CartState } from "../services/FirebaseIniti";
+import {connect, useSelector} from "react-redux";
+import {useFirebase, useFirestoreConnect} from "react-redux-firebase";
+import {Markets, RootState, WishList,} from "../model/DomainModels";
+import {useParams} from "react-router";
+import {CartState} from "../services/FirebaseIniti";
 import MarketHeader from "../components/MarketHeader";
 import Cart from "../containers/Cart";
+import {useTranslation} from "react-i18next";
 
 const WishListPage: React.FC = () => {
   console.log("entering WishListPage");
   const auth = useSelector<RootState>(state => state.firebase.auth);
+  const {t} = useTranslation();
   const json_auth = JSON.parse(JSON.stringify(auth));
-  const { market_id } = useParams<{ market_id: string }>();
+  const {market_id} = useParams<{ market_id: string }>();
   const db = useFirebase().firestore();
   const [items, setItems] = useState<Array<WishList>>([]);
   const [showModal, setShowModal] = useState(false);
@@ -29,7 +25,7 @@ const WishListPage: React.FC = () => {
     {collection: "Markets", doc: market_id, storeAs: "Market"},
   ]);
 
-  const CartBadge: React.FC<CartState> = ({ cart }) => {
+  const CartBadge: React.FC<CartState> = ({cart}) => {
     const cartSize = cart.cartItemList.length;
     if (cartSize > 0) {
       return <IonBadge color="danger">{cart.cartItemList.length}</IonBadge>;
@@ -38,10 +34,11 @@ const WishListPage: React.FC = () => {
     }
   };
 
-  function mapStateToProps(state: CartState) {
-    const { firebase, cart, shop } = state;
-    return { firebase, cart, shop };
-  }
+  const mapStateToProps = (state: CartState) => {
+    const {firebase, cart, shop} = state;
+    return {firebase, cart, shop};
+  };
+
   const CartCounter = connect(mapStateToProps)(CartBadge);
 
   useFirestoreConnect([
@@ -64,52 +61,51 @@ const WishListPage: React.FC = () => {
       .doc(json_auth.uid)
       .collection("Markets")
       .doc(market_id).get().then(res => {
-        var shop1: any = res.data();
-        setShop(shop1 as Markets);
-      });
+      const shop1: any = res.data();
+      setShop(shop1 as Markets);
+    });
     db.collection("WishLists")
       .doc(json_auth.uid)
       .collection("Markets")
       .doc(market_id)
       .collection("Items")
       .get().then((snapshot) => {
-        var data: Array<WishList> = [];
-        if (!snapshot.empty) {
-          snapshot.forEach(doc => {
-            var item = doc.data();
-            data.push(item as WishList);
-          });
-        }
-        setItems(data);
-      })
+      const data: Array<WishList> = [];
+      if (!snapshot.empty) {
+        snapshot.forEach(doc => {
+          const item = doc.data();
+          data.push(item as WishList);
+        });
+      }
+      setItems(data);
+    })
   }, [db, json_auth.uid, market_id]);
 
   let Market: any = useSelector<any>((state: any) => (state.firestore.data.Market))
 
   return (
     <IonPage>
-      <MarketHeader showTearms={false} setShowModal={setShowModal} shop={Market || {}} CartCounter={CartCounter} />
+      <MarketHeader showTearms={false} setShowModal={setShowModal} shop={Market || {}} CartCounter={CartCounter}/>
       <IonContent className="shope_item_listing" fullscreen>
-        {/* <ShopHeaderWithShop /> */}
         <IonGrid>
           <IonRow>
             {items &&
-              items.length > 0 ? (
-                items.map((obj, index) => {
-                  return (
-                    <IonCol key={index} size="12">
-                      <ShopItem item={obj.item} market_id={obj.market_id} category_id={obj.category_id} />
-                    </IonCol>
-                  );
-                })
-              ) : (
-                <p></p>
-              )}
+            items.length > 0 ? (
+              items.map((obj, index) => {
+                return (
+                  <IonCol key={index} size="12">
+                    <ShopItem item={obj.item} market_id={obj.market_id} category_id={obj.category_id}/>
+                  </IonCol>
+                );
+              })
+            ) : (
+              <p></p>
+            )}
           </IonRow>
         </IonGrid>
-        <Cart modal={showModal} closeHandler={() => setShowModal(!showModal)} />
+        <Cart modal={showModal} closeHandler={() => setShowModal(!showModal)}/>
       </IonContent>
-    </IonPage >
+    </IonPage>
   );
 };
 

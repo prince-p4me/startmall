@@ -34,10 +34,10 @@ const ShopSelection: React.FC = () => {
   const {postcode} = useParams<{ postcode: string }>();
   const marketList: Array<Markets> = [];
 
-  function handleShopClick(shop: any) {
+  const handleShopClick = (shop: any) => {
     dispatch(setCurrentShop({shop: shop}));
     history.push("/tabs/market/" + shop.id);
-  }
+  };
 
   useFirestoreConnect([{collection: "Markets"}]);
 
