@@ -1,13 +1,14 @@
-import React, { useState } from "react";
-import { useFirebase } from "react-redux-firebase";
+import React, {useState} from "react";
+import {useFirebase} from "react-redux-firebase";
 import {IonImg, IonModal, IonSkeletonText, IonThumbnail} from "@ionic/react";
 
 interface GetURLProps {
   src: string;
-  className?:string;
+  className?: string;
   showModal?: boolean
 }
-export const FirestoreIonImg: React.FC<GetURLProps> = ({ className, src, showModal }) => {
+
+export const FirestoreIonImg: React.FC<GetURLProps> = ({className, src, showModal}) => {
   const [downloadUrl, setDownloadUrl] = useState(src);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const storage = useFirebase().storage();
@@ -17,22 +18,20 @@ export const FirestoreIonImg: React.FC<GetURLProps> = ({ className, src, showMod
     setTimeout(() => {
       setLoading(false)
     }, 1000)
-  }
+  };
 
   if (src && src.startsWith("gs")) {
     const imgref = storage.refFromURL(src);
-    // console.log("Image Ref");
-    // console.log(imgref);
     // Get the download URL
     imgref
       .getDownloadURL()
-      .then(function(url: string | any) {
+      .then((url: string | any) => {
         // Insert url into an <img> tag to "download"
         // Or inserted into an <img> element:
         setDownloadUrl(url);
         doneLoading();
       })
-      .catch(function(error: any) {
+      .catch((error: any) => {
         doneLoading();
         // A full list of error codes is available at
         // https://firebase.google.com/docs/storage/web/handle-errors
@@ -56,24 +55,25 @@ export const FirestoreIonImg: React.FC<GetURLProps> = ({ className, src, showMod
   }
 
   const onImgClick = () => {
-    if(showModal){
+    if (showModal) {
       setIsModalOpen(true)
     }
-  }
+  };
 
-  if(loading){
+  if (loading) {
     return (
-        <IonThumbnail class="skeleton-image-preview" style={{width: '100%', height: '100%'}} >
-          <IonSkeletonText animated />
-        </IonThumbnail>
+      <IonThumbnail class="skeleton-image-preview" style={{width: '100%', height: '100%'}}>
+        <IonSkeletonText animated/>
+      </IonThumbnail>
     )
   }
-  return(
-      <>
-        <IonImg src={downloadUrl} onClick={onImgClick} />
-        <IonModal cssClass="image-preview-popup" backdropDismiss={true} isOpen={isModalOpen} swipeToClose={true} onDidDismiss={() => setIsModalOpen(false)}>
-          <IonImg src={downloadUrl} onClick={() => setIsModalOpen(false)} />
-        </IonModal>
-      </>
-      );
+  return (
+    <>
+      <IonImg src={downloadUrl} onClick={onImgClick}/>
+      <IonModal cssClass="image-preview-popup" backdropDismiss={true} isOpen={isModalOpen} swipeToClose={true}
+                onDidDismiss={() => setIsModalOpen(false)}>
+        <IonImg src={downloadUrl} onClick={() => setIsModalOpen(false)}/>
+      </IonModal>
+    </>
+  );
 };

@@ -1,6 +1,6 @@
-import { CartWithQty, CartStateType } from "../model/DomainModels";
+import {CartStateType, CartWithQty} from "../model/DomainModels";
 
-export function ConvertCartWithQty(cart: CartStateType) {
+export const ConvertCartWithQty = (cart: CartStateType) => {
   const cartListWithQty: CartWithQty[] = [];
 
   console.log(cart.cartItemList);
@@ -23,4 +23,4 @@ export function ConvertCartWithQty(cart: CartStateType) {
   });
   console.log(cartListWithQty);
   return cartListWithQty;
-}
+};

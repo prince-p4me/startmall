@@ -8,7 +8,6 @@ const fetchAddressFinder = (addr : string)  => {
     }).then ((data) => {
         console.log(data);
     })
-}
-
+};
 
 export default fetchAddressFinder
