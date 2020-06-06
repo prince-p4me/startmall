@@ -1,7 +1,7 @@
-import { FirebaseReducer, firebaseReducer } from "react-redux-firebase";
-import { combineReducers, Reducer } from "redux";
-import { CartStateType, ShopStateType } from "../model/DomainModels";
-import { filter, sumBy } from 'lodash';
+import {FirebaseReducer, firebaseReducer} from "react-redux-firebase";
+import {combineReducers, Reducer} from "redux";
+import {CartStateType, ShopStateType} from "../model/DomainModels";
+import {filter, sumBy} from 'lodash';
 
 export const INITIAL_STATE = {
   cartItemList: [],
@@ -21,8 +21,6 @@ const format = (num: any, minDecimals: number, maxDecimals: number) => num.toLoc
   minimumFractionDigits: minDecimals,
   maximumFractionDigits: maxDecimals,
 });
-
-const predefineAction = [ADD_ITEM, DEL_ITEM, SET_CURRENT_SHOP, DEL_ITEM_GROUP, SET_CURRENT_SHOP]
 
 export const cartReducer = (state = INITIAL_STATE, action: any) => {
   let x = 0;
@@ -71,7 +69,7 @@ export const cartReducer = (state = INITIAL_STATE, action: any) => {
         state = INITIAL_STATE;
       }
       const newList = filter(state.cartItemList || [], i => i.id !== action.payload.id);
-      const total = sumBy(newList,  i => parseFloat(i.unit_price as string));
+      const total = sumBy(newList, i => parseFloat(i.unit_price as string));
       return {
         cartItemList: [...newList],
         cart: {
@@ -117,12 +115,11 @@ interface RootState {
   shop: Reducer<ShopStateType>;
 }
 
-export const shopReducer = (state = { shop: {} }, action: any) => {
-  switch (action.type) {
-    case SET_CURRENT_SHOP:
-      return action.payload;
-    default:
-      return state;
+export const shopReducer = (state = {shop: {}}, action: any) => {
+  if (action.type === SET_CURRENT_SHOP) {
+    return action.payload;
+  } else {
+    return state;
   }
 };
 const rootReducer = combineReducers({

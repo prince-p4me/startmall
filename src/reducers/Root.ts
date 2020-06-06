@@ -1,6 +1,6 @@
-import {  Reducer } from "redux";
-import {  FirebaseReducer } from "react-redux-firebase";
-import { CartStateType } from "../model/DomainModels";
+import {Reducer} from "redux";
+import {FirebaseReducer} from "react-redux-firebase";
+import {CartStateType} from "../model/DomainModels";
 
 // Optional: If you use the user profile option
 interface Profile {
