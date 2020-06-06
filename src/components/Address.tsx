@@ -1,12 +1,6 @@
-import React, { } from "react";
-import {
-  IonItem,
-  IonInput,
-  IonLabel,
-  IonList, IonIcon,
-  IonItemDivider
-} from "@ionic/react";
-import { AddressProps } from "../model/ComponentProps";
+import React from 'react';
+import { IonItem, IonInput, IonLabel, IonList, IonIcon, IonItemDivider } from '@ionic/react';
+import { AddressProps } from '../model/ComponentProps';
 
 const AddressForm: React.FC<AddressProps> = ({ address, onAddressChange }) => {
   // const dispatch = useDispatch();
@@ -28,105 +22,127 @@ const AddressForm: React.FC<AddressProps> = ({ address, onAddressChange }) => {
   // console.log(address);
   return (
     <IonList>
-      <IonItemDivider style={{ backgroundColor: "#f7f7f7", paddingTop: 10, paddingBottom: 10 }}>
-        <IonIcon slot="start" src="assets/icon/1x/SVG/delivery.svg" style={{marginRight: 0}}></IonIcon>
-        <IonLabel color="primary" style={{ paddingLeft: 10 }}>DELIVERY ADDRESS</IonLabel>
+      <IonItemDivider style={{ backgroundColor: '#f7f7f7', paddingTop: 10, paddingBottom: 10 }}>
+        <IonIcon slot="start" src="assets/icon/1x/SVG/delivery.svg" style={{ marginRight: 0 }}></IonIcon>
+        <IonLabel color="primary" style={{ paddingLeft: 10 }}>
+          DELIVERY ADDRESS
+        </IonLabel>
       </IonItemDivider>
       <IonItem style={{ paddingRight: 16 }}>
         <IonLabel id="contact_name" color="medium" position="floating">
           Contact Name
         </IonLabel>
-        <IonInput placeholder="e.g. John" required={true}
+        <IonInput
+          placeholder="e.g. John"
+          required={true}
           value={address.name}
-          onIonChange={e => {
+          onIonChange={(e) => {
             console.log(e);
-            onAddressChange({ ...address, name: e.detail.value })
-          }}></IonInput>
+            onAddressChange({ ...address, name: e.detail.value });
+          }}
+        ></IonInput>
       </IonItem>
       <IonItem style={{ paddingRight: 16 }}>
-        <IonLabel id="address_line_1" color={(address && !address ?.isValidAddress1) ? "danger" : "medium"} position="floating">
+        <IonLabel
+          id="address_line_1"
+          color={address && !address?.isValidAddress1 ? 'danger' : 'medium'}
+          position="floating"
+        >
           Address Line 1 *
         </IonLabel>
-        <IonInput placeholder="e.g. Level 3A, Levy walk" required={true}
+        <IonInput
+          placeholder="e.g. Level 3A, Levy walk"
+          required={true}
           value={address.address1}
-          onIonChange={e => {
+          onIonChange={(e) => {
             console.log(e);
-            onAddressChange({ ...address, address1: e.detail.value, isValidAddress1: true })
-          }}></IonInput>
+            onAddressChange({ ...address, address1: e.detail.value, isValidAddress1: true });
+          }}
+        ></IonInput>
       </IonItem>
       <IonItem hidden style={{ paddingRight: 16 }}>
         <IonLabel id="address_line_2" color="medium" position="floating">
           Address Line 2
         </IonLabel>
-        <IonInput placeholder="e.g. Buildings"
+        <IonInput
+          placeholder="e.g. Buildings"
           value={address.address2}
-          onIonChange={e => {
-            onAddressChange({ ...address, address2: e.detail.value })
-          }}></IonInput>
+          onIonChange={(e) => {
+            onAddressChange({ ...address, address2: e.detail.value });
+          }}
+        ></IonInput>
       </IonItem>
       <IonItem style={{ paddingRight: 16 }}>
         <IonLabel id="suburb" color="medium" position="floating">
           Suburb
         </IonLabel>
-        <IonInput placeholder="e.g CBD, Chatswood" required={true}
+        <IonInput
+          placeholder="e.g CBD, Chatswood"
+          required={true}
           value={address.suburb}
-          onIonChange={e => {
-            onAddressChange({ ...address, suburb: e.detail.value })
-          }}></IonInput>
+          onIonChange={(e) => {
+            onAddressChange({ ...address, suburb: e.detail.value });
+          }}
+        ></IonInput>
       </IonItem>
       <IonItem hidden style={{ paddingRight: 16 }}>
         <IonLabel id="state" color="medium" position="floating">
           State
         </IonLabel>
-        <IonInput placeholder="e.g. NSW"
+        <IonInput
+          placeholder="e.g. NSW"
           value={address.state}
-          onIonChange={e => {
-            onAddressChange({ ...address, state: e.detail.value })
-          }}></IonInput>
+          onIonChange={(e) => {
+            onAddressChange({ ...address, state: e.detail.value });
+          }}
+        ></IonInput>
       </IonItem>
       <IonItem style={{ paddingRight: 16 }}>
         <IonLabel id="postcode" color="medium" position="floating">
           Postcode
         </IonLabel>
-        <IonInput placeholder="e.g. 2000"
+        <IonInput
+          placeholder="e.g. 2000"
           value={address.postcode}
-          onIonChange={e => {
-            onAddressChange({ ...address, postcode: e.detail.value })
-          }}></IonInput>
+          onIonChange={(e) => {
+            onAddressChange({ ...address, postcode: e.detail.value });
+          }}
+        ></IonInput>
       </IonItem>
       <IonItem style={{ paddingRight: 16 }}>
         <IonLabel id="email" color="medium" position="floating">
           Email
         </IonLabel>
-        <IonInput type="email" placeholder="e.g. John@test.com "
+        <IonInput
+          type="email"
+          placeholder="e.g. John@test.com "
           value={address.email}
-          onIonChange={e => {
-            onAddressChange({ ...address, email: e.detail.value })
-            // dispatch(Actions.addEmailAction(e.detail.value!));
-          }}></IonInput>
+          onIonChange={(e) => {
+            onAddressChange({ ...address, email: e.detail.value });
+          }}
+        ></IonInput>
       </IonItem>
       <IonItem style={{ paddingRight: 16 }}>
-        <IonLabel id="phone" color={(address && !address ?.isValidNumber) ? "danger" : "medium"} position="floating">
+        <IonLabel id="phone" color={address && !address?.isValidNumber ? 'danger' : 'medium'} position="floating">
           Phone Number *
         </IonLabel>
-        <IonInput type="tel" placeholder="+61 321112321"
+        <IonInput
+          type="tel"
+          placeholder="+61 321112321"
           value={address.phone}
-          onIonChange={e => {
-            onAddressChange({ ...address, phone: e.detail.value, isValidNumber: true })
-            // dispatch(Actions.addPhoneAction(e.detail.value!));
-          }}></IonInput>
+          onIonChange={(e) => {
+            onAddressChange({ ...address, phone: e.detail.value, isValidNumber: true });
+          }}
+        ></IonInput>
       </IonItem>
 
-      {
-        (address && (!(address.isValidAddress1 && address.isValidNumber)))
-          ?
-          <IonItem style={{ paddingRight: 16 }} lines="none">
-            <IonLabel id="validate" color="danger" position="floating">
-              * Please fill up all the required information.
-            </IonLabel>
-          </IonItem>
-          : null
-      }
+      {address && !(address.isValidAddress1 && address.isValidNumber) ? (
+        <IonItem style={{ paddingRight: 16 }} lines="none">
+          <IonLabel id="validate" color="danger" position="floating">
+            * Please fill up all the required information.
+          </IonLabel>
+        </IonItem>
+      ) : null}
     </IonList>
   );
 };

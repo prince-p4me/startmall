@@ -1,36 +1,19 @@
-import {
-  IonHeader,
-  IonToolbar,
-  IonButtons,
-  IonButton,
-  IonIcon,
-  IonTitle,
-  IonLabel,
-  IonMenuToggle
-} from "@ionic/react";
+import React from 'react';
+import { IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonTitle, IonLabel, IonMenuToggle } from '@ionic/react';
+import { basket } from 'ionicons/icons';
+import GoBack from './GoBack';
+import { Markets } from '../model/DomainModels';
 
-import React from "react";
-
-import { basket } from "ionicons/icons";
-
-import GoBack from "./GoBack";
-import { Markets } from "../model/DomainModels";
-
-import './MarketHeader.css'
+import './MarketHeader.css';
 
 interface MarketHeaderProps {
   setShowModal: any;
   shop: Markets | any;
   CartCounter: any;
-  showTearms?: boolean;
+  showTerms?: boolean;
 }
 
-const MarketHeader: React.FC<MarketHeaderProps> = ({
-  setShowModal,
-  shop,
-  CartCounter,
-  showTearms = true
-}) => {
+const MarketHeader: React.FC<MarketHeaderProps> = ({ setShowModal, shop, CartCounter, showTerms = true }) => {
   return (
     <IonHeader>
       <IonToolbar color="secondary">
@@ -48,13 +31,12 @@ const MarketHeader: React.FC<MarketHeaderProps> = ({
         <IonButtons slot="start">
           <GoBack />
         </IonButtons>
-        {
-          showTearms &&
+        {showTerms && (
           <IonTitle class="shop_header_condition" size="large">
             <p className={'terms'}>Cut Off : {shop.cut_off_terms}</p>
             <p className={'terms'}>Delivery : {shop.delivery_terms}</p>
           </IonTitle>
-        }
+        )}
       </IonToolbar>
     </IonHeader>
   );

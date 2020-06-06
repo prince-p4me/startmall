@@ -1,16 +1,16 @@
-import {CartStateType, CartWithQty} from "../model/DomainModels";
+import { CartStateType, CartWithQty } from '../model/DomainModels';
 
 export const ConvertCartWithQty = (cart: CartStateType) => {
   const cartListWithQty: CartWithQty[] = [];
 
   console.log(cart.cartItemList);
-  cart.cartItemList.map(cartItem => {
+  cart.cartItemList.map((cartItem) => {
     if (cartItem) {
       if (cartListWithQty[cartItem.id as any] == null) {
         cartListWithQty[cartItem.id as any] = {
           key: cartItem.id,
           item: cartItem,
-          count: 0
+          count: 0,
         };
       }
       if (cartListWithQty[cartItem.id as any].count === 0) {

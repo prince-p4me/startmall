@@ -1,11 +1,6 @@
-import React from "react";
-import {
-  IonHeader,
-  IonGrid,
-  IonCol,
-  IonRow,
-  IonIcon} from "@ionic/react";
-import { ellipsisHorizontalCircleOutline } from "ionicons/icons";
+import React from 'react';
+import { IonHeader, IonGrid, IonCol, IonRow, IonIcon } from '@ionic/react';
+import { ellipsisHorizontalCircleOutline } from 'ionicons/icons';
 
 const OrderDayShopHeader: React.FC = () => {
   return (

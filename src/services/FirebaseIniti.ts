@@ -1,14 +1,14 @@
-import 'firebase/auth'
-import 'firebase/firestore' // <- needed if using firestore
-import {combineReducers, createStore} from 'redux'
-import {composeWithDevTools} from 'redux-devtools-extension';
-import {firebaseReducer} from 'react-redux-firebase'
-import {createFirestoreInstance, firestoreReducer} from 'redux-firestore' // <- needed if using firestore
+import 'firebase/auth';
+import 'firebase/firestore'; // <- needed if using firestore
+import { combineReducers, createStore } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import { firebaseReducer } from 'react-redux-firebase';
+import { createFirestoreInstance, firestoreReducer } from 'redux-firestore'; // <- needed if using firestore
 import firebase from 'firebase';
-import {RootState} from '../model/DomainModels';
-import {cartReducer, shopReducer} from '../reducers/Cart';
-import {invoiceReducer} from '../reducers/Invoices';
-import {wishListReducer} from '../reducers/WishList';
+import { RootState } from '../model/DomainModels';
+import { cartReducer, shopReducer } from '../reducers/Cart';
+import { invoiceReducer } from '../reducers/Invoices';
+import { wishListReducer } from '../reducers/WishList';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -29,7 +29,7 @@ const rrfConfig = {
   userProfile: 'users',
   presence: 'presence',
   sessions: 'sessions',
-  markets: 'Markets'
+  markets: 'Markets',
   // useFirestoreForProfile: true // Firestore for Profile instead of Realtime DB
 };
 
@@ -65,7 +65,7 @@ const rrfProps = {
   firebase,
   config: rrfConfig,
   dispatch: firebaseStore.dispatch,
-  createFirestoreInstance // <- needed if using firestore
+  createFirestoreInstance, // <- needed if using firestore
 };
 
 export default rrfProps;

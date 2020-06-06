@@ -7,32 +7,29 @@ import {
   IonLabel,
   IonList,
   IonPage,
-  IonToolbar
-} from "@ionic/react";
-import React, {useEffect} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {useHistory, useParams} from "react-router-dom";
-import {Invoice, RootState} from "../model/DomainModels";
-import {FirestoreReducer, useFirestoreConnect} from "react-redux-firebase";
-import StripePaymentContainer from "../components/StripePaymentContainer";
-import {StatusBar} from '@ionic-native/status-bar';
-import {blankCart} from '../reducers/CartAction';
-import GoBack from "../components/GoBack";
-import {useTranslation} from "react-i18next";
+  IonToolbar,
+} from '@ionic/react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, useParams } from 'react-router-dom';
+import { Invoice, RootState } from '../model/DomainModels';
+import { FirestoreReducer, useFirestoreConnect } from 'react-redux-firebase';
+import StripePaymentContainer from '../components/StripePaymentContainer';
+import { StatusBar } from '@ionic-native/status-bar';
+import { blankCart } from '../reducers/CartAction';
+import GoBack from '../components/GoBack';
+import { useTranslation } from 'react-i18next';
 
 const Payment: React.FC = () => {
-
   const dispatch = useDispatch();
-  const {t} = useTranslation();
-  const {invoice_id} = useParams<{ invoice_id: string }>();
+  const { t } = useTranslation();
+  const { invoice_id } = useParams<{ invoice_id: string }>();
   let invoice: Invoice = {} as Invoice;
   const history = useHistory();
 
-  useFirestoreConnect([{collection: "Invoices", doc: invoice_id, storeAs: "Invoice"}]);
+  useFirestoreConnect([{ collection: 'Invoices', doc: invoice_id, storeAs: 'Invoice' }]);
 
-  const invoiceStore = useSelector<RootState>(
-    state => state.firestore
-  ) as FirestoreReducer.Reducer;
+  const invoiceStore = useSelector<RootState>((state) => state.firestore) as FirestoreReducer.Reducer;
 
   const onPaymentInit = async () => {
     dispatch(blankCart());
@@ -45,7 +42,7 @@ const Payment: React.FC = () => {
   }, []);
 
   if (invoiceStore.ordered.Invoice && invoiceStore.ordered.Invoice.length > 0) {
-    invoice = invoiceStore.ordered.Invoice[0]
+    invoice = invoiceStore.ordered.Invoice[0];
   }
 
   return (
@@ -53,26 +50,27 @@ const Payment: React.FC = () => {
       <IonHeader>
         <IonToolbar color="secondary">
           <IonButtons slot="start">
-            <GoBack/>
+            <GoBack />
           </IonButtons>
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <IonList style={{paddingTop: 0, paddingBottom: 0}}>
-          <IonItemDivider style={{backgroundColor: "#f7f7f7", paddingTop: 10, paddingBottom: 10}}>
+        <IonList style={{ paddingTop: 0, paddingBottom: 0 }}>
+          <IonItemDivider style={{ backgroundColor: '#f7f7f7', paddingTop: 10, paddingBottom: 10 }}>
             <IonIcon slot="start" src="assets/icon/1x/SVG/credit-card.svg"></IonIcon>
-            <IonLabel color="primary" style={{paddingLeft: 10}}>{t('paymentDetail')}</IonLabel>
+            <IonLabel color="primary" style={{ paddingLeft: 10 }}>
+              {t('paymentDetail')}
+            </IonLabel>
           </IonItemDivider>
           <StripePaymentContainer
             paymentMode={'all'}
             completeHandler={onPaymentInit}
             invoice={invoice}
-          >
-          </StripePaymentContainer>
+          ></StripePaymentContainer>
         </IonList>
       </IonContent>
     </IonPage>
-  )
+  );
 };
 
 export default Payment;

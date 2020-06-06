@@ -1,10 +1,9 @@
-import {IonContent, IonPage, useIonViewDidEnter,} from "@ionic/react";
-import React, {useState} from "react";
-import CartModal from "../containers/Cart";
-import {useHistory} from "react-router-dom";
+import { IonContent, IonPage, useIonViewDidEnter } from '@ionic/react';
+import React, { useState } from 'react';
+import CartModal from '../containers/Cart';
+import { useHistory } from 'react-router-dom';
 
 const Cart: React.FC = () => {
-
   const history = useHistory();
   const [showModal, setShowModal] = useState(true);
 
@@ -22,10 +21,10 @@ const Cart: React.FC = () => {
   return (
     <IonPage id="cart">
       <IonContent>
-        <CartModal modal={showModal} closeHandler={closeHandler}/>
+        <CartModal modal={showModal} closeHandler={closeHandler} />
       </IonContent>
     </IonPage>
-  )
+  );
 };
 
 export default Cart;

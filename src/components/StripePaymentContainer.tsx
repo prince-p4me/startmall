@@ -1,21 +1,25 @@
-import React, { useMemo, useEffect, useState } from "react";
-import "./StripePaymentContainer.css";
+import React, { useMemo, useEffect, useState } from 'react';
+import { ErrorProps, StripePaymentProps } from '../model/ComponentProps';
+import './StripePaymentContainer.css';
+import { IonLabel, IonIcon, IonButton, IonSpinner, IonText } from '@ionic/react';
+import { logoApple, helpCircleOutline } from 'ionicons/icons';
+import { isPlatform } from '@ionic/core';
 import {
-  IonLabel,
-  IonIcon,
-  IonButton,
-  IonSpinner,
-  IonText
-} from "@ionic/react";
-import { logoApple, helpCircleOutline } from "ionicons/icons";
-import { isPlatform } from "@ionic/core";
-
-import { ErrorProps, StripePaymentProps } from "../model/ComponentProps";
-import { CardExpiryElement, CardNumberElement, CardCvcElement, useElements, useStripe, PaymentRequestButtonElement } from '@stripe/react-stripe-js';
+  CardExpiryElement,
+  CardNumberElement,
+  CardCvcElement,
+  useElements,
+  useStripe,
+  PaymentRequestButtonElement,
+} from '@stripe/react-stripe-js';
 import { getPaymentSecret } from '../services/StripeService';
-import { AddressObj } from "../model/DomainModels";
-import { StripeCardNumberElementChangeEvent, StripeCardExpiryElementChangeEvent, StripeCardCvcElementChangeEvent } from "@stripe/stripe-js";
-import ErrorDisplay from "./ErrorDisplay";
+import { AddressObj } from '../model/DomainModels';
+import {
+  StripeCardNumberElementChangeEvent,
+  StripeCardExpiryElementChangeEvent,
+  StripeCardCvcElementChangeEvent,
+} from '@stripe/stripe-js';
+import ErrorDisplay from './ErrorDisplay';
 import { Plugins } from '@capacitor/core';
 const { Stripe } = Plugins;
 
@@ -25,12 +29,12 @@ const useOptions = (paymentRequest: any) => {
       paymentRequest,
       style: {
         paymentRequestButton: {
-          theme: "dark",
-          height: "48px"
-        }
-      }
+          theme: 'dark',
+          height: '48px',
+        },
+      },
     }),
-    [paymentRequest]
+    [paymentRequest],
   );
 
   return options;
@@ -66,11 +70,11 @@ const usePaymentRequest = ({ options, onPaymentMethod }: any) => {
 
   useEffect(() => {
     if (paymentRequest) {
-      paymentRequest.on("paymentmethod", onPaymentMethod);
+      paymentRequest.on('paymentmethod', onPaymentMethod);
     }
     return () => {
       if (paymentRequest) {
-        paymentRequest.off("paymentmethod", onPaymentMethod);
+        paymentRequest.off('paymentmethod', onPaymentMethod);
       }
     };
   }, [paymentRequest, onPaymentMethod]);
@@ -79,24 +83,22 @@ const usePaymentRequest = ({ options, onPaymentMethod }: any) => {
 };
 
 const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, completeHandler, invoice }) => {
-
   const stripe = useStripe();
   const elements = useElements();
-  const [cardValidation, setCardValidation] = useState({ number: false, date: false, isCompleted: false })
+  const [cardValidation, setCardValidation] = useState({ number: false, date: false, isCompleted: false });
   const [loading, setLoading] = useState(false);
   const [applePayLoading, setApplePayLoading] = useState(false);
   const [errorProps, setErrorProps] = useState<ErrorProps>({} as ErrorProps);
   const paymentRequest = usePaymentRequest({
     options: {
-      country: "AU",
-      currency: "aud",
+      country: 'AU',
+      currency: 'aud',
       total: {
-        label: "Product items",
-        amount: 1000
-      }
+        label: 'Product items',
+        amount: 1000,
+      },
     },
     onPaymentMethod: async (ev: any) => {
-
       if (!stripe || !elements) {
         return;
       }
@@ -104,9 +106,10 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
       const resPayment = await getPaymentSecret({ amount: invoice.total_amount });
 
       // Use your card Element with other Stripe.js APIs
-      const { error: confirmError } = await stripe.confirmCardPayment(resPayment.data.data,
+      const { error: confirmError } = await stripe.confirmCardPayment(
+        resPayment.data.data,
         { payment_method: ev.paymentMethod.id },
-        { handleActions: false }
+        { handleActions: false },
       );
 
       if (confirmError) {
@@ -120,39 +123,37 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
             showError: true,
             type: 1,
             autoHide: true,
-            buttonText: ""
-          })
+            buttonText: '',
+          });
         } else {
           completeHandler();
         }
       }
-    }
+    },
   });
   const payoptions = useOptions(paymentRequest);
   const options = useMemo(
     () => ({
       style: {
         base: {
-          fontSize: "16px",
-          color: "#424770",
-          letterSpacing: "0.025em",
-          fontFamily: "Source Code Pro, monospace",
-          "::placeholder": {
-            color: "#aab7c4"
-          }
+          fontSize: '16px',
+          color: '#424770',
+          letterSpacing: '0.025em',
+          fontFamily: 'Source Code Pro, monospace',
+          '::placeholder': {
+            color: '#aab7c4',
+          },
         },
         invalid: {
-          color: "#9e2146"
-        }
-      }
+          color: '#9e2146',
+        },
+      },
     }),
-    []
+    [],
   );
 
   const applePay = async () => {
-
     try {
-
       setApplePayLoading(true);
       const resPayment = await getPaymentSecret({ amount: invoice.total_amount });
 
@@ -165,12 +166,12 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
           items: [
             {
               label: 'Product basket',
-              amount: Number.parseInt(invoice.total_amount.toString())
-            }
+              amount: Number.parseInt(invoice.total_amount.toString()),
+            },
           ],
           billingAddressRequirement: 'none',
           shippingAddressRequirement: 'none',
-        }
+        },
       });
 
       await Stripe.finalizeApplePayTransaction({ success: true });
@@ -187,14 +188,13 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
           showError: true,
           type: 1,
           autoHide: true,
-          buttonText: ""
-        })
+          buttonText: '',
+        });
       }
     }
   };
 
   const handleSubmit = async (event: any) => {
-
     // Block native form submission.
     event.preventDefault();
 
@@ -228,10 +228,10 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
           address: {
             line1: address1,
             postal_code: postcode,
-            city: suburb
-          }
+            city: suburb,
+          },
         },
-      }
+      },
     });
     setLoading(false);
     if (result.error) {
@@ -241,8 +241,8 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
         showError: true,
         type: 1,
         autoHide: true,
-        buttonText: ""
-      })
+        buttonText: '',
+      });
     } else {
       // The payment has been processed!
       if (result.paymentIntent.status === 'succeeded') {
@@ -253,107 +253,96 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
         completeHandler();
       }
     }
-
   };
 
-  const validateStripe = (obj: StripeCardNumberElementChangeEvent | StripeCardExpiryElementChangeEvent | StripeCardCvcElementChangeEvent,
-    elementType: 'number' | 'date' | 'cvc') => {
-    console.log(obj)
+  const validateStripe = (
+    obj: StripeCardNumberElementChangeEvent | StripeCardExpiryElementChangeEvent | StripeCardCvcElementChangeEvent,
+    elementType: 'number' | 'date' | 'cvc',
+  ) => {
+    console.log(obj);
     if (!obj.error) {
-      setCardValidation({ ...cardValidation, [elementType]: true, isCompleted: obj.complete })
+      setCardValidation({ ...cardValidation, [elementType]: true, isCompleted: obj.complete });
     } else {
-      setCardValidation({ ...cardValidation, [elementType]: false, isCompleted: obj.complete })
+      setCardValidation({ ...cardValidation, [elementType]: false, isCompleted: obj.complete });
     }
   };
 
   return (
     <div className="ion-padding-start ion-padding-end">
-      {
-        (paymentMode === 'visaCard' || paymentMode === 'all') &&
+      {(paymentMode === 'visaCard' || paymentMode === 'all') && (
         <form onSubmit={handleSubmit}>
           <div className="ion-margin-top">
-            <IonLabel color="medium">
-              Card number
-            </IonLabel>
+            <IonLabel color="medium">Card number</IonLabel>
             <CardNumberElement options={options} onChange={(obj) => validateStripe(obj, 'number')} />
           </div>
           <div className="ion-margin-top">
-            <IonLabel color="medium">
-              Expiration date
-            </IonLabel>
+            <IonLabel color="medium">Expiration date</IonLabel>
             <CardExpiryElement options={options} onChange={(obj) => validateStripe(obj, 'date')} />
           </div>
           <div className="ion-margin-top">
             <IonLabel color="medium">
               CVC
-              <IonIcon
-                size={'small'}
-                slot="icon-only"
-                className="help-icon"
-                icon={helpCircleOutline}
-              />
+              <IonIcon size={'small'} slot="icon-only" className="help-icon" icon={helpCircleOutline} />
               <IonText className="info-light-text">(3 Digit on back of your card)</IonText>
             </IonLabel>
             <CardCvcElement options={options} onChange={(obj) => validateStripe(obj, 'cvc')} />
           </div>
           <IonButton
             type={'submit'}
-            disabled={!stripe || !cardValidation.number || !cardValidation.date || !cardValidation.isCompleted || loading}
+            disabled={
+              !stripe || !cardValidation.number || !cardValidation.date || !cardValidation.isCompleted || loading
+            }
             expand={'block'}
             className="ion-margin-top card-pay-btn"
-            size={'large'}>
-            {
-              !loading ?
-                `Pay AUD $${invoice.total_amount} inc GST` :
-                <IonSpinner name={'dots'}></IonSpinner>
-            }
+            size={'large'}
+          >
+            {!loading ? `Pay AUD $${invoice.total_amount} inc GST` : <IonSpinner name={'dots'}></IonSpinner>}
           </IonButton>
         </form>
-      }
+      )}
       <div>
-        {
-          ((paymentMode === 'applePay' || paymentMode === 'all') && isPlatform("ios") && !isPlatform("mobileweb")) &&
+        {(paymentMode === 'applePay' || paymentMode === 'all') && isPlatform('ios') && !isPlatform('mobileweb') && (
           <>
             <div className={'ion-margin-top ion-margin-bottom ion-text-center'}>
               <IonLabel color={'primary'}>Or</IonLabel>
             </div>
-            <IonButton class="ion-margin-top apple-pay-btn" color={'dark'} onClick={applePay} size={'large'} expand={'block'}>
-              {
-                !applePayLoading ?
-                  <>
-                    <IonIcon
-                      size={'large'}
-                      slot="icon-only"
-                      className="apple-icon"
-                      icon={logoApple}
-                    ></IonIcon>
-                Pay
-              </> :
-                  <IonSpinner name={'dots'}></IonSpinner>
-              }
+            <IonButton
+              class="ion-margin-top apple-pay-btn"
+              color={'dark'}
+              onClick={applePay}
+              size={'large'}
+              expand={'block'}
+            >
+              {!applePayLoading ? (
+                <>
+                  <IonIcon size={'large'} slot="icon-only" className="apple-icon" icon={logoApple}></IonIcon>
+                  Pay
+                </>
+              ) : (
+                <IonSpinner name={'dots'}></IonSpinner>
+              )}
             </IonButton>
           </>
-        }
+        )}
       </div>
       <div>
-        {
-          (paymentRequest && isPlatform("mobileweb")) &&
+        {paymentRequest && isPlatform('mobileweb') && (
           <>
             <div className={'ion-margin-top ion-margin-bottom ion-text-center'}>
               <IonLabel color={'primary'}>Or</IonLabel>
             </div>
-            <PaymentRequestButtonElement
-              className="PaymentRequestButton"
-              options={payoptions}
-            />
+            <PaymentRequestButtonElement className="PaymentRequestButton" options={payoptions} />
           </>
-        }
+        )}
       </div>
       <div className={'ion-margin-top ion-margin-bottom info-light-text'}>
         <IonLabel>* By hitting Pay you are confirming your order with us.</IonLabel>
       </div>
-      <ErrorDisplay errorProps={errorProps}
-        closeHandler={() => { setErrorProps({ ...errorProps, showError: false }) }}
+      <ErrorDisplay
+        errorProps={errorProps}
+        closeHandler={() => {
+          setErrorProps({ ...errorProps, showError: false });
+        }}
         eventHandler={() => {
           setErrorProps({ ...errorProps, showError: false });
         }}

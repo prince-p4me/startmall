@@ -1,18 +1,17 @@
-import React from "react";
-import { IonText } from "@ionic/react";
-import { CurrencyAmountProps } from "../model/ComponentProps";
-import { isLoaded } from "react-redux-firebase";
-
+import React from 'react';
+import { IonText } from '@ionic/react';
+import { CurrencyAmountProps } from '../model/ComponentProps';
+import { isLoaded } from 'react-redux-firebase';
 
 const CurrencyAmount: React.FC<CurrencyAmountProps> = ({ amount }) => {
+  const format = (num: any, minDecimals: number, maxDecimals: number) =>
+    num.toLocaleString('en-US', {
+      minimumFractionDigits: minDecimals,
+      maximumFractionDigits: maxDecimals,
+    });
 
-  const format = (num: any, minDecimals: number, maxDecimals: number) => num.toLocaleString('en-US', {
-    minimumFractionDigits: minDecimals,
-    maximumFractionDigits: maxDecimals,
-  });
-
-  var localAmount: any = 0.00
-  var currency: any = "$"
+  let localAmount: any = 0.0;
+  const currency: any = '$';
 
   if (isLoaded(amount)) {
     if (amount && amount !== undefined) {
@@ -20,9 +19,7 @@ const CurrencyAmount: React.FC<CurrencyAmountProps> = ({ amount }) => {
     }
   }
 
-  return (
-    <IonText>{currency + " " + localAmount}</IonText>
-  );
+  return <IonText>{currency + ' ' + localAmount}</IonText>;
 };
 
 export default CurrencyAmount;

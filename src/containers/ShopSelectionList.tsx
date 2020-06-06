@@ -1,12 +1,11 @@
-import React from "react";
-import {ShopSelectionListProps} from "../model/ComponentProps";
-import {IonCard, IonItem, IonList, IonText} from "@ionic/react";
-import {FirestoreIonImg} from "../services/FirebaseStorage";
-import {useTranslation} from "react-i18next";
+import React from 'react';
+import { ShopSelectionListProps } from '../model/ComponentProps';
+import { IonCard, IonItem, IonList, IonText } from '@ionic/react';
+import { FirestoreIonImg } from '../services/FirebaseStorage';
+import { useTranslation } from 'react-i18next';
 
-const ShopSelectionList: React.FC<ShopSelectionListProps> = ({shops, handleShopClick}) => {
-
-  const {t} = useTranslation();
+const ShopSelectionList: React.FC<ShopSelectionListProps> = ({ shops, handleShopClick }) => {
+  const { t } = useTranslation();
 
   console.log(shops);
   return (
@@ -17,7 +16,8 @@ const ShopSelectionList: React.FC<ShopSelectionListProps> = ({shops, handleShopC
             class="shop_card"
             onClick={() => {
               handleShopClick(obj);
-            }} key={index}
+            }}
+            key={index}
           >
             <FirestoreIonImg src={obj.img_url as string}></FirestoreIonImg>
             <IonItem lines="none">

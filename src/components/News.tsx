@@ -1,8 +1,7 @@
-import { IonList, IonItem, IonLabel, IonText } from "@ionic/react";
-import React, { useEffect, useState } from "react";
-import { getFeedListing } from "../services/loadfeed";
-import { IFeed } from "../model/DomainModels";
-
+import { IonList, IonItem, IonLabel, IonText } from '@ionic/react';
+import React, { useEffect, useState } from 'react';
+import { getFeedListing } from '../services/loadfeed';
+import { IFeed } from '../model/DomainModels';
 
 function FeedPage(url: string) {
   const [initialized, setInitialized] = useState(false);
@@ -20,7 +19,6 @@ function FeedPage(url: string) {
   };
 
   useEffect(() => {
-    
     if (!initialized) {
       getListing(url);
       setInitialized(true);
@@ -53,7 +51,7 @@ const News: React.FC = () => {
 
   // const feedList = FeedPage("https://www.smh.com.au/rss/feed.xml");
   // const feedList_hk = FeedPage("https://hk.news.yahoo.com/rss/hong-kong");
-  const feedList_sbs = FeedPage("https://feeds.sbs.com.au/sbs-cantonese");
+  const feedList_sbs = FeedPage('https://feeds.sbs.com.au/sbs-cantonese');
 
   return <IonList>{feedList_sbs}</IonList>;
 };
