@@ -1,19 +1,17 @@
-import { WishListStateType } from "../model/DomainModels";
+import { WishListStateType } from '../model/DomainModels';
 
 export const INITIAL_STATE = {
   data: [],
 } as WishListStateType;
 
-export const LOAD_WISHLIST = "LOAD_WISHLIST";
+export const LOAD_WISHLIST = 'LOAD_WISHLIST';
 
 export const wishListReducer = (state = INITIAL_STATE, action: any) => {
-  switch (action.type) {
-    case LOAD_WISHLIST:
-      return {
-        data: action.payload
-      };
-
-    default:
-      return state;
+  if (action.type === LOAD_WISHLIST) {
+    return {
+      data: action.payload,
+    };
+  } else {
+    return state;
   }
 };

@@ -24,6 +24,7 @@
     "@types/node": "^12.12.24",
     "@types/react": "^16.9.17",
     "@types/react-dom": "^16.9.4",
+    "@types/react-html-parser": "^2.0.1",
     "@types/react-router": "^5.1.4",
     "@types/react-router-dom": "^5.1.3",
     "axios": "^0.19.2",
@@ -37,6 +38,9 @@
     "cordova-support-google-services": "^1.4.0",
     "env-cmd": "^10.1.0",
     "firebase": "^7.14.4",
+    "i18next": "^19.4.5",
+    "i18next-browser-languagedetector": "^4.2.0",
+    "i18next-http-backend": "^1.0.15",
     "ionic-plugin-deeplinks": "^1.0.20",
     "ionicons": "^5.0.0",
     "lodash": "^4.17.15",
@@ -44,6 +48,8 @@
     "patch-package": "^6.2.2",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
+    "react-html-parser": "^2.0.2",
+    "react-i18next": "^11.5.0",
     "react-iframe": "^1.8.0",
     "react-redux": "^7.2.0",
     "react-redux-firebase": "^3.4.0",
@@ -58,6 +64,8 @@
     "start:prod": "env-cmd -f .env.production react-scripts start",
     "build:dev": "env-cmd -f .env react-scripts build",
     "build:prod": "env-cmd -f .env.production react-scripts build",
+    "lint": "eslint 'src/*/**/*.{js,ts,tsx}'",
+    "lint:fix": "eslint 'src/*/**/*.{js,ts,tsx}' --quiet --fix",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "postinstall": "patch-package",
@@ -66,12 +74,17 @@
     "run-android": "env-cmd -f .env ionic capacitor run android -l --emulator --host=0.0.0.0",
     "deploy:dev": "env-cmd -f .env react-scripts build --platform=web && cp -Rv build/* fbhost/public && cd fbhost && firebase deploy -P development --only hosting:development ",
     "deploy:prod": "env-cmd -f .env.production react-scripts build --platform=web && cp -Rv build/* fbhost/public && cd fbhost && firebase deploy -P production --only hosting:production ",
-    "deploy" : "npm run deploy:dev && npm run deploy:prod",
+    "deploy": "npm run deploy:dev && npm run deploy:prod",
     "build-privacy-page": "cd privacy-page && firebase deploy --only hosting:slashiee-privacy ",
     "build-chat-page": "cd slashiee-chat && firebase deploy --only hosting:slashiee-chat "
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint:fix && git add ."
+    }
   },
   "browserslist": {
     "production": [
@@ -90,6 +103,14 @@
     "@capacitor/cli": "2.1.0",
     "@types/lodash": "^4.14.154",
     "@types/react-redux": "^7.1.9",
-    "redux-devtools-extension": "^2.13.8"
+    "redux-devtools-extension": "^2.13.8",
+    "@typescript-eslint/eslint-plugin": "^3.1.0",
+    "@typescript-eslint/parser": "^3.1.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.3",
+    "eslint-plugin-react": "^7.20.0",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.9",
+    "prettier": "^2.0.5"
   }
 }

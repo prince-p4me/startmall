@@ -1,14 +1,13 @@
-import { FirebaseReducer, FirestoreReducer } from "react-redux-firebase";
-import { Reducer } from "redux";
-import Market from "../containers/Market";
-import { Address } from "cluster";
-import { AddressInfo } from "net";
+import { FirebaseReducer, FirestoreReducer } from 'react-redux-firebase';
+import { Reducer } from 'redux';
+import Market from '../containers/Market';
 
 export interface CategoryObj {
   id: number;
   market: string;
   categoryName: string;
   imageUrl: string;
+
   [key: string]: string | number | null;
 }
 
@@ -17,6 +16,7 @@ export interface ItemObj {
   itemName: string;
   itemDesc: string;
   itemCost: number;
+
   [key: string]: string | number | null;
 }
 
@@ -62,9 +62,11 @@ export interface CartStateType {
     marketId: string;
   };
 }
+
 export interface InvoiceStateType {
   [key: string]: string | number | [] | any | null;
 }
+
 export interface WishListStateType {
   [key: string]: string | number | [] | any | null;
 }
@@ -75,6 +77,7 @@ export interface ShopStateType {
 
 export interface CartItem {
   [key: string]: string | number | [] | any | null;
+
   market: string;
   name: string;
   desc: string;
@@ -86,6 +89,7 @@ export interface CartItem {
 
 export interface CartWithQty {
   [key: string]: string | number | ItemObj | null;
+
   item: ItemObj;
   count: number;
 }
@@ -106,6 +110,7 @@ export interface Schema {
 export interface Market {
   id: string;
   name: string;
+
   [key: string]: string | number | [] | any | null;
 }
 
@@ -125,8 +130,10 @@ export interface Categories {
   id: number;
   load_order: number;
 }
+
 export interface Markets {
   [key: string]: string | number | [] | null;
+
   id: string;
   name: string;
   opening_hour: [];
@@ -144,6 +151,7 @@ export interface Markets {
 
 export interface FavoriteMarket {
   [key: string]: string | number | [] | null;
+
   id: string;
   name: string;
   opening_hour: [];
@@ -158,12 +166,14 @@ export interface FavoriteMarket {
 
 export interface Cart {
   [key: string]: string | number | [] | any | null;
-  market: Markets,
+
+  market: Markets;
   cart_items: ItemObj[];
 }
 
 export interface Invoice {
   [key: string]: string | number | [] | any | null;
+
   id: string;
   cart_items: CartItem[];
   user_id: string;
@@ -195,21 +205,24 @@ export interface ProfileData {
 
 export interface WishList {
   [key: string]: string | number | [] | any | null;
+
   market_id: string | null | any;
   item_id: string | null | any;
-  item: {} | any | null
+  item: {} | any | null;
 }
 
 export interface Feedback {
   [key: string]: string | number | [] | any | null;
+
   id: string;
   name: string;
   userName: string | null;
   feedback: string;
 }
 
-export interface VeriFyCode {
+export interface VerifyCode {
   [key: string]: string | number | [] | any | null;
+
   first: string | number | any | null;
   second: string | number | any | null;
   third: string | number | any | null;
@@ -218,4 +231,4 @@ export interface VeriFyCode {
   sixth: string | number | any | null;
 }
 
-export const ORDER_STATUS = { open: "open", close: "close", cancelled: "cancelled" };
+export const ORDER_STATUS = { open: 'open', close: 'close', cancelled: 'cancelled' };

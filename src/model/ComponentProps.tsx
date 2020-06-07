@@ -1,9 +1,9 @@
-import { CategoryObj, ItemObj, AddressObj, PaymentObj, Markets, ShopStateType, Invoice } from "./DomainModels";
+import { AddressObj, CategoryObj, Invoice, ItemObj, Markets, ShopStateType } from './DomainModels';
 
 export interface CategoryProps {
   market_id: string;
   category: CategoryObj;
-  shop: Markets | null | {}
+  shop: Markets | null | {};
 }
 
 export interface AddressProps {
@@ -23,7 +23,7 @@ export interface MainTabsProps {
 
 export interface PaymentProps {
   payment: string;
-  onChange: any
+  onChange: any;
 }
 
 export interface CheckoutProps {
@@ -31,9 +31,9 @@ export interface CheckoutProps {
 }
 
 export interface StripePaymentProps {
-  paymentMode: 'applePay' | 'visaCard' | 'all',
+  paymentMode: 'applePay' | 'visaCard' | 'all';
   completeHandler: any;
-  invoice: Invoice
+  invoice: Invoice;
 }
 
 export interface ShopItemProps {
@@ -48,6 +48,7 @@ export interface MarketItemsProps {
 
 export interface CartProps {
   modal: boolean;
+
   closeHandler(goBack: boolean): any;
 }
 
@@ -58,7 +59,7 @@ export interface OrderDayShopHeaderProps {
 
 export interface ShopHeaderProps {
   shop: ShopStateType;
-  marketId?: string
+  marketId?: string;
 }
 
 export interface ShopSelectionListProps {
@@ -80,7 +81,13 @@ export interface ErrorProps {
 
 export interface ErrorDisplayProps {
   errorProps: ErrorProps;
-  closeHandler: any;
-  eventHandler: any | null;
+  closeHandler?: any;
+  eventHandler?: any | null;
 }
 
+export interface MarketHeaderProps {
+  setShowModal: any;
+  shop: Markets | any;
+  CartCounter: any;
+  showTerms?: boolean;
+}

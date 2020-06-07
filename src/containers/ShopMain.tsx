@@ -9,22 +9,22 @@ import {
   IonCol,
   IonBadge,
   IonButton,
-  IonItem
-} from "@ionic/react";
-import { basket } from "ionicons/icons";
-import React, { useState } from "react";
-import "./Market.css";
-import Cart from "./Cart";
-import {connect, useSelector} from "react-redux";
-import data from "../data/hmarketitems.json";
-import CategoryItem from "./CategoryItem";
-import { CategoryObj } from "../model/DomainModels";
-import OrderDayShopHeader from "../components/OrderDayShopHeader";
-import { CartState } from "../services/FirebaseIniti";
-import ShopHeaderWithProps from "../components/ShopHeaderWithProps";
+  IonItem,
+} from '@ionic/react';
+import { basket } from 'ionicons/icons';
+import React, { useState } from 'react';
+import './Market.css';
+import Cart from './Cart';
+import { connect, useSelector } from 'react-redux';
+import data from '../data/hmarketitems.json';
+import CategoryItem from './CategoryItem';
+import { CategoryObj } from '../model/DomainModels';
+import OrderDayShopHeader from '../components/OrderDayShopHeader';
+import { CartState } from '../services/FirebaseIniti';
+import ShopHeaderWithProps from '../components/ShopHeaderWithProps';
 
 const ShopMain: React.FC = () => {
-  console.log("entering market");
+  console.log('entering market');
   const [showModal, setShowModal] = useState(false);
   const Categories: CategoryObj[] = [];
   const CartBadge: React.FC<CartState> = ({ firebase, cart }) => {
@@ -36,24 +36,23 @@ const ShopMain: React.FC = () => {
     }
   };
 
-  function mapStateToProps(state: CartState) {
+  const mapStateToProps = (state: CartState) => {
     const { firebase, cart, shop } = state;
     return { firebase, cart, shop };
-  }
-  const CartCounter = connect(mapStateToProps)(CartBadge);
-  let Market: any = useSelector<any>((state: any) => (state.firestore.data.Market))
+  };
 
+  const [CartCounter] = useState<React.ElementType>(connect(mapStateToProps)(CartBadge));
+  const Market: any = useSelector<any>((state: any) => state.firestore.data.Market);
 
-  var index = 0;
-  for (var x in data) {
-    // console.log("how many category " + index + " : " + x);
+  let index = 0;
+  for (const x in data) {
     index++;
     const obj: CategoryObj = {
       id: index,
       categoryName: x.toString(),
-      market: "Hi Fresh",
-      imageUrl: "./assets/img/veg-stock2.jpg",
-      key: index
+      market: 'Hi Fresh',
+      imageUrl: './assets/img/veg-stock2.jpg',
+      key: index,
     };
     Categories.push(obj);
   }
@@ -71,10 +70,10 @@ const ShopMain: React.FC = () => {
       </IonToolbar>
       <OrderDayShopHeader />
       <IonContent fullscreen>
-        <ShopHeaderWithProps Market={Market}/>
+        <ShopHeaderWithProps Market={Market} />
         <IonGrid>
           <IonRow>
-            {Categories.map(obj => {
+            {Categories.map((obj) => {
               return (
                 <IonCol key={obj.id}>
                   <CategoryItem market_id="" category={obj} shop={null} />

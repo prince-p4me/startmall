@@ -1,36 +1,26 @@
-import React from "react";
-import {
-  IonButton,
-  IonIcon,
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonButtons,
-  IonItem
-} from "@ionic/react";
-import { closeOutline } from "ionicons/icons";
-import { CartWithQty, ItemObj } from "../model/DomainModels";
-import {
-  addCartAction,
-  delCartAction,
-  delItemGroup
-} from "../reducers/CartAction";
-import { useDispatch } from "react-redux";
-import { CartState } from "../services/FirebaseIniti";
-import CurrencyAmount from "./CurrencyAmount";
+import React from 'react';
+import { IonButton, IonButtons, IonCol, IonGrid, IonIcon, IonItem, IonRow } from '@ionic/react';
+import { closeOutline } from 'ionicons/icons';
+import { CartWithQty, ItemObj } from '../model/DomainModels';
+import { addCartAction, delCartAction, delItemGroup } from '../reducers/CartAction';
+import { useDispatch } from 'react-redux';
+import { CartState } from '../services/FirebaseIniti';
+import CurrencyAmount from './CurrencyAmount';
+import { useTranslation } from 'react-i18next';
 
 const ItemList: React.FC<CartState> = ({ cart }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const cartListWithQty: CartWithQty[] = [];
   const cartListArray: Array<CartWithQty> = [];
 
   console.log(cart.cartItemList);
-  cart.cartItemList.map(cartItem => {
+  cart.cartItemList.map((cartItem) => {
     if (cartListWithQty[cartItem.id] == null) {
       cartListWithQty[cartItem.id] = {
         key: cartItem.id,
         item: cartItem,
-        count: 0
+        count: 0,
       };
     }
     if (cartListWithQty[cartItem.id].count === 0) {
@@ -52,7 +42,7 @@ const ItemList: React.FC<CartState> = ({ cart }) => {
   };
 
   const delCart = (cartItem: ItemObj) => {
-    dispatch(delCartAction(cartItem, cart.cart.marketId), );
+    dispatch(delCartAction(cartItem, cart.cart.marketId));
   };
 
   return (
@@ -60,8 +50,12 @@ const ItemList: React.FC<CartState> = ({ cart }) => {
       <IonRow>
         <IonCol size="1.7"></IonCol>
         <IonCol size="4"></IonCol>
-        <IonCol size="3" style={{ textAlign: "center" }}>Qty</IonCol>
-        <IonCol size="3" style={{ textAlign: "right" }}>Total</IonCol>
+        <IonCol size="3" style={{ textAlign: 'center' }}>
+          {t('qty')}
+        </IonCol>
+        <IonCol size="3" style={{ textAlign: 'right' }}>
+          {t('total')}
+        </IonCol>
       </IonRow>
       {cartListArray.map((cartWithQty, index) => {
         return (
@@ -81,7 +75,7 @@ const ItemList: React.FC<CartState> = ({ cart }) => {
               <IonItem lines="none">{cartWithQty.item.name}</IonItem>
             </IonCol>
             <IonCol size="3">
-              <IonButtons style={{ flexDirection: "row", justifyContent: "space-around" }}>
+              <IonButtons style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
                 <IonButton
                   fill="outline"
                   onClick={() => {
@@ -101,9 +95,11 @@ const ItemList: React.FC<CartState> = ({ cart }) => {
                 </IonButton>
               </IonButtons>
             </IonCol>
-            <IonCol size="3" style={{ textAlign: "right", paddingRight: 0 }}>
-              <IonItem lines="none" >
-                <p style={{ textAlign: "right", width: "100%" }}><CurrencyAmount amount={cartWithQty.item.unit_price} /></p>
+            <IonCol size="3" style={{ textAlign: 'right', paddingRight: 0 }}>
+              <IonItem lines="none">
+                <p style={{ textAlign: 'right', width: '100%' }}>
+                  <CurrencyAmount amount={cartWithQty.item.unit_price} />
+                </p>
               </IonItem>
             </IonCol>
           </IonRow>

@@ -1,8 +1,8 @@
-import { LOAD_WISHLIST } from './WishList'
+import { LOAD_WISHLIST } from './WishList';
 
-export function loadWishList(payload:[]) {
+export const loadWishList = (payload: []) => {
   return {
     type: LOAD_WISHLIST,
-    payload
+    payload,
   };
-}
+};

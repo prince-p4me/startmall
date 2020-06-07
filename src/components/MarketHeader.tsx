@@ -1,36 +1,15 @@
-import {
-  IonHeader,
-  IonToolbar,
-  IonButtons,
-  IonButton,
-  IonIcon,
-  IonTitle,
-  IonLabel,
-  IonMenuToggle
-} from "@ionic/react";
+import React from 'react';
+import { IonButton, IonButtons, IonHeader, IonIcon, IonMenuToggle, IonTitle, IonToolbar } from '@ionic/react';
+import { basket } from 'ionicons/icons';
+import { useTranslation } from 'react-i18next';
+import GoBack from './GoBack';
+import { MarketHeaderProps } from '../model/ComponentProps';
 
-import React from "react";
+import './MarketHeader.css';
 
-import { basket } from "ionicons/icons";
+const MarketHeader: React.FC<MarketHeaderProps> = ({ setShowModal, shop, CartCounter, showTerms = true }) => {
+  const { t } = useTranslation();
 
-import GoBack from "./GoBack";
-import { Markets } from "../model/DomainModels";
-
-import './MarketHeader.css'
-
-interface MarketHeaderProps {
-  setShowModal: any;
-  shop: Markets | any;
-  CartCounter: any;
-  showTearms?: boolean;
-}
-
-const MarketHeader: React.FC<MarketHeaderProps> = ({
-  setShowModal,
-  shop,
-  CartCounter,
-  showTearms = true
-}) => {
   return (
     <IonHeader>
       <IonToolbar color="secondary">
@@ -48,13 +27,16 @@ const MarketHeader: React.FC<MarketHeaderProps> = ({
         <IonButtons slot="start">
           <GoBack />
         </IonButtons>
-        {
-          showTearms &&
+        {showTerms && (
           <IonTitle class="shop_header_condition" size="large">
-            <p className={'terms'}>Cut Off : {shop.cut_off_terms}</p>
-            <p className={'terms'}>Delivery : {shop.delivery_terms}</p>
+            <p className={'terms'}>
+              {t('cutOff')} : {shop.cut_off_terms}
+            </p>
+            <p className={'terms'}>
+              {t('delivery')} : {shop.delivery_terms}
+            </p>
           </IonTitle>
-        }
+        )}
       </IonToolbar>
     </IonHeader>
   );

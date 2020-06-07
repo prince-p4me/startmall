@@ -1,13 +1,11 @@
-import React from "react";
-import { IonItem } from "@ionic/react";
-import { ShopHeaderProps } from "../model/ComponentProps";
-import { Markets } from "../model/DomainModels";
-import { isLoaded } from "react-redux-firebase";
+import React from 'react';
+import { IonItem } from '@ionic/react';
+import { ShopHeaderProps } from '../model/ComponentProps';
+import { Markets } from '../model/DomainModels';
+import { isLoaded } from 'react-redux-firebase';
 
-const ShopConditionAndOperatingHours: React.FC<ShopHeaderProps> = ({
-  shop
-}) => {
-  var loadedShop = {} as Markets;
+const ShopConditionAndOperatingHours: React.FC<ShopHeaderProps> = ({ shop }) => {
+  let loadedShop = {} as Markets;
 
   if (isLoaded(shop)) {
     loadedShop = shop.shop;
