@@ -1,6 +1,6 @@
 import React from 'react';
 import './ExploreContainer.css';
-import { IonItem, IonCol, IonRow, IonGrid, IonText } from '@ionic/react';
+import { IonCol, IonGrid, IonItem, IonRow, IonText } from '@ionic/react';
 import { ShopHeaderProps } from '../model/ComponentProps';
 import { Markets } from '../model/DomainModels';
 import { isLoaded } from 'react-redux-firebase';

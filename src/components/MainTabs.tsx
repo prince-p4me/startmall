@@ -1,20 +1,19 @@
 import React from 'react';
-import { IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonRouterOutlet } from '@ionic/react';
-import { informationCircle, happy, cartSharp, heartCircle } from 'ionicons/icons';
+import { IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs } from '@ionic/react';
+import { cartSharp, happy, heartCircle, informationCircle } from 'ionicons/icons';
 import { MainTabsProps } from '../model/ComponentProps';
-import { Route, Redirect } from 'react-router';
+import { Redirect, Route } from 'react-router';
 import MarketItems from '../containers/MarketItems';
 import ShopSelection from '../pages/ShopSelection';
 import Market from '../containers/Market';
 import Dashboard from '../pages/Dashboard';
 import FavoriteMarkets from '../pages/FavoriteMarkets';
-import { isLoaded, isEmpty } from 'react-redux-firebase';
+import { isEmpty, isLoaded } from 'react-redux-firebase';
 import { UserInfo } from 'firebase';
 import { RootState } from '../model/DomainModels';
 import { useSelector } from 'react-redux';
 
 const MainTabs: React.FC<MainTabsProps> = () => {
-  // const defaultProtectedRouteProps = getDefaultProtectedRouteProps();
   const auth: UserInfo = useSelector<RootState>((state) => state.firebase.auth) as UserInfo;
 
   return (
@@ -26,7 +25,6 @@ const MainTabs: React.FC<MainTabsProps> = () => {
           <Route animated={false} path="/tabs/dashboard" render={() => <Dashboard />} exact={true} />
           <Route path="/tabs/:tab(shop_selections)/:postcode" render={() => <ShopSelection />} exact={true} />
           <Route path="/wishlist" component={FavoriteMarkets} exact />
-          {/* <Route path="/favoriteitems/:market_id" component={WishList} exact /> */}
           <Redirect from="/tabs" to="/tabs/dashboard" exact />
         </IonRouterOutlet>
         <IonTabBar slot="bottom">

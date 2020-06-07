@@ -101,10 +101,10 @@ const App: React.FC = () => {
     }
   };
 
-  function mapStateToProps(state: CartState) {
+  const mapStateToProps = (state: CartState) => {
     const {firebase, cart, shop} = state;
     return {firebase, cart, shop};
-  }
+  };
 
   const [CartCounter] = useState<React.ElementType>(connect(mapStateToProps)(CartBadge));
 

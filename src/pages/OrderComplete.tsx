@@ -54,7 +54,7 @@ const OrderComplete: React.FC<CartState> = () => {
     invoice.cart_items.forEach((element) => {
       const ele = { img_url: '', ...element, qty: 1 };
 
-      const item = cartItems.filter(function (item: CartItem) {
+      const item = cartItems.filter((item: CartItem) => {
         return item.id === element.id;
       });
       if (item.length > 0) {
@@ -136,12 +136,14 @@ const OrderComplete: React.FC<CartState> = () => {
                 {t('trackDelivery')}
               </IonButton>
             </IonItem>
-            <IonItem className="order_address m-t-10 text-center" lines="none">
-              <IonText class="margin-0">
-                Estimated
-                {t('arrival')}: {moment((invoice?.delivery_date as any).toDate()).format('DD MMM YYYY')}
-              </IonText>
-            </IonItem>
+            {invoice?.delivery_date && (
+              <IonItem className="order_address m-t-10 text-center" lines="none">
+                <IonText class="margin-0">
+                  Estimated
+                  {t('arrival')}: {moment((invoice?.delivery_date as any).toDate()).format('DD MMM YYYY')}
+                </IonText>
+              </IonItem>
+            )}
             <IonItem className="m-t-10" lines="none">
               <IonImg src={market?.img_url} style={{ width: 50 }} />
               <IonLabel

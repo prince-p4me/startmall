@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 
 const Dashboard: React.FC = () => {
   console.log('entering Dashboard');
-  const [postcode, setPostCode] = useState<string>('2000');
+  const [postcode, setPostCode] = useState<string>(process.env.REACT_APP_ENV === 'dev' ? '2000' : '');
   const history = useHistory();
   const location = useLocation();
   const [errorProps, setErrorProps] = useState<ErrorProps>({} as ErrorProps);

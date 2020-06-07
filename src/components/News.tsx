@@ -1,4 +1,4 @@
-import { IonList, IonItem, IonLabel, IonText } from '@ionic/react';
+import { IonItem, IonLabel, IonList, IonText } from '@ionic/react';
 import React, { useEffect, useState } from 'react';
 import { getFeedListing } from '../services/loadfeed';
 import { IFeed } from '../model/DomainModels';
@@ -6,13 +6,11 @@ import { IFeed } from '../model/DomainModels';
 function FeedPage(url: string) {
   const [initialized, setInitialized] = useState(false);
   const [listings, setListings] = useState([]);
-  // const [data, setData] = useState({});
 
   const getListing = async (url: any) => {
     try {
       const response = await getFeedListing(url);
       setListings(response.data.items);
-      // setData(response.data.feed);
     } catch (ex) {
       console.log(ex);
     }

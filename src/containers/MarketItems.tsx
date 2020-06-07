@@ -61,7 +61,7 @@ const MarketItems: React.FC<MarketItemsProps> = () => {
       .doc(market_id)
       .collection('Items')
       .get()
-      .then(function (snapshot) {
+      .then((snapshot) => {
         if (snapshot.empty) {
           dispatch(loadWishList([]));
         } else {
@@ -72,7 +72,7 @@ const MarketItems: React.FC<MarketItemsProps> = () => {
           dispatch(loadWishList(tmp));
         }
       })
-      .catch(function () {
+      .catch(() => {
         dispatch(loadWishList([]));
       });
   };

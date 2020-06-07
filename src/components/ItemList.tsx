@@ -1,14 +1,16 @@
 import React from 'react';
-import { IonButton, IonIcon, IonGrid, IonRow, IonCol, IonButtons, IonItem } from '@ionic/react';
+import { IonButton, IonButtons, IonCol, IonGrid, IonIcon, IonItem, IonRow } from '@ionic/react';
 import { closeOutline } from 'ionicons/icons';
 import { CartWithQty, ItemObj } from '../model/DomainModels';
 import { addCartAction, delCartAction, delItemGroup } from '../reducers/CartAction';
 import { useDispatch } from 'react-redux';
 import { CartState } from '../services/FirebaseIniti';
 import CurrencyAmount from './CurrencyAmount';
+import { useTranslation } from 'react-i18next';
 
 const ItemList: React.FC<CartState> = ({ cart }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const cartListWithQty: CartWithQty[] = [];
   const cartListArray: Array<CartWithQty> = [];
 
@@ -49,10 +51,10 @@ const ItemList: React.FC<CartState> = ({ cart }) => {
         <IonCol size="1.7"></IonCol>
         <IonCol size="4"></IonCol>
         <IonCol size="3" style={{ textAlign: 'center' }}>
-          Qty
+          {t('qty')}
         </IonCol>
         <IonCol size="3" style={{ textAlign: 'right' }}>
-          Total
+          {t('total')}
         </IonCol>
       </IonRow>
       {cartListArray.map((cartWithQty, index) => {

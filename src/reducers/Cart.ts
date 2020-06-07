@@ -25,7 +25,6 @@ const format = (num: any, minDecimals: number, maxDecimals: number) =>
 
 export const cartReducer = (state = INITIAL_STATE, action: any) => {
   let x = 0;
-  // export default function cartReducer(state = INITIAL_STATE, action: any) {
   switch (action.type) {
     case ADD_ITEM:
       if (action.market_id !== state.cart.marketId) {

@@ -72,7 +72,7 @@ const Market: React.FC = () => {
   };
 
   const [CartCounter] = useState<React.ElementType>(connect(mapStateToProps)(CartBadge));
-  let Market: any = useSelector<any>((state: any) => state.firestore.data.Market);
+  const Market: any = useSelector<any>((state: any) => state.firestore.data.Market);
   const CategoryTmp: any = useSelector<any>((state: any) => state.firestore.data.Category);
 
   const Categories: any = [];
@@ -84,10 +84,7 @@ const Market: React.FC = () => {
       });
     }
   }
-  if (!isLoaded(Market) || loading) {
-    setLoading(true);
-    Market = null;
-  }
+
   return (
     <IonPage>
       <MarketHeader setShowModal={setShowModal} shop={Market || {}} CartCounter={CartCounter} />

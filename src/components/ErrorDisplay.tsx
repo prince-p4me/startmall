@@ -1,21 +1,23 @@
 import React, { useEffect } from 'react';
 import {
-  IonText,
-  IonContent,
   IonButton,
-  IonIcon,
-  IonToast,
-  IonModal,
-  IonItem,
   IonCard,
   IonCardContent,
+  IonContent,
+  IonIcon,
+  IonItem,
+  IonModal,
+  IonText,
+  IonToast,
 } from '@ionic/react';
 import { ErrorDisplayProps } from '../model/ComponentProps';
 import { isLoaded } from 'react-redux-firebase';
 import { closeOutline } from 'ionicons/icons';
 import './ErrorDisplay.css';
+import { useTranslation } from 'react-i18next';
 
 const ErrorDisplay: React.FC<ErrorDisplayProps> = ({ errorProps, closeHandler, eventHandler }) => {
+  const { t } = useTranslation();
   let type: any = -1;
   let errorMessage: any;
   let showError = false;
@@ -57,7 +59,6 @@ const ErrorDisplay: React.FC<ErrorDisplayProps> = ({ errorProps, closeHandler, e
           ]}
         />
       ) : type === 2 ? (
-        // <div className="custom_model">
         <IonModal isOpen={showError}>
           <IonContent className="center">
             <IonIcon className="modal_icon" size="small" src="assets/icon/logo_small.svg" />
@@ -75,14 +76,12 @@ const ErrorDisplay: React.FC<ErrorDisplayProps> = ({ errorProps, closeHandler, e
                 <IonText>{errorMessage}</IonText>
               </IonCardContent>
               <IonButton size="small" color="secondary" expand="full" onClick={eventHandler}>
-                <b>{buttonText ? buttonText : 'LOG IN'}</b>
+                <b>{buttonText ? buttonText : t('logIn')}</b>
               </IonButton>
             </IonCard>
           </IonContent>
         </IonModal>
-      ) : // </div>
-
-      null}
+      ) : null}
     </>
   );
 };

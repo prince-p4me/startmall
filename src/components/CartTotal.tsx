@@ -2,13 +2,14 @@ import React from 'react';
 import { CartState } from '../services/FirebaseIniti';
 import { IonItem } from '@ionic/react';
 import CurrencyAmount from './CurrencyAmount';
+import { useTranslation } from 'react-i18next';
 
 const CartTotal: React.FC<CartState> = ({ cart }) => {
-  // let cart1 = JSON.parse(JSON.stringify(cart));
-  // console.log("cart is :--" + JSON.stringify(cart1));
+  const { t } = useTranslation();
+
   return (
     <IonItem>
-      Total: <CurrencyAmount amount={cart.cart.total} />
+      {t('total')}: <CurrencyAmount amount={cart.cart.total} />
     </IonItem>
   );
 };

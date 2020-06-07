@@ -84,3 +84,10 @@ export interface ErrorDisplayProps {
   closeHandler?: any;
   eventHandler?: any | null;
 }
+
+export interface MarketHeaderProps {
+  setShowModal: any;
+  shop: Markets | any;
+  CartCounter: any;
+  showTerms?: boolean;
+}

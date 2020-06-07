@@ -39,7 +39,7 @@ const Login: React.FC = () => {
   const [errorProps, setErrorProps] = useState<ErrorProps>({} as ErrorProps);
 
   useEffect(() => {
-    firebase.auth().onAuthStateChanged(function (user) {
+    firebase.auth().onAuthStateChanged((user) => {
       console.log('Login State changes');
       console.log(user);
       if (isLoaded(auth) && !isEmpty(auth)) {

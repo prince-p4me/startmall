@@ -1,5 +1,5 @@
 import React from 'react';
-import { IonItem, IonCol, IonRow, IonGrid, IonText, IonLabel, IonSkeletonText, IonThumbnail } from '@ionic/react';
+import { IonCol, IonGrid, IonItem, IonLabel, IonRow, IonSkeletonText, IonText, IonThumbnail } from '@ionic/react';
 
 import { FirestoreIonImg } from '../services/FirebaseStorage';
 

@@ -1,26 +1,28 @@
-import React, { useMemo, useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { ErrorProps, StripePaymentProps } from '../model/ComponentProps';
 import './StripePaymentContainer.css';
-import { IonLabel, IonIcon, IonButton, IonSpinner, IonText } from '@ionic/react';
-import { logoApple, helpCircleOutline } from 'ionicons/icons';
+import { IonButton, IonIcon, IonLabel, IonSpinner, IonText } from '@ionic/react';
+import { helpCircleOutline, logoApple } from 'ionicons/icons';
 import { isPlatform } from '@ionic/core';
 import {
+  CardCvcElement,
   CardExpiryElement,
   CardNumberElement,
-  CardCvcElement,
+  PaymentRequestButtonElement,
   useElements,
   useStripe,
-  PaymentRequestButtonElement,
 } from '@stripe/react-stripe-js';
 import { getPaymentSecret } from '../services/StripeService';
 import { AddressObj } from '../model/DomainModels';
 import {
-  StripeCardNumberElementChangeEvent,
-  StripeCardExpiryElementChangeEvent,
   StripeCardCvcElementChangeEvent,
+  StripeCardExpiryElementChangeEvent,
+  StripeCardNumberElementChangeEvent,
 } from '@stripe/stripe-js';
 import ErrorDisplay from './ErrorDisplay';
 import { Plugins } from '@capacitor/core';
+import { useTranslation } from 'react-i18next';
+
 const { Stripe } = Plugins;
 
 const useOptions = (paymentRequest: any) => {
@@ -84,6 +86,7 @@ const usePaymentRequest = ({ options, onPaymentMethod }: any) => {
 
 const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, completeHandler, invoice }) => {
   const stripe = useStripe();
+  const { t } = useTranslation();
   const elements = useElements();
   const [cardValidation, setCardValidation] = useState({ number: false, date: false, isCompleted: false });
   const [loading, setLoading] = useState(false);
@@ -184,7 +187,7 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
       setApplePayLoading(false);
       if (!e.message.includes('payment timeout or user cancelled')) {
         setErrorProps({
-          message: 'Something is wrong while requesting payment via apple pay',
+          message: t('applePayFailMsg'),
           showError: true,
           type: 1,
           autoHide: true,
@@ -272,18 +275,18 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
       {(paymentMode === 'visaCard' || paymentMode === 'all') && (
         <form onSubmit={handleSubmit}>
           <div className="ion-margin-top">
-            <IonLabel color="medium">Card number</IonLabel>
+            <IonLabel color="medium">{t('cardNumber')}</IonLabel>
             <CardNumberElement options={options} onChange={(obj) => validateStripe(obj, 'number')} />
           </div>
           <div className="ion-margin-top">
-            <IonLabel color="medium">Expiration date</IonLabel>
+            <IonLabel color="medium">{t('expirationDate')}</IonLabel>
             <CardExpiryElement options={options} onChange={(obj) => validateStripe(obj, 'date')} />
           </div>
           <div className="ion-margin-top">
             <IonLabel color="medium">
-              CVC
+              {t('cvc')}
               <IonIcon size={'small'} slot="icon-only" className="help-icon" icon={helpCircleOutline} />
-              <IonText className="info-light-text">(3 Digit on back of your card)</IonText>
+              <IonText className="info-light-text">({t('cvcInfoMsg')})</IonText>
             </IonLabel>
             <CardCvcElement options={options} onChange={(obj) => validateStripe(obj, 'cvc')} />
           </div>
@@ -296,7 +299,7 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
             className="ion-margin-top card-pay-btn"
             size={'large'}
           >
-            {!loading ? `Pay AUD $${invoice.total_amount} inc GST` : <IonSpinner name={'dots'}></IonSpinner>}
+            {!loading ? `${t('pay')} AUD $${invoice.total_amount} inc GST` : <IonSpinner name={'dots'}></IonSpinner>}
           </IonButton>
         </form>
       )}
@@ -316,7 +319,7 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
               {!applePayLoading ? (
                 <>
                   <IonIcon size={'large'} slot="icon-only" className="apple-icon" icon={logoApple}></IonIcon>
-                  Pay
+                  {t('pay')}
                 </>
               ) : (
                 <IonSpinner name={'dots'}></IonSpinner>
@@ -336,7 +339,7 @@ const StripePaymentContainer: React.FC<StripePaymentProps> = ({ paymentMode, com
         )}
       </div>
       <div className={'ion-margin-top ion-margin-bottom info-light-text'}>
-        <IonLabel>* By hitting Pay you are confirming your order with us.</IonLabel>
+        <IonLabel>* {t('orderConfirmInfoMsg')}</IonLabel>
       </div>
       <ErrorDisplay
         errorProps={errorProps}

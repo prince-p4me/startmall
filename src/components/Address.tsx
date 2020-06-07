@@ -1,43 +1,28 @@
 import React from 'react';
-import { IonItem, IonInput, IonLabel, IonList, IonIcon, IonItemDivider } from '@ionic/react';
+import { IonIcon, IonInput, IonItem, IonItemDivider, IonLabel, IonList } from '@ionic/react';
 import { AddressProps } from '../model/ComponentProps';
+import { useTranslation } from 'react-i18next';
 
 const AddressForm: React.FC<AddressProps> = ({ address, onAddressChange }) => {
-  // const dispatch = useDispatch();
-  // const address = {} as AddressObj;
-  // let address1 = {
-  //   address1: address.address1,
-  //   address2: address.address2,
-  //   suburb: address.suburb,
-  //   state: address.state,
-  //   postcode: address.postcode,
-  //   phone: address.phone,
-  //   email: address.email
-  // }
-  // useEffect(() => {
-  //   var possibleAddresses = fetchAddressFinder(address.address1);
-  //   console.log(possibleAddresses);
-  // }, [address]);
+  const { t } = useTranslation();
 
-  // console.log(address);
   return (
     <IonList>
       <IonItemDivider style={{ backgroundColor: '#f7f7f7', paddingTop: 10, paddingBottom: 10 }}>
         <IonIcon slot="start" src="assets/icon/1x/SVG/delivery.svg" style={{ marginRight: 0 }}></IonIcon>
         <IonLabel color="primary" style={{ paddingLeft: 10 }}>
-          DELIVERY ADDRESS
+          {t('deliveryAddress')}
         </IonLabel>
       </IonItemDivider>
       <IonItem style={{ paddingRight: 16 }}>
         <IonLabel id="contact_name" color="medium" position="floating">
-          Contact Name
+          {t('contactName')}
         </IonLabel>
         <IonInput
           placeholder="e.g. John"
           required={true}
           value={address.name}
           onIonChange={(e) => {
-            console.log(e);
             onAddressChange({ ...address, name: e.detail.value });
           }}
         ></IonInput>
@@ -48,21 +33,20 @@ const AddressForm: React.FC<AddressProps> = ({ address, onAddressChange }) => {
           color={address && !address?.isValidAddress1 ? 'danger' : 'medium'}
           position="floating"
         >
-          Address Line 1 *
+          {t('addressLine', { lineNumber: 1 })} *
         </IonLabel>
         <IonInput
           placeholder="e.g. Level 3A, Levy walk"
           required={true}
           value={address.address1}
           onIonChange={(e) => {
-            console.log(e);
             onAddressChange({ ...address, address1: e.detail.value, isValidAddress1: true });
           }}
         ></IonInput>
       </IonItem>
       <IonItem hidden style={{ paddingRight: 16 }}>
         <IonLabel id="address_line_2" color="medium" position="floating">
-          Address Line 2
+          {t('addressLine', { lineNumber: 2 })}
         </IonLabel>
         <IonInput
           placeholder="e.g. Buildings"
@@ -74,7 +58,7 @@ const AddressForm: React.FC<AddressProps> = ({ address, onAddressChange }) => {
       </IonItem>
       <IonItem style={{ paddingRight: 16 }}>
         <IonLabel id="suburb" color="medium" position="floating">
-          Suburb
+          {t('suburb')}
         </IonLabel>
         <IonInput
           placeholder="e.g CBD, Chatswood"
@@ -87,7 +71,7 @@ const AddressForm: React.FC<AddressProps> = ({ address, onAddressChange }) => {
       </IonItem>
       <IonItem hidden style={{ paddingRight: 16 }}>
         <IonLabel id="state" color="medium" position="floating">
-          State
+          {t('state')}
         </IonLabel>
         <IonInput
           placeholder="e.g. NSW"
@@ -99,7 +83,7 @@ const AddressForm: React.FC<AddressProps> = ({ address, onAddressChange }) => {
       </IonItem>
       <IonItem style={{ paddingRight: 16 }}>
         <IonLabel id="postcode" color="medium" position="floating">
-          Postcode
+          {t('postcode')}
         </IonLabel>
         <IonInput
           placeholder="e.g. 2000"
@@ -111,7 +95,7 @@ const AddressForm: React.FC<AddressProps> = ({ address, onAddressChange }) => {
       </IonItem>
       <IonItem style={{ paddingRight: 16 }}>
         <IonLabel id="email" color="medium" position="floating">
-          Email
+          {t('email')}
         </IonLabel>
         <IonInput
           type="email"
@@ -124,7 +108,7 @@ const AddressForm: React.FC<AddressProps> = ({ address, onAddressChange }) => {
       </IonItem>
       <IonItem style={{ paddingRight: 16 }}>
         <IonLabel id="phone" color={address && !address?.isValidNumber ? 'danger' : 'medium'} position="floating">
-          Phone Number *
+          {t('phoneNumber')} *
         </IonLabel>
         <IonInput
           type="tel"
@@ -139,7 +123,7 @@ const AddressForm: React.FC<AddressProps> = ({ address, onAddressChange }) => {
       {address && !(address.isValidAddress1 && address.isValidNumber) ? (
         <IonItem style={{ paddingRight: 16 }} lines="none">
           <IonLabel id="validate" color="danger" position="floating">
-            * Please fill up all the required information.
+            * {t('fillUpAllRequiredInfoMsg')}
           </IonLabel>
         </IonItem>
       ) : null}
