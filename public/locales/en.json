@@ -66,5 +66,8 @@
   "enterPostcodeMsg": "Please enter postcode",
   "startWithPostcodeMsg": "Please start with your Postcode",
   "enterPostcode" : "Enter your postcode here",
-  "findShop" : "Find Shop"
+  "findShop" : "Find Shop",
+  "shoppingCart": "SHOPPING CART",
+  "addToCart": "Add to Cart",
+  "minimumOrder" : "Minimum order"
 }

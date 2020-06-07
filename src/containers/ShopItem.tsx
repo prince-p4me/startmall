@@ -1,38 +1,40 @@
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
+  IonButton,
+  IonButtons,
   IonCard,
   IonCardContent,
-  IonButton,
-  IonIcon,
-  IonRow,
   IonCol,
+  IonIcon,
   IonItem,
   IonLabel,
-  IonButtons,
+  IonRow,
 } from '@ionic/react';
-import { add, heart, heartOutline } from 'ionicons/icons';
-import { useDispatch, useSelector } from 'react-redux';
-import { addCartAction, delCartAction } from '../reducers/CartAction';
-import { ItemObj, RootState, WishList, CartStateType } from '../model/DomainModels';
-import { ShopItemProps, ErrorProps } from '../model/ComponentProps';
-import { FirestoreIonImg } from '../services/FirebaseStorage';
-import { useFirebase, useFirestore } from 'react-redux-firebase';
-import { useHistory } from 'react-router-dom';
-import { loadWishList } from '../reducers/WishListAction';
+import {add, heart, heartOutline} from 'ionicons/icons';
+import {useDispatch, useSelector} from 'react-redux';
+import {addCartAction, delCartAction} from '../reducers/CartAction';
+import {ItemObj, RootState, WishList} from '../model/DomainModels';
+import {ErrorProps, ShopItemProps} from '../model/ComponentProps';
+import {FirestoreIonImg} from '../services/FirebaseStorage';
+import {useFirestore} from 'react-redux-firebase';
+import {useHistory} from 'react-router-dom';
+import {loadWishList} from '../reducers/WishListAction';
 import CurrencyAmount from '../components/CurrencyAmount';
 import ErrorDisplay from '../components/ErrorDisplay';
-import { remove, filter } from 'lodash';
+import {filter, remove} from 'lodash';
+import {useTranslation} from "react-i18next";
 
-const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => {
-  const [favorites, setFavorites] = useState(heartOutline);
-  // const [] = useState<WishList>({} as WishList);
+const ShopItem: React.FC<ShopItemProps> = ({item, market_id, category_id}) => {
+
   const dispatch = useDispatch();
+  const history = useHistory();
   const db = useFirestore();
+  const {t} = useTranslation();
   const auth = useSelector<RootState>((state) => state.firebase.auth) as any;
   const shop = useSelector<RootState>((state) => state.shop);
   const WishLists = useSelector<RootState>((state) => state.wishList.data) as any;
   const cartStore = useSelector<RootState>((state) => state.cart.cartItemList) as ItemObj[];
-  const history = useHistory();
+  const [favorites, setFavorites] = useState(heartOutline);
   const [errorProps, setErrorProps] = useState<ErrorProps>({} as ErrorProps);
   const totalItemInCard = filter(cartStore, (i: ItemObj) => i.id === item.id).length;
 
@@ -49,7 +51,6 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
 
   const writeData = async (data: WishList, user_id: string) => {
     const json_shop = JSON.parse(JSON.stringify(shop));
-    // console.log(JSON.stringify(shop));
     setFavorites(heart);
     const items = await db
       .collection('WishLists')
@@ -61,7 +62,6 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
     if (items.empty) {
       await db.collection('WishLists').doc(user_id).collection('Markets').doc(market_id).set(json_shop.shop);
       await db.collection('WishLists').doc(user_id).collection('Markets').doc(market_id).collection('Items').add(data);
-      // updateFavorite();
     } else {
       const itemList: any = [];
       items.forEach((doc) => {
@@ -93,7 +93,7 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
         } else {
           const tmp: any = [];
           snapshot.forEach((doc) => {
-            tmp.push({ ...doc.data(), id: doc.id });
+            tmp.push({...doc.data(), id: doc.id});
           });
           dispatch(loadWishList(tmp));
         }
@@ -123,7 +123,7 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
       const isExists = WishLists.find((wItem: any) => wItem.item_id == item.id) as any;
       if (isExists) {
         if (writing) {
-          remove(WishLists, { item_id: 'item' });
+          remove(WishLists, {item_id: 'item'});
           docRef
             .doc(isExists.id)
             .delete()
@@ -164,29 +164,28 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
 
   return (
     <IonCard>
-      <IonCardContent style={{ padding: 10 }}>
+      <IonCardContent style={{padding: 10}}>
         <IonRow>
           <IonCol size="4">
-            <FirestoreIonImg src={item.img_url as string} showModal />
+            <FirestoreIonImg src={item.img_url as string} showModal/>
           </IonCol>
           <IonCol size="7.8">
             <IonLabel>
               <p>{item.name}</p>
-              <br />
+              <br/>
               <p className="currency">
-                {/* $ {item.unit_price} {item.unit} */}
-                <CurrencyAmount amount={item.unit_price} /> {item.unit}
+                <CurrencyAmount amount={item.unit_price}/> {item.unit}
               </p>
             </IonLabel>
-            <br />
-            <IonItem lines="none" style={{ float: 'right', height: '33px' }}>
+            <br/>
+            <IonItem lines="none" style={{float: 'right', height: '33px'}}>
               {totalItemInCard === 0 ? (
                 <IonButton color="tertiary" fill="outline" size="small" onClick={() => addCart(item)}>
-                  <IonIcon slot="start" icon={add} />
-                  Add to Cart
+                  <IonIcon slot="start" icon={add}/>
+                  {t('addToCart')}
                 </IonButton>
               ) : (
-                <IonButtons style={{ flexDirection: 'row', justifyContent: 'space-around', width: 100 }}>
+                <IonButtons style={{flexDirection: 'row', justifyContent: 'space-around', width: 100}}>
                   <IonButton
                     color="tertiary"
                     fill="outline"
@@ -218,11 +217,11 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
                   checkFavorite(true);
                 }}
               >
-                <IonIcon icon={favorites} />
+                <IonIcon icon={favorites}/>
               </IonButton>
             </IonItem>
-            <IonItem lines="none" style={{ float: 'right' }} className="shop_item_min_order">
-              <IonLabel>Minimum order: Nil</IonLabel>
+            <IonItem lines="none" style={{float: 'right'}} className="shop_item_min_order">
+              <IonLabel>{t('minimumOrder')}: Nil</IonLabel>
             </IonItem>
           </IonCol>
         </IonRow>
@@ -230,11 +229,11 @@ const ShopItem: React.FC<ShopItemProps> = ({ item, market_id, category_id }) => 
       <ErrorDisplay
         errorProps={errorProps}
         closeHandler={() => {
-          setErrorProps({ ...errorProps, showError: false });
+          setErrorProps({...errorProps, showError: false});
         }}
         eventHandler={() => {
           history.push('/login');
-          setErrorProps({ ...errorProps, showError: false });
+          setErrorProps({...errorProps, showError: false});
         }}
       />
     </IonCard>

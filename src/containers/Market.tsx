@@ -1,35 +1,36 @@
 import {
-  IonContent,
-  IonPage,
-  IonGrid,
-  IonRow,
-  IonCol,
   IonBadge,
-  IonSkeletonText,
-  IonThumbnail,
+  IonCard,
   IonCardContent,
   IonCardSubtitle,
-  IonCard,
+  IonCol,
+  IonContent,
+  IonGrid,
+  IonPage,
+  IonRow,
+  IonSkeletonText,
+  IonThumbnail,
 } from '@ionic/react';
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import './Market.css';
-import { connect, useSelector } from 'react-redux';
+import {connect, useSelector} from 'react-redux';
 import CategoryItem from './CategoryItem';
 import ShopHeaderWithProps from '../components/ShopHeaderWithProps';
-import { useFirestoreConnect, FirestoreReducer, isLoaded, isEmpty } from 'react-redux-firebase';
-import { useParams } from 'react-router';
-import { RootState, Markets } from '../model/DomainModels';
-import { CartState } from '../services/FirebaseIniti';
+import {FirestoreReducer, isLoaded, useFirestoreConnect} from 'react-redux-firebase';
+import {useParams} from 'react-router';
+import {Markets, RootState} from '../model/DomainModels';
+import {CartState} from '../services/FirebaseIniti';
 import MarketHeader from '../components/MarketHeader';
 import CartModal from './Cart';
 
 const Market: React.FC = () => {
-  const { market_id } = useParams<{ market_id: string }>();
+
+  const {market_id} = useParams<{ market_id: string }>();
   const shop = {} as Markets;
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const CartBadge: React.FC<CartState> = ({ cart }) => {
+  const CartBadge: React.FC<CartState> = ({cart}) => {
     const cartSize = cart.cartItemList.length;
     if (cartSize > 0) {
       return <IonBadge color="danger">{cart.cartItemList.length}</IonBadge>;
@@ -39,7 +40,7 @@ const Market: React.FC = () => {
   };
 
   useFirestoreConnect([
-    { collection: 'Markets', doc: market_id, storeAs: 'Market' },
+    {collection: 'Markets', doc: market_id, storeAs: 'Market'},
     {
       collection: 'Markets',
       doc: market_id,
@@ -67,8 +68,8 @@ const Market: React.FC = () => {
   }
 
   const mapStateToProps = (state: CartState) => {
-    const { firebase, cart, shop } = state;
-    return { firebase, cart, shop };
+    const {firebase, cart, shop} = state;
+    return {firebase, cart, shop};
   };
 
   const [CartCounter] = useState<React.ElementType>(connect(mapStateToProps)(CartBadge));
@@ -90,10 +91,10 @@ const Market: React.FC = () => {
   }
   return (
     <IonPage>
-      <MarketHeader setShowModal={setShowModal} shop={Market || {}} CartCounter={CartCounter} />
+      <MarketHeader setShowModal={setShowModal} shop={Market || {}} CartCounter={CartCounter}/>
 
       <IonContent className="category" fullscreen>
-        <ShopHeaderWithProps Market={Market} />
+        <ShopHeaderWithProps Market={Market}/>
         <IonGrid>
           <IonRow>
             {loading ? (
@@ -102,11 +103,10 @@ const Market: React.FC = () => {
                   <IonCard class="category-skeleton-image">
                     <IonCardContent>
                       <IonThumbnail class="skeleton-image">
-                        <IonSkeletonText animated />
+                        <IonSkeletonText animated/>
                       </IonThumbnail>
-                      {/* <IonImg src={category.img_url as string}></IonImg> */}
                       <IonCardSubtitle className="category_name ion-text-capitalize">
-                        <IonSkeletonText animated />
+                        <IonSkeletonText animated/>
                       </IonCardSubtitle>
                     </IonCardContent>
                   </IonCard>
@@ -115,11 +115,10 @@ const Market: React.FC = () => {
                   <IonCard class="category-skeleton-image">
                     <IonCardContent>
                       <IonThumbnail class="skeleton-image">
-                        <IonSkeletonText animated />
+                        <IonSkeletonText animated/>
                       </IonThumbnail>
-                      {/* <IonImg src={category.img_url as string}></IonImg> */}
                       <IonCardSubtitle className="category_name ion-text-capitalize">
-                        <IonSkeletonText animated />
+                        <IonSkeletonText animated/>
                       </IonCardSubtitle>
                     </IonCardContent>
                   </IonCard>
@@ -128,11 +127,10 @@ const Market: React.FC = () => {
                   <IonCard class="category-skeleton-image">
                     <IonCardContent>
                       <IonThumbnail class="skeleton-image">
-                        <IonSkeletonText animated />
+                        <IonSkeletonText animated/>
                       </IonThumbnail>
-                      {/* <IonImg src={category.img_url as string}></IonImg> */}
                       <IonCardSubtitle className="category_name ion-text-capitalize">
-                        <IonSkeletonText animated />
+                        <IonSkeletonText animated/>
                       </IonCardSubtitle>
                     </IonCardContent>
                   </IonCard>
@@ -141,11 +139,10 @@ const Market: React.FC = () => {
                   <IonCard class="category-skeleton-image">
                     <IonCardContent>
                       <IonThumbnail class="skeleton-image">
-                        <IonSkeletonText animated />
+                        <IonSkeletonText animated/>
                       </IonThumbnail>
-                      {/* <IonImg src={category.img_url as string}></IonImg> */}
                       <IonCardSubtitle className="category_name ion-text-capitalize">
-                        <IonSkeletonText animated />
+                        <IonSkeletonText animated/>
                       </IonCardSubtitle>
                     </IonCardContent>
                   </IonCard>
@@ -157,7 +154,7 @@ const Market: React.FC = () => {
                   Categories.map((obj: any) => {
                     return (
                       <IonCol key={obj.id}>
-                        <CategoryItem market_id={market_id} category={obj} shop={shop} />
+                        <CategoryItem market_id={market_id} category={obj} shop={shop}/>
                       </IonCol>
                     );
                   })
@@ -168,12 +165,10 @@ const Market: React.FC = () => {
             )}
           </IonRow>
         </IonGrid>
-        <CartModal modal={showModal} closeHandler={() => setShowModal(false)} />
+        <CartModal modal={showModal} closeHandler={() => setShowModal(false)}/>
       </IonContent>
     </IonPage>
   );
 };
 
 export default Market;
-
-//export default React.memo(Market);

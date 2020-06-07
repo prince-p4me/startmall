@@ -36,16 +36,16 @@ const ShopMain: React.FC = () => {
     }
   };
 
-  function mapStateToProps(state: CartState) {
+  const mapStateToProps = (state: CartState) => {
     const { firebase, cart, shop } = state;
     return { firebase, cart, shop };
-  }
-  const CartCounter = connect(mapStateToProps)(CartBadge);
+  };
+
+  const [CartCounter] = useState<React.ElementType>(connect(mapStateToProps)(CartBadge));
   const Market: any = useSelector<any>((state: any) => state.firestore.data.Market);
 
   let index = 0;
   for (const x in data) {
-    // console.log("how many category " + index + " : " + x);
     index++;
     const obj: CategoryObj = {
       id: index,
