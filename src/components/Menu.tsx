@@ -15,7 +15,14 @@ import {
 
 import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { bookmarkOutline, heartOutline, nutritionOutline, rocketOutline } from 'ionicons/icons';
+import {
+  bookmarkOutline,
+  heartOutline,
+  nutritionOutline,
+  rocketOutline,
+  globeOutline,
+  openOutline,
+} from 'ionicons/icons';
 import './Menu.css';
 import { AppPage, RootState } from '../model/DomainModels';
 import { FirestoreReducer, isEmpty, isLoaded, useFirebase, useFirestoreConnect } from 'react-redux-firebase';
@@ -28,6 +35,7 @@ import { take } from 'lodash';
 
 import FeedbackComponent from './FeedbackComponent';
 import { useTranslation } from 'react-i18next';
+import LanguageSelectionModal from '../containers/LanguageSelection';
 
 const appPages: AppPage[] = [
   {
@@ -60,6 +68,7 @@ const Menu: React.FC = () => {
   const history = useHistory();
   const { t } = useTranslation();
   const [userPhoto, setUserPhoto] = useState('');
+  const [isOpenLanguageSelection, setIsOpenLanguageSelection] = useState(false);
   const auth: UserInfo = useSelector<RootState>((state) => state.firebase.auth) as UserInfo;
 
   const isWeb = !isPlatform('ios') || isPlatform('mobileweb');
@@ -131,8 +140,12 @@ const Menu: React.FC = () => {
               </IonMenuToggle>
             );
           })}
+          <IonItem lines="none" onClick={() => setIsOpenLanguageSelection(true)}>
+            <IonIcon slot="start" icon={globeOutline} />
+            <IonLabel>Language</IonLabel>
+          </IonItem>
           <IonItem lines="none">
-            <IonIcon slot="start" icon={nutritionOutline}></IonIcon>
+            <IonIcon slot="start" icon={openOutline}></IonIcon>
             <IonLabel>
               <a className={'router-link'} href="https://startmall-admin.web.app">
                 {t('ownerApp')}
@@ -176,6 +189,10 @@ const Menu: React.FC = () => {
             </IonLabel>
           </IonItem>
         </IonFooter>
+        <LanguageSelectionModal
+          modal={isOpenLanguageSelection}
+          closeHandler={() => setIsOpenLanguageSelection(false)}
+        ></LanguageSelectionModal>
       </IonContent>
     </IonMenu>
   );

@@ -48,7 +48,11 @@ export interface MarketItemsProps {
 
 export interface CartProps {
   modal: boolean;
+  closeHandler(goBack: boolean): any;
+}
 
+export interface LanguageSelectionProps {
+  modal: boolean;
   closeHandler(goBack: boolean): any;
 }
 
