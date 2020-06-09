@@ -1,5 +1,6 @@
 import {
   IonAvatar,
+  IonButton,
   IonContent,
   IonFooter,
   IonIcon,
@@ -10,22 +11,21 @@ import {
   IonListHeader,
   IonMenu,
   IonMenuToggle,
-  IonNote,
 } from '@ionic/react';
 
 import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import {
   bookmarkOutline,
+  globeOutline,
   heartOutline,
   nutritionOutline,
-  rocketOutline,
-  globeOutline,
   openOutline,
+  rocketOutline,
 } from 'ionicons/icons';
 import './Menu.css';
 import { AppPage, RootState } from '../model/DomainModels';
-import { FirestoreReducer, isEmpty, isLoaded, useFirebase, useFirestoreConnect } from 'react-redux-firebase';
+import { isEmpty, isLoaded, useFirebase, useFirestoreConnect } from 'react-redux-firebase';
 import { useDispatch, useSelector } from 'react-redux';
 import { UserInfo } from '@firebase/auth-types';
 import { isPlatform, menuController } from '@ionic/core';
@@ -70,14 +70,12 @@ const Menu: React.FC = () => {
   const [userPhoto, setUserPhoto] = useState('');
   const [isOpenLanguageSelection, setIsOpenLanguageSelection] = useState(false);
   const auth: UserInfo = useSelector<RootState>((state) => state.firebase.auth) as UserInfo;
+  const Invoices = useSelector<RootState>((state) => state.invoice.Invoices) as [];
 
+  const isAuthenticated = isLoaded(auth) && !isEmpty(auth);
   const isWeb = !isPlatform('ios') || isPlatform('mobileweb');
 
   useFirestoreConnect([{ collection: 'Users', doc: auth.uid }]);
-
-  const stateStore = useSelector<RootState>((state) => state.firestore) as FirestoreReducer.Reducer;
-
-  const Invoices = useSelector<RootState>((state) => state.invoice.Invoices) as [];
 
   useEffect(() => {
     setUserPhoto(auth.photoURL as string);
@@ -96,28 +94,33 @@ const Menu: React.FC = () => {
   const isPageHasPermission = (appPage: AppPage) => {
     if (appPage.slug === 'my-profile') {
       if (isLoaded(auth) && !isEmpty(auth)) {
-        if (stateStore.ordered.Users && stateStore.ordered?.Users[0]?.roles?.indexOf('admin') === -1) {
-          return true;
-        }
-        return false;
-      } else {
         return true;
+      } else {
+        return false;
       }
     }
-    return false;
+    return true;
   };
 
   return (
     <IonMenu contentId="main" type="overlay" side="end">
       <IonContent className={'ion-margin-top'}>
-        <IonList id="inbox-list" className={'ion-margin-top'}>
+        <IonList className="inbox-list">
           <IonListHeader>
-            <IonItem lines="none">{auth.displayName}</IonItem>
-            <IonAvatar>{userPhoto ? <IonImg src={userPhoto}></IonImg> : <p></p>}</IonAvatar>
+            {isAuthenticated && (
+              <>
+                <IonAvatar>
+                  {userPhoto ? <IonImg src={userPhoto}></IonImg> : <div className={'avatar-latter'}>SR</div>}
+                </IonAvatar>
+                <IonList lines="none">
+                  <IonItem>{auth.displayName}</IonItem>
+                  <IonItem className={'header-email-label'}>{auth.email}</IonItem>
+                </IonList>
+              </>
+            )}
           </IonListHeader>
-          <IonNote>{auth.email}</IonNote>
           {appPages.map((appPage, index) => {
-            return isPageHasPermission(appPage) ? (
+            return !isPageHasPermission(appPage) ? (
               <div key={index}></div>
             ) : (
               <IonMenuToggle key={index} autoHide={false}>
@@ -163,37 +166,42 @@ const Menu: React.FC = () => {
             </IonItem>
           )}
         </IonList>
-
-        <IonList id="labels-list">
-          <IonListHeader>Previous Orders</IonListHeader>
-          {take(Invoices, 5).map((invoice: any) => (
-            <IonMenuToggle key={invoice.id}>
-              <IonItem lines="none" routerLink={`/orders/${invoice.id}`} routerDirection="none" detail={false}>
-                <IonIcon slot="start" icon={bookmarkOutline} />
-                <IonLabel>{invoice.id}</IonLabel>
-              </IonItem>
-            </IonMenuToggle>
-          ))}
-        </IonList>
-        <IonFooter onClick={async () => await menuController.toggle()}>
-          {isLoaded(auth) && !isEmpty(auth) ? (
-            <IonItem onClick={handleSignOut}>{t('signOut')}</IonItem>
-          ) : (
-            <IonItem routerLink="/login" routerDirection="none" detail={false}>
-              {t('signIn')}
-            </IonItem>
-          )}
-          <IonItem>
-            <IonLabel>
-              <FeedbackComponent />
-            </IonLabel>
-          </IonItem>
-        </IonFooter>
+        {isAuthenticated && (
+          <IonList className="labels-list">
+            <IonListHeader>Previous Orders</IonListHeader>
+            {take(Invoices, 5).map((invoice: any) => (
+              <IonMenuToggle key={invoice.id}>
+                <IonItem lines="none" routerLink={`/orders/${invoice.id}`} routerDirection="none" detail={false}>
+                  <IonIcon slot="start" icon={bookmarkOutline} />
+                  <IonLabel>{invoice.id}</IonLabel>
+                </IonItem>
+              </IonMenuToggle>
+            ))}
+          </IonList>
+        )}
         <LanguageSelectionModal
           modal={isOpenLanguageSelection}
           closeHandler={() => setIsOpenLanguageSelection(false)}
         ></LanguageSelectionModal>
       </IonContent>
+      <IonFooter onClick={async () => await menuController.toggle()} className={'ion-padding-top'}>
+        <IonItem lines="none">
+          {isLoaded(auth) && !isEmpty(auth) ? (
+            <IonButton slot={'end'} expand="full" onClick={handleSignOut}>
+              {t('signOut')}
+            </IonButton>
+          ) : (
+            <IonButton slot={'end'} expand="full" routerLink="/login" routerDirection="none">
+              {t('signIn')}
+            </IonButton>
+          )}
+        </IonItem>
+        <IonItem lines="none">
+          <IonLabel>
+            <FeedbackComponent />
+          </IonLabel>
+        </IonItem>
+      </IonFooter>
     </IonMenu>
   );
 };
