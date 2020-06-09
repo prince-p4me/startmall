@@ -102,6 +102,11 @@ const Menu: React.FC = () => {
     return true;
   };
 
+  const avatarUSer = () => {
+    const displayNameArry = auth.displayName?.split(' ');
+    return displayNameArry ? displayNameArry[0][0] + displayNameArry[1][0] : '';
+  };
+
   return (
     <IonMenu contentId="main" type="overlay" side="end">
       <IonContent className={'ion-margin-top'}>
@@ -110,10 +115,14 @@ const Menu: React.FC = () => {
             {isAuthenticated && (
               <>
                 <IonAvatar>
-                  {userPhoto ? <IonImg src={userPhoto}></IonImg> : <div className={'avatar-latter'}>SR</div>}
+                  {userPhoto ? (
+                    <IonImg src={userPhoto}></IonImg>
+                  ) : (
+                    <div className={'avatar-latter'}>{auth.displayName ? avatarUSer() : ''}</div>
+                  )}
                 </IonAvatar>
                 <IonList lines="none">
-                  <IonItem>{auth.displayName}</IonItem>
+                  <IonItem>{auth.displayName || auth.phoneNumber}</IonItem>
                   <IonItem className={'header-email-label'}>{auth.email}</IonItem>
                 </IonList>
               </>

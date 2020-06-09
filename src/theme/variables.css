@@ -418,7 +418,7 @@ img {
   width: 30px;
   height: 30px;
   margin: 10px;
-  /* padding-left: 7px !important; */
+  --padding-start: 0px;
   border: thin solid var(--ion-color-primary);
 }
 

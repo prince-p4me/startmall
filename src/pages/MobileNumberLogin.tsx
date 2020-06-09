@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   IonButton,
   IonButtons,
@@ -11,6 +11,8 @@ import {
   IonLoading,
   IonPage,
   IonRow,
+  IonSelect,
+  IonSelectOption,
   IonText,
   IonToolbar,
 } from '@ionic/react';
@@ -20,9 +22,10 @@ import { useHistory } from 'react-router-dom';
 import { VerifyCode } from '../model/DomainModels';
 import ErrorDisplay from '../components/ErrorDisplay';
 import { ErrorProps } from '../model/ComponentProps';
-import { isPlatform } from '@ionic/core';
-import { FirebaseAuthentication } from '@ionic-native/firebase-authentication';
 import { useTranslation } from 'react-i18next';
+import ReactCountryFlag from 'react-country-flag';
+
+import './MobileNumberLogin.css';
 
 const MobileNumberLogin: React.FC = () => {
   const history = useHistory();
@@ -35,7 +38,9 @@ const MobileNumberLogin: React.FC = () => {
   const [verificationId, setVerificationId] = useState('');
   const [isNumberAdded, setIsNumberAdded] = useState(false);
   const [confirmationCode, setConfirmationCode] = useState<any>();
-  const [timer, setTime] = useState<number>(60);
+  const [errorProps, setErrorProps] = useState<ErrorProps>({} as ErrorProps);
+  const [timeLeft, setTimeLeft] = useState(60);
+  const [country, setCountry] = useState<string>('+852');
   const [verificationCode, setVerificationCode] = useState<VerifyCode>({
     first: '',
     second: '',
@@ -44,77 +49,58 @@ const MobileNumberLogin: React.FC = () => {
     sixth: '',
     fifth: '',
   });
+  const conturyList: any = {
+    '+61': 'AU',
+    '+65': 'SG',
+    '+852': 'HK',
+    '+1': 'US',
+    '+86': 'CN',
+    '+44': 'GB',
+  };
   const input1 = useRef<any>();
   const input2 = useRef<any>();
   const input3 = useRef<any>();
   const input4 = useRef<any>();
   const input5 = useRef<any>();
   const input6 = useRef<any>();
-  const [errorProps, setErrorProps] = useState<ErrorProps>({} as ErrorProps);
 
   const sendVerificationCode = () => {
-    const phoneNumberString = ('+852' + mobileNumber) as string;
-    if (!isPlatform('ios') || isPlatform('mobileweb')) {
-      const appVerifier = new firebase.auth.RecaptchaVerifier('sign-in-button', {
-        size: 'invisible',
+    const phoneNumberString = (country + mobileNumber) as string;
+    const appVerifier = new firebase.auth.RecaptchaVerifier('sign-in-button', {
+      size: 'invisible',
+    });
+    console.log(mobileNumber);
+    firebase
+      .auth()
+      .signInWithPhoneNumber(phoneNumberString, appVerifier)
+      .then((confirmationResult: any) => {
+        // SMS sent. Prompt user to type the code from the message, then sign the
+        // user in with confirmationResult.confirm(code).
+        appVerifier.clear();
+        console.log('confirmationResult' + confirmationResult);
+        setConfirmationCode(confirmationResult);
+        setTimeLeft(60);
+        setIsNumberAdded(true);
+      })
+      .catch((error) => {
+        console.error('SMS not sent', error);
+        setErrorProps({
+          message: t('smsSentError', { msg: error.message }),
+          showError: true,
+          type: 1,
+          autoHide: true,
+          buttonText: '',
+        });
       });
-      console.log(mobileNumber);
-      firebase
-        .auth()
-        .signInWithPhoneNumber(phoneNumberString, appVerifier)
-        .then((confirmationResult: any) => {
-          // SMS sent. Prompt user to type the code from the message, then sign the
-          // user in with confirmationResult.confirm(code).
-          appVerifier.clear();
-          console.log('confirmationResult' + confirmationResult);
-          setConfirmationCode(confirmationResult);
-          setTime(60);
-          setIsNumberAdded(true);
-          startInterval();
-        })
-        .catch((error) => {
-          console.error('SMS not sent', error);
-          setErrorProps({
-            message: t('smsSentError', { msg: error.message }),
-            showError: true,
-            type: 1,
-            autoHide: true,
-            buttonText: '',
-          });
-        });
-    } else {
-      FirebaseAuthentication.verifyPhoneNumber(phoneNumberString, 60000)
-        .then((verificationId) => {
-          setVerificationId(verificationId);
-          setTime(60);
-          setIsNumberAdded(true);
-          startInterval();
-        })
-        .catch((error) => {
-          console.error('SMS not sent', error);
-          setErrorProps({
-            message: t('smsSentError', { msg: error.message }),
-            showError: true,
-            type: 1,
-            autoHide: true,
-            buttonText: '',
-          });
-        });
-    }
   };
 
-  const startInterval = () => {
-    const interval = setInterval(() => {
-      setTime((time) => timer - 1);
-      const timer1 = timer - 1;
-      setTime(timer1);
-      if (timer1 === 0) {
-        setTime(60);
-        setIsNumberAdded(false);
-        clearInterval(interval);
-      }
+  useEffect(() => {
+    if (!timeLeft) return;
+    const intervalId = setInterval(() => {
+      setTimeLeft(timeLeft - 1);
     }, 1000);
-  };
+    return () => clearInterval(intervalId);
+  }, [timeLeft]);
 
   const verifyCode = () => {
     if (
@@ -141,26 +127,15 @@ const MobileNumberLogin: React.FC = () => {
       verificationCode.fifth +
       verificationCode.sixth;
     console.log('code is:==' + code);
-    if (!isPlatform('ios') || isPlatform('mobileweb')) {
-      confirmationCode
-        .confirm(code)
-        .then((res: any) => {
-          console.log('verification success:--' + JSON.stringify(res));
-          history.push('/');
-        })
-        .catch((err: any) => {
-          console.log('Error in verification');
-        });
-    } else {
-      FirebaseAuthentication.signInWithVerificationId(verificationId, code)
-        .then((res) => {
-          console.log('verification success:--' + JSON.stringify(res));
-          history.push('/');
-        })
-        .catch((err: any) => {
-          console.log('Error in verification');
-        });
-    }
+    confirmationCode
+      .confirm(code)
+      .then((res: any) => {
+        console.log('verification success:--' + JSON.stringify(res));
+        history.push('/');
+      })
+      .catch((err: any) => {
+        console.log('Error in verification');
+      });
   };
 
   return (
@@ -184,24 +159,36 @@ const MobileNumberLogin: React.FC = () => {
                 <b>{t('yourMobileNumber')}</b>
               </IonLabel>
             </IonItem>
-            <IonItem className="order_completed" style={{ marginTop: '20%' }} lines="none">
+            <IonItem style={{ marginTop: '20%' }} lines="none">
+              <IonSelect
+                value={country}
+                interfaceOptions={{
+                  header: 'Country',
+                  subHeader: 'Select your country code',
+                }}
+                selectedText={country}
+                mode={'ios'}
+                onIonChange={(e) => setCountry(e.detail.value)}
+                className={'country-selector'}
+              >
+                <IonSelectOption value="+61">Australia (+61)</IonSelectOption>
+                <IonSelectOption value="+65">Singapore (+65)</IonSelectOption>
+                <IonSelectOption value="+852">Hk (+852)</IonSelectOption>
+                <IonSelectOption value="+1">US (+1)</IonSelectOption>
+                <IonSelectOption value="+86">China (+86)</IonSelectOption>
+                <IonSelectOption value="+44">UK (+44)</IonSelectOption>
+              </IonSelect>
+              <ReactCountryFlag className={'country-flag'} countryCode={conturyList[country]} />
               <IonInput
                 type="number"
-                placeholder="+612 33123123"
+                placeholder="33123123"
                 value={mobileNumber}
                 onIonChange={(e) => {
                   setMobileNumber(e.detail.value);
                 }}
+                className={'input-mobile-number'}
               ></IonInput>
             </IonItem>
-            <div
-              style={{
-                marginLeft: 50,
-                marginRight: 50,
-                height: 1,
-                background: 'black',
-              }}
-            ></div>
             <IonButton
               className="center"
               style={{ marginTop: '20%' }}
@@ -226,7 +213,7 @@ const MobileNumberLogin: React.FC = () => {
             <IonItem className="center" lines="none">
               <IonLabel color="shade">
                 <p>{t('smsSent')}</p>
-                <p>{mobileNumber ? mobileNumber : '+61 321112321,'}</p>
+                <p>{mobileNumber ? country + mobileNumber : '+61 321112321,'}</p>
                 <p>{t('enterVerificationCode')}</p>
               </IonLabel>
             </IonItem>
@@ -343,7 +330,7 @@ const MobileNumberLogin: React.FC = () => {
                   textDecorationLine: 'underline',
                 }}
               >
-                {t('notReceivedSMS', { timer: timer })}
+                {t('notReceivedSMS', { timer: timeLeft })}
               </IonText>
             </IonItem>
             <IonButton

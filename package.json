@@ -47,6 +47,7 @@
     "moment": "^2.26.0",
     "patch-package": "^6.2.2",
     "react": "^16.13.0",
+    "react-country-flag": "^2.1.0",
     "react-dom": "^16.13.0",
     "react-html-parser": "^2.0.2",
     "react-i18next": "^11.5.0",
@@ -74,8 +75,8 @@
     "run-android": "env-cmd -f .env ionic capacitor run android -l --emulator --host=0.0.0.0",
     "deploy:dev": "env-cmd -f .env react-scripts build --platform=web && cp -Rv build/* fbhost/public && cd fbhost && firebase deploy -P development --only hosting:development ",
     "deploy:prod": "env-cmd -f .env.production react-scripts build --platform=web && cp -Rv build/* fbhost/public && cd fbhost && firebase deploy -P production --only hosting:production ",
-    "build:app:dev" : "env-cmd -f .env react-scripts build && env-cmd -f .env npm run run-ios-npx-sync && env-cmd -f .env npm run run-ios",
-    "build:app:prod" : "env-cmd -f .env.production react-scripts build && env-cmd -f .env.production npm run run-ios-npx-sync && env-cmd -f .env.production npm run run-ios",
+    "build:app:dev": "env-cmd -f .env react-scripts build && env-cmd -f .env npm run run-ios-npx-sync && env-cmd -f .env npm run run-ios",
+    "build:app:prod": "env-cmd -f .env.production react-scripts build && env-cmd -f .env.production npm run run-ios-npx-sync && env-cmd -f .env.production npm run run-ios",
     "deploy": "npm run deploy:dev && npm run deploy:prod",
     "build-privacy-page": "cd privacy-page && firebase deploy --only hosting:slashiee-privacy ",
     "build-chat-page": "cd slashiee-chat && firebase deploy --only hosting:slashiee-chat "

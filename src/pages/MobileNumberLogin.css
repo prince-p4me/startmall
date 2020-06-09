@@ -1,0 +1,13 @@
+.country-selector {
+  --padding-start: 0px;
+}
+
+.country-flag {
+  margin-right: 10px;
+  font-size: 2em !important;
+}
+
+.input-mobile-number {
+  margin-right: 10px;
+  --padding-start: 10px !important;
+}
