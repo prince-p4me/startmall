@@ -121,6 +121,10 @@ ion-item.selected {
     font-size: 12px;
 }
 
+.header-name-label {
+    font-size: 16px;
+}
+
 .avatar-latter {
     height: 100%;
     width: 100%;
@@ -133,6 +137,18 @@ ion-item.selected {
     font-size: 30px;
 }
 
+.header-info {
+    display: flex;
+    justify-content : flex-start;
+    align-items : flex-start;
+    flex-direction : column;
+    margin-left : 10px;
+}
+
 ion-icon {
     margin-inline-end: 15px;
+}
+
+.list-header {
+    margin-top: 30px;
 }

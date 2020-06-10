@@ -110,24 +110,24 @@ const Menu: React.FC = () => {
   return (
     <IonMenu contentId="main" type="overlay" side="end">
       <IonContent className={'ion-margin-top'}>
+        <IonListHeader className={'list-header'}>
+          {isAuthenticated && (
+            <>
+              <IonAvatar>
+                {userPhoto ? (
+                  <IonImg src={userPhoto}></IonImg>
+                ) : (
+                  <div className={'avatar-latter'}>{auth.displayName ? avatarUSer() : ''}</div>
+                )}
+              </IonAvatar>
+              <div className={'header-info'}>
+                <IonLabel className={'header-name-label'}>{auth.displayName || auth.phoneNumber}</IonLabel>
+                <IonLabel className={'header-email-label'}>{auth.email || auth.phoneNumber}</IonLabel>
+              </div>
+            </>
+          )}
+        </IonListHeader>
         <IonList className="inbox-list">
-          <IonListHeader>
-            {isAuthenticated && (
-              <>
-                <IonAvatar>
-                  {userPhoto ? (
-                    <IonImg src={userPhoto}></IonImg>
-                  ) : (
-                    <div className={'avatar-latter'}>{auth.displayName ? avatarUSer() : ''}</div>
-                  )}
-                </IonAvatar>
-                <IonList lines="none">
-                  <IonItem>{auth.displayName || auth.phoneNumber}</IonItem>
-                  <IonItem className={'header-email-label'}>{auth.email}</IonItem>
-                </IonList>
-              </>
-            )}
-          </IonListHeader>
           {appPages.map((appPage, index) => {
             return !isPageHasPermission(appPage) ? (
               <div key={index}></div>
