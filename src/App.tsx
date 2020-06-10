@@ -84,6 +84,7 @@ const App: React.FC = () => {
   useEffect(() => {
     StatusBar.overlaysWebView(false);
     StatusBar.styleDefault();
+    console.log('REACT_APP_ENV',process.env.REACT_APP_ENV);
   }, []);
 
   const db = useFirebase().firestore();
