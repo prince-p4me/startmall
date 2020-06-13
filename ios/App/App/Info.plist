@@ -27,7 +27,7 @@
 			<string>REVERSED_CLIENT_ID</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.326027994327-bif3h9ps4ilb4necgdt1kdq1lk6ooek5</string>
+				<string>com.googleusercontent.apps.432319034373-e9jjlvl49bmtvatkmkir1cbp27p3rvki</string>
 			</array>
 		</dict>
 		<dict>
@@ -44,16 +44,6 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>startmall</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLName</key>
-			<string>REVERSED_CLIENT_ID</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>com.googleusercontent.apps.432319034373-e9jjlvl49bmtvatkmkir1cbp27p3rvki</string>
 			</array>
 		</dict>
 	</array>
